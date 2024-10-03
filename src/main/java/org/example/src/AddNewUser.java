@@ -26,27 +26,54 @@ import java.awt.event.ActionEvent;
 import javax.swing.JComboBox;
 
 public class AddNewUser extends JFrame {
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					AddNewUser frame = new AddNewUser();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-	public void reset() 
-	{
 
-	}
-	public String studentId()
-	{
-		return "";
-	}
-	public AddNewUser() {
+  private JPanel contentPane;
+  private JTextField textField;
+  private JTextField textField_1;
+  private JTextField textField_2;
+  private JTextField textField_3;
+  private JPasswordField passwordField;
+  private JPasswordField passwordField_1;
+  private JComboBox comboBox;
 
+  public static void main(String[] args) {
+    EventQueue.invokeLater(new Runnable() {
+      public void run() {
+        try {
+          AddNewUser frame = new AddNewUser();
+          frame.setVisible(true);
+        } catch (Exception e) {
+          e.printStackTrace();
+        }
+      }
+    });
+  }
+
+  public void reset() {
+    textField.setText(null);
+    textField_1.setText(null);
+    textField_2.setText(null);
+    textField_3.setText(null);
+    passwordField.setText(null);
+    passwordField_1.setText(null);
+    comboBox.setSelectedIndex(0);
+  }
+
+  public String studentId() {
+    return "";
+  }
+
+  public AddNewUser() {
+		setResizable(false);
+		setTitle("Add User");
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		setBounds(100, 100, 469, 593);
+		setLocationRelativeTo(this);
+		textField = new JTextField(10);
+		textField_1 = new JTextField(10);
+		textField_2 = new JTextField(10);
+		textField_3 = new JTextField(10);
+		passwordField = new JPasswordField();
+		passwordField_1 = new JPasswordField();
 	}
 }

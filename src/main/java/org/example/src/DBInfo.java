@@ -55,18 +55,16 @@ public class DBInfo {
 
   public static String value;
 
-  public static String getNotice()
-  {
-    Connection con=DBInfo.conn();
-    String query="SELECT * FROM notice";
-    value="";
+  public static String getNotice() {
+    Connection con = DBInfo.conn();
+    String query = "SELECT * FROM notice";
+    value = "";
     try {
-      PreparedStatement ps=con.prepareStatement(query);
-      ResultSet res=ps.executeQuery();
-      while(res.next())
-      {
-        value=res.getString(2);
-        System.out.println("previous Notice is "+value);
+      PreparedStatement ps = con.prepareStatement(query);
+      ResultSet res = ps.executeQuery();
+      while (res.next()) {
+        value = res.getString(2);
+        System.out.println("previous Notice is " + value);
       }
     } catch (SQLException e2) {
       e2.printStackTrace();
@@ -146,7 +144,9 @@ public class DBInfo {
    */
   public static void returnBook() {
 
+  }
 
+  public static void addBook(String a, String b, String c, String d, String e, String f) {
 
   }
 
