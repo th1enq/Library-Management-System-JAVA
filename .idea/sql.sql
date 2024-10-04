@@ -71,7 +71,40 @@ SET character_set_client = @saved_cs_client;
 
 LOCK TABLES `book` WRITE;
 /*!40000 ALTER TABLE `book` DISABLE KEYS */;
-INSERT INTO `book` VALUES ('11727238','Realms, Regions, and Concepts','Harm J. de Blij','Geography','Wiley','Physical Geography',329840,2019,4),('12116356','Guns, Germs, and Steel	','	Jared Diamond','Geography','W. W. Norton & Company','Geography, History'),('12268461','The Elegant Universe','Brian Greene','Science','W. W. Norton & Company','Theoretical Physics'),('15516529','The Double Helix','James Watson','Science','W. W. Norton & Company','Molecular Biology'),('24197225','The Silk Roads: A New History of the World','Peter Frankopan','History','Vintage','World History'),('27584951','The Structure of Scientific Revolutions','Thomas S. Kuhn','Science','University of Chicago Press','Philosophy of Science'),('28462781','Refactoring: Improving the Design of Existing Code','Martin Fowler','Coding','Software Development','Addison-Wesley Professional'),('29395256','The Atlas of World Geography','Rand McNally','Geography','Rand McNally','	World Geography'),('31322912','The Princeton Companion to Mathematics','Timothy Gowers ','Mathematics','Princeton University Press','Mathematics'),('31436261','How to Solve It','George Polya','Mathematics','Princeton University Press','Problem-Solving'),('34735458','Clean Code','Robert Cecil Martin','Coding','Prentice Hall','Software Design'),('35749510','The Art of Computer Programming','Donald Knuth','Coding','Addison-Wesley Professional','Computer Science'),('37739767','The Decline and Fall of the Roman Empire','Edward Gibbon','History','Penguin Classics','Ancient History'),('38155864','The Origin of Species','Charles Darwin','Science','Penguin Classics','Evolutionary Biology'),('44894347','The Selfish Gene','Richard Dawkins','Science','Oxford University Press','Evolutionary Biology'),('45745747','The Art of Mathematics','Jerry P. King','Mathematics','No Starch Press','Mathematics'),('49245283','Code Complete','Steve McConnell','Coding','Microsoft Press','Software Development'),('49534361','Sapiens: A Brief History of Humankind','Yuval Noah Harari','History','Harper','World History'),('49895386','A Course in Pure Mathematics','G. H. Hardy','Mathematics','Cambridge University Press','Mathematics'),('52442195','The Mathematical Experience','Philip J. Davis','Mathematics','Birkhäuser','Mathematics'),('55951954','Gödel, Escher, Bach: An Eternal Golden Braid','Douglas Hofstadter','Mathematics','Basic Books','Mathematics'),('56445497','A Brief History of Time','Stephen Hawking','Science','Bantam Books','Astrophysics'),('59419613','The Pragmatic Programmer','Andrew Hunt','Coding','Addison-Wesley Professional','Software Development'),('63982413','Design Patterns: Elements of Reusable Object-Oriented Software','Erich Gamma','Coding','Addison-Wesley Professional','Software Design');
+INSERT INTO book (bookid, title, author, subject, publisher, category) VALUES
+('00000001', 'To Kill a Mockingbird', 'Harper Lee', 'Fiction', 'J.B. Lippincott & Co.', 'Classic'),
+('00000002', '1984', 'George Orwell', 'Dystopian', 'Secker & Warburg', 'Science Fiction'),
+('00000003', 'Pride and Prejudice', 'Jane Austen', 'Romance', 'T. Egerton', 'Romance'),
+('00000004', 'Moby-Dick', 'Herman Melville', 'Adventure', 'Harper & Brothers', 'Adventure'),
+('00000005', 'The Great Gatsby', 'F. Scott Fitzgerald', 'Fiction', 'Charles Scribner\'s Sons', 'Classic'),
+('00000006', 'The Call of the Wild', 'Jack London', 'Adventure', 'Macmillan', 'Adventure'),
+('00000007', 'Brave New World', 'Aldous Huxley', 'Dystopian', 'Chatto & Windus', 'Dystopian'),
+('00000008', 'War and Peace', 'Leo Tolstoy', 'Historical Fiction', 'The Russian Messenger', 'Historical Fiction'),
+('00000009', 'The Hobbit', 'J.R.R. Tolkien', 'Fantasy', 'George Allen & Unwin', 'Fantasy'),
+('00000010', 'The Odyssey', 'Homer', 'Epic', 'Ancient Greece', 'Epic'),
+('00000011', 'Crime and Punishment', 'Fyodor Dostoevsky', 'Psychological', 'The Russian Messenger', 'Psychological'),
+('00000012', 'Jane Eyre', 'Charlotte Brontë', 'Romance', 'Smith, Elder & Co.', 'Romance'),
+('00000013', 'The Divine Comedy', 'Dante Alighieri', 'Epic', 'Italy', 'Epic'),
+('00000014', 'Frankenstein', 'Mary Shelley', 'Horror', 'Lackington, Hughes, Harding, Mavor & Jones', 'Horror'),
+('00000015', 'The Brothers Karamazov', 'Fyodor Dostoevsky', 'Philosophical', 'The Russian Messenger', 'Philosophical'),
+('00000016', 'The Count of Monte Cristo', 'Alexandre Dumas', 'Adventure', 'Pétion', 'Adventure'),
+('00000017', 'Les Misérables', 'Victor Hugo', 'Historical Fiction', 'A. Lacroix, Verboeckhoven & Cie', 'Historical Fiction'),
+('00000018', 'The Picture of Dorian Gray', 'Oscar Wilde', 'Philosophical', 'Ward, Lock & Co.', 'Philosophical'),
+('00000019', 'The Adventures of Huckleberry Finn', 'Mark Twain', 'Adventure', 'Charles L. Webster And Company', 'Adventure'),
+('00000020', 'Dracula', 'Bram Stoker', 'Horror', 'Archibald Constable and Company', 'Horror'),
+('00000021', 'Don Quixote', 'Miguel de Cervantes', 'Adventure', 'Francisco de Robles', 'Adventure'),
+('00000022', 'The Old Man and the Sea', 'Ernest Hemingway', 'Adventure', 'Charles Scribner\'s Sons', 'Adventure'),
+('00000023', 'One Hundred Years of Solitude', 'Gabriel García Márquez', 'Magical Realism', 'Editorial Sudamericana', 'Magical Realism'),
+('00000024', 'The Metamorphosis', 'Franz Kafka', 'Psychological', 'Kurt Wolff Verlag', 'Psychological'),
+('00000025', 'The Iliad', 'Homer', 'Epic', 'Ancient Greece', 'Epic'),
+('00000026', 'The Trial', 'Franz Kafka', 'Philosophical', 'Verlag Die Schmiede', 'Philosophical'),
+('00000027', 'Fahrenheit 451', 'Ray Bradbury', 'Dystopian', 'Ballantine Books', 'Dystopian'),
+('00000028', 'The Road', 'Cormac McCarthy', 'Post-apocalyptic', 'Alfred A. Knopf', 'Post-apocalyptic'),
+('00000029', 'The Stranger', 'Albert Camus', 'Philosophical', 'Librairie Gallimard', 'Philosophical'),
+('00000030', 'The Grapes of Wrath', 'John Steinbeck', 'Historical Fiction', 'The Viking Press-James Lloyd', 'Historical Fiction');
+
+
+
 /*!40000 ALTER TABLE `book` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -95,7 +128,38 @@ SET character_set_client = @saved_cs_client;
 
 LOCK TABLES `category` WRITE;
 /*!40000 ALTER TABLE `category` DISABLE KEYS */;
-INSERT INTO `category` VALUES (1,'Physical Geography'),(2,'Geography, History'),(3,'Theoretical Physics'),(4,'Molecular Biology'),(5,'World History'),(6,'Philosophy of Science'),(7,'Addison-Wesley Professional'),(8,'	World Geography'),(9,'Mathematics'),(10,'Problem-Solving'),(11,'Software Design'),(12,'Computer Science'),(13,'Ancient History'),(14,'Evolutionary Biology'),(15,'Software Development'),(16,'Astrophysics');
+INSERT INTO category (name) VALUES
+('Classic'),
+('Dystopian'),
+('Romance'),
+('Adventure'),
+('Classic'),
+('Adventure'),
+('Dystopian'),
+('Historical Fiction'),
+('Fantasy'),
+('Epic'),
+('Psychological'),
+('Romance'),
+('Epic'),
+('Horror'),
+('Philosophical'),
+('Adventure'),
+('Historical Fiction'),
+('Philosophical'),
+('Adventure'),
+('Horror'),
+('Adventure'),
+('Adventure'),
+('Magical Realism'),
+('Psychological'),
+('Epic'),
+('Philosophical'),
+('Dystopian'),
+('Post-apocalyptic'),
+('Philosophical'),
+('Historical Fiction');
+
 /*!40000 ALTER TABLE `category` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -123,7 +187,13 @@ SET character_set_client = @saved_cs_client;
 
 LOCK TABLES `issuebooks` WRITE;
 /*!40000 ALTER TABLE `issuebooks` DISABLE KEYS */;
-INSERT INTO `issuebooks` VALUES ('ramesh',12116356,'Guns, Germs, and Steel	','	Jared Diamond','06-04-2023','14-04-2023','Pending'),('ankit',15516529,'The Double Helix','James Watson','01-04-2023','07-04-2023','Pending'),('geeta',25938372,'Coduu','Robert Cecil Martin','31-03-2023','10-04-2023','Submitted'),('yash',27584951,'The Structure of Scientific Revolutions','Thomas S. Kuhn','31-03-2023','10-04-2023','Pending'),('ramesh',29395256,'The Atlas of World Geography','Rand McNally','06-04-2023','07-04-2023','Submitted'),('shiv',31436261,'How to Solve It','George Polya','04-04-2023','14-04-2023','Submitted'),('shanu',34735458,'Clean Code','Robert Cecil Martin','31-03-2023','10-04-2023','Submitted'),('neeraj',63982413,'Design Patterns: Elements of Reusable Object-Oriented Software','Erich Gamma','02-04-2023','07-04-2023','Pending');
+INSERT INTO issuebooks (username, bookId, title, author, issueDate, dueDate, returnStatus) VALUES
+('user1', 1, 'To Kill a Mockingbird', 'Harper Lee', '2024-10-01', '2024-10-15', 'Pending'),
+('user2', 2, '1984', 'George Orwell', '2024-10-02', '2024-10-16', 'Pending'),
+('user3', 3, 'Pride and Prejudice', 'Jane Austen', '2024-10-03', '2024-10-17', 'Pending'),
+('user4', 4, 'Moby-Dick', 'Herman Melville', '2024-10-04', '2024-10-18', 'Returned'),
+('user5', 5, 'The Great Gatsby', 'F. Scott Fitzgerald', '2024-10-05', '2024-10-19', 'Pending');
+
 /*!40000 ALTER TABLE `issuebooks` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -171,7 +241,37 @@ SET character_set_client = @saved_cs_client;
 
 LOCK TABLES `publisher` WRITE;
 /*!40000 ALTER TABLE `publisher` DISABLE KEYS */;
-INSERT INTO `publisher` VALUES (1,'Addison-Wesley Professional'),(2,'Bantam Books'),(3,'Basic Books'),(4,'Birkhäuser'),(5,'Cambridge University Press'),(6,'Harper'),(7,'Microsoft Press'),(8,'No Starch Press'),(9,'Oxford University Press'),(10,'Penguin Classics'),(11,'Prentice Hall'),(12,'Princeton University Press'),(13,'Rand McNally'),(14,'Software Development'),(15,'University of Chicago Press'),(16,'Vintage'),(17,'W. W. Norton & Company');
+INSERT INTO publisher (name) VALUES
+('J.B. Lippincott & Co.'),
+('Secker & Warburg'),
+('T. Egerton'),
+('Harper & Brothers'),
+('Charles Scribner\'s Sons'),
+('Macmillan'),
+('Chatto & Windus'),
+('The Russian Messenger'),
+('George Allen & Unwin'),
+('Ancient Greece'),
+('The Russian Messenger'),
+('Smith, Elder & Co.'),
+('Italy'),
+('Lackington, Hughes, Harding, Mavor & Jones'),
+('The Russian Messenger'),
+('Pétion'),
+('A. Lacroix, Verboeckhoven & Cie'),
+('Ward, Lock & Co.'),
+('Charles L. Webster And Company'),
+('Archibald Constable and Company'),
+('Francisco de Robles'),
+('Charles Scribner\'s Sons'),
+('Editorial Sudamericana'),
+('Kurt Wolff Verlag'),
+('Ancient Greece'),
+('Verlag Die Schmiede'),
+('Ballantine Books'),
+('Alfred A. Knopf'),
+('Librairie Gallimard'),
+('The Viking Press-James Lloyd');
 /*!40000 ALTER TABLE `publisher` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -227,6 +327,36 @@ SET character_set_client = @saved_cs_client;
 
 LOCK TABLES `subject` WRITE;
 /*!40000 ALTER TABLE `subject` DISABLE KEYS */;
-INSERT INTO `subject` VALUES (1,'Coding'),(2,'Geography'),(3,'History'),(4,'Mathematics'),(5,'Science');
+INSERT INTO subject (name) VALUES
+('Fiction'),
+('Dystopian'),
+('Romance'),
+('Adventure'),
+('Fiction'),
+('Adventure'),
+('Dystopian'),
+('Historical Fiction'),
+('Fantasy'),
+('Epic'),
+('Psychological'),
+('Romance'),
+('Epic'),
+('Horror'),
+('Philosophical'),
+('Adventure'),
+('Historical Fiction'),
+('Philosophical'),
+('Adventure'),
+('Horror'),
+('Adventure'),
+('Adventure'),
+('Magical Realism'),
+('Psychological'),
+('Epic'),
+('Philosophical'),
+('Dystopian'),
+('Post-apocalyptic'),
+('Philosophical'),
+('Historical Fiction');
 /*!40000 ALTER TABLE `subject` ENABLE KEYS */;
 UNLOCK TABLES;
