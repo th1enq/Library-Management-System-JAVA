@@ -48,7 +48,8 @@ public class AddNewBook extends JFrame {
   private JTextField textField_5;
   private JPanel contentPane;
   public static void main(String[] args) {
-    EventQueue.invokeLater(new Runnable() {
+
+   EventQueue.invokeLater(new Runnable() {
       public void run() {
         try {
           AddNewBook frame = new AddNewBook();
@@ -69,14 +70,13 @@ public class AddNewBook extends JFrame {
       throws WriterException, IOException {
 
   }
-
-
-  public void addNames(String name, String str) {
-
-  }
-
-
   public void reset() {
+    textField.setText(null);
+    textField_1.setText(null);
+    textField_2.setText(null);
+    textField_3.setText(null);
+    textField_4.setText(null);
+    textField_5.setText(null);
 
   }
 

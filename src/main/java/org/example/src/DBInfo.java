@@ -7,6 +7,7 @@ import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.Vector;
+import javax.swing.event.UndoableEditEvent;
 
 public class DBInfo {
 
@@ -154,6 +155,8 @@ public class DBInfo {
       preparedStatement.setString(1, a);
       int rowsAffected = preparedStatement.executeUpdate();
       System.out.println("publisher added successfully! Rows affected: " + rowsAffected);
+      preparedStatement.close();
+      con.close();
     } catch (SQLException EE) {
       System.out.println("Error adding publisher");
       EE.printStackTrace();
@@ -168,11 +171,14 @@ public class DBInfo {
       preparedStatement.setString(1, a);
       int rowsAffected = preparedStatement.executeUpdate();
       System.out.println("category added successfully! Rows affected: " + rowsAffected);
+      preparedStatement.close();
+      con.close();
     } catch (SQLException EE) {
       System.out.println("Error adding category");
       EE.printStackTrace();
     }
   }
+
   public static void addAuthor(String a) {
     try {
       Connection con = DBInfo.conn();
@@ -181,11 +187,14 @@ public class DBInfo {
       preparedStatement.setString(1, a);
       int rowsAffected = preparedStatement.executeUpdate();
       System.out.println("author added successfully! Rows affected: " + rowsAffected);
+      preparedStatement.close();
+      con.close();
     } catch (SQLException EE) {
       System.out.println("Error adding author");
       EE.printStackTrace();
     }
   }
+
   public static void addSubject(String a) {
     try {
       Connection con = DBInfo.conn();
@@ -194,11 +203,14 @@ public class DBInfo {
       preparedStatement.setString(1, a);
       int rowsAffected = preparedStatement.executeUpdate();
       System.out.println("subject added successfully! Rows affected: " + rowsAffected);
+      preparedStatement.close();
+      con.close();
     } catch (SQLException EE) {
       System.out.println("Error adding subject");
       EE.printStackTrace();
     }
   }
+
   public static void addBook(String a, String b, String c, String d, String e, String f) {
     try {
       Connection con = DBInfo.conn();
@@ -217,16 +229,143 @@ public class DBInfo {
       addAuthor(c);
       addSubject(d);
       addPublisher(e);
+      preparedStatement.close();
+      con.close();
     } catch (SQLException EE) {
       System.out.println("Error adding book");
       EE.printStackTrace();
     }
   }
 
-  public static void addUser(){
-
+  public static void Register(int id, String name, String email, String username, String password,
+      String usertype) {
+    try {
+      Connection con = DBInfo.conn();
+      String sql = "INSERT INTO registration( name, email, username, password, usertype) VALUE (?,?,?,?,?)";
+      PreparedStatement preparedStatement = con.prepareStatement(sql);
+      preparedStatement.setString(2, name);
+      preparedStatement.setString(3, email);
+      preparedStatement.setString(4, username);
+      preparedStatement.setString(5, password);
+      preparedStatement.setString(6, usertype);
+      int rowsAffected = preparedStatement.executeUpdate();
+      System.out.println("Register successfully! Rows affected: " + rowsAffected);
+      preparedStatement.close();
+      con.close();
+    } catch (SQLException ee) {
+      ee.printStackTrace();
+    }
   }
+
+  public static boolean checkPass(String username, String password) {
+    String sql = "SELECT usertype FROM registration WHERE username = ? AND password = ?";
+
+    try {
+      Connection con = DBInfo.conn();
+      if (con == null) {
+        System.out.println("Ngu");
+        return false;
+      }
+      PreparedStatement preparedStatement = con.prepareStatement(sql);
+      preparedStatement.setString(1, username);
+      preparedStatement.setString(2, password);
+      ResultSet resultSet = preparedStatement.executeQuery();
+      if (resultSet.next()) {
+        String userType = resultSet.getString("usertype");
+        System.out.println("Đúng! Loại người dùng: " + userType);
+        return true;
+      } else {
+        System.out.println("Tên đăng nhập hoặc mật khẩu không đúng!");
+
+      }
+      preparedStatement.close();
+      con.close();
+      return false;
+    } catch (SQLException A) {
+      A.printStackTrace();
+      return false;
+    }
+  }
+
+  public static int findUserId(String username, String password) {
+    try {
+      Connection con = DBInfo.conn();
+      String sql = "SELECT id FROM registration WHERE username = ? AND password = ?";
+      PreparedStatement preparedStatement = con.prepareStatement(sql);
+      preparedStatement.setString(1, username);
+      preparedStatement.setString(2, password);
+      ResultSet resultSet = preparedStatement.executeQuery();
+      if (resultSet.next()) {
+        int id = resultSet.getInt("id");
+        System.out.println("ID của người dùng là: " + id);
+        return id;
+      } else {
+        System.out.println("Không tìm thấy người dùng với username và password đã cho.");
+
+      }
+      preparedStatement.close();
+      con.close();
+      return -1;
+    } catch (SQLException e) {
+      e.printStackTrace();
+      System.out.println("Loi ham tim id biet user va pass");
+      return -1;
+    }
+  }
+
+  public static void updateUser(int id, String newUsername, String newPassword) {
+    Connection con = DBInfo.conn();
+    try {
+
+      String sql = "UPDATE registration SET username = ?, password = ? WHERE id = ?";
+      PreparedStatement preparedStatement = con.prepareStatement(sql);
+
+      preparedStatement.setString(1, newUsername);
+      preparedStatement.setString(2, newPassword);
+      preparedStatement.setInt(3, id);
+      int rowsAffected = 0;
+      System.out.println(rowsAffected);
+      rowsAffected = preparedStatement.executeUpdate();
+
+      if (rowsAffected > 0) {
+        System.out.println("Cập nhật thành công!");
+      } else {
+        System.out.println("Không tìm thấy người dùng với id: " + id);
+      }
+      preparedStatement.close();
+      con.close();
+    } catch (SQLException EE) {
+      EE.printStackTrace();
+      System.out.println("Loi sua user va pass");
+    }
+  }
+
+  public static void updateEmail(int id, String newEmail) {
+    Connection con = DBInfo.conn();
+    try {
+
+      String sql = "UPDATE registration SET email = ? WHERE id = ?";
+      PreparedStatement preparedStatement = con.prepareStatement(sql);
+
+      preparedStatement.setString(1, newEmail);
+      preparedStatement.setInt(2, id);
+      int rowsAffected = 0;
+      System.out.println(rowsAffected);
+      rowsAffected = preparedStatement.executeUpdate();
+
+      if (rowsAffected > 0) {
+        System.out.println("Cập nhật thành công!");
+      } else {
+        System.out.println("Không tìm thấy người dùng với id: " + id);
+      }
+      preparedStatement.close();
+      con.close();
+    } catch (SQLException EE) {
+      EE.printStackTrace();
+      System.out.println("Loi sua email");
+    }
+  }
+
   public static void main(String[] args) {
-    DBInfo.borrowBook("The Elegant Universe");
   }
 }
