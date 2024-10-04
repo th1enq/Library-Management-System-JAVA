@@ -146,11 +146,86 @@ public class DBInfo {
 
   }
 
-  public static void addBook(String a, String b, String c, String d, String e, String f) {
-
+  public static void addPublisher(String a) {
+    try {
+      Connection con = DBInfo.conn();
+      String sql = "INSERT INTO publisher(name) VALUE (?)";
+      PreparedStatement preparedStatement = con.prepareStatement(sql);
+      preparedStatement.setString(1, a);
+      int rowsAffected = preparedStatement.executeUpdate();
+      System.out.println("publisher added successfully! Rows affected: " + rowsAffected);
+    } catch (SQLException EE) {
+      System.out.println("Error adding publisher");
+      EE.printStackTrace();
+    }
   }
 
+  public static void addCategory(String a) {
+    try {
+      Connection con = DBInfo.conn();
+      String sql = "INSERT INTO category(name) VALUE (?)";
+      PreparedStatement preparedStatement = con.prepareStatement(sql);
+      preparedStatement.setString(1, a);
+      int rowsAffected = preparedStatement.executeUpdate();
+      System.out.println("category added successfully! Rows affected: " + rowsAffected);
+    } catch (SQLException EE) {
+      System.out.println("Error adding category");
+      EE.printStackTrace();
+    }
+  }
+  public static void addAuthor(String a) {
+    try {
+      Connection con = DBInfo.conn();
+      String sql = "INSERT INTO author(name) VALUE (?)";
+      PreparedStatement preparedStatement = con.prepareStatement(sql);
+      preparedStatement.setString(1, a);
+      int rowsAffected = preparedStatement.executeUpdate();
+      System.out.println("author added successfully! Rows affected: " + rowsAffected);
+    } catch (SQLException EE) {
+      System.out.println("Error adding author");
+      EE.printStackTrace();
+    }
+  }
+  public static void addSubject(String a) {
+    try {
+      Connection con = DBInfo.conn();
+      String sql = "INSERT INTO subject(name) VALUE (?)";
+      PreparedStatement preparedStatement = con.prepareStatement(sql);
+      preparedStatement.setString(1, a);
+      int rowsAffected = preparedStatement.executeUpdate();
+      System.out.println("subject added successfully! Rows affected: " + rowsAffected);
+    } catch (SQLException EE) {
+      System.out.println("Error adding subject");
+      EE.printStackTrace();
+    }
+  }
+  public static void addBook(String a, String b, String c, String d, String e, String f) {
+    try {
+      Connection con = DBInfo.conn();
+      String sql = "INSERT INTO book(bookid, title, author, subject, publisher, category) VALUE (?,?,?,?,?,?)";
+      PreparedStatement preparedStatement = con.prepareStatement(sql);
+      preparedStatement.setString(1, a);
+      preparedStatement.setString(2, b);
+      preparedStatement.setString(3, c);
+      preparedStatement.setString(4, d);
+      preparedStatement.setString(5, e);
+      preparedStatement.setString(6, f);
 
+      int rowsAffected = preparedStatement.executeUpdate();
+      System.out.println("Book added successfully! Rows affected: " + rowsAffected);
+      addCategory(f);
+      addAuthor(c);
+      addSubject(d);
+      addPublisher(e);
+    } catch (SQLException EE) {
+      System.out.println("Error adding book");
+      EE.printStackTrace();
+    }
+  }
+
+  public static void addUser(){
+
+  }
   public static void main(String[] args) {
     DBInfo.borrowBook("The Elegant Universe");
   }

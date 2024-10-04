@@ -50,5 +50,6 @@ public class Registration extends JFrame {
 	}
 	public Registration() {
 
+
 	}
 }
