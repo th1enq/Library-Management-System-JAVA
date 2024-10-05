@@ -57,7 +57,6 @@ public class EditProfile extends JFrame {
 
   /**
    * đang lỗi.
-   *
    */
   public EditProfile() {
     setResizable(false);
@@ -109,7 +108,8 @@ public class EditProfile extends JFrame {
     updButton.addActionListener(new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent e) {
-        if (DBInfo.checkPass(username.getText(), password.getText()) == false) {
+        if (DBInfo.checkPass(username.getText(), password.getText()) == false
+            && username.getText() != null && password.getText() != null) {
           error.setText("SAI");
         } else {
 
@@ -123,10 +123,10 @@ public class EditProfile extends JFrame {
           }
           int id = DBInfo.findUserId(username.getText(), password.getText());
           if (new_email.getText() != null) {
-            DBInfo.updateEmail(id,new_email.getText());
+            DBInfo.updateEmail(id, new_email.getText());
           }
           DBInfo.updateUser(id, nUser, nPass);
-         // reset();
+          // reset();
         }
       }
     });
