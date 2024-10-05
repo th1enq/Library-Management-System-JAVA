@@ -4,222 +4,99 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
-import com.google.zxing.BarcodeFormat;
-import com.google.zxing.WriterException;
-import com.google.zxing.common.BitMatrix;
-import com.google.zxing.pdf417.PDF417Writer;
-import com.google.zxing.client.j2se.MatrixToImageWriter;
-
-import javax.imageio.ImageIO;
-import javax.swing.*;
-import javax.swing.border.EmptyBorder;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
+import java.awt.Color;
+import java.awt.EventQueue;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import javax.swing.*;
 
 public class ViewBooks extends JFrame {
-	private JPanel contentPane;
-	private JTextField searchField;
-	private JLabel titleLabel;
-	private JLabel authorsLabel;
-	private JLabel descriptionLabel;
-	private JLabel publishedDateLabel;
-	private JLabel imageLabel;
-	private JLabel ISBNLabel;
-	private JLabel isbnImage;
-	private ArrayList<Book> allBooks; // Store all fetched books
-	private int currentBookIndex = 0; // Track current book index
+	private int x_Mouse, y_Mouse;
+	private int currentModule = 0;
+	public static String subModule = "";
+	private static String currentUser = "";
+	public static JPanel modulePanel = new JPanel();
 
 	public static void main(String[] args) {
-		EventQueue.invokeLater(() -> {
-			try {
-				ViewBooks frame = new ViewBooks();
-				frame.setVisible(true);
-			} catch (Exception e) {
-				e.printStackTrace();
+		try {
+			for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+				if ("Nimbus".equals(info.getName())) {
+					javax.swing.UIManager.setLookAndFeel(info.getClassName());
+					break;
+				}
 			}
-		});
+		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
+			java.util.logging.Logger.getLogger(ViewBooks.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+		}
+
+		/* Create and display the form */
+		java.awt.EventQueue.invokeLater(() -> new ViewBooks().setVisible(true));
 	}
 
 	public ViewBooks() {
-		// Create the window
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(200, 10, 1000, 800);
-		contentPane = new JPanel();
-		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-		contentPane.setLayout(new BorderLayout(0, 0));
-		setContentPane(contentPane);
+		initComponents();
+		setSize(1113, 763);
+		setLocationRelativeTo(null);
+		setBackground(new Color(0, 0, 0, 0));
 
-		// *** Top Bar Panel ***
-		JPanel topBar = new JPanel() {
+		// Add mouse listeners to enable window dragging
+		addMouseListener(new MouseAdapter() {
 			@Override
-			protected void paintComponent(Graphics g) {
-				super.paintComponent(g);
-				ImageIcon img = new ImageIcon("src/main/resources/img/topBarBookSearch.jpg");
-				g.drawImage(img.getImage(), 0, 0, getWidth(), getHeight(), this);
-				g.setColor(new Color(0, 0, 0, 150)); // Black color with 150 alpha for transparency
-				g.fillRect(0, 0, getWidth(), getHeight());
+			public void mousePressed(MouseEvent e) {
+				x_Mouse = e.getX();
+				y_Mouse = e.getY();
 			}
-		};
+		});
 
-		topBar.setPreferredSize(new Dimension(getWidth(), 120));  // Adjust height as needed
-		topBar.setLayout(new GridBagLayout());  // Use GridBagLayout for centering
-
-		GridBagConstraints gbc = new GridBagConstraints();
-		gbc.gridx = 0;
-		gbc.gridy = 0;
-		gbc.insets = new Insets(10, 0, 10, 0);  // Add some padding
-
-		// Bar components (Title Label)
-		JLabel headerLabel = new JLabel("Find your next book to read.");
-		headerLabel.setForeground(Color.WHITE);
-		headerLabel.setFont(new Font("Georgia", Font.BOLD, 20));
-		gbc.anchor = GridBagConstraints.CENTER; // Center the label horizontally
-		topBar.add(headerLabel, gbc);
-
-		// Input Field under the Label
-		gbc.gridy = 1;  // Move to the next row
-		gbc.insets = new Insets(10, 0, 0, 0);  // Add padding between label and text field
-		searchField = new JTextField();
-		searchField.setHorizontalAlignment(JTextField.CENTER);  // Center the placeholder text
-		searchField.setBorder(BorderFactory.createLineBorder(Color.GRAY, 2));  // Add a border around the input field
-		searchField.setPreferredSize(new Dimension(300, 40));  // Adjust the size of the input field
-
-		topBar.add(searchField, gbc);
-
-		// Add ActionListener to perform search when Enter is pressed
-		searchField.addActionListener(new ActionListener() {
+		addMouseMotionListener(new MouseAdapter() {
 			@Override
-			public void actionPerformed(ActionEvent e) {
-				String query = searchField.getText();
-				if (!query.isEmpty()) {
-					allBooks = searchBooks(query); // Store all fetched books
-					currentBookIndex = 0; // Reset to the first book
-					displayBook(currentBookIndex); // Display the first book
-				}
+			public void mouseDragged(MouseEvent e) {
+				int x = e.getXOnScreen();
+				int y = e.getYOnScreen();
+				setLocation(x - x_Mouse, y - y_Mouse);
 			}
 		});
-
-		contentPane.add(topBar, BorderLayout.NORTH);
-
-		// *** Book Display Panel ***
-		// Create the book display panel
-		JPanel bookPanel = new JPanel();
-		bookPanel.setLayout(new BorderLayout());
-		bookPanel.setBackground(Color.WHITE); // Set a white background
-
-// Labels to display book information
-		imageLabel = new JLabel();
-		imageLabel.setHorizontalAlignment(JLabel.CENTER);
-		imageLabel.setBorder(new EmptyBorder(10, 30, 10, 10)); // Padding around the image
-		bookPanel.add(imageLabel, BorderLayout.WEST);  // Place the image on the left
-
-// Create a details panel with GridBagLayout for more control
-		JPanel detailsPanel = new JPanel();
-		detailsPanel.setLayout(new GridBagLayout());
-		detailsPanel.setBackground(Color.WHITE); // Set background to match bookPanel
-		gbc = new GridBagConstraints();
-
-// Title label
-		titleLabel = new JLabel();
-		titleLabel.setFont(new Font("Arial", Font.BOLD, 24)); // Larger, bold font for title
-		titleLabel.setForeground(Color.BLACK); // Set font color
-		gbc.gridx = 0;
-		gbc.gridy = 0;
-		gbc.insets = new Insets(5, 0, 5, 0); // Padding around the title
-		detailsPanel.add(titleLabel, gbc);
-
-		isbnImage = new JLabel();
-		gbc.gridy = 3;
-		detailsPanel.add(isbnImage, gbc);
-// Authors label
-		authorsLabel = new JLabel();
-		authorsLabel.setFont(new Font("Arial", Font.PLAIN, 18)); // Regular font for author
-		authorsLabel.setForeground(Color.GRAY); // Slightly lighter color
-		gbc.gridy = 1;
-		detailsPanel.add(authorsLabel, gbc);
-
-		ISBNLabel = new JLabel();
-		ISBNLabel.setFont(new Font("Arial", Font.PLAIN, 18)); // Regular font for author
-		ISBNLabel.setForeground(Color.GRAY); // Slightly lighter color
-		gbc.gridy = 2;
-		detailsPanel.add(ISBNLabel, gbc);
-
-// Published date label
-		publishedDateLabel = new JLabel();
-		publishedDateLabel.setFont(new Font("Arial", Font.PLAIN, 16));
-		gbc.gridy = 4;
-		detailsPanel.add(publishedDateLabel, gbc);
-
-// Description label
-		descriptionLabel = new JLabel();
-		descriptionLabel.setFont(new Font("Arial", Font.PLAIN, 14)); // Smaller font for description
-		descriptionLabel.setForeground(Color.DARK_GRAY); // Darker color for readability
-		gbc.gridy = 5;
-		gbc.insets = new Insets(10, 0, 0, 0); // More space above the description
-		detailsPanel.add(descriptionLabel, gbc);
-
-// Add the details panel to the book panel
-		bookPanel.add(detailsPanel, BorderLayout.CENTER);  // Place the details on the right
-
-// Add the book panel to the content pane
-		contentPane.add(bookPanel, BorderLayout.CENTER);
-
-
-		// *** Navigation Buttons ***
-		JPanel buttonPanel = new JPanel();
-		JButton previousButton = new JButton("Trở lại");
-		JButton nextButton = new JButton("Tiến tới");
-
-		previousButton.addActionListener(e -> {
-			if (currentBookIndex > 0) {
-				currentBookIndex--;
-				displayBook(currentBookIndex); // Display the previous book
-			}
-		});
-
-		nextButton.addActionListener(e -> {
-			if (currentBookIndex < allBooks.size() - 1) {
-				currentBookIndex++;
-				displayBook(currentBookIndex); // Display the next book
-			}
-		});
-
-		buttonPanel.add(previousButton);
-		buttonPanel.add(nextButton);
-		contentPane.add(buttonPanel, BorderLayout.SOUTH);
 	}
 
-	public void generateBarcode(String isbn) {
-		PDF417Writer pdf417Writer = new PDF417Writer();
-		BitMatrix bitMatrix;
+	private JLabel panels;
+	private JLabel mainGUI;
+	private JLabel exitButton;
+	private JLabel searchBar;
+	private JTextField searchTextField;
+	private JLabel excelInput;
+	private JLabel excelOutput;
+	private JLabel addBook;
+	boolean tooglesearch = false;
 
-		try {
-			// Generate the barcode
-			bitMatrix = pdf417Writer.encode(isbn, BarcodeFormat.PDF_417, 300, 150);
-			BufferedImage barcodeImage = MatrixToImageWriter.toBufferedImage(bitMatrix);
-
-			// Save the barcode image to file
-			File outputFile = new File("src/main/resources/img/isbn_barcode.png");
-			ImageIO.write(barcodeImage, "png", outputFile);
-		} catch (WriterException | IOException e) {
-			System.err.println("Error generating barcode: " + e.getMessage());
+	private void searchTextFieldMouseClicked(java.awt.event.MouseEvent evt) {
+		if (tooglesearch != true){
+			tooglesearch = true;
+			searchTextField.setText("");
 		}
 	}
 
-	// Method to call the Google Books API and fetch book data
+	private void addBookMouseClicked(java.awt.event.MouseEvent evt) {
+		System.out.println("Add new books");
+	}
+
+	private void excelInputMouseClicked(java.awt.event.MouseEvent evt) {
+		System.out.println("Nhập Excel");
+	}
+
+	private void excelOnputMouseClicked(java.awt.event.MouseEvent evt) {
+		System.out.println("Xuất Excel");
+	}
+
 	private ArrayList<Book> searchBooks(String query) {
 		ArrayList<Book> books = new ArrayList<>();
 		try {
+			String API_KEY = "AIzaSyCI2U6tHVrTcuYbsFilyfbUy4hwkYftIYw";
 			String formattedQuery = query.replace(" ", "+");
-			String apiUrl = "https://www.googleapis.com/books/v1/volumes?q=" + formattedQuery;
+			String apiUrl = "https://www.googleapis.com/books/v1/volumes?q=" + formattedQuery + "&key=" + API_KEY;
 
 			URL url = new URL(apiUrl);
 			HttpURLConnection connection = (HttpURLConnection) url.openConnection();
@@ -273,7 +150,6 @@ public class ViewBooks extends JFrame {
 						}
 
 						books.add(new Book(title, ISBN, authors, description, publishedDate, thumbnail));
-						generateBarcode(ISBN);
 					}
 				}
 			} else {
@@ -286,61 +162,141 @@ public class ViewBooks extends JFrame {
 		return books;
 	}
 
-	// Method to display the book information
-	private void displayBook(int index) {
-		if (allBooks != null && !allBooks.isEmpty() && index >= 0 && index < allBooks.size()) {
-			Book book = allBooks.get(index);
-			titleLabel.setText("Tiêu đề: " + book.getTitle());
-			ISBNLabel.setText("ISBN: " + book.getISBN());
+	private void searchTextFieldKeyReleased(java.awt.event.KeyEvent evt) {
+		if (evt.getKeyCode() == java.awt.event.KeyEvent.VK_ENTER) {
+			String query = searchTextField.getText();
+			ArrayList<Book> books = searchBooks(query);
 
-			String isbn = book.getISBN();
-			generateBarcode(isbn);  // Call to generate the barcode image
-
-			// Load the barcode image and display it under the ISBN label
-			String barcodePath = "src/main/resources/img/isbn_barcode.png"; // Adjust path as needed
-			try {
-				ImageIcon barcodeIcon = new ImageIcon(barcodePath);
-				isbnImage.setIcon(barcodeIcon); // Set the generated barcode image to the JLabel
-			} catch (Exception e) {
-				isbnImage.setIcon(null);
-				isbnImage.setText("Không có mã vạch");
-			}
-
-			authorsLabel.setText("Tác giả: " + book.getAuthors());
-			descriptionLabel.setText("<html>Mô tả: " + formatDescription(book.getDesription()) + "</html>"); // Allow HTML formatting
-			publishedDateLabel.setText("Ngày xuất bản: " + book.getPublishedDate());
-
-			// Load book cover image
-			try {
-				URL url = new URL(book.getThumbnail());
-				ImageIcon imageIcon = new ImageIcon(ImageIO.read(url));
-				imageLabel.setIcon(imageIcon);
-			} catch (Exception e) {
-				imageLabel.setIcon(null);
-				imageLabel.setText("Không có ảnh");
-			}
+			showBooksInTable(books);
 		}
 	}
 
-	// Helper method to format description to fit within 50 characters per line
-	private String formatDescription(String description) {
-		StringBuilder formattedDescription = new StringBuilder();
-		String[] words = description.split(" ");
-		StringBuilder line = new StringBuilder();
 
-		for (String word : words) {
-			if (line.length() + word.length() > 100) { // 50 characters limit
-				formattedDescription.append(line.toString().trim()).append("<br>"); // Use HTML line break
-				line = new StringBuilder();
-			}
-			line.append(word).append(" ");
+	private void showBooksInTable(ArrayList<Book> books) {
+		// Column names for the table
+		String[] columnNames = {"Title", "Authors", "Published Date", "ISBN"};
+
+		// Data for the table (2D array, one row for each book)
+		Object[][] rowData = new Object[books.size()][4];
+
+		// Fill the table data with book details
+		for (int i = 0; i < books.size(); i++) {
+			Book book = books.get(i);
+			rowData[i][0] = book.getTitle();
+			rowData[i][1] = book.getAuthors();
+			rowData[i][2] = book.getPublishedDate();
+			rowData[i][3] = book.getISBN();
 		}
-		formattedDescription.append(line.toString().trim()); // Add any remaining words
-		return formattedDescription.toString();
+
+		// Create the JTable with the data and column names
+		JTable bookTable = new JTable(rowData, columnNames);
+
+		// Set table properties
+		bookTable.setFillsViewportHeight(true);  // Fill the entire panel with the table
+		bookTable.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);  // Adjust column size to fit content
+
+		// Wrap the table in a scroll pane for better handling
+		JScrollPane scrollPane = new JScrollPane(bookTable);
+
+		// Clear the current content of the modulePanel (if needed)
+		modulePanel.removeAll();
+
+		// Set the layout for modulePanel if not set
+		modulePanel.setLayout(new java.awt.BorderLayout());
+
+		// Add the scroll pane (with the table) to the modulePanel
+		modulePanel.add(scrollPane, java.awt.BorderLayout.CENTER);
+
+		// Refresh the panel to show the new content
+		modulePanel.revalidate();  // Recalculate the layout
+		modulePanel.repaint();  // Repaint the panel to display the table
+	}
+
+
+
+	private void initComponents() {
+		// create winndow
+		panels = new JLabel();
+		setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+		setUndecorated(true);
+		getContentPane().setLayout(null);
+		panels.setOpaque(false);
+		panels.setLayout(null);
+
+		// search text field add
+		searchTextField = new JTextField();
+		searchTextField.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
+		searchTextField.setForeground(new java.awt.Color(82, 210, 202));
+		searchTextField.setText("Tìm Kiếm...");
+		searchTextField.setBorder(null);
+		searchTextField.addMouseListener(new java.awt.event.MouseAdapter() {
+			public void mouseClicked(java.awt.event.MouseEvent evt) {
+				searchTextFieldMouseClicked(evt);
+			}
+		});
+		searchTextField.setBounds(500, 63, 240, 30);
+		searchTextField.addKeyListener(new java.awt.event.KeyAdapter() {
+			public void keyReleased(java.awt.event.KeyEvent evt) {
+				searchTextFieldKeyReleased(evt);
+			}
+		});
+		panels.add(searchTextField);
+
+		// search bar add
+		searchBar = new JLabel();
+		searchBar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/searchButton.png"))); // NOI18N
+		searchBar.setBounds(450, 55, 320, 46);
+		panels.add(searchBar);
+
+		// add book add
+		addBook = new JLabel();
+		addBook.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/addBook.png"))); // NOI18N
+		addBook.addMouseListener(new java.awt.event.MouseAdapter() {
+			public void mouseClicked(java.awt.event.MouseEvent evt) {
+				addBookMouseClicked(evt);
+			}
+		});
+		addBook.setBounds(300, 120, 160, 78);
+		panels.add(addBook);
+
+		modulePanel = new JPanel();
+		modulePanel.setBounds(200, 220, 750, 350);
+		panels.add(modulePanel);
+
+		// excel input add
+		excelInput = new JLabel();
+		excelInput.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/excelInput.png"))); // NOI18N
+		excelInput.addMouseListener(new java.awt.event.MouseAdapter() {
+			public void mouseClicked(java.awt.event.MouseEvent evt) {
+				excelInputMouseClicked(evt);
+			}
+		});
+		excelInput.setBounds(500, 120, 160, 78);
+		panels.add(excelInput);
+
+		// excel output add
+		excelOutput = new JLabel();
+		excelOutput.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/excelOutput.png"))); // NOI18N
+		excelOutput.addMouseListener(new java.awt.event.MouseAdapter() {
+			public void mouseClicked(java.awt.event.MouseEvent evt) {
+				excelOnputMouseClicked(evt);
+			}
+		});
+		excelOutput.setBounds(700, 120, 160, 78);
+		panels.add(excelOutput);
+
+
+		// main GUI add
+		mainGUI = new JLabel();
+		mainGUI.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/mainGUI.png"))); // NOI18N
+		mainGUI.setBounds(0, 0, 1000, 600);
+		panels.add(mainGUI);
+
+		panels.setBounds(0, 0, 1200, 600);
+		getContentPane().add(panels);
 	}
 }
 
-// Simple Book class to hold book data
 class Book {
 	private String title;
 	private String authors;
@@ -348,7 +304,6 @@ class Book {
 	private String thumbnail;
 	private String desription;
 	private String ISBN;
-
 
 	public Book(String title, String ISBN, String authors, String desription, String publishedDate, String thumbnail) {
 		this.title = title;
