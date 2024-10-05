@@ -112,21 +112,22 @@ public class EditProfile extends JFrame {
             && username.getText() != null && password.getText() != null) {
           error.setText("SAI");
         } else {
-
-          String nPass = password.getText();
-          String nUser = username.getText();
-          if (new_password.getText() != null) {
+          String curPass = password.getText();
+          String curUser= username.getText();
+          String nPass = curPass;
+          String nUser = curPass;
+          if (new_password.getText().trim().isEmpty()==false) {
             nPass = new_password.getText();
           }
-          if (new_username.getText() != null) {
+          if (new_username.getText().trim().isEmpty()==false) {
             nUser = new_username.getText();
           }
           int id = DBInfo.findUserId(username.getText(), password.getText());
-          if (new_email.getText() != null) {
+          if (new_email.getText().trim().isEmpty()==false) {
             DBInfo.updateEmail(id, new_email.getText());
           }
           DBInfo.updateUser(id, nUser, nPass);
-          // reset();
+          reset();
         }
       }
     });

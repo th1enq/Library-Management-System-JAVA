@@ -16,6 +16,8 @@ public class DBInfo {
    * } catch (ClassNotFoundException e) { e.printStackTrace(); } }
    */
 
+  private static int numUser = 6;
+
   public static Connection conn() {
     Connection con = null;
     try {
@@ -241,8 +243,10 @@ public class DBInfo {
       String usertype) {
     try {
       Connection con = DBInfo.conn();
-      String sql = "INSERT INTO registration( name, email, username, password, usertype) VALUE (?,?,?,?,?)";
+      String sql = "INSERT INTO registration(id,name, email, username, password, usertype) VALUE (?,?,?,?,?,?)";
       PreparedStatement preparedStatement = con.prepareStatement(sql);
+      numUser++;
+      preparedStatement.setInt(1, numUser);
       preparedStatement.setString(2, name);
       preparedStatement.setString(3, email);
       preparedStatement.setString(4, username);
@@ -367,5 +371,6 @@ public class DBInfo {
   }
 
   public static void main(String[] args) {
+    DBInfo.Register(1, "d", "e", "a", "b", "g");
   }
 }
