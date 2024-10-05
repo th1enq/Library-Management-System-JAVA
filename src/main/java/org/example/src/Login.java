@@ -26,6 +26,16 @@ import java.awt.event.ActionEvent;
 import java.util.Objects;
 
 public class Login extends JFrame {
+
+	static String current_session = "";
+	private JPanel exit_btn;
+	private JLabel jLabel_password;
+	private JLabel jLabel_username;
+	private JLabel login_form; // GUI Image
+	private JLabel RFIDLogin;
+	private JPanel pLogin;
+	private JPasswordField password_field;
+	private JTextField username_field;
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
