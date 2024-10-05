@@ -33,7 +33,6 @@ public class EditProfile extends JFrame {
   JTextField new_username;
   JTextField new_password;
   JTextField new_email;
-  JLabel lblNewLabel_3_2_1;
   JPanel contentPane;
 
   public static void main(String[] args) {
@@ -61,11 +60,12 @@ public class EditProfile extends JFrame {
     setResizable(false);
     setTitle("Add New Book");
     setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-
+    setLocationRelativeTo(this);
     setBounds(0, 0, 1000, 600);
     JLabel MainGUI = new JLabel();
     MainGUI.setBounds(0,0,1000,600);
     MainGUI.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/mainGUI.png")));
+
     username = new JTextField();
     username.setBounds(420, 100, 240, 30);
     username.setBorder(null);
@@ -110,7 +110,7 @@ public class EditProfile extends JFrame {
     JLabel l44 = new JLabel();
     l44.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/bar.png")));
     l44.setBounds(400,360,320,46);
-    setLocationRelativeTo(this);
+
 
     JButton updButton = new JButton("Update");
     updButton.setBounds(500, 500, 100, 30);
@@ -142,6 +142,7 @@ public class EditProfile extends JFrame {
     contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
     contentPane.setLayout(new BorderLayout(0, 0));
     getContentPane().add(contentPane);
+
     updButton.addActionListener(new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent e) {
@@ -149,15 +150,15 @@ public class EditProfile extends JFrame {
             && username.getText() != null && password.getText() != null) {
           error.setText("SAI");
         } else {
-          String curPass = password.getText();
-          String curUser= username.getText();
+          String curPass = password.getText().trim();
+          String curUser= username.getText().trim();
           String nPass = curPass;
           String nUser = curPass;
           if (!new_password.getText().trim().isEmpty()) {
-            nPass = new_password.getText();
+            nPass = new_password.getText().trim();
           }
           if (!new_username.getText().trim().isEmpty()) {
-            nUser = new_username.getText();
+            nUser = new_username.getText().trim();
           }
           int id = DBInfo.findUserId(username.getText(), password.getText());
           if (!new_email.getText().trim().isEmpty()) {

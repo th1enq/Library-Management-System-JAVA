@@ -11,12 +11,16 @@ import javax.swing.event.UndoableEditEvent;
 
 public class DBInfo {
 
-  /**
-   * static { try { Class.forName("com.mysql.jdbc.Driver"); System.out.println("Driver Loaded...");
-   * } catch (ClassNotFoundException e) { e.printStackTrace(); } }
-   */
-
   private static int numUser = 6;
+  static {
+    try {
+      Class.forName("com.mysql.cj.jdbc.Driver");
+      System.out.println("Driver Loaded...");
+   } catch (ClassNotFoundException e) {
+      e.printStackTrace();
+    }
+  }
+
 
   public static Connection conn() {
     Connection con = null;
@@ -239,13 +243,22 @@ public class DBInfo {
     }
   }
 
+  /**
+   * dang li nguoi moi.
+   * @param id id
+   * @param name name
+   * @param email email
+   * @param username us
+   * @param password p
+   * @param usertype admin hay ngdung binh thuong
+   */
   public static void Register(int id, String name, String email, String username, String password,
       String usertype) {
     try {
       Connection con = DBInfo.conn();
       String sql = "INSERT INTO registration(id,name, email, username, password, usertype) VALUE (?,?,?,?,?,?)";
       PreparedStatement preparedStatement = con.prepareStatement(sql);
-      numUser++;
+      numUser+=1;
       preparedStatement.setInt(1, numUser);
       preparedStatement.setString(2, name);
       preparedStatement.setString(3, email);
@@ -261,6 +274,12 @@ public class DBInfo {
     }
   }
 
+  /**
+   * kiem tra mat khau
+   * @param username us
+   * @param password pas
+   * @return true/false
+   */
   public static boolean checkPass(String username, String password) {
     String sql = "SELECT usertype FROM registration WHERE username = ? AND password = ?";
 
@@ -317,6 +336,12 @@ public class DBInfo {
     }
   }
 
+  /**
+   * chinh sua thong tin nguoi dung.
+   * @param id id
+   * @param newUsername ten
+   * @param newPassword mk
+   */
   public static void updateUser(int id, String newUsername, String newPassword) {
     Connection con = DBInfo.conn();
     try {
@@ -344,6 +369,11 @@ public class DBInfo {
     }
   }
 
+  /**
+   * chinh sua email ng dung.
+   * @param id id
+   * @param newEmail E
+   */
   public static void updateEmail(int id, String newEmail) {
     Connection con = DBInfo.conn();
     try {
@@ -369,7 +399,30 @@ public class DBInfo {
       System.out.println("Loi sua email");
     }
   }
+  public static void DeleteUser(String name){
+    Connection con = DBInfo.conn();
+    try {
 
+      String sql = "DELETE FROM registration WHERE username = ?";
+      PreparedStatement preparedStatement = con.prepareStatement(sql);
+
+      preparedStatement.setString(1, name);
+
+      int rowsAffected = 0;
+      rowsAffected = preparedStatement.executeUpdate();
+
+      if (rowsAffected > 0) {
+        System.out.println("Cập nhật thành công!");
+      } else {
+        System.out.println("Không tìm thấy người dùng với username: " + name);
+      }
+      preparedStatement.close();
+      con.close();
+    } catch (SQLException EE) {
+      EE.printStackTrace();
+      System.out.println("Loi xoa user ");
+    }
+  }
   public static void main(String[] args) {
     DBInfo.Register(1, "d", "e", "a", "b", "g");
   }
