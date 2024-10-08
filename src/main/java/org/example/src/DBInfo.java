@@ -1,13 +1,16 @@
 package org.example.src;
 
+import java.awt.desktop.SystemEventListener;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.time.*;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.Vector;
 import javax.swing.event.UndoableEditEvent;
+import java.sql.Date;
 
 public class DBInfo {
 
@@ -91,20 +94,53 @@ public class DBInfo {
    */
   public static boolean inDb(String itemName) {
     try {
-      String query = "SELECT * FROM `book` WHERE title=" + itemName;
+      String query = "SELECT * FROM `book` WHERE title = ? and avail = ?";
       Connection con = DBInfo.conn();
-      PreparedStatement ps = con.prepareStatement(query);
-      ResultSet resultSet = ps.executeQuery(query);
+      PreparedStatement preparedStatement = con.prepareStatement(query);
+      preparedStatement.setString(1, itemName);
+      preparedStatement.setString(2, "YES");
+      ResultSet resultSet = preparedStatement.executeQuery();
       if (resultSet.next()) {
+        preparedStatement.close();
+        con.close();
         return true;
       }
-      resultSet.close();
-      ps.close();
+      preparedStatement.close();
       con.close();
     } catch (SQLException e) {
       e.printStackTrace();
     }
     return false;
+  }
+
+  public static void addSlip(String itemName) {
+    try {
+      Connection con = DBInfo.conn();
+      // Câu lệnh SQL đã sửa
+      String sql = "INSERT INTO borrow_slip(user_id, book_name, borrow_date, return_date) VALUES (?, ?, ?, ?)";
+      PreparedStatement preparedStatement = con.prepareStatement(sql);
+
+      // Lấy ngày hiện tại và ngày sau 10 ngày
+      LocalDate currentDate = LocalDate.now();
+      LocalDate dateAfter10Days = currentDate.plusDays(10);
+
+      // Thiết lập giá trị cho các tham số
+      preparedStatement.setInt(1, curId); // user_id
+      preparedStatement.setString(2, itemName); // book_name
+      preparedStatement.setDate(3, Date.valueOf(currentDate)); // borrow_date
+      preparedStatement.setDate(4, Date.valueOf(dateAfter10Days)); // return_date
+
+      // Thực hiện chèn dữ liệu
+      int rowsAffected = preparedStatement.executeUpdate();
+      System.out.println("Slip added successfully! Rows affected: " + rowsAffected);
+
+      // Đóng PreparedStatement và Connection
+      preparedStatement.close();
+      con.close();
+    } catch (SQLException e) {
+      System.out.println("Error adding slip");
+      e.printStackTrace();
+    }
   }
 
   /**
@@ -114,37 +150,19 @@ public class DBInfo {
    */
   public static void borrowBook(String itemName) {
     try {
-      String query = "DELETE FROM `book` WHERE title=?";
       Connection con = DBInfo.conn();
-      PreparedStatement preparedStatement = con.prepareStatement(query);
-      preparedStatement.setString(1, itemName);
-      int rowsAffected = preparedStatement.executeUpdate();
-      if (rowsAffected > 0) {
-        System.out.println("Delete successful, " + rowsAffected + " row(s) deleted.");
-        String sql = "INSERT INTO borrow_slip (slip_id,user_id,book_id,borrow_date, return_date) VALUES (?, ?, ?, ?, ?)";
-        PreparedStatement preparedStatement2 = con.prepareStatement(sql);
-        int slipId = 0;
-        int userId = 1;
-        int bookId = 2;
-        String borrowDate = "2024-10-01";
-        String returnDate = "2024-10-15";
-        preparedStatement2.setInt(1, slipId);
-        preparedStatement2.setInt(2, curId);
-        preparedStatement2.setInt(3, bookId);
-        preparedStatement2.setString(4, borrowDate);
-        preparedStatement2.setString(5, returnDate);
-        int rowsAffected2 = preparedStatement2.executeUpdate();
-        if (rowsAffected2 > 0) {
-          System.out.println("Borrow slip added successfully.");
-        } else {
-          System.out.println("No rows were inserted.");
-        }
-
-      } else {
-        System.out.println("No rows were deleted.");
+      String sql = "UPDATE book SET avail = ? WHERE title = ?";
+      PreparedStatement preparedStatement = con.prepareStatement(sql);
+      preparedStatement.setString(1, "NO");
+      preparedStatement.setString(2, itemName);
+      int rowAffected = preparedStatement.executeUpdate();
+      if (rowAffected > 0) {
+        System.out.println("Thay doi trang thai dong" + rowAffected);
+        addSlip(itemName);
       }
       preparedStatement.close();
       con.close();
+
     } catch (SQLException e) {
       e.printStackTrace();
     }
@@ -153,16 +171,53 @@ public class DBInfo {
   /**
    * tra sach
    */
-  public static void returnBook() {
+  public static void returnBook(String itemName) {
 
+    Connection con = DBInfo.conn();
+    try {
+
+      String sql = "DELETE FROM borrow_slip WHERE book_name = ?";
+      PreparedStatement preparedStatement = con.prepareStatement(sql);
+      preparedStatement.setString(1, itemName);
+      int rowsAffected = 0;
+      rowsAffected = preparedStatement.executeUpdate();
+      if (rowsAffected > 0) {
+        System.out.println("xoa khoi slip thành công!");
+        preparedStatement.close();
+        con.close();
+        Connection con2 = DBInfo.conn();
+        String sql2 = "UPDATE book SET avail = ? WHERE title = ?";
+        PreparedStatement preparedStatement2 = con2.prepareStatement(sql2);
+        preparedStatement2.setString(1, "YES");
+        preparedStatement2.setString(2, itemName);
+        int rowAffected2 = preparedStatement2.executeUpdate();
+        if (rowAffected2 > 0) {
+          System.out.println("Thay doi trang thai dong" + rowAffected2);
+        } else {
+          System.out.println("Thay doi trang thai ko thanh cong");
+        }
+        preparedStatement.close();
+        con.close();
+
+      } else {
+        System.out.println("Không tìm thấy người trong slip cuon: " + itemName);
+      }
+
+      preparedStatement.close();
+      con.close();
+    } catch (SQLException EE) {
+      EE.printStackTrace();
+      System.out.println("Loi xoa user ");
+    }
   }
 
-  public static void addPublisher(String a) {
+
+  public static void addPublisher(String name) {
     try {
       Connection con = DBInfo.conn();
       String sql = "INSERT INTO publisher(name) VALUE (?)";
       PreparedStatement preparedStatement = con.prepareStatement(sql);
-      preparedStatement.setString(1, a);
+      preparedStatement.setString(1, name);
       int rowsAffected = preparedStatement.executeUpdate();
       System.out.println("publisher added successfully! Rows affected: " + rowsAffected);
       preparedStatement.close();
@@ -208,6 +263,10 @@ public class DBInfo {
   public static void addBook(String a, String b, String c, String d, String e) {
     try {
       Connection con = DBInfo.conn();
+      if (inDb(b)) {
+        System.out.println("da co quyen sach nay roi");
+        return;
+      }
       String sql = "INSERT INTO book(bookid, title, author, subject, publisher) VALUE (?,?,?,?,?)";
       PreparedStatement preparedStatement = con.prepareStatement(sql);
       preparedStatement.setString(1, a);
@@ -307,7 +366,6 @@ public class DBInfo {
       curUsername = Username;
       curId = findUserId(Username, Password);
     }
-    return;
   }
 
   public static int findUserId(String username, String password) {
@@ -427,8 +485,50 @@ public class DBInfo {
     }
   }
 
+  public static void rateBook(String itemName, int score) {
+    try {
+      Connection con = DBInfo.conn();
+      String sql = "SELECT rating FROM book WHERE title = ?";
+      PreparedStatement preparedStatement = con.prepareStatement(sql);
+      preparedStatement.setString(1, itemName);
+      ResultSet resultSet = preparedStatement.executeQuery();
+      if (resultSet.next()) {
+        int rating = resultSet.getInt("rating");
+        System.out.println("rating hien tai cua cuon sach la " + rating);
+        Connection con2 = DBInfo.conn();
+
+        String sql2 = "UPDATE book SET rating = ? WHERE title = ?";
+        PreparedStatement preparedStatement2 = con2.prepareStatement(sql2);
+        int newrating = (rating + score) / 2;
+        preparedStatement2.setInt(1, newrating);
+        preparedStatement2.setString(2, itemName);
+
+        //System.out.println(newrating);
+        int rowsAffected2 = 0;
+        rowsAffected2 = preparedStatement2.executeUpdate();
+        if (rowsAffected2 > 0) {
+          System.out.println("Cập nhật thành công rating!");
+        } else {
+          System.out.println("Cập nhật ko thành công rating!");
+        }
+        preparedStatement2.close();
+        con2.close();
+        preparedStatement.close();
+        con.close();
+      } else {
+        System.out.println("ko tim thay sach de rating");
+
+      }
+      preparedStatement.close();
+      con.close();
+    } catch (SQLException e) {
+      e.printStackTrace();
+      System.out.println("Loi ham rateBook");
+    }
+  }
+
   public static void main(String[] args) {
-    DBInfo.Register(1, "d", "e", "a", "b");
+    DBInfo.rateBook("1984", 5);
   }
 
 }

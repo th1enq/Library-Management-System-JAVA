@@ -44,24 +44,26 @@ UNLOCK TABLES;
 --
 DROP TABLE IF EXISTS `borrow_slip`;
 CREATE TABLE  `borrow_slip`(
-    slip_id INT AUTO_INCREMENT,
     user_id INT NOT NULL,
-    book_id INT NOT NULL,
+    book_name varchar(100) NOT NULL,
     borrow_date DATE NOT NULL,
-    return_date DATE NOT NULL,
-    PRIMARY KEY(`slip_id`)
+    return_date DATE NOT NULL
 );
+
+
 DROP TABLE IF EXISTS `book`;
 SET @saved_cs_client     = @@character_set_client;
 SET character_set_client = utf8;
 CREATE TABLE `book` (
-  `bookid` varchar(100) NOT NULL,
-  `title` varchar(100) default NULL,
-  `author` varchar(100) default NULL,
-  `subject` varchar(100) default NULL,
-  `publisher` varchar(100) default NULL,
-  PRIMARY KEY  (`bookid`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `bookid` VARCHAR(100) NOT NULL,
+  `title` VARCHAR(100) DEFAULT NULL,
+  `author` VARCHAR(100) DEFAULT NULL,
+  `subject` VARCHAR(100) DEFAULT NULL,
+  `publisher` VARCHAR(100) DEFAULT NULL,
+  `avail` VARCHAR(3) NOT NULL DEFAULT 'YES',
+  `rating` INT NOT NULL DEFAULT 0,
+  PRIMARY KEY (`bookid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 SET character_set_client = @saved_cs_client;
 
 --
