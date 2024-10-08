@@ -60,7 +60,6 @@ CREATE TABLE `book` (
   `author` varchar(100) default NULL,
   `subject` varchar(100) default NULL,
   `publisher` varchar(100) default NULL,
-  `category` varchar(100) default NULL,
   PRIMARY KEY  (`bookid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 SET character_set_client = @saved_cs_client;
@@ -71,37 +70,37 @@ SET character_set_client = @saved_cs_client;
 
 LOCK TABLES `book` WRITE;
 /*!40000 ALTER TABLE `book` DISABLE KEYS */;
-INSERT INTO book (bookid, title, author, subject, publisher, category) VALUES
-('00000001', 'To Kill a Mockingbird', 'Harper Lee', 'Fiction', 'J.B. Lippincott & Co.', 'Classic'),
-('00000002', '1984', 'George Orwell', 'Dystopian', 'Secker & Warburg', 'Science Fiction'),
-('00000003', 'Pride and Prejudice', 'Jane Austen', 'Romance', 'T. Egerton', 'Romance'),
-('00000004', 'Moby-Dick', 'Herman Melville', 'Adventure', 'Harper & Brothers', 'Adventure'),
-('00000005', 'The Great Gatsby', 'F. Scott Fitzgerald', 'Fiction', 'Charles Scribner\'s Sons', 'Classic'),
-('00000006', 'The Call of the Wild', 'Jack London', 'Adventure', 'Macmillan', 'Adventure'),
-('00000007', 'Brave New World', 'Aldous Huxley', 'Dystopian', 'Chatto & Windus', 'Dystopian'),
-('00000008', 'War and Peace', 'Leo Tolstoy', 'Historical Fiction', 'The Russian Messenger', 'Historical Fiction'),
-('00000009', 'The Hobbit', 'J.R.R. Tolkien', 'Fantasy', 'George Allen & Unwin', 'Fantasy'),
-('00000010', 'The Odyssey', 'Homer', 'Epic', 'Ancient Greece', 'Epic'),
-('00000011', 'Crime and Punishment', 'Fyodor Dostoevsky', 'Psychological', 'The Russian Messenger', 'Psychological'),
-('00000012', 'Jane Eyre', 'Charlotte Brontë', 'Romance', 'Smith, Elder & Co.', 'Romance'),
-('00000013', 'The Divine Comedy', 'Dante Alighieri', 'Epic', 'Italy', 'Epic'),
-('00000014', 'Frankenstein', 'Mary Shelley', 'Horror', 'Lackington, Hughes, Harding, Mavor & Jones', 'Horror'),
-('00000015', 'The Brothers Karamazov', 'Fyodor Dostoevsky', 'Philosophical', 'The Russian Messenger', 'Philosophical'),
-('00000016', 'The Count of Monte Cristo', 'Alexandre Dumas', 'Adventure', 'Pétion', 'Adventure'),
-('00000017', 'Les Misérables', 'Victor Hugo', 'Historical Fiction', 'A. Lacroix, Verboeckhoven & Cie', 'Historical Fiction'),
-('00000018', 'The Picture of Dorian Gray', 'Oscar Wilde', 'Philosophical', 'Ward, Lock & Co.', 'Philosophical'),
-('00000019', 'The Adventures of Huckleberry Finn', 'Mark Twain', 'Adventure', 'Charles L. Webster And Company', 'Adventure'),
-('00000020', 'Dracula', 'Bram Stoker', 'Horror', 'Archibald Constable and Company', 'Horror'),
-('00000021', 'Don Quixote', 'Miguel de Cervantes', 'Adventure', 'Francisco de Robles', 'Adventure'),
-('00000022', 'The Old Man and the Sea', 'Ernest Hemingway', 'Adventure', 'Charles Scribner\'s Sons', 'Adventure'),
-('00000023', 'One Hundred Years of Solitude', 'Gabriel García Márquez', 'Magical Realism', 'Editorial Sudamericana', 'Magical Realism'),
-('00000024', 'The Metamorphosis', 'Franz Kafka', 'Psychological', 'Kurt Wolff Verlag', 'Psychological'),
-('00000025', 'The Iliad', 'Homer', 'Epic', 'Ancient Greece', 'Epic'),
-('00000026', 'The Trial', 'Franz Kafka', 'Philosophical', 'Verlag Die Schmiede', 'Philosophical'),
-('00000027', 'Fahrenheit 451', 'Ray Bradbury', 'Dystopian', 'Ballantine Books', 'Dystopian'),
-('00000028', 'The Road', 'Cormac McCarthy', 'Post-apocalyptic', 'Alfred A. Knopf', 'Post-apocalyptic'),
-('00000029', 'The Stranger', 'Albert Camus', 'Philosophical', 'Librairie Gallimard', 'Philosophical'),
-('00000030', 'The Grapes of Wrath', 'John Steinbeck', 'Historical Fiction', 'The Viking Press-James Lloyd', 'Historical Fiction');
+INSERT INTO book (bookid, title, author, subject, publisher) VALUES
+('00000001', 'To Kill a Mockingbird', 'Harper Lee', 'Fiction', 'J.B. Lippincott & Co.'),
+('00000002', '1984', 'George Orwell', 'Dystopian', 'Secker & Warburg'),
+('00000003', 'Pride and Prejudice', 'Jane Austen', 'Romance', 'T. Egerton'),
+('00000004', 'Moby-Dick', 'Herman Melville', 'Adventure', 'Harper & Brothers'),
+('00000005', 'The Great Gatsby', 'F. Scott Fitzgerald', 'Fiction', 'Charles Scribner\'s Sons'),
+('00000006', 'The Call of the Wild', 'Jack London', 'Adventure', 'Macmillan'),
+('00000007', 'Brave New World', 'Aldous Huxley', 'Dystopian', 'Chatto & Windus'),
+('00000008', 'War and Peace', 'Leo Tolstoy', 'Historical Fiction', 'The Russian Messenger'),
+('00000009', 'The Hobbit', 'J.R.R. Tolkien', 'Fantasy', 'George Allen & Unwin'),
+('00000010', 'The Odyssey', 'Homer', 'Epic', 'Ancient Greece'),
+('00000011', 'Crime and Punishment', 'Fyodor Dostoevsky', 'Psychological', 'The Russian Messenger'),
+('00000012', 'Jane Eyre', 'Charlotte Brontë', 'Romance', 'Smith, Elder & Co.'),
+('00000013', 'The Divine Comedy', 'Dante Alighieri', 'Epic', 'Italy' ),
+('00000014', 'Frankenstein', 'Mary Shelley', 'Horror', 'Lackington, Hughes, Harding, Mavor & Jones'),
+('00000015', 'The Brothers Karamazov', 'Fyodor Dostoevsky', 'Philosophical', 'The Russian Messenger'),
+('00000016', 'The Count of Monte Cristo', 'Alexandre Dumas', 'Adventure', 'Pétion'),
+('00000017', 'Les Misérables', 'Victor Hugo', 'Historical Fiction', 'A. Lacroix, Verboeckhoven & Cie'),
+('00000018', 'The Picture of Dorian Gray', 'Oscar Wilde', 'Philosophical', 'Ward, Lock & Co.'),
+('00000019', 'The Adventures of Huckleberry Finn', 'Mark Twain', 'Adventure', 'Charles L. Webster And Company'),
+('00000020', 'Dracula', 'Bram Stoker', 'Horror', 'Archibald Constable and Company'),
+('00000021', 'Don Quixote', 'Miguel de Cervantes', 'Adventure', 'Francisco de Robles'),
+('00000022', 'The Old Man and the Sea', 'Ernest Hemingway', 'Adventure', 'Charles Scribner\'s Sons'),
+('00000023', 'One Hundred Years of Solitude', 'Gabriel García Márquez', 'Magical Realism', 'Editorial Sudamericana'),
+('00000024', 'The Metamorphosis', 'Franz Kafka', 'Psychological', 'Kurt Wolff Verlag'),
+('00000025', 'The Iliad', 'Homer', 'Epic', 'Ancient Greece'),
+('00000026', 'The Trial', 'Franz Kafka', 'Philosophical', 'Verlag Die Schmiede'),
+('00000027', 'Fahrenheit 451', 'Ray Bradbury', 'Dystopian', 'Ballantine Books'),
+('00000028', 'The Road', 'Cormac McCarthy', 'Post-apocalyptic', 'Alfred A. Knopf'),
+('00000029', 'The Stranger', 'Albert Camus', 'Philosophical', 'Librairie Gallimard'),
+('00000030', 'The Grapes of Wrath', 'John Steinbeck', 'Historical Fiction', 'The Viking Press-James Lloyd');
 
 
 
@@ -126,42 +125,8 @@ SET character_set_client = @saved_cs_client;
 -- Dumping data for table `category`
 --
 
-LOCK TABLES `category` WRITE;
-/*!40000 ALTER TABLE `category` DISABLE KEYS */;
-INSERT INTO category (name) VALUES
-('Classic'),
-('Dystopian'),
-('Romance'),
-('Adventure'),
-('Classic'),
-('Adventure'),
-('Dystopian'),
-('Historical Fiction'),
-('Fantasy'),
-('Epic'),
-('Psychological'),
-('Romance'),
-('Epic'),
-('Horror'),
-('Philosophical'),
-('Adventure'),
-('Historical Fiction'),
-('Philosophical'),
-('Adventure'),
-('Horror'),
-('Adventure'),
-('Adventure'),
-('Magical Realism'),
-('Psychological'),
-('Epic'),
-('Philosophical'),
-('Dystopian'),
-('Post-apocalyptic'),
-('Philosophical'),
-('Historical Fiction');
 
-/*!40000 ALTER TABLE `category` ENABLE KEYS */;
-UNLOCK TABLES;
+
 
 --
 -- Table structure for table `issuebooks`
@@ -301,13 +266,13 @@ SET character_set_client = @saved_cs_client;
 
 LOCK TABLES `registration` WRITE;
 /*!40000 ALTER TABLE `registration` DISABLE KEYS */;
-INSERT INTO registration (id, name, email, username, password, usertype) VALUES
+INSERT INTO registration (id, name, username, password, usertype) VALUES
 ('1', 'Nguyen Van A', 'nguyenvana@gmail.com', 'password123', 'user'),
 ('2', 'Tran Thi B', 'tranthib@gmail.com', 'password456', 'user'),
 ('3', 'Le Van C', 'levanc@gmail.com',  'password789', 'admin'),
 ('4', 'Pham Thi D', 'phamthid@gmail.com', 'password101', 'user'),
 ('5', 'Vu Van E', 'vuvane@gmail.com', 'password112', 'user');
-INSERT INTO registration (id, name, email, username, password, usertype) VALUES
+INSERT INTO registration (id, name, username, password, usertype) VALUES
 ('6', 'Nguyen Thi F', 'nguyenthif', 'adminPassword123', 'admin');
 /*!40000 ALTER TABLE `registration` ENABLE KEYS */;
 UNLOCK TABLES;

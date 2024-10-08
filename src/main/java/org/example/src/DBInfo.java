@@ -11,12 +11,16 @@ import javax.swing.event.UndoableEditEvent;
 
 public class DBInfo {
 
+  public static String curUsername = "";
+  public static String curPass = "";
+  public static int curId = 0;
   private static int numUser = 6;
+
   static {
     try {
       Class.forName("com.mysql.cj.jdbc.Driver");
       System.out.println("Driver Loaded...");
-   } catch (ClassNotFoundException e) {
+    } catch (ClassNotFoundException e) {
       e.printStackTrace();
     }
   }
@@ -117,7 +121,7 @@ public class DBInfo {
       int rowsAffected = preparedStatement.executeUpdate();
       if (rowsAffected > 0) {
         System.out.println("Delete successful, " + rowsAffected + " row(s) deleted.");
-        String sql = "INSERT INTO borrow_slip (slip_id,user_id, book_id, borrow_date, return_date) VALUES (?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO borrow_slip (slip_id,user_id,book_id,borrow_date, return_date) VALUES (?, ?, ?, ?, ?)";
         PreparedStatement preparedStatement2 = con.prepareStatement(sql);
         int slipId = 0;
         int userId = 1;
@@ -125,7 +129,7 @@ public class DBInfo {
         String borrowDate = "2024-10-01";
         String returnDate = "2024-10-15";
         preparedStatement2.setInt(1, slipId);
-        preparedStatement2.setInt(2, userId);
+        preparedStatement2.setInt(2, curId);
         preparedStatement2.setInt(3, bookId);
         preparedStatement2.setString(4, borrowDate);
         preparedStatement2.setString(5, returnDate);
@@ -169,22 +173,6 @@ public class DBInfo {
     }
   }
 
-  public static void addCategory(String a) {
-    try {
-      Connection con = DBInfo.conn();
-      String sql = "INSERT INTO category(name) VALUE (?)";
-      PreparedStatement preparedStatement = con.prepareStatement(sql);
-      preparedStatement.setString(1, a);
-      int rowsAffected = preparedStatement.executeUpdate();
-      System.out.println("category added successfully! Rows affected: " + rowsAffected);
-      preparedStatement.close();
-      con.close();
-    } catch (SQLException EE) {
-      System.out.println("Error adding category");
-      EE.printStackTrace();
-    }
-  }
-
   public static void addAuthor(String a) {
     try {
       Connection con = DBInfo.conn();
@@ -217,21 +205,18 @@ public class DBInfo {
     }
   }
 
-  public static void addBook(String a, String b, String c, String d, String e, String f) {
+  public static void addBook(String a, String b, String c, String d, String e) {
     try {
       Connection con = DBInfo.conn();
-      String sql = "INSERT INTO book(bookid, title, author, subject, publisher, category) VALUE (?,?,?,?,?,?)";
+      String sql = "INSERT INTO book(bookid, title, author, subject, publisher) VALUE (?,?,?,?,?)";
       PreparedStatement preparedStatement = con.prepareStatement(sql);
       preparedStatement.setString(1, a);
       preparedStatement.setString(2, b);
       preparedStatement.setString(3, c);
       preparedStatement.setString(4, d);
       preparedStatement.setString(5, e);
-      preparedStatement.setString(6, f);
-
       int rowsAffected = preparedStatement.executeUpdate();
       System.out.println("Book added successfully! Rows affected: " + rowsAffected);
-      addCategory(f);
       addAuthor(c);
       addSubject(d);
       addPublisher(e);
@@ -245,8 +230,9 @@ public class DBInfo {
 
   /**
    * dang li nguoi moi.
-   * @param id id
-   * @param name name
+   *
+   * @param id       id
+   * @param name     name
    * @param username us
    * @param password p
    * @param usertype admin hay ngdung binh thuong
@@ -257,7 +243,7 @@ public class DBInfo {
       Connection con = DBInfo.conn();
       String sql = "INSERT INTO registration(id,name, username, password, usertype) VALUE (?,?,?,?,?)";
       PreparedStatement preparedStatement = con.prepareStatement(sql);
-      numUser+=1;
+      numUser += 1;
       preparedStatement.setInt(1, numUser);
       preparedStatement.setString(2, name);
       preparedStatement.setString(3, username);
@@ -274,6 +260,7 @@ public class DBInfo {
 
   /**
    * kiem tra mat khau
+   *
    * @param username us
    * @param password pas
    * @return true/false
@@ -308,6 +295,21 @@ public class DBInfo {
     }
   }
 
+  /**
+   * hamf dang nhap.
+   *
+   * @param Username U
+   * @param Password P
+   */
+  public static void login(String Username, String Password) {
+    if (checkPass(Username, Password) == true) {
+      curPass = Password;
+      curUsername = Username;
+      curId = findUserId(Username, Password);
+    }
+    return;
+  }
+
   public static int findUserId(String username, String password) {
     try {
       Connection con = DBInfo.conn();
@@ -336,7 +338,8 @@ public class DBInfo {
 
   /**
    * chinh sua thong tin nguoi dung.
-   * @param id id
+   *
+   * @param id          id
    * @param newUsername ten
    * @param newPassword mk
    */
@@ -369,14 +372,15 @@ public class DBInfo {
 
   /**
    * chinh sua email ng dung.
-   * @param id id
+   *
+   * @param id       id
    * @param newEmail E
    */
   public static void updateEmail(int id, String newEmail) {
     Connection con = DBInfo.conn();
     try {
 
-      String sql = "UPDATE registration SET email = ? WHERE id = ?";
+      String sql = "UPDATE registration SET username = ? WHERE id = ?";
       PreparedStatement preparedStatement = con.prepareStatement(sql);
 
       preparedStatement.setString(1, newEmail);
@@ -397,7 +401,8 @@ public class DBInfo {
       System.out.println("Loi sua email");
     }
   }
-  public static void DeleteUser(String name){
+
+  public static void DeleteUser(String name) {
     Connection con = DBInfo.conn();
     try {
 
@@ -421,7 +426,9 @@ public class DBInfo {
       System.out.println("Loi xoa user ");
     }
   }
+
   public static void main(String[] args) {
     DBInfo.Register(1, "d", "e", "a", "b");
   }
+
 }
