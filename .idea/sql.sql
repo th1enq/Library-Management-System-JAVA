@@ -285,8 +285,7 @@ SET character_set_client = utf8;
 CREATE TABLE `registration` (
   `id` INT AUTO_INCREMENT NOT NULL,
   `name` varchar(100) default NULL,
-  `email` varchar(200) default NULL,
-  `username` varchar(20) NOT NULL,
+  `username` varchar(20) default NULL,
   `password` varchar(100) default NULL,
   `usertype` varchar(10) default NULL,
   PRIMARY KEY  (`id`,`username`)
@@ -303,13 +302,13 @@ SET character_set_client = @saved_cs_client;
 LOCK TABLES `registration` WRITE;
 /*!40000 ALTER TABLE `registration` DISABLE KEYS */;
 INSERT INTO registration (id, name, email, username, password, usertype) VALUES
-('1', 'Nguyen Van A', 'nguyenvana@gmail.com', 'nguyenvana', 'password123', 'user'),
-('2', 'Tran Thi B', 'tranthib@gmail.com', 'tranthib', 'password456', 'user'),
-('3', 'Le Van C', 'levanc@gmail.com', 'levanc', 'password789', 'admin'),
-('4', 'Pham Thi D', 'phamthid@gmail.com', 'phamthid', 'password101', 'user'),
-('5', 'Vu Van E', 'vuvane@gmail.com', 'vuvane', 'password112', 'user');
+('1', 'Nguyen Van A', 'nguyenvana@gmail.com', 'password123', 'user'),
+('2', 'Tran Thi B', 'tranthib@gmail.com', 'password456', 'user'),
+('3', 'Le Van C', 'levanc@gmail.com',  'password789', 'admin'),
+('4', 'Pham Thi D', 'phamthid@gmail.com', 'password101', 'user'),
+('5', 'Vu Van E', 'vuvane@gmail.com', 'password112', 'user');
 INSERT INTO registration (id, name, email, username, password, usertype) VALUES
-('6', 'Nguyen Thi F', 'nguyenthif@gmail.com', 'nguyenthif', 'adminPassword123', 'admin');
+('6', 'Nguyen Thi F', 'nguyenthif', 'adminPassword123', 'admin');
 /*!40000 ALTER TABLE `registration` ENABLE KEYS */;
 UNLOCK TABLES;
 

@@ -247,24 +247,22 @@ public class DBInfo {
    * dang li nguoi moi.
    * @param id id
    * @param name name
-   * @param email email
    * @param username us
    * @param password p
    * @param usertype admin hay ngdung binh thuong
    */
-  public static void Register(int id, String name, String email, String username, String password,
+  public static void Register(int id, String name, String username, String password,
       String usertype) {
     try {
       Connection con = DBInfo.conn();
-      String sql = "INSERT INTO registration(id,name, email, username, password, usertype) VALUE (?,?,?,?,?,?)";
+      String sql = "INSERT INTO registration(id,name, username, password, usertype) VALUE (?,?,?,?,?)";
       PreparedStatement preparedStatement = con.prepareStatement(sql);
       numUser+=1;
       preparedStatement.setInt(1, numUser);
       preparedStatement.setString(2, name);
-      preparedStatement.setString(3, email);
-      preparedStatement.setString(4, username);
-      preparedStatement.setString(5, password);
-      preparedStatement.setString(6, usertype);
+      preparedStatement.setString(3, username);
+      preparedStatement.setString(4, password);
+      preparedStatement.setString(5, usertype);
       int rowsAffected = preparedStatement.executeUpdate();
       System.out.println("Register successfully! Rows affected: " + rowsAffected);
       preparedStatement.close();
@@ -424,6 +422,6 @@ public class DBInfo {
     }
   }
   public static void main(String[] args) {
-    DBInfo.Register(1, "d", "e", "a", "b", "g");
+    DBInfo.Register(1, "d", "e", "a", "b");
   }
 }
