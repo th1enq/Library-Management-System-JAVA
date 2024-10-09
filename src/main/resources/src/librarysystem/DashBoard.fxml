@@ -115,14 +115,14 @@
             </Pane>
             <Pane layoutX="540.0" layoutY="321.0" prefHeight="358.0" prefWidth="607.0" styleClass="slider" stylesheets="@stylesheet.css">
                <children>
-                  <Label layoutX="27.0" layoutY="21.0" prefWidth="104.0" text="User Lists" textFill="#282423">
+                  <Label layoutX="27.0" layoutY="21.0" prefWidth="104.0" text="Book Lists" textFill="#282423">
                      <font>
                         <Font name="System Bold" size="20.0" />
                      </font>
                   </Label>
-                  <Button layoutX="460.0" layoutY="22.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="113.0" styleClass="add-btn" stylesheets="@stylesheet.css" text="Add New User" />
+                  <Button layoutX="460.0" layoutY="22.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="113.0" styleClass="add-btn" stylesheets="@stylesheet.css" text="Add New Book" />
                   <Line endX="445.4000244140625" layoutX="131.0" layoutY="99.0" startX="-103.4000015258789" />
-                  <Label layoutX="27.0" layoutY="68.0" prefHeight="21.0" prefWidth="58.0" text="User ID" textFill="#7a7a7a">
+                  <Label layoutX="27.0" layoutY="68.0" prefHeight="21.0" prefWidth="58.0" text="Book ID" textFill="#7a7a7a">
                      <font>
                         <Font name="System Bold" size="14.0" />
                      </font>

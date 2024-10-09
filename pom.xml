@@ -78,6 +78,14 @@
       <version>3.5.1</version>
     </dependency>
 
+    <!-- https://mvnrepository.com/artifact/org.webjars/font-awesome -->
+    <dependency>
+      <groupId>org.webjars</groupId>
+      <artifactId>font-awesome</artifactId>
+      <version>6.5.2</version>
+    </dependency>
+
+
   </dependencies>
 
   <build>

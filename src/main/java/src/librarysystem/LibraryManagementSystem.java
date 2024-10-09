@@ -14,7 +14,7 @@ import java.io.IOException;
 public class LibraryManagementSystem extends Application {
     @Override
     public void start(Stage stage) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("mainGUI.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("MainGUI.fxml"));
         Scene scene = new Scene(root);
         scene.setFill(Color.TRANSPARENT);
         stage.setScene(scene);

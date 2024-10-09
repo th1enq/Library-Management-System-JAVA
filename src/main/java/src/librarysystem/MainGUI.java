@@ -26,11 +26,14 @@ public class MainGUI implements Initializable {
     @FXML
     private Button minimizeButton;
 
+    @FXML Button bookViewButton;
+
     @FXML
     private void minimze() {
         Stage stage = (Stage) minimizeButton.getScene().getWindow();
         stage.setIconified(true);
     }
+
 
     @FXML
     private void close() {
@@ -82,6 +85,17 @@ public class MainGUI implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         try {
             fxml = FXMLLoader.load(getClass().getResource("DashBoard.fxml"));
+            mainVbox.getChildren().removeAll();
+            mainVbox.getChildren().setAll(fxml);
+        } catch (IOException ex) {
+            Logger.getLogger(LoginController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    @FXML
+    private void bookView() {
+        try {
+            fxml = FXMLLoader.load(getClass().getResource("BookView.fxml"));
             mainVbox.getChildren().removeAll();
             mainVbox.getChildren().setAll(fxml);
         } catch (IOException ex) {
