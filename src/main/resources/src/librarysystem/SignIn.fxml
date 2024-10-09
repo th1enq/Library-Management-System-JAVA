@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import de.jensd.fx.glyphs.fontawesome.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<VBox alignment="CENTER_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="480.0" prefWidth="480.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="src.librarysystem.SignInController">
+   <children>
+       <Label stylesheets="@stylesheet.css" text="Sign In" textFill="#f78c7b">
+           <font>
+               <Font size="19.0" />
+           </font>
+         <VBox.margin>
+            <Insets left="25.0" right="15.0" top="20.0" />
+         </VBox.margin>
+       </Label>
+
+       <HBox alignment="CENTER" prefHeight="45.0" prefWidth="200.0" styleClass="tf-box">
+           <VBox.margin>
+               <Insets left="15.0" right="15.0" top="20.0" />
+           </VBox.margin>
+           <children>
+               <TextField fx:id="userName" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="45.0" prefWidth="250.0" promptText="Email" styleClass="tf-box" stylesheets="@stylesheet.css" HBox.hgrow="ALWAYS">
+                   <font>
+                       <Font size="15.0" />
+                   </font>
+               </TextField>
+            <FontAwesomeIcon glyphName="USER" glyphStyle="-fx-fill:DEDEE4" size="1.5em" />
+           </children></HBox>
+       <HBox alignment="CENTER" layoutX="25.0" layoutY="262.0" prefHeight="45.0" prefWidth="200.0" styleClass="tf-box">
+           <VBox.margin>
+               <Insets left="15.0" right="15.0" top="25.0" />
+           </VBox.margin>
+         <children>
+            <PasswordField fx:id="password" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="45.0" prefWidth="489.0" promptText="Password" styleClass="tf-box" stylesheets="@stylesheet.css" HBox.hgrow="ALWAYS">
+               <font>
+                  <Font size="15.0" />
+               </font>
+            </PasswordField>
+            <FontAwesomeIcon glyphName="LOCK" glyphStyle="-fx-fill:DEDEE4" size="1.5em" />
+         </children>
+       </HBox>
+       <HBox alignment="CENTER_RIGHT" layoutX="25.0" layoutY="296.0" prefHeight="45.0" prefWidth="200.0">
+           <children>
+               <Button alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="tf" stylesheets="@stylesheet.css" text="Forget Password ?" textFill="#868686" HBox.hgrow="ALWAYS">
+                   <font>
+                       <Font size="15.0" />
+                   </font>
+               </Button>
+               <Button mnemonicParsing="false" onAction="#login" prefHeight="39.0" prefWidth="120.0" styleClass="pink-btn" stylesheets="@stylesheet.css" text="Sign In">
+                   <font>
+                       <Font size="15.0" />
+                   </font>
+               </Button>
+           </children>
+           <VBox.margin>
+               <Insets left="15.0" right="15.0" top="20.0" />
+           </VBox.margin>
+       </HBox>
+   </children>
+</VBox>

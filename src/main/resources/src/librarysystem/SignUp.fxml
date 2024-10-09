@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<VBox alignment="CENTER_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="480.0" prefWidth="480.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1">
+    <children>
+        <Label stylesheets="@stylesheet.css" text="Sign Up" textFill="#f78c7b">
+            <font>
+                <Font size="19.0" />
+            </font>
+            <VBox.margin>
+                <Insets left="25.0" right="15.0" top="20.0" />
+            </VBox.margin>
+        </Label>
+      <HBox alignment="CENTER" layoutX="25.0" layoutY="194.0" prefHeight="45.0" prefWidth="200.0" styleClass="tf-box">
+         <children>
+            <TextField maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" promptText="Họ và Tên" styleClass="tf-box" stylesheets="@stylesheet.css" HBox.hgrow="ALWAYS">
+               <font>
+                  <Font size="15.0" />
+               </font>
+               <HBox.margin>
+                  <Insets />
+               </HBox.margin>
+            </TextField>
+         </children>
+         <VBox.margin>
+            <Insets left="15.0" right="15.0" top="20.0" />
+         </VBox.margin>
+      </HBox>
+      <HBox alignment="CENTER" layoutX="10.0" layoutY="151.0" prefHeight="45.0" prefWidth="200.0" styleClass="tf-box">
+         <children>
+            <TextField maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" promptText="Mã sinh viên" styleClass="tf-box" stylesheets="@stylesheet.css" HBox.hgrow="ALWAYS">
+               <font>
+                  <Font size="15.0" />
+               </font>
+            </TextField>
+         </children>
+         <VBox.margin>
+            <Insets left="15.0" right="15.0" top="20.0" />
+         </VBox.margin>
+      </HBox>
+
+        <HBox alignment="CENTER" prefHeight="45.0" prefWidth="200.0" styleClass="tf-box">
+            <VBox.margin>
+                <Insets left="15.0" right="15.0" top="20.0" />
+            </VBox.margin>
+            <children>
+                <TextField maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" promptText="Email" styleClass="tf-box" stylesheets="@stylesheet.css" HBox.hgrow="ALWAYS">
+                    <font>
+                        <Font size="15.0" />
+                    </font>
+                </TextField>
+            </children></HBox>
+        <HBox alignment="CENTER" layoutX="25.0" layoutY="262.0" prefHeight="45.0" prefWidth="200.0" styleClass="tf-box">
+            <children>
+                <PasswordField maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" promptText="Password" styleClass="tf-box" stylesheets="@stylesheet.css" HBox.hgrow="ALWAYS">
+                    <font>
+                        <Font size="15.0" />
+                    </font>
+                    <HBox.margin>
+                        <Insets />
+                    </HBox.margin>
+                </PasswordField>
+            </children>
+            <VBox.margin>
+                <Insets left="15.0" right="15.0" top="25.0" />
+            </VBox.margin>
+        </HBox>
+        <HBox alignment="CENTER_RIGHT" layoutX="25.0" layoutY="296.0" prefHeight="45.0" prefWidth="200.0">
+            <children>
+                <Button mnemonicParsing="false" prefHeight="39.0" prefWidth="120.0" styleClass="pink-btn" stylesheets="@stylesheet.css" text="Sign Up">
+                    <font>
+                        <Font size="15.0" />
+                    </font>
+                </Button>
+            </children>
+            <VBox.margin>
+                <Insets left="15.0" right="15.0" top="20.0" />
+            </VBox.margin>
+        </HBox>
+    </children>
+</VBox>

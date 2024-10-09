@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon?>
+<?import java.lang.String?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1300.0" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="src.librarysystem.MainGUI">
+   <children>
+      <Pane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="800.0" prefWidth="1300.0" styleClass="bg_white" stylesheets="@stylesheet.css">
+         <children>
+            <VBox fx:id="mainVbox" layoutX="120.0" layoutY="92.0" prefHeight="707.0" prefWidth="1180.0" styleClass="sidebar" stylesheets="@stylesheet.css" />
+            <Button layoutX="29.0" layoutY="119.0" mnemonicParsing="false" prefHeight="51.0" prefWidth="52.0" styleClass="menu-btn-active" stylesheets="@stylesheet.css" />
+            <FontAwesomeIcon glyphName="HOME" layoutX="44.0" layoutY="153.0" size="2em" />
+            <Button layoutX="29.0" layoutY="231.0" mnemonicParsing="false" prefHeight="51.0" prefWidth="52.0" styleClass="tran-btn" stylesheets="@stylesheet.css" />
+            <FontAwesomeIcon glyphName="BOOK" glyphStyle="-fx-fill:#797979" layoutX="44.0" layoutY="265.0" size="2em" />
+            <Button layoutX="29.0" layoutY="326.0" mnemonicParsing="false" prefHeight="51.0" prefWidth="52.0" styleClass="tran-btn" stylesheets="@stylesheet.css" />
+            <FontAwesomeIcon glyphName="USER" glyphStyle="-fx-fill:#797979" layoutX="46.0" layoutY="360.0" size="2em" />
+            <Button layoutX="29.0" layoutY="429.0" mnemonicParsing="false" prefHeight="51.0" prefWidth="52.0" styleClass="tran-btn" stylesheets="@stylesheet.css" />
+            <FontAwesomeIcon glyphName="PIE_CHART" glyphStyle="-fx-fill:#797979" layoutX="43.0" layoutY="463.0" size="2em" />
+            <Button layoutX="29.0" layoutY="534.0" mnemonicParsing="false" prefHeight="51.0" prefWidth="52.0" styleClass="tran-btn" stylesheets="@stylesheet.css" />
+            <FontAwesomeIcon glyphName="GEAR" glyphStyle="-fx-fill:#797979" layoutX="45.0" layoutY="568.0" size="2em" />
+            <Button fx:id="logOutButton" layoutX="29.0" layoutY="683.0" mnemonicParsing="false" onAction="#logout" prefHeight="51.0" prefWidth="52.0" styleClass="tran-btn" stylesheets="@stylesheet.css" />
+            <FontAwesomeIcon glyphName="SIGN_OUT" glyphStyle="-fx-fill:#797979" layoutX="44.0" layoutY="717.0" selectionFill="#797979" size="2em" />
+            <HBox layoutX="479.0" layoutY="32.0" prefHeight="38.0" prefWidth="363.0">
+               <children>
+                  <TextField maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="38.0" prefWidth="364.0" promptText="Search ...." styleClass="search-btn" stylesheets="@stylesheet.css" HBox.hgrow="ALWAYS">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </TextField>
+               </children>
+            </HBox>
+            <Button fx:id="close" layoutX="1225.0" layoutY="-3.0" mnemonicParsing="false" onAction="#close" prefHeight="45.0" prefWidth="75.0" stylesheets="@stylesheet.css">
+               <styleClass>
+                  <String fx:value="tran-btn" />
+                  <String fx:value="close-bar" />
+               </styleClass>
+            </Button>
+            <FontAwesomeIcon glyphName="CLOSE" layoutX="1255.0" layoutY="28.0" size="1.5em" text="" />
+            <Button fx:id="minimizeButton" layoutX="1150.0" layoutY="-3.0" mnemonicParsing="false" onAction="#minimze" prefHeight="45.0" prefWidth="75.0" stylesheets="@stylesheet.css">
+               <styleClass>
+                  <String fx:value="tran-btn" />
+                  <String fx:value="title-bar" />
+               </styleClass>
+            </Button>
+            <FontAwesomeIcon glyphName="MINUS" layoutX="1180.0" layoutY="27.0" size="1.5em" text="" />
+         </children>
+      </Pane>
+   </children>
+</AnchorPane>

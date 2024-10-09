@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="680.0" prefWidth="980.0" styleClass="parent" stylesheets="@stylesheet.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="src.librarysystem.LoginController">
+   <children>
+      <Pane layoutY="94.0" prefHeight="400.0" prefWidth="980.0" styleClass="panel" stylesheets="@stylesheet.css">
+         <children>
+            <Label layoutX="88.0" layoutY="130.0" text="Don't have an account ?" textFill="#f3f0f0">
+               <font>
+                  <Font size="21.0" />
+               </font>
+            </Label>
+            <Label layoutX="88.0" layoutY="169.0" minHeight="-Infinity" minWidth="-Infinity" prefWidth="250.0" text="Lorem ipsum is a dummy text used as a placeholder in websites" textFill="#f0eeee" wrapText="true">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Label>
+            <Button layoutX="88.0" layoutY="235.0" mnemonicParsing="false" onAction="#openSignUp" prefHeight="35.0" prefWidth="120.0" styleClass="trans-btn-white-border" text="Sign Up" textFill="#f6f3f3">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Button>
+            <Label layoutX="631.0" layoutY="130.0" text="Have an account ?" textFill="#f3f0f0">
+               <font>
+                  <Font size="21.0" />
+               </font>
+            </Label>
+            <Label layoutX="631.0" layoutY="169.0" minHeight="-Infinity" minWidth="-Infinity" prefWidth="250.0" text="Lorem ipsum is a dummy text used as a placeholder in websites" textFill="#f0eeee" wrapText="true">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Label>
+            <Button layoutX="631.0" layoutY="235.0" mnemonicParsing="false" onAction="#openSignIn" prefHeight="35.0" prefWidth="120.0" styleClass="trans-btn-white-border" text="Sign In" textFill="#f6f3f3">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Button>
+            <VBox fx:id="vbox" layoutX="71.0" layoutY="-40.0" prefHeight="480.0" prefWidth="480.0" styleClass="white-panel" stylesheets="@stylesheet.css" />
+         </children>
+      </Pane>
+   </children>
+</AnchorPane>

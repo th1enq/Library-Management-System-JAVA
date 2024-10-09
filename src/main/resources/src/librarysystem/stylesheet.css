@@ -1,0 +1,107 @@
+.parent {
+    -fx-background-color: transparent;
+}
+
+.parent_gui {
+    -fx-background-color: #E9E9EA;
+}
+
+.bg_white {
+    -fx-background-color: #ffffff;
+}
+
+.panel {
+    -fx-background-color: #333333;
+}
+
+.trans-btn-white-border {
+    -fx-background-color: transparent;
+    -fx-border-color: #cccccc;
+    -fx-border-width: 1px;
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px; /* Match the border radius */
+    -fx-text-fill: whitesmoke;
+}
+
+.white-panel {
+    -fx-background-color: #FFFFFF;
+}
+
+.tf-box {
+    -fx-background-color: transparent;
+    -fx-border-color: #dedee4;
+    -fx-border-width: 0px 0px 1px 0px;
+}
+
+.tf {
+    -fx-background-color: transparent;
+}
+
+.pink-btn {
+    -fx-background-color: #f78c7b;
+    -fx-background-radius: 5px;
+    -fx-text-fill: #ffffff;
+}
+
+.sidebar {
+    -fx-background-color: #f9f9f9;
+    -fx-background-radius: 20px 0 0 0;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 10, 0.0, 2, 0);
+}
+
+.green-btn {
+    -fx-background-color: #C1CEBD;
+    -fx-background-radius: 20px;
+}
+
+.search-btn {
+    -fx-background-radius: 30px;
+    -fx-border-radius: 20px;
+    -fx-background-color: #f8f8f8;
+    -fx-padding: 0 0 0 30px; /* Top, Right, Bottom, Left */
+}
+
+.user-image {
+    -fx-background-radius: 100%;
+}
+
+.menu-btn {
+    -fx-background-color: transparent;
+    -fx-background-radius: 15px;
+}
+
+.tran-btn {
+    -fx-background-color: transparent;
+}
+
+.title-bar:hover {
+    -fx-background-color: #f8f8f8;
+    -fx-cursor: hand;
+}
+
+.close-bar:hover {
+    -fx-background-color: #F65867;
+    -fx-cursor: hand;
+}
+
+.menu-btn-active {
+    -fx-background-color: #F65867;
+    -fx-background-radius: 15px;
+}
+
+.circle-btn {
+    -fx-background-color: #F65867;
+    -fx-background-radius: 100%
+}
+
+.slider {
+    -fx-background-color: #FFFFFF;
+    -fx-background-radius: 15px;
+}
+
+.add-btn {
+    -fx-background-color: transparent;
+    -fx-border-color: grey;
+    -fx-border-width: 1px;
+    -fx-border-radius: 7px;
+}
