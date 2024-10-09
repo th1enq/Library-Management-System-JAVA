@@ -1,14 +1,15 @@
 package org.example.src;
-class User {
+public class User {
     private String username;
     private String password;
     private String type;
     private String email;
 
-    public User(String username, String password, String type) {
+    public User(String username, String password, String type, String email) {
         this.username = username;
         this.password = password;
         this.type = type;
+        this.email = email;
     }
 
     public String getUsername() {
@@ -21,6 +22,10 @@ class User {
 
     public String getType() {
         return type;
+    }
+
+    public String getEmail() {
+        return email;
     }
     public boolean equals(Object obj) {
         if (this == obj) return true;

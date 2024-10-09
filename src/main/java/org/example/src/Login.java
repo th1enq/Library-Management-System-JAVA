@@ -1,6 +1,12 @@
 package org.example.src;
+
+
 import java.util.ArrayList;
 import java.awt.EventQueue;
+
+import java.util.Properties;
+import javax.mail.*;
+import javax.mail.internet.*;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -11,18 +17,12 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
 import java.awt.Font;
-import java.awt.Image;
 
 import javax.swing.JTextField;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.JPasswordField;
 import javax.swing.JButton;
-import javax.swing.ImageIcon;
 import java.awt.event.ActionListener;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.awt.event.ActionEvent;
 import java.util.Objects;
 
@@ -36,8 +36,50 @@ public class Login extends JFrame {
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
+				String to = "hientuongtran@gmail.com";
+				String from = "23020152@gmail.com"; // replace with your email
+				String host = "smtp.gmail.com"; // or another SMTP server
+
+				// Setup mail server properties
+				Properties properties = System.getProperties();
+				properties.put("mail.smtp.host", host);
+				properties.put("mail.smtp.port", "465");
+				properties.put("mail.smtp.ssl.enable", "true");
+				properties.put("mail.smtp.auth", "true");
+
+				// Get the Session object and authenticate with your email
+				Session session = Session.getInstance(properties, new javax.mail.Authenticator() {
+					protected PasswordAuthentication getPasswordAuthentication() {
+						return new PasswordAuthentication("your-email@gmail.com", "your-email-password");
+					}
+				});
+
+				try {
+					// Create a default MimeMessage object
+					MimeMessage message = new MimeMessage(session);
+
+					// Set From: header field
+					message.setFrom(new InternetAddress(from));
+
+					// Set To: header field
+					message.addRecipient(Message.RecipientType.TO, new InternetAddress(to));
+
+					// Set Subject: header field
+					message.setSubject("Password Recovery");
+
+					// Set the message content
+					message.setText("Hello " +  ",\n\nYour password is: 12345"  + "\n\nBest regards,\nLibrary Management System");
+
+					// Send message
+					Transport.send(message);
+					System.out.println("Sent message successfully....");
+				} catch (MessagingException mex) {
+					mex.printStackTrace();
+				}
 			}
 		});
+
+
 	}
 
 	private JPanel contentPane;
@@ -78,16 +120,16 @@ public class Login extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				String username = usernameField.getText();
 				String password =String.copyValueOf(passwordField.getPassword());
-				User currentUser = new User(username, password, "normal");
+				User currentUser = new User(username, password, "normal" , ".@gmail.com");
 				String userType ="";
 				/**
 				 * đoạn này là khi ấn vào nút login thì kiểm tra xem nó là loại tài khoản nào.
 				 */
 				boolean loginAcess = false;
 				ArrayList<User> users = new ArrayList<>();
-				users.add(new User("admin", "admin123" , "admin"));
-				users.add(new User("student1", "pass123", "student"));
-				users.add(new User("student2", "password", "student"));
+				users.add(new User("admin", "admin123" , "admin","1@gmail.com"));
+				users.add(new User("student1", "pass123", "student","2@gmail.com"));
+				users.add(new User("student2", "password", "student","3@gmail.com"));
 				for (User user : users) {
 					if (user.equals(currentUser)) {
 						loginAcess = true;
@@ -134,6 +176,84 @@ public class Login extends JFrame {
 		 */
 		JLabel lblNewLabel = new JLabel("Library Management User Login");
 		lblNewLabel.setFont(new Font("Verdana", Font.BOLD, 16));
+		/**
+		 * nút quên mật khẩu.
+		 */
+		JButton forgotPasswordButton = new JButton("Forgot Password?");
+		forgotPasswordButton.setFont(new Font("Verdana", Font.PLAIN, 13));
+		forgotPasswordButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String email = JOptionPane.showInputDialog("Enter your email address:");
+				if (email != null && !email.isEmpty()) {
+					// Here we will handle sending the recovery email
+					ArrayList<User> users = new ArrayList<>();
+					users.add(new User("admin", "admin123", "admin", "hientuongtran@gmail.com"));
+					users.add(new User("student1", "pass123", "student", "2@gmail.com"));
+					users.add(new User("student2", "password", "student", "3@gmail.com"));
+					boolean emailExists = false;
+					for (User user : users) {
+						if (Objects.equals(user.getEmail(), email)) {
+							emailExists = true;
+							sendRecoveryEmail(user); // Function to send the email
+							JOptionPane.showMessageDialog(getParent(), "Recovery email sent! Check your inbox.", "Success", JOptionPane.INFORMATION_MESSAGE);
+							break;
+						}
+					}
+					if (!emailExists) {
+						JOptionPane.showMessageDialog(getParent(), "Email not found", "Error", JOptionPane.ERROR_MESSAGE);
+					}
+				}
+			}
+			public void sendRecoveryEmail(User user) {
+				String to = user.getEmail();
+				String from = "23020152@vnu.edu.vn"; // replace with your email
+				String host = "smtp.gmail.com"; // or another SMTP server
+
+				// Setup mail server properties
+				Properties properties = System.getProperties();
+				properties.put("mail.smtp.host", host);
+				properties.put("mail.smtp.port", "465");
+				properties.put("mail.smtp.ssl.enable", "true");
+				properties.put("mail.smtp.auth", "true");
+
+				// Get the Session object and authenticate with your email
+				Session session = Session.getInstance(properties, new javax.mail.Authenticator() {
+					protected PasswordAuthentication getPasswordAuthentication() {
+						return new PasswordAuthentication("your-email@gmail.com", "your-email-password");
+					}
+				});
+
+				try {
+					// Create a default MimeMessage object
+					MimeMessage message = new MimeMessage(session);
+
+					// Set From: header field
+					message.setFrom(new InternetAddress(from));
+
+					// Set To: header field
+					message.addRecipient(Message.RecipientType.TO, new InternetAddress(to));
+
+					// Set Subject: header field
+					message.setSubject("Password Recovery");
+
+					// Set the message content
+					message.setText("Hello " + user.getUsername() + ",\n\nYour password is: " + user.getPassword() + "\n\nBest regards,\nLibrary Management System");
+
+					// Send message
+					Transport.send(message);
+					System.out.println("Sent message successfully....");
+				} catch (MessagingException mex) {
+					mex.printStackTrace();
+				}
+			}
+
+		});
+
+
+
+
+
+
 
 		/**
 		 * Tạo giao diện.
@@ -165,6 +285,8 @@ public class Login extends JFrame {
 												.addComponent(lblNewLabel))
 										.addGroup(gl_contentPane.createSequentialGroup()
 								.addGap(45))
+
+
 		));
 
 		gl_contentPane.setVerticalGroup(
@@ -186,7 +308,9 @@ public class Login extends JFrame {
 										.addComponent(loginButton)
 										.addComponent(SignUpButton, GroupLayout.PREFERRED_SIZE, 25, GroupLayout.PREFERRED_SIZE))
 								.addContainerGap(31, Short.MAX_VALUE))
+
 		);
 		contentPane.setLayout(gl_contentPane);
 	}
+
 }
