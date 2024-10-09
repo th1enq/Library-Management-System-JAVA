@@ -174,8 +174,8 @@ public class AddNewBook extends JFrame {
     addButton.addActionListener(new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent e) {
-        DBInfo.addBook(textField.getText(), textField_1.getText(), textField_2.getText(),
-            textField_3.getText(), textField_4.getText());
+       // DBInfo.addBook(textField.getText(), textField_1.getText(), textField_2.getText(),
+         //   textField_3.getText(), textField_4.getText());
         reset();
       }
     });

@@ -303,22 +303,22 @@ public class DBInfo {
     }
   }
 
-  public static void addSubject(String a) {
+  public static void addCategory(String a) {
     try {
       Connection con = DBInfo.conn();
-      String sql = "INSERT INTO subject(name) VALUE (?)";
+      String sql = "INSERT INTO category(name) VALUE (?)";
       PreparedStatement preparedStatement = con.prepareStatement(sql);
       preparedStatement.setString(1, a);
       int rowsAffected = preparedStatement.executeUpdate();
-      System.out.println("subject added successfully! Rows affected: " + rowsAffected);
+      System.out.println("Category added successfully! Rows affected: " + rowsAffected);
       preparedStatement.close();
       con.close();
     } catch (SQLException EE) {
-      System.out.println("Error adding subject");
+      System.out.println("Error adding Category");
       EE.printStackTrace();
     }
   }
-
+/*
   public static void addBook(String a, String b, String c, String d, String e) {
     try {
       Connection con = DBInfo.conn();
@@ -326,7 +326,7 @@ public class DBInfo {
         System.out.println("da co quyen sach nay roi");
         return;
       }
-      String sql = "INSERT INTO book(bookid, title, author, subject, publisher) VALUE (?,?,?,?,?)";
+      String sql = "INSERT INTO book(id, title, author, subject, publisher) VALUE (?,?,?,?,?)";
       PreparedStatement preparedStatement = con.prepareStatement(sql);
       preparedStatement.setString(1, a);
       preparedStatement.setString(2, b);
@@ -344,7 +344,7 @@ public class DBInfo {
       System.out.println("Error adding book");
       EE.printStackTrace();
     }
-  }
+  }*/
 
   /**
    * dang li nguoi moi.
@@ -601,7 +601,7 @@ public class DBInfo {
       ResultSet res = ps.executeQuery();
       while (res.next()) {
         CustomData tmp = new CustomData(res.getString(1), res.getString(2), res.getString(3),
-            res.getString(6));
+            res.getString(14));
         tmp.print();
       }
     } catch (SQLException e2) {
@@ -628,7 +628,7 @@ public class DBInfo {
   }
 
   public static void main(String[] args) {
-    ArrayList<CustomData> test = DBInfo.getUserList();
+    ArrayList<CustomData> test = DBInfo.getBookList();
    // DBInfo.rateBook("1984",6);
   }
 }
