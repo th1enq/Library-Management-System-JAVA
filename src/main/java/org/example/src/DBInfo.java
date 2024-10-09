@@ -13,58 +13,65 @@ import java.util.Vector;
 import javax.swing.event.UndoableEditEvent;
 import java.sql.Date;
 
+/**
+ * kieu du lieu gom 4 String.
+ */
 class CustomData {
 
-  private String id;
+  private String first;
 
-  private String name;
+  private String second;
 
-  private String author;
+  private String thirst;
 
-  private String avail;
+  private String fourth;
 
-  public CustomData(String id, String name, String author, String avail) {
-    this.id = id;
-    this.name = name;
-    this.avail = avail;
-    this.author = author;
+  public CustomData(String first, String second, String thirst, String fourth) {
+    this.first = first;
+    this.second = second;
+    this.fourth = fourth;
+    this.thirst = thirst;
+  }
+  public CustomData(String first, String second, String thirst) {
+    this.first = first;
+    this.second = second;
+    this.thirst = thirst;
   }
 
-
-  public String getid() {
-    return id;
+  public String getfirst() {
+    return first;
   }
 
-  public void setid(String id) {
-    this.id = id;
+  public void setfirst(String first) {
+    this.first = first;
   }
 
-  public String getname() {
-    return name;
+  public String getsecond() {
+    return second;
   }
 
-  public void setname(String name) {
-    this.name = name;
+  public void setsecond(String second) {
+    this.second = second;
   }
 
-  public String getavail() {
-    return avail;
+  public String getfourth() {
+    return fourth;
   }
 
-  public void setavail(String avail) {
-    this.avail = avail;
+  public void setfourth(String fourth) {
+    this.fourth = fourth;
   }
 
-  public String getAuthor() {
-    return author;
+  public String getthirst() {
+    return thirst;
   }
 
-  public void setAuthor(String author) {
-    this.author = author;
+  public void setthirst(String thirst) {
+    this.thirst = thirst;
   }
 
   public void print() {
-    System.out.println(id + " " + name + " " + author + " " + avail);
+    System.out.println(first + " " + second + " " + thirst + " " + fourth);
   }
 
 }
@@ -585,6 +592,10 @@ public class DBInfo {
     }
   }
 
+  /**
+   * lấy ra danh sách các cuốn sách trong database.
+   * @return arraylist gồm 4 thông số id, tên, tác giả, avail.
+   */
   public static ArrayList<CustomData> getBookList() {
     Connection con = DBInfo.conn();
     ArrayList<CustomData> ret = new ArrayList<>();
@@ -603,9 +614,26 @@ public class DBInfo {
     }
     return ret;
   }
-
-  public static void main(String[] args) {
-    ArrayList<CustomData> test = DBInfo.getBookList();
+  public static ArrayList<CustomData> getUserList() {
+    Connection con = DBInfo.conn();
+    ArrayList<CustomData> ret = new ArrayList<>();
+    String query = "SELECT * FROM registration";
+    value = "";
+    try {
+      PreparedStatement ps = con.prepareStatement(query);
+      ResultSet res = ps.executeQuery();
+      while (res.next()) {
+        CustomData tmp = new CustomData(res.getString(1), res.getString(2), res.getString(3));
+        tmp.print();
+      }
+    } catch (SQLException e2) {
+      e2.printStackTrace();
+    }
+    return ret;
   }
 
+  public static void main(String[] args) {
+   // ArrayList<CustomData> test = DBInfo.getUserList();
+    DBInfo.rateBook("1984",6);
+  }
 }
