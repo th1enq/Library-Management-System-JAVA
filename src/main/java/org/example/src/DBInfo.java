@@ -8,9 +8,66 @@ import java.sql.ResultSet;
 import java.time.*;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Vector;
 import javax.swing.event.UndoableEditEvent;
 import java.sql.Date;
+
+class CustomData {
+
+  private String id;
+
+  private String name;
+
+  private String author;
+
+  private String avail;
+
+  public CustomData(String id, String name, String author, String avail) {
+    this.id = id;
+    this.name = name;
+    this.avail = avail;
+    this.author = author;
+  }
+
+
+  public String getid() {
+    return id;
+  }
+
+  public void setid(String id) {
+    this.id = id;
+  }
+
+  public String getname() {
+    return name;
+  }
+
+  public void setname(String name) {
+    this.name = name;
+  }
+
+  public String getavail() {
+    return avail;
+  }
+
+  public void setavail(String avail) {
+    this.avail = avail;
+  }
+
+  public String getAuthor() {
+    return author;
+  }
+
+  public void setAuthor(String author) {
+    this.author = author;
+  }
+
+  public void print() {
+    System.out.println(id + " " + name + " " + author + " " + avail);
+  }
+
+}
 
 public class DBInfo {
 
@@ -493,6 +550,7 @@ public class DBInfo {
       preparedStatement.setString(1, itemName);
       ResultSet resultSet = preparedStatement.executeQuery();
       if (resultSet.next()) {
+
         int rating = resultSet.getInt("rating");
         System.out.println("rating hien tai cua cuon sach la " + rating);
         Connection con2 = DBInfo.conn();
@@ -527,8 +585,27 @@ public class DBInfo {
     }
   }
 
+  public static ArrayList<CustomData> getBookList() {
+    Connection con = DBInfo.conn();
+    ArrayList<CustomData> ret = new ArrayList<>();
+    String query = "SELECT * FROM book";
+    value = "";
+    try {
+      PreparedStatement ps = con.prepareStatement(query);
+      ResultSet res = ps.executeQuery();
+      while (res.next()) {
+        CustomData tmp = new CustomData(res.getString(1), res.getString(2), res.getString(3),
+            res.getString(6));
+        tmp.print();
+      }
+    } catch (SQLException e2) {
+      e2.printStackTrace();
+    }
+    return ret;
+  }
+
   public static void main(String[] args) {
-    DBInfo.rateBook("1984", 5);
+    ArrayList<CustomData> test = DBInfo.getBookList();
   }
 
 }
