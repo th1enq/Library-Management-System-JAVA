@@ -32,11 +32,6 @@ class CustomData {
     this.fourth = fourth;
     this.thirst = thirst;
   }
-  public CustomData(String first, String second, String thirst) {
-    this.first = first;
-    this.second = second;
-    this.thirst = thirst;
-  }
 
   public String getfirst() {
     return first;
@@ -623,7 +618,7 @@ public class DBInfo {
       PreparedStatement ps = con.prepareStatement(query);
       ResultSet res = ps.executeQuery();
       while (res.next()) {
-        CustomData tmp = new CustomData(res.getString(1), res.getString(2), res.getString(3));
+        CustomData tmp = new CustomData(res.getString(1), res.getString(2), res.getString(3),res.getString(5));
         tmp.print();
       }
     } catch (SQLException e2) {
@@ -633,7 +628,7 @@ public class DBInfo {
   }
 
   public static void main(String[] args) {
-   // ArrayList<CustomData> test = DBInfo.getUserList();
-    DBInfo.rateBook("1984",6);
+    ArrayList<CustomData> test = DBInfo.getUserList();
+   // DBInfo.rateBook("1984",6);
   }
 }
