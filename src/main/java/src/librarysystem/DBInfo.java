@@ -1,17 +1,83 @@
 package src.librarysystem;
 
+import java.awt.desktop.SystemEventListener;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.time.*;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Vector;
 import javax.swing.event.UndoableEditEvent;
+import java.sql.Date;
+
+/**
+ * kieu du lieu gom 4 String.
+ */
+class CustomData {
+
+    private String first;
+
+    private String second;
+
+    private String thirst;
+
+    private String fourth;
+
+    public CustomData(String first, String second, String thirst, String fourth) {
+        this.first = first;
+        this.second = second;
+        this.fourth = fourth;
+        this.thirst = thirst;
+    }
+
+    public String getfirst() {
+        return first;
+    }
+
+    public void setfirst(String first) {
+        this.first = first;
+    }
+
+    public String getsecond() {
+        return second;
+    }
+
+    public void setsecond(String second) {
+        this.second = second;
+    }
+
+    public String getfourth() {
+        return fourth;
+    }
+
+    public void setfourth(String fourth) {
+        this.fourth = fourth;
+    }
+
+    public String getthirst() {
+        return thirst;
+    }
+
+    public void setthirst(String thirst) {
+        this.thirst = thirst;
+    }
+
+    public void print() {
+        System.out.println(first + " " + second + " " + thirst + " " + fourth);
+    }
+
+}
 
 public class DBInfo {
 
+    public static String curUsername = "";
+    public static String curPass = "";
+    public static int curId = 0;
     private static int numUser = 6;
+
     static {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
@@ -87,20 +153,53 @@ public class DBInfo {
      */
     public static boolean inDb(String itemName) {
         try {
-            String query = "SELECT * FROM `book` WHERE title=" + itemName;
+            String query = "SELECT * FROM `book` WHERE title = ? and avail = ?";
             Connection con = DBInfo.conn();
-            PreparedStatement ps = con.prepareStatement(query);
-            ResultSet resultSet = ps.executeQuery(query);
+            PreparedStatement preparedStatement = con.prepareStatement(query);
+            preparedStatement.setString(1, itemName);
+            preparedStatement.setString(2, "YES");
+            ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
+                preparedStatement.close();
+                con.close();
                 return true;
             }
-            resultSet.close();
-            ps.close();
+            preparedStatement.close();
             con.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return false;
+    }
+
+    public static void addSlip(String itemName) {
+        try {
+            Connection con = DBInfo.conn();
+            // Câu lệnh SQL đã sửa
+            String sql = "INSERT INTO borrow_slip(user_id, book_name, borrow_date, return_date) VALUES (?, ?, ?, ?)";
+            PreparedStatement preparedStatement = con.prepareStatement(sql);
+
+            // Lấy ngày hiện tại và ngày sau 10 ngày
+            LocalDate currentDate = LocalDate.now();
+            LocalDate dateAfter10Days = currentDate.plusDays(10);
+
+            // Thiết lập giá trị cho các tham số
+            preparedStatement.setInt(1, curId); // user_id
+            preparedStatement.setString(2, itemName); // book_name
+            preparedStatement.setDate(3, Date.valueOf(currentDate)); // borrow_date
+            preparedStatement.setDate(4, Date.valueOf(dateAfter10Days)); // return_date
+
+            // Thực hiện chèn dữ liệu
+            int rowsAffected = preparedStatement.executeUpdate();
+            System.out.println("Slip added successfully! Rows affected: " + rowsAffected);
+
+            // Đóng PreparedStatement và Connection
+            preparedStatement.close();
+            con.close();
+        } catch (SQLException e) {
+            System.out.println("Error adding slip");
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -110,37 +209,19 @@ public class DBInfo {
      */
     public static void borrowBook(String itemName) {
         try {
-            String query = "DELETE FROM `book` WHERE title=?";
             Connection con = DBInfo.conn();
-            PreparedStatement preparedStatement = con.prepareStatement(query);
-            preparedStatement.setString(1, itemName);
-            int rowsAffected = preparedStatement.executeUpdate();
-            if (rowsAffected > 0) {
-                System.out.println("Delete successful, " + rowsAffected + " row(s) deleted.");
-                String sql = "INSERT INTO borrow_slip (slip_id,user_id, book_id, borrow_date, return_date) VALUES (?, ?, ?, ?, ?)";
-                PreparedStatement preparedStatement2 = con.prepareStatement(sql);
-                int slipId = 0;
-                int userId = 1;
-                int bookId = 2;
-                String borrowDate = "2024-10-01";
-                String returnDate = "2024-10-15";
-                preparedStatement2.setInt(1, slipId);
-                preparedStatement2.setInt(2, userId);
-                preparedStatement2.setInt(3, bookId);
-                preparedStatement2.setString(4, borrowDate);
-                preparedStatement2.setString(5, returnDate);
-                int rowsAffected2 = preparedStatement2.executeUpdate();
-                if (rowsAffected2 > 0) {
-                    System.out.println("Borrow slip added successfully.");
-                } else {
-                    System.out.println("No rows were inserted.");
-                }
-
-            } else {
-                System.out.println("No rows were deleted.");
+            String sql = "UPDATE book SET avail = ? WHERE title = ?";
+            PreparedStatement preparedStatement = con.prepareStatement(sql);
+            preparedStatement.setString(1, "NO");
+            preparedStatement.setString(2, itemName);
+            int rowAffected = preparedStatement.executeUpdate();
+            if (rowAffected > 0) {
+                System.out.println("Thay doi trang thai dong" + rowAffected);
+                addSlip(itemName);
             }
             preparedStatement.close();
             con.close();
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -149,38 +230,59 @@ public class DBInfo {
     /**
      * tra sach
      */
-    public static void returnBook() {
+    public static void returnBook(String itemName) {
 
+        Connection con = DBInfo.conn();
+        try {
+
+            String sql = "DELETE FROM borrow_slip WHERE book_name = ?";
+            PreparedStatement preparedStatement = con.prepareStatement(sql);
+            preparedStatement.setString(1, itemName);
+            int rowsAffected = 0;
+            rowsAffected = preparedStatement.executeUpdate();
+            if (rowsAffected > 0) {
+                System.out.println("xoa khoi slip thành công!");
+                preparedStatement.close();
+                con.close();
+                Connection con2 = DBInfo.conn();
+                String sql2 = "UPDATE book SET avail = ? WHERE title = ?";
+                PreparedStatement preparedStatement2 = con2.prepareStatement(sql2);
+                preparedStatement2.setString(1, "YES");
+                preparedStatement2.setString(2, itemName);
+                int rowAffected2 = preparedStatement2.executeUpdate();
+                if (rowAffected2 > 0) {
+                    System.out.println("Thay doi trang thai dong" + rowAffected2);
+                } else {
+                    System.out.println("Thay doi trang thai ko thanh cong");
+                }
+                preparedStatement.close();
+                con.close();
+
+            } else {
+                System.out.println("Không tìm thấy người trong slip cuon: " + itemName);
+            }
+
+            preparedStatement.close();
+            con.close();
+        } catch (SQLException EE) {
+            EE.printStackTrace();
+            System.out.println("Loi xoa user ");
+        }
     }
 
-    public static void addPublisher(String a) {
+
+    public static void addPublisher(String name) {
         try {
             Connection con = DBInfo.conn();
             String sql = "INSERT INTO publisher(name) VALUE (?)";
             PreparedStatement preparedStatement = con.prepareStatement(sql);
-            preparedStatement.setString(1, a);
+            preparedStatement.setString(1, name);
             int rowsAffected = preparedStatement.executeUpdate();
             System.out.println("publisher added successfully! Rows affected: " + rowsAffected);
             preparedStatement.close();
             con.close();
         } catch (SQLException EE) {
             System.out.println("Error adding publisher");
-            EE.printStackTrace();
-        }
-    }
-
-    public static void addCategory(String a) {
-        try {
-            Connection con = DBInfo.conn();
-            String sql = "INSERT INTO category(name) VALUE (?)";
-            PreparedStatement preparedStatement = con.prepareStatement(sql);
-            preparedStatement.setString(1, a);
-            int rowsAffected = preparedStatement.executeUpdate();
-            System.out.println("category added successfully! Rows affected: " + rowsAffected);
-            preparedStatement.close();
-            con.close();
-        } catch (SQLException EE) {
-            System.out.println("Error adding category");
             EE.printStackTrace();
         }
     }
@@ -201,63 +303,65 @@ public class DBInfo {
         }
     }
 
-    public static void addSubject(String a) {
+    public static void addCategory(String a) {
         try {
             Connection con = DBInfo.conn();
-            String sql = "INSERT INTO subject(name) VALUE (?)";
+            String sql = "INSERT INTO category(name) VALUE (?)";
             PreparedStatement preparedStatement = con.prepareStatement(sql);
             preparedStatement.setString(1, a);
             int rowsAffected = preparedStatement.executeUpdate();
-            System.out.println("subject added successfully! Rows affected: " + rowsAffected);
+            System.out.println("Category added successfully! Rows affected: " + rowsAffected);
             preparedStatement.close();
             con.close();
         } catch (SQLException EE) {
-            System.out.println("Error adding subject");
+            System.out.println("Error adding Category");
             EE.printStackTrace();
         }
     }
-
-    public static void addBook(String a, String b, String c, String d, String e, String f) {
-        try {
-            Connection con = DBInfo.conn();
-            String sql = "INSERT INTO book(bookid, title, author, subject, publisher, category) VALUE (?,?,?,?,?,?)";
-            PreparedStatement preparedStatement = con.prepareStatement(sql);
-            preparedStatement.setString(1, a);
-            preparedStatement.setString(2, b);
-            preparedStatement.setString(3, c);
-            preparedStatement.setString(4, d);
-            preparedStatement.setString(5, e);
-            preparedStatement.setString(6, f);
-
-            int rowsAffected = preparedStatement.executeUpdate();
-            System.out.println("Book added successfully! Rows affected: " + rowsAffected);
-            addCategory(f);
-            addAuthor(c);
-            addSubject(d);
-            addPublisher(e);
-            preparedStatement.close();
-            con.close();
-        } catch (SQLException EE) {
-            System.out.println("Error adding book");
-            EE.printStackTrace();
-        }
+/*
+  public static void addBook(String a, String b, String c, String d, String e) {
+    try {
+      Connection con = DBInfo.conn();
+      if (inDb(b)) {
+        System.out.println("da co quyen sach nay roi");
+        return;
+      }
+      String sql = "INSERT INTO book(id, title, author, subject, publisher) VALUE (?,?,?,?,?)";
+      PreparedStatement preparedStatement = con.prepareStatement(sql);
+      preparedStatement.setString(1, a);
+      preparedStatement.setString(2, b);
+      preparedStatement.setString(3, c);
+      preparedStatement.setString(4, d);
+      preparedStatement.setString(5, e);
+      int rowsAffected = preparedStatement.executeUpdate();
+      System.out.println("Book added successfully! Rows affected: " + rowsAffected);
+      addAuthor(c);
+      addSubject(d);
+      addPublisher(e);
+      preparedStatement.close();
+      con.close();
+    } catch (SQLException EE) {
+      System.out.println("Error adding book");
+      EE.printStackTrace();
     }
+  }*/
 
     /**
      * dang li nguoi moi.
-     * @param id id
-     * @param name name
+     *
+     * @param id       id
+     * @param name     name
      * @param username us
      * @param password p
      * @param usertype admin hay ngdung binh thuong
      */
     public static void Register(int id, String name, String username, String password,
-                                String usertype) {
+        String usertype) {
         try {
             Connection con = DBInfo.conn();
             String sql = "INSERT INTO registration(id,name, username, password, usertype) VALUE (?,?,?,?,?)";
             PreparedStatement preparedStatement = con.prepareStatement(sql);
-            numUser+=1;
+            numUser += 1;
             preparedStatement.setInt(1, numUser);
             preparedStatement.setString(2, name);
             preparedStatement.setString(3, username);
@@ -274,6 +378,7 @@ public class DBInfo {
 
     /**
      * kiem tra mat khau
+     *
      * @param username us
      * @param password pas
      * @return true/false
@@ -308,6 +413,20 @@ public class DBInfo {
         }
     }
 
+    /**
+     * hamf dang nhap.
+     *
+     * @param Username U
+     * @param Password P
+     */
+    public static void login(String Username, String Password) {
+        if (checkPass(Username, Password) == true) {
+            curPass = Password;
+            curUsername = Username;
+            curId = findUserId(Username, Password);
+        }
+    }
+
     public static int findUserId(String username, String password) {
         try {
             Connection con = DBInfo.conn();
@@ -336,7 +455,8 @@ public class DBInfo {
 
     /**
      * chinh sua thong tin nguoi dung.
-     * @param id id
+     *
+     * @param id          id
      * @param newUsername ten
      * @param newPassword mk
      */
@@ -369,14 +489,15 @@ public class DBInfo {
 
     /**
      * chinh sua email ng dung.
-     * @param id id
+     *
+     * @param id       id
      * @param newEmail E
      */
     public static void updateEmail(int id, String newEmail) {
         Connection con = DBInfo.conn();
         try {
 
-            String sql = "UPDATE registration SET email = ? WHERE id = ?";
+            String sql = "UPDATE registration SET username = ? WHERE id = ?";
             PreparedStatement preparedStatement = con.prepareStatement(sql);
 
             preparedStatement.setString(1, newEmail);
@@ -397,7 +518,8 @@ public class DBInfo {
             System.out.println("Loi sua email");
         }
     }
-    public static void DeleteUser(String name){
+
+    public static void DeleteUser(String name) {
         Connection con = DBInfo.conn();
         try {
 
@@ -421,7 +543,92 @@ public class DBInfo {
             System.out.println("Loi xoa user ");
         }
     }
+
+    public static void rateBook(String itemName, int score) {
+        try {
+            Connection con = DBInfo.conn();
+            String sql = "SELECT rating FROM book WHERE title = ?";
+            PreparedStatement preparedStatement = con.prepareStatement(sql);
+            preparedStatement.setString(1, itemName);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+
+                int rating = resultSet.getInt("rating");
+                System.out.println("rating hien tai cua cuon sach la " + rating);
+                Connection con2 = DBInfo.conn();
+
+                String sql2 = "UPDATE book SET rating = ? WHERE title = ?";
+                PreparedStatement preparedStatement2 = con2.prepareStatement(sql2);
+                int newrating = (rating + score) / 2;
+                preparedStatement2.setInt(1, newrating);
+                preparedStatement2.setString(2, itemName);
+
+                //System.out.println(newrating);
+                int rowsAffected2 = 0;
+                rowsAffected2 = preparedStatement2.executeUpdate();
+                if (rowsAffected2 > 0) {
+                    System.out.println("Cập nhật thành công rating!");
+                } else {
+                    System.out.println("Cập nhật ko thành công rating!");
+                }
+                preparedStatement2.close();
+                con2.close();
+                preparedStatement.close();
+                con.close();
+            } else {
+                System.out.println("ko tim thay sach de rating");
+
+            }
+            preparedStatement.close();
+            con.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.out.println("Loi ham rateBook");
+        }
+    }
+
+    /**
+     * lấy ra danh sách các cuốn sách trong database.
+     * @return arraylist gồm 4 thông số id, tên, tác giả, avail.
+     */
+    public static ArrayList<CustomData> getBookList() {
+        Connection con = DBInfo.conn();
+        ArrayList<CustomData> ret = new ArrayList<>();
+        String query = "SELECT * FROM book";
+        value = "";
+        try {
+            PreparedStatement ps = con.prepareStatement(query);
+            ResultSet res = ps.executeQuery();
+            while (res.next()) {
+                CustomData tmp = new CustomData(res.getString(1), res.getString(2), res.getString(3),
+                    res.getString(14));
+                tmp.print();
+            }
+        } catch (SQLException e2) {
+            e2.printStackTrace();
+        }
+        return ret;
+    }
+    public static ArrayList<CustomData> getUserList() {
+        Connection con = DBInfo.conn();
+        ArrayList<CustomData> ret = new ArrayList<>();
+        String query = "SELECT * FROM registration";
+        value = "";
+        try {
+            PreparedStatement ps = con.prepareStatement(query);
+            ResultSet res = ps.executeQuery();
+            while (res.next()) {
+                CustomData tmp = new CustomData(res.getString(1), res.getString(2), res.getString(3),res.getString(5));
+                tmp.print();
+            }
+        } catch (SQLException e2) {
+            e2.printStackTrace();
+        }
+        return ret;
+    }
+
     public static void main(String[] args) {
-        DBInfo.Register(1, "d", "e", "a", "b");
+        ArrayList<CustomData> test = DBInfo.getBookList();
+        // DBInfo.rateBook("1984",6);
     }
 }
