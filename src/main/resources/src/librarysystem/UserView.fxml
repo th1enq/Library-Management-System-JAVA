@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.text.Font?>
+
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="707.0" prefWidth="1180.0" styleClass="sidebar" stylesheets="@stylesheet.css" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <AnchorPane prefHeight="706.0" prefWidth="1180.0">
+         <children>
+            <Pane layoutX="52.0" layoutY="89.0" prefHeight="574.0" prefWidth="1060.0" styleClass="slider" stylesheets="@stylesheet.css">
+               <children>
+                  <Label layoutX="22.0" layoutY="22.0" text="User ID" textFill="#7a7a7a">
+                     <font>
+                        <Font name="System Bold" size="14.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="152.0" layoutY="22.0" text="User Name" textFill="#7a7a7a">
+                     <font>
+                        <Font name="System Bold" size="14.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="376.0" layoutY="22.0" text="Email" textFill="#7a7a7a">
+                     <font>
+                        <Font name="System Bold" size="14.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="622.0" layoutY="22.0" text="Title" textFill="#7a7a7a">
+                     <font>
+                        <Font name="System Bold" size="14.0" />
+                     </font>
+                  </Label>
+                  <Line endX="908.5999755859375" layoutX="115.0" layoutY="53.0" startX="-100.0" />
+                  <Label layoutX="785.0" layoutY="22.0" text="Overdue" textFill="#7a7a7a">
+                     <font>
+                        <Font name="System Bold" size="14.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="957.0" layoutY="22.0" text="Action" textFill="#7a7a7a">
+                     <font>
+                        <Font name="System Bold" size="14.0" />
+                     </font>
+                  </Label>
+                  <Line endX="908.5999755859375" layoutX="115.0" layoutY="101.0" startX="-100.0" />
+                  <Line endX="908.5999755859375" layoutX="115.0" layoutY="149.0" startX="-100.0" />
+                  <Line endX="908.5999755859375" layoutX="115.0" layoutY="197.0" startX="-100.0" />
+                  <Line endX="908.5999755859375" layoutX="115.0" layoutY="245.0" startX="-100.0" />
+                  <Line endX="908.5999755859375" layoutX="115.0" layoutY="293.0" startX="-100.0" />
+                   <Button layoutX="873.0" layoutY="507.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="40.0" styleClass="pink-btn" stylesheets="@stylesheet.css">
+                     <graphic>
+                        <FontAwesomeIcon glyphName="ANGLE_LEFT" size="2em" />
+                     </graphic></Button>
+                  <Button layoutX="960.0" layoutY="507.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="40.0" styleClass="pink-btn" stylesheets="@stylesheet.css">
+                     <graphic>
+                        <FontAwesomeIcon glyphName="ANGLE_RIGHT" size="2em" />
+                     </graphic>
+                  </Button>
+                  <Line endX="908.5999755859375" layoutX="115.0" layoutY="341.0" startX="-100.0" />
+                  <FontAwesomeIcon glyphName="USER" glyphStyle="-fx-fill:#7a7a7a" layoutX="133.0" layoutY="36.0" selectionEnd="1" size="1.2em" />
+                  <FontAwesomeIcon glyphName="MOBILE_PHONE" glyphStyle="-fx-fill:#7a7a7a" layoutX="360.0" layoutY="39.0" size="1.5em" text="" />
+                  <FontAwesomeIcon glyphName="BOOK" glyphStyle="-fx-fill:#7a7a7a" layoutX="598.0" layoutY="38.0" size="1.2em" text="" />
+                  <FontAwesomeIcon glyphName="CLOCK_ALT" glyphStyle="-fx-fill:#7a7a7a" layoutX="766.0" layoutY="37.0" size="1.2em" />
+                  <Line endX="908.5999755859375" layoutX="115.0" layoutY="389.0" startX="-100.0" />
+                  <Line endX="908.5999755859375" layoutX="115.0" layoutY="437.0" startX="-100.0" />
+                  <Button layoutX="622.0" layoutY="503.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="164.0" styleClass="green-btn" stylesheets="@stylesheet.css" text="Add New User">
+                     <font>
+                        <Font name="System Bold" size="15.0" />
+                     </font>
+                  </Button>               </children></Pane>
+            <Label layoutX="52.0" layoutY="28.0" text="User Management">
+               <font>
+                  <Font name="System Bold" size="28.0" />
+               </font>
+            </Label>
+         </children>
+      </AnchorPane>
+   </children>
+</VBox>
