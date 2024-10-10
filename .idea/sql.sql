@@ -7,8 +7,7 @@ USE TESTT;
 
 DROP TABLE IF EXISTS `book`;
 CREATE TABLE `book` (
-    id VARCHAR(50) PRIMARY KEY,
-    title VARCHAR(255),
+    title VARCHAR(255) PRIMARY KEY,
     authors VARCHAR(255),
     publisher VARCHAR(255),
     publishedDate DATE,
@@ -23,18 +22,18 @@ CREATE TABLE `book` (
     avail VARCHAR(50) NOT NULL DEFAULT "YES",
     rating INT NOT NULL DEFAULT 0
 );
-INSERT INTO book (id, title, authors, publisher, publishedDate, thumbnail, ISBN, description, numPage, category, price, language, buyLink)
+INSERT INTO book ( title, authors, publisher, publishedDate, thumbnail, ISBN, description, numPage, category, price, language, buyLink)
 VALUES
-('1', 'Effective Java', 'Joshua Bloch', 'Addison-Wesley', '2018-01-06', 'https://x...content-available-to-author-only...x.com/effective_java.jpg', '9780134685991', 'A comprehensive guide to best practices in Java programming.', 416, 'Programming', 45.50, 'English', 'https://x...content-available-to-author-only...x.com/buy_effective_java'),
-('2', 'Clean Code', 'Robert C. Martin', 'Prentice Hall', '2008-08-11', 'https://x...content-available-to-author-only...x.com/clean_code.jpg', '9780132350884', 'A handbook of agile software craftsmanship.', 464, 'Programming', 42.75, 'English', 'https://x...content-available-to-author-only...x.com/buy_clean_code'),
-('3', 'The Pragmatic Programmer', 'Andy Hunt, Dave Thomas', 'Addison-Wesley', '1999-10-30', 'https://x...content-available-to-author-only...x.com/pragmatic_programmer.jpg', '9780201616224', 'Tips and practices to become a pragmatic programmer.', 352, 'Programming', 39.99, 'English', 'https://x...content-available-to-author-only...x.com/buy_pragmatic_programmer'),
-('4', 'Head First Java', 'Kathy Sierra, Bert Bates', 'O’Reilly Media', '2005-02-09', 'https://x...content-available-to-author-only...x.com/head_first_java.jpg', '9780596009205', 'A brain-friendly guide to learning Java.', 720, 'Programming', 38.85, 'English', 'https://x...content-available-to-author-only...x.com/buy_head_first_java'),
-('5', 'Java: The Complete Reference', 'Herbert Schildt', 'McGraw-Hill', '2018-04-09', 'https://x...content-available-to-author-only...x.com/java_complete_reference.jpg', '9781260440232', 'Comprehensive reference guide to Java programming.', 1248, 'Programming', 59.99, 'English', 'https://x...content-available-to-author-only...x.com/buy_java_complete_reference'),
-('6', 'Introduction to Algorithms', 'Thomas H. Cormen, Charles E. Leiserson, Ronald L. Rivest, Clifford Stein', 'MIT Press', '2009-07-31', 'https://x...content-available-to-author-only...x.com/introduction_algorithms.jpg', '9780262033848', 'The bible of algorithms used in computer science.', 1292, 'Computer Science', 80.99, 'English', 'https://x...content-available-to-author-only...x.com/buy_introduction_algorithms'),
-('7', 'Design Patterns', 'Erich Gamma, Richard Helm, Ralph Johnson, John Vlissides', 'Addison-Wesley', '1994-10-31', 'https://x...content-available-to-author-only...x.com/design_patterns.jpg', '9780201633610', 'Guide to design patterns in software engineering.', 395, 'Software Engineering', 54.95, 'English', 'https://x...content-available-to-author-only...x.com/buy_design_patterns'),
-('8', 'Refactoring: Improving the Design of Existing Code', 'Martin Fowler', 'Addison-Wesley', '1999-07-08', 'https://x...content-available-to-author-only...x.com/refactoring.jpg', '9780201485677', 'Techniques to improve the design of existing code.', 455, 'Software Engineering', 49.99, 'English', 'https://x...content-available-to-author-only...x.com/buy_refactoring'),
-('9', 'Artificial Intelligence: A Modern Approach', 'Stuart Russell, Peter Norvig', 'Pearson', '2020-04-01', 'https://x...content-available-to-author-only...x.com/ai_modern_approach.jpg', '9780134610993', 'Comprehensive guide to artificial intelligence.', 1152, 'Artificial Intelligence', 69.50, 'English', 'https://x...content-available-to-author-only...x.com/buy_ai_modern_approach'),
-('10', 'Cracking the Coding Interview', 'Gayle Laakmann McDowell', 'CareerCup', '2015-07-01', 'https://x...content-available-to-author-only...x.com/cracking_coding_interview.jpg', '9780984782857', '189 programming interview questions and solutions.', 706, 'Career Development', 35.95, 'English', 'https://x...content-available-to-author-only...x.com/buy_cracking_coding_interview');
+('Effective Java', 'Joshua Bloch', 'Addison-Wesley', '2018-01-06', 'https://x...content-available-to-author-only...x.com/effective_java.jpg', '9780134685991', 'A comprehensive guide to best practices in Java programming.', 416, 'Programming', 45.50, 'English', 'https://x...content-available-to-author-only...x.com/buy_effective_java'),
+('Clean Code', 'Robert C. Martin', 'Prentice Hall', '2008-08-11', 'https://x...content-available-to-author-only...x.com/clean_code.jpg', '9780132350884', 'A handbook of agile software craftsmanship.', 464, 'Programming', 42.75, 'English', 'https://x...content-available-to-author-only...x.com/buy_clean_code'),
+('The Pragmatic Programmer', 'Andy Hunt, Dave Thomas', 'Addison-Wesley', '1999-10-30', 'https://x...content-available-to-author-only...x.com/pragmatic_programmer.jpg', '9780201616224', 'Tips and practices to become a pragmatic programmer.', 352, 'Programming', 39.99, 'English', 'https://x...content-available-to-author-only...x.com/buy_pragmatic_programmer'),
+('Head First Java', 'Kathy Sierra, Bert Bates', 'O’Reilly Media', '2005-02-09', 'https://x...content-available-to-author-only...x.com/head_first_java.jpg', '9780596009205', 'A brain-friendly guide to learning Java.', 720, 'Programming', 38.85, 'English', 'https://x...content-available-to-author-only...x.com/buy_head_first_java'),
+( 'Java: The Complete Reference', 'Herbert Schildt', 'McGraw-Hill', '2018-04-09', 'https://x...content-available-to-author-only...x.com/java_complete_reference.jpg', '9781260440232', 'Comprehensive reference guide to Java programming.', 1248, 'Programming', 59.99, 'English', 'https://x...content-available-to-author-only...x.com/buy_java_complete_reference'),
+( 'Introduction to Algorithms', 'Thomas H. Cormen, Charles E. Leiserson, Ronald L. Rivest, Clifford Stein', 'MIT Press', '2009-07-31', 'https://x...content-available-to-author-only...x.com/introduction_algorithms.jpg', '9780262033848', 'The bible of algorithms used in computer science.', 1292, 'Computer Science', 80.99, 'English', 'https://x...content-available-to-author-only...x.com/buy_introduction_algorithms'),
+( 'Design Patterns', 'Erich Gamma, Richard Helm, Ralph Johnson, John Vlissides', 'Addison-Wesley', '1994-10-31', 'https://x...content-available-to-author-only...x.com/design_patterns.jpg', '9780201633610', 'Guide to design patterns in software engineering.', 395, 'Software Engineering', 54.95, 'English', 'https://x...content-available-to-author-only...x.com/buy_design_patterns'),
+( 'Refactoring: Improving the Design of Existing Code', 'Martin Fowler', 'Addison-Wesley', '1999-07-08', 'https://x...content-available-to-author-only...x.com/refactoring.jpg', '9780201485677', 'Techniques to improve the design of existing code.', 455, 'Software Engineering', 49.99, 'English', 'https://x...content-available-to-author-only...x.com/buy_refactoring'),
+( 'Artificial Intelligence: A Modern Approach', 'Stuart Russell, Peter Norvig', 'Pearson', '2020-04-01', 'https://x...content-available-to-author-only...x.com/ai_modern_approach.jpg', '9780134610993', 'Comprehensive guide to artificial intelligence.', 1152, 'Artificial Intelligence', 69.50, 'English', 'https://x...content-available-to-author-only...x.com/buy_ai_modern_approach'),
+( 'Cracking the Coding Interview', 'Gayle Laakmann McDowell', 'CareerCup', '2015-07-01', 'https://x...content-available-to-author-only...x.com/cracking_coding_interview.jpg', '9780984782857', '189 programming interview questions and solutions.', 706, 'Career Development', 35.95, 'English', 'https://x...content-available-to-author-only...x.com/buy_cracking_coding_interview');
 
 
 DROP TABLE IF EXISTS `borrow_slip`;
@@ -87,6 +86,7 @@ CREATE TABLE `author` (
 );
 INSERT INTO `author` (name)
 VALUES
+('ALL'),
 ('Joshua Bloch'),
 ('Robert C. Martin'),
 ('Andy Hunt, Dave Thomas'),
@@ -106,6 +106,7 @@ CREATE TABLE publisher (
 );
 INSERT INTO `publisher` (name)
 VALUES
+('ALL'),
 ('Addison-Wesley'),
 ('Prentice Hall'),
 ('Addison-Wesley'),
@@ -125,6 +126,7 @@ CREATE TABLE `category` (
 );
 INSERT INTO `category` (name)
 VALUES
+('ALL'),
 ('Programming'),
 ('Programming'),
 ('Programming'),
@@ -136,6 +138,4 @@ VALUES
 ('Artificial Intelligence'),
 ('Career Development');
 
---
---
 
