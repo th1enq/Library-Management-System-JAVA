@@ -23,7 +23,7 @@
                <graphic>
                   <FontAwesomeIcon fx:id="bookIcon" glyphName="BOOK" size="2em" />
                </graphic></Button>
-            <Button fx:id="userButton" layoutX="29.0" layoutY="326.0" mnemonicParsing="false" prefHeight="51.0" prefWidth="52.0" styleClass="tran-btn" stylesheets="@stylesheet.css">
+            <Button fx:id="userButton" layoutX="29.0" layoutY="326.0" mnemonicParsing="false" onAction="#userView" prefHeight="51.0" prefWidth="52.0" styleClass="tran-btn" stylesheets="@stylesheet.css">
                <graphic>
                   <FontAwesomeIcon fx:id="userIcon" glyphName="USER" size="2em" />
                </graphic></Button>

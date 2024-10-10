@@ -4,6 +4,7 @@ module src.librarysystem {
     requires java.sql;
     requires java.desktop;
     requires fontawesomefx;
+    requires jdk.compiler;
 
 
     opens src.librarysystem to javafx.fxml;

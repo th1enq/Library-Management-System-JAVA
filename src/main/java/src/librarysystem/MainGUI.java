@@ -1,6 +1,7 @@
 package src.librarysystem;
 
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -99,14 +100,27 @@ public class MainGUI implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         try {
-            fxml = FXMLLoader.load(getClass().getResource("DashBoard.fxml"));
-            mainVbox.getChildren().removeAll();
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("DashBoard.fxml"));
+            fxml = loader.load();
+            DashBoardController dashBoardController = loader.getController();
+
+            mainVbox.getChildren().clear();
             mainVbox.getChildren().setAll(fxml);
+
+            dashBoardController.getSeeAllBook().setOnAction(event -> {
+                bookView();
+            });
+
+            dashBoardController.getAddBookButton().setOnAction(event -> {
+                addBook();
+            });
+
         } catch (IOException ex) {
             Logger.getLogger(LoginController.class.getName()).log(Level.SEVERE, null, ex);
         }
         update();
     }
+
 
     private void update() {
         reset();
@@ -119,6 +133,10 @@ public class MainGUI implements Initializable {
             case 1:
                 bookIcon.getStyleClass().add("icon-active-color");
                 bookViewButton.getStyleClass().add("menu-btn-active");
+                break;
+            case 2 :
+                userIcon.getStyleClass().add("icon-active-color");
+                userButton.getStyleClass().add("menu-btn-active");
                 break;
         }
     }
@@ -159,9 +177,21 @@ public class MainGUI implements Initializable {
     private void returnHome() {
         currentStage = 0;
         try {
-            fxml = FXMLLoader.load(getClass().getResource("DashBoard.fxml"));
-            mainVbox.getChildren().removeAll();
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("DashBoard.fxml"));
+            fxml = loader.load();
+            DashBoardController dashBoardController = loader.getController();
+
+            mainVbox.getChildren().clear();
             mainVbox.getChildren().setAll(fxml);
+
+            dashBoardController.getSeeAllBook().setOnAction(event -> {
+                bookView();
+            });
+
+            dashBoardController.getAddBookButton().setOnAction(event -> {
+                addBook();
+            });
+
         } catch (IOException ex) {
             Logger.getLogger(LoginController.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -173,6 +203,32 @@ public class MainGUI implements Initializable {
         currentStage = 1;
         try {
             fxml = FXMLLoader.load(getClass().getResource("BookView.fxml"));
+            mainVbox.getChildren().removeAll();
+            mainVbox.getChildren().setAll(fxml);
+        } catch (IOException ex) {
+            Logger.getLogger(LoginController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        update();
+    }
+
+    @FXML
+    private void addBook() {
+        currentStage = 1;
+        try {
+            fxml = FXMLLoader.load(getClass().getResource("AddBook.fxml"));
+            mainVbox.getChildren().removeAll();
+            mainVbox.getChildren().setAll(fxml);
+        } catch (IOException ex) {
+            Logger.getLogger(LoginController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        update();
+    }
+
+    @FXML
+    private void userView() {
+        currentStage = 2;
+        try {
+            fxml = FXMLLoader.load(getClass().getResource("userView.fxml"));
             mainVbox.getChildren().removeAll();
             mainVbox.getChildren().setAll(fxml);
         } catch (IOException ex) {
