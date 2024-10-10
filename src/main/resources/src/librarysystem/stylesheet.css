@@ -65,11 +65,6 @@
     -fx-background-radius: 100%;
 }
 
-.menu-btn {
-    -fx-background-color: transparent;
-    -fx-background-radius: 15px;
-}
-
 .tran-btn {
     -fx-background-color: transparent;
 }
@@ -89,6 +84,19 @@
     -fx-background-radius: 15px;
 }
 
+.menu-btn {
+    -fx-background-color: #F65867;
+    -fx-background-radius: 15px;
+}
+
+.icon-color {
+    -fx-fill: #797979;
+}
+
+.icon-active-color {
+    -fx-fill: #000000;
+}
+
 .circle-btn {
     -fx-background-color: #F65867;
     -fx-background-radius: 100%
@@ -104,4 +112,19 @@
     -fx-border-color: grey;
     -fx-border-width: 1px;
     -fx-border-radius: 7px;
+}
+
+.frame-image {
+    -fx-border-width: 1px;
+    -fx-border-color: #000;
+    -fx-background-radius: 8px;
+}
+
+.slider-book-detail {
+    -fx-background-color: #FDFCF7;
+    -fx-background-radius: 10px 10px 0 0;
+}
+
+.frame-shadow {
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.8), 50, 0.2, 3, 2);
 }

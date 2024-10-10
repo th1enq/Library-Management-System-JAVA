@@ -4,8 +4,8 @@
 <?import javafx.scene.chart.PieChart?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Line?>
@@ -18,81 +18,6 @@
             <Label layoutX="29.0" layoutY="28.0" text="Recommandations">
                <font>
                   <Font name="System Bold" size="20.0" />
-               </font>
-            </Label>
-            <ImageView fitHeight="175.0" fitWidth="149.0" layoutX="62.0" layoutY="68.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../../images/bookTest1.jpg" />
-               </image>
-            </ImageView>
-            <Label layoutX="56.0" layoutY="275.0" text="Familiar Motives">
-               <font>
-                  <Font name="System Bold" size="15.0" />
-               </font>
-            </Label>
-            <Label layoutX="71.0" layoutY="296.0" prefHeight="21.0" prefWidth="80.0" text="Delia James" textFill="#7a7a7a">
-               <font>
-                  <Font name="System Bold" size="13.0" />
-               </font>
-            </Label>
-            <ImageView fitHeight="175.0" fitWidth="149.0" layoutX="270.0" layoutY="81.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../../images/user.jpg" />
-               </image>
-            </ImageView>
-            <Label layoutX="329.0" layoutY="242.0" text="Title">
-               <font>
-                  <Font name="System Bold" size="15.0" />
-               </font>
-            </Label>
-            <Label layoutX="318.0" layoutY="275.0" prefHeight="21.0" prefWidth="52.0" text="Author">
-               <font>
-                  <Font name="System Bold" size="15.0" />
-               </font>
-            </Label>
-            <ImageView fitHeight="175.0" fitWidth="149.0" layoutX="500.0" layoutY="81.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../../images/user.jpg" />
-               </image>
-            </ImageView>
-            <Label layoutX="559.0" layoutY="242.0" text="Title">
-               <font>
-                  <Font name="System Bold" size="15.0" />
-               </font>
-            </Label>
-            <Label layoutX="548.0" layoutY="275.0" prefHeight="21.0" prefWidth="52.0" text="Author">
-               <font>
-                  <Font name="System Bold" size="15.0" />
-               </font>
-            </Label>
-            <ImageView fitHeight="175.0" fitWidth="149.0" layoutX="729.0" layoutY="81.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../../images/user.jpg" />
-               </image>
-            </ImageView>
-            <Label layoutX="788.0" layoutY="242.0" text="Title">
-               <font>
-                  <Font name="System Bold" size="15.0" />
-               </font>
-            </Label>
-            <Label layoutX="777.0" layoutY="275.0" prefHeight="21.0" prefWidth="52.0" text="Author">
-               <font>
-                  <Font name="System Bold" size="15.0" />
-               </font>
-            </Label>
-            <ImageView fitHeight="175.0" fitWidth="149.0" layoutX="954.0" layoutY="81.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../../images/user.jpg" />
-               </image>
-            </ImageView>
-            <Label layoutX="1013.0" layoutY="242.0" text="Title">
-               <font>
-                  <Font name="System Bold" size="15.0" />
-               </font>
-            </Label>
-            <Label layoutX="1002.0" layoutY="275.0" prefHeight="21.0" prefWidth="52.0" text="Author">
-               <font>
-                  <Font name="System Bold" size="15.0" />
                </font>
             </Label>
              <Pane layoutX="41.0" layoutY="335.0" prefHeight="358.0" prefWidth="607.0" styleClass="slider" stylesheets="@stylesheet.css">
@@ -140,11 +65,61 @@
                  </children>
              </Pane>
             <PieChart layoutX="686.0" layoutY="320.0" prefHeight="358.0" prefWidth="473.0" title="BOOK STATISTICS" />
-            <FontAwesomeIcon glyphName="STAR" layoutX="65.0" layoutY="268.0" size="1.2em" />
-            <FontAwesomeIcon glyphName="STAR" layoutX="87.0" layoutY="268.0" size="1.2em" />
-            <FontAwesomeIcon glyphName="STAR" layoutX="108.0" layoutY="267.0" size="1.2em" />
-            <FontAwesomeIcon glyphName="STAR" layoutX="129.0" layoutY="267.0" size="1.2em" />
-            <FontAwesomeIcon glyphName="STAR_HALF_FULL" layoutX="150.0" layoutY="267.0" size="1.2em" />
+            <AnchorPane layoutX="54.0" layoutY="77.0" prefHeight="173.0" prefWidth="129.0" styleClass="frame-image" stylesheets="@stylesheet.css">
+               <children>
+                  <ImageView fitHeight="173.0" fitWidth="135.0" layoutX="1.0" layoutY="1.0" pickOnBounds="true" preserveRatio="true" />
+               </children>
+            </AnchorPane>
+            <Label layoutX="105.0" layoutY="260.0" text="Title">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+            </Label>
+            <Label layoutX="105.0" layoutY="288.0" text="Author" textFill="#726060" />
+            <AnchorPane layoutX="274.0" layoutY="77.0" prefHeight="173.0" prefWidth="129.0" styleClass="frame-image" stylesheets="@stylesheet.css">
+               <children>
+                  <ImageView fitHeight="173.0" fitWidth="135.0" layoutX="2.0" layoutY="2.0" pickOnBounds="true" preserveRatio="true" />
+               </children>
+            </AnchorPane>
+            <AnchorPane layoutX="494.0" layoutY="77.0" prefHeight="173.0" prefWidth="129.0" styleClass="frame-image" stylesheets="@stylesheet.css">
+               <children>
+                  <ImageView fitHeight="173.0" fitWidth="135.0" layoutX="1.0" layoutY="1.0" pickOnBounds="true" preserveRatio="true" />
+               </children>
+            </AnchorPane>
+            <AnchorPane layoutX="714.0" layoutY="77.0" prefHeight="173.0" prefWidth="129.0" styleClass="frame-image" stylesheets="@stylesheet.css">
+               <children>
+                  <ImageView fitHeight="173.0" fitWidth="135.0" layoutX="1.0" layoutY="1.0" pickOnBounds="true" preserveRatio="true" />
+               </children>
+            </AnchorPane>
+            <AnchorPane layoutX="934.0" layoutY="77.0" prefHeight="173.0" prefWidth="129.0" styleClass="frame-image" stylesheets="@stylesheet.css">
+               <children>
+                  <ImageView fitHeight="173.0" fitWidth="135.0" layoutX="1.0" layoutY="1.0" pickOnBounds="true" preserveRatio="true" />
+               </children>
+            </AnchorPane>
+            <Label layoutX="325.0" layoutY="260.0" text="Title">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+            </Label>
+            <Label layoutX="325.0" layoutY="288.0" text="Author" textFill="#726060" />
+            <Label layoutX="545.0" layoutY="260.0" text="Title">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+            </Label>
+            <Label layoutX="545.0" layoutY="288.0" text="Author" textFill="#726060" />
+            <Label layoutX="765.0" layoutY="260.0" text="Title">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+            </Label>
+            <Label layoutX="765.0" layoutY="288.0" text="Author" textFill="#726060" />
+            <Label layoutX="985.0" layoutY="260.0" text="Title">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+            </Label>
+            <Label layoutX="985.0" layoutY="288.0" text="Author" textFill="#726060" />
          </children>
         </Pane>
     </children>
