@@ -141,3 +141,79 @@
     -fx-border-width: 1px;
     -fx-border-color: #000;
 }
+
+.slider-with-border {
+    -fx-border-width: 1px;
+    -fx-border-color: #000;
+    -fx-border-radius: 15px;
+}
+
+/* General TableView styling */
+.table-view {
+    -fx-background-color: #F9F9F9;
+    -fx-border-color: #D3D3D3;
+    -fx-border-width: 2;
+    -fx-padding: 10;
+    -fx-font-size: 14px;
+    -fx-text-fill: #333333;
+    -fx-font-family: "Segoe UI", sans-serif;
+}
+
+/* Header styling */
+.table-view .column-header-background {
+    -fx-background-color: #2196F3;  /* Blue background for header */
+    -fx-border-width: 0 0 1 0;
+    -fx-border-color: #E0E0E0;
+}
+
+.table-view .table-column .column-header {
+    -fx-font-size: 15px;
+    -fx-font-weight: bold;
+    -fx-text-fill: white;  /* White text on the header */
+}
+
+/*!* Row styling *!*/
+/*.table-view .table-row-cell {*/
+/*    -fx-background-color: #FFFFFF;  !* White background for rows *!*/
+/*    -fx-border-color: #E0E0E0;*/
+/*    -fx-alignment: CENTER_LEFT;*/
+/*}*/
+
+/*!* Alternating row colors *!*/
+/*.table-row-cell:odd {*/
+/*    -fx-background-color: #E3F2FD;  !* Light blue for alternate rows *!*/
+/*}*/
+
+/*.table-row-cell:selected {*/
+/*    -fx-background-color: #1976D2;  !* Dark blue for selected row *!*/
+/*}*/
+
+/*!* Cell hover effect *!*/
+/*.table-row-cell:hover {*/
+/*    -fx-background-color: #BBDEFB;  !* Lighter blue for hover effect *!*/
+/*}*/
+
+/*!* Table column customization *!*/
+/*.table-column {*/
+/*    -fx-alignment: CENTER_LEFT;  !* Align the text to the left *!*/
+/*}*/
+
+.table-cell {
+    -fx-padding: 8px;
+    -fx-font-size: 14px;
+    -fx-font-family: "Segoe UI", sans-serif;
+}
+
+/* Scroll bar styling */
+.scroll-bar {
+    -fx-background-color: #E0E0E0;
+}
+
+.scroll-bar:vertical .increment-button, .scroll-bar:vertical .decrement-button {
+    -fx-background-color: #90CAF9;  /* Light blue for scrollbar buttons */
+}
+
+.scroll-bar:vertical .thumb {
+    -fx-background-color: #2196F3;  /* Blue for scrollbar thumb */
+}
+

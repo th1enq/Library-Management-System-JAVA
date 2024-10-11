@@ -3,10 +3,6 @@ package src.librarysystem;
 import java.awt.*;
 import java.io.IOException;
 import java.net.URL;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.Statement;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -81,11 +77,6 @@ public class LoginController implements Initializable {
 
     @FXML
     private PasswordField studentPassword;
-
-    private Connection connect;
-    private PreparedStatement preprare;
-    private Statement statement;
-    private ResultSet result;
 
     @FXML
     public void login() {

@@ -1,12 +1,16 @@
 package src.librarysystem;
 
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
+import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.ProgressIndicator;
+import javafx.scene.control.TextField;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -14,6 +18,7 @@ import javafx.stage.StageStyle;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -35,6 +40,8 @@ public class MainGUI implements Initializable {
     public Button userButton;
     public Button settingButton;
     public FontAwesomeIcon logOutIcon;
+    @FXML
+    public TextField bookQuery;
     @FXML
     private Button logOutButton;
 
@@ -119,8 +126,102 @@ public class MainGUI implements Initializable {
             Logger.getLogger(LoginController.class.getName()).log(Level.SEVERE, null, ex);
         }
         update();
+        searchQuery();
     }
 
+    private String query;
+    private ArrayList<Book> result;
+
+    private void turnOnLoading() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("LoadingIndicator.fxml"));
+            fxml = loader.load();
+
+            mainVbox.getChildren().clear();
+            mainVbox.getChildren().setAll(fxml);
+
+        } catch (IOException ex) {
+            Logger.getLogger(LoginController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    private void searchQuery() {
+        bookQuery.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
+            if (event.getCode().toString().equals("ENTER")) {
+                currentStage = 1;
+                query = bookQuery.getText();
+                result = BookServices.searchBooks(query);
+
+                turnOnLoading();
+
+                bookQuery.clear();
+
+                new Thread(() -> {
+                    result = BookServices.searchBooks(query);
+
+                    Platform.runLater(() -> {
+                        try {
+                            FXMLLoader loader = new FXMLLoader(getClass().getResource("SearchBook.fxml"));
+                            fxml = loader.load();
+
+                            SearchBookController searchBookController = loader.getController();
+                            searchBookController.populateTable(result);
+
+                            mainVbox.getChildren().clear();
+                            mainVbox.getChildren().setAll(fxml);
+
+                            searchBookController.getSeeDetailBook().setOnAction(e -> {
+                                returnDetailBook(searchBookController.getCurrentBook());
+                            });
+
+                        } catch (IOException ex) {
+                            Logger.getLogger(LoginController.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                    });
+                }).start();
+            }
+        });
+        update();
+    }
+
+    private void returnSearchBook() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("SearchBook.fxml"));
+            fxml = loader.load();
+
+            SearchBookController searchBookController = loader.getController();
+            searchBookController.populateTable(result);
+
+            mainVbox.getChildren().clear();
+            mainVbox.getChildren().setAll(fxml);
+
+            searchBookController.getSeeDetailBook().setOnAction(e -> {
+                returnDetailBook(searchBookController.getCurrentBook());
+            });
+
+        } catch (IOException ex) {
+            Logger.getLogger(LoginController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    private void returnDetailBook(Book currentBook) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("BookViewDetail.fxml"));
+            fxml = loader.load();
+
+            BookViewDetailController bookViewDetailController = loader.getController();
+
+            mainVbox.getChildren().clear();
+            mainVbox.getChildren().setAll(fxml);
+
+            bookViewDetailController.initialize(currentBook);
+            bookViewDetailController.getReturnSearchBook().setOnAction(e -> {
+                returnSearchBook();
+            });
+        } catch (IOException ex) {
+            Logger.getLogger(LoginController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 
     private void update() {
         reset();

@@ -3,10 +3,6 @@ package src.librarysystem;
 import java.awt.*;
 import java.io.IOException;
 import java.net.URL;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.Statement;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -25,7 +21,6 @@ import javax.swing.*;
 
 public class SignInController implements Initializable {
 
-    DBInfo connect;
     public javafx.scene.control.TextField userName;
 
     @FXML
