@@ -175,7 +175,6 @@ public class DBInfo {
   public static void addSlip(String itemName) {
     try {
       Connection con = DBInfo.conn();
-      // Câu lệnh SQL đã sửa
       String sql = "INSERT INTO borrow_slip(user_id, book_name, borrow_date, return_date) VALUES (?, ?, ?, ?)";
       PreparedStatement preparedStatement = con.prepareStatement(sql);
 
@@ -287,6 +286,38 @@ public class DBInfo {
     }
   }
 
+  public static void deletePublisher(String a) {
+    try {
+      Connection con = DBInfo.conn();
+      String sql = "DELETE FROM publisher WHERE name = ?";
+      PreparedStatement preparedStatement = con.prepareStatement(sql);
+      preparedStatement.setString(1, a);
+      int rowsAffected = preparedStatement.executeUpdate();
+      System.out.println("DEL publisher successfully! Rows affected: " + rowsAffected);
+      preparedStatement.close();
+      con.close();
+    } catch (SQLException EE) {
+      System.out.println("Error deleting PUblisher");
+      EE.printStackTrace();
+    }
+  }
+
+  public static void deleteAuthor(String a) {
+    try {
+      Connection con = DBInfo.conn();
+      String sql = "DELETE FROM author WHERE name = ?";
+      PreparedStatement preparedStatement = con.prepareStatement(sql);
+      preparedStatement.setString(1, a);
+      int rowsAffected = preparedStatement.executeUpdate();
+      System.out.println("DEL author successfully! Rows affected: " + rowsAffected);
+      preparedStatement.close();
+      con.close();
+    } catch (SQLException EE) {
+      System.out.println("Error deleting author");
+      EE.printStackTrace();
+    }
+  }
+
   public static void addAuthor(String a) {
     try {
       Connection con = DBInfo.conn();
@@ -315,6 +346,22 @@ public class DBInfo {
       con.close();
     } catch (SQLException EE) {
       System.out.println("Error adding Category");
+      EE.printStackTrace();
+    }
+  }
+
+  public static void deleteCategory(String a) {
+    try {
+      Connection con = DBInfo.conn();
+      String sql = "DELETE FROM category WHERE name = ?";
+      PreparedStatement preparedStatement = con.prepareStatement(sql);
+      preparedStatement.setString(1, a);
+      int rowsAffected = preparedStatement.executeUpdate();
+      System.out.println("Category deleted successfully! Rows affected: " + rowsAffected);
+      preparedStatement.close();
+      con.close();
+    } catch (SQLException EE) {
+      System.out.println("Error deleting Category");
       EE.printStackTrace();
     }
   }
@@ -353,6 +400,30 @@ public class DBInfo {
       con.close();
     } catch (SQLException EE) {
       System.out.println("Error adding book");
+      EE.printStackTrace();
+    }
+  }
+
+  public static void deleteBook(Book A) {
+    try {
+      Connection con = DBInfo.conn();
+      if (!inDb(A.getTitle())) {
+        System.out.println("ko co quyen sach nay");
+        con.close();
+        return;
+      }
+      String sql = "DELETE FROM book WHERE title = ? LIMIT 1";
+      PreparedStatement preparedStatement = con.prepareStatement(sql);
+      preparedStatement.setString(1, A.getTitle());
+      int rowsAffected = preparedStatement.executeUpdate();
+      System.out.println("Book deleted successfully! Rows affected: " + rowsAffected);
+      deleteCategory(A.getCategory());
+      deletePublisher(A.getPublisher());
+      deleteAuthor(A.getAuthors());
+      preparedStatement.close();
+      con.close();
+    } catch (SQLException EE) {
+      System.out.println("Error deleting book");
       EE.printStackTrace();
     }
   }
@@ -431,7 +502,7 @@ public class DBInfo {
    * @param Password P
    */
   public static void login(String Username, String Password) {
-    if (checkPass(Username, Password) == true) {
+    if (checkPass(Username, Password)) {
       curPass = Password;
       curUsername = Username;
       curId = findUserId(Username, Password);
@@ -664,10 +735,10 @@ public class DBInfo {
   }
 
   /**
-   *
    * Hamf sort cac cuon sach theo yeu cau cho trc.
-   * @param author  tacgia
-   * @param category muc
+   *
+   * @param author    tacgia
+   * @param category  muc
    * @param publisher NXB
    * @return array list chua cac cuon sach thoa man
    */
@@ -751,9 +822,10 @@ public class DBInfo {
     //  ArrayList<CustomData> test = DBInfo.getBookList();
     // DBInfo.rateBook("1984",6);
     //ArrayList<Book> tmp = DBInfo.getBookList(null, "ALL", "ALL");
-    // Book myBook = new Book("Tit Example", "123456789", "Author Example", "Publisher Example",
-     //   "2024-10-10", "Description Example", "Thumbnail Example",
-       // "300", "Fiction", "19.99", "English", "http://buylink.com");
+    Book myBook = new Book("Tit Example", "123456789", "Author Example", "Publisher Example",
+        "2024-10-10", "Description Example", "Thumbnail Example",
+        "300", "Fiction", "19.99", "English", "http://buylink.com");
+     //DBInfo.deleteBook(myBook);
    // DBInfo.addBook(myBook);
   }
 
