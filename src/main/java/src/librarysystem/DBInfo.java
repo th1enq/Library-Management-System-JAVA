@@ -404,6 +404,10 @@ public class DBInfo {
     }
   }
 
+  /**
+   * xóa sách.
+   * @param A tên sách
+   */
   public static void deleteBook(Book A) {
     try {
       Connection con = DBInfo.conn();
