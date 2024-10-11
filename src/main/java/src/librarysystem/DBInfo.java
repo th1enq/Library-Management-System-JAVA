@@ -339,9 +339,9 @@ public class DBInfo {
       preparedStatement.setString(5, A.getThumbnail());
       preparedStatement.setString(6, A.getISBN());
       preparedStatement.setString(7, A.getDescription());
-      preparedStatement.setInt(8, A.getNumPage());
+      preparedStatement.setString(8, A.getNumPage());
       preparedStatement.setString(9, A.getCategory());
-      preparedStatement.setDouble(10, A.getPrice());
+      preparedStatement.setString(10, A.getPrice());
       preparedStatement.setString(11, A.getLanguage());
       preparedStatement.setString(12, A.getBuyLink());
       int rowsAffected = preparedStatement.executeUpdate();
@@ -663,6 +663,14 @@ public class DBInfo {
     return distinctValues;
   }
 
+  /**
+   *
+   * Hamf sort cac cuon sach theo yeu cau cho trc.
+   * @param author  tacgia
+   * @param category muc
+   * @param publisher NXB
+   * @return array list chua cac cuon sach thoa man
+   */
   public static ArrayList<Book> getBookList(String author, String category, String publisher) {
     ArrayList<Book> bookList = new ArrayList<>();
     Connection con = null;
@@ -695,7 +703,7 @@ public class DBInfo {
         prev++;
       }
 
-    //  System.out.println(sql);
+      //  System.out.println(sql);
       preparedStatement = con.prepareStatement(sql);
       resultSet = preparedStatement.executeQuery();
       while (resultSet.next()) {
@@ -706,9 +714,9 @@ public class DBInfo {
         String publishedDate = resultSet.getString("publishedDate");
         String description = resultSet.getString("description");
         String thumbnail = resultSet.getString("thumbnail");
-        int numPage = resultSet.getInt("numPage");
+        String numPage = resultSet.getString("numPage");
         String Category = resultSet.getString("category");
-        double price = resultSet.getDouble("price");
+        String price = resultSet.getString("price");
         String language = resultSet.getString("language");
         String buyLink = resultSet.getString("buyLink");
         String avail = resultSet.getString("avail");
@@ -742,128 +750,12 @@ public class DBInfo {
   public static void main(String[] args) {
     //  ArrayList<CustomData> test = DBInfo.getBookList();
     // DBInfo.rateBook("1984",6);
-    ArrayList<Book> tmp = DBInfo.getBookList(null, "ALL", "ALL");
+    //ArrayList<Book> tmp = DBInfo.getBookList(null, "ALL", "ALL");
+    // Book myBook = new Book("Tit Example", "123456789", "Author Example", "Publisher Example",
+     //   "2024-10-10", "Description Example", "Thumbnail Example",
+       // "300", "Fiction", "19.99", "English", "http://buylink.com");
+   // DBInfo.addBook(myBook);
   }
 
 }
 
-class Book {
-
-  private String title;
-  private String authors;
-  private String publisher;
-  private String publishedDate;
-  private String thumbnail;
-  private String ISBN;
-  private String description;
-  private int numPage;
-  private String category;
-  private double price;
-  private String language;
-  private String buyLink;
-  private String avail;
-  private int rating;
-
-  public Book(String title, String ISBN, String authors, String publisher,
-      String publishedDate,
-      String description, String thumbnail, int numPage, String category, double price,
-      String language, String buyLink) {
-    this.title = title;
-    this.ISBN = ISBN;
-    this.authors = authors;
-    this.publishedDate = publishedDate;
-    this.thumbnail = thumbnail;
-    this.publisher = publisher;
-    this.description = description;
-    this.numPage = numPage;
-    this.category = category;
-    this.price = price;
-    this.language = language;
-    this.buyLink = buyLink;
-    this.avail = "YES";
-    this.rating = 0;
-  }
-
-  public Book(String title, String ISBN, String authors, String publisher,
-      String publishedDate,
-      String description, String thumbnail, int numPage, String category, double price,
-      String language, String buyLink, String avail,int rating) {
-    this.title = title;
-    this.ISBN = ISBN;
-    this.authors = authors;
-    this.publishedDate = publishedDate;
-    this.thumbnail = thumbnail;
-    this.publisher = publisher;
-    this.description = description;
-    this.numPage = numPage;
-    this.category = category;
-    this.price = price;
-    this.language = language;
-    this.buyLink = buyLink;
-    this.avail = avail;
-    this.rating = rating;
-  }
-
-  public String getTitle() {
-    return title;
-  }
-
-  public String getAuthors() {
-    return authors;
-  }
-
-  public String getPublishedDate() {
-    return publishedDate;
-  }
-
-  public String getThumbnail() {
-    return thumbnail;
-  }
-
-  public String getPublisher() {
-    return publisher;
-  }
-
-  public String getISBN() {
-    return ISBN;
-  }
-
-  public String getDescription() {
-    return description;
-  }
-
-  public int getNumPage() {
-    return numPage;
-  }
-
-  public String getCategory() {
-    return category;
-  }
-
-  public double getPrice() {
-    return price;
-  }
-
-  public String getLanguage() {
-    return language;
-  }
-
-  public String getBuyLink() {
-    return buyLink;
-  }
-
-  public String getAvail() {
-    return avail;
-  }
-
-  public int getRating() {
-    return rating;
-  }
-
-  public void print() {
-    System.out.println(title + " "
-       + ISBN + " " + authors + " " + publisher + " " + publishedDate + " " + description + " "
-            + thumbnail + " " + numPage + " " + category + " " + price + " " +
-            language + " " + buyLink + " " +avail+   " " + rating);
-  }
-}
