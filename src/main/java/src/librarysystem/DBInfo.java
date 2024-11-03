@@ -76,7 +76,7 @@ public class DBInfo {
   public static String curUsername = "";
   public static String curPass = "";
   public static int curId = 0;
-  private static int numUser = 6;
+  public static int numUser = 6;
 
   static {
     try {
@@ -406,6 +406,7 @@ public class DBInfo {
 
   /**
    * xóa sách.
+   *
    * @param A tên sách
    */
   public static void deleteBook(Book A) {
@@ -432,6 +433,37 @@ public class DBInfo {
     }
   }
 
+  public static int getRecordCount() {
+    int count = 0;
+    String query = "SELECT COUNT(*) FROM registration";
+
+    try (Connection connection = DBInfo.conn()) {
+      PreparedStatement preparedStatement = connection.prepareStatement(query);
+      ResultSet resultSet = preparedStatement.executeQuery();
+      if (resultSet.next()) {
+        count = resultSet.getInt(1);
+      }
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
+
+    return count;
+  }
+
+  public static boolean isUsernameExists(String username) {
+    boolean exists = false;
+    String query = "SELECT 1 FROM registration WHERE username = ? LIMIT 1";
+    try (Connection connection = DBInfo.conn()) {
+      PreparedStatement preparedStatement = connection.prepareStatement(query);
+      preparedStatement.setString(1, username);
+      ResultSet resultSet = preparedStatement.executeQuery();
+      exists = resultSet.next();
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
+    return exists;
+  }
+
   /**
    * dang ki nguoi moi.
    *
@@ -447,7 +479,8 @@ public class DBInfo {
       Connection con = DBInfo.conn();
       String sql = "INSERT INTO registration(id,name, username, password, usertype) VALUE (?,?,?,?,?)";
       PreparedStatement preparedStatement = con.prepareStatement(sql);
-      numUser += 1;
+      numUser = getRecordCount() + 1;
+      System.out.println(numUser);
       preparedStatement.setInt(1, numUser);
       preparedStatement.setString(2, name);
       preparedStatement.setString(3, username);
@@ -826,11 +859,7 @@ public class DBInfo {
     //  ArrayList<CustomData> test = DBInfo.getBookList();
     // DBInfo.rateBook("1984",6);
     //ArrayList<Book> tmp = DBInfo.getBookList(null, "ALL", "ALL");
-    Book myBook = new Book("Tit Example", "123456789", "Author Example", "Publisher Example",
-        "2024-10-10", "Description Example", "Thumbnail Example",
-        "300", "Fiction", "19.99", "English", "http://buylink.com");
-     //DBInfo.deleteBook(myBook);
-   // DBInfo.addBook(myBook);
+    System.out.println(isUsernameExists("nguyenthif"));
   }
 
 }

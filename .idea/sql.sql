@@ -53,13 +53,14 @@ SET @saved_cs_client     = @@character_set_client;
 SET character_set_client = utf8;
 CREATE TABLE `registration` (
   `id` INT AUTO_INCREMENT NOT NULL,
-  `name` varchar(100) default NULL,
-  `username` varchar(20) default NULL,
-  `password` varchar(100) default NULL,
-  `usertype` varchar(10) default NULL,
-  PRIMARY KEY  (`id`,`username`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-SET character_set_client = @saved_cs_client;
+  `name` VARCHAR(100) DEFAULT NULL,
+  `username` VARCHAR(20) NOT NULL,
+  `password` VARCHAR(100) NOT NULL,
+  `usertype` ENUM('admin', 'user', 'guest') DEFAULT 'user',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `unique_username` (`username`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
 
 
 
