@@ -13,6 +13,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.PasswordField;
+import javafx.scene.layout.AnchorPane;
 import javafx.util.Duration;
 import javafx.scene.layout.VBox;
 import javafx.scene.Parent;
@@ -20,6 +21,8 @@ import javafx.scene.Parent;
 import javax.swing.*;
 
 public class LoginController implements Initializable {
+    @FXML
+    public AnchorPane loginParent;
     @FXML
     private VBox vbox;
 
@@ -70,6 +73,10 @@ public class LoginController implements Initializable {
                 Logger.getLogger(LoginController.class.getName()).log(Level.SEVERE, null, ex);
             }
         });
+    }
+
+    public AnchorPane getLoginParent() {
+        return loginParent;
     }
 
     @FXML

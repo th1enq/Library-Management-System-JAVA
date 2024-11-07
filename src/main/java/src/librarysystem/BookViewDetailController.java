@@ -8,6 +8,8 @@ import javafx.scene.image.ImageView;
 
 public class BookViewDetailController {
     @FXML
+    public ImageView qrImage;
+    @FXML
     private Label detailTitle;
     @FXML
     private Label detailAuthor;
@@ -43,6 +45,7 @@ public class BookViewDetailController {
                 // Set a default image if no thumbnail is provided
                 detailImage.setImage(new Image("resources/images/unnamed.jpg")); // Path to your default image
             }
+            qrImage.setImage(BookServices.generateQRCode(book.getBuyLink()));
         } else {
             // If book is null, set default messages for each label
             detailTitle.setText("No Book Selected");

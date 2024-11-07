@@ -1,14 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import java.lang.String?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ProgressIndicator?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="707.0" prefWidth="1180.0" styleClass="sidebar" stylesheets="@stylesheet.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="707.0" prefWidth="1180.0" styleClass="sidebar" stylesheets="@stylesheet.css" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="src.librarysystem.LoadingController">
     <children>
-        <Pane prefHeight="707.0" prefWidth="1180.0" styleClass="sidebar" stylesheets="@stylesheet.css">
-         <children>
-             <ProgressIndicator fx:id="loadingIndicator" layoutX="564.0" layoutY="327.0" prefHeight="200.0" prefWidth="200.0" progress="-1" visible="true" />
-         </children>
+        <Pane prefHeight="707.0" prefWidth="1180.0" stylesheets="@stylesheet.css">
+            <children>
+                <ProgressIndicator fx:id="loadingIndicator" layoutX="554.0" layoutY="283.0" prefHeight="100.0" prefWidth="100.0" progress="-1" visible="true" />
+                <Label fx:id="loadingLabel" layoutX="569.0" layoutY="378.0" styleClass="loading-label" text="Loading..." />
+            </children>
+         <styleClass>
+            <String fx:value="sidebar_loading" />
+            <String fx:value="sidebar" />
+         </styleClass>
         </Pane>
     </children>
 </VBox>

@@ -46,7 +46,7 @@
 .sidebar {
     -fx-background-color: #f9f9f9;
     -fx-background-radius: 20px 0 0 0;
-    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 10, 0.0, 2, 0);
+    /*-fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 10, 0.0, 2, 0);*/
 }
 
 .green-btn {
@@ -172,6 +172,8 @@
     -fx-text-fill: white;  /* White text on the header */
 }
 
+
+
 /*!* Row styling *!*/
 /*.table-view .table-row-cell {*/
 /*    -fx-background-color: #FFFFFF;  !* White background for rows *!*/
@@ -216,4 +218,90 @@
 .scroll-bar:vertical .thumb {
     -fx-background-color: #2196F3;  /* Blue for scrollbar thumb */
 }
+
+
+.rounded-btn {
+    -fx-background-radius: 30px;
+    -fx-background-color: transparent;
+}
+
+.password_see:hover {
+    -fx-background-color: #F2F2F2;
+}
+
+
+.sidebar_loading {
+    -fx-background-color: #f0f0f0; /* Màu nền cho sidebar */
+}
+
+.loading-label {
+    -fx-font-size: 24px; /* Kích thước chữ */
+    -fx-text-fill: #333333; /* Màu chữ */
+    -fx-layout-x: 0;
+    -fx-layout-y: 0;
+    -fx-font-weight: bold; /* Chữ đậm */
+}
+
+.progress-indicator {
+    -fx-progress-color: #4caf50; /* Màu sắc cho ProgressIndicator */
+}
+
+.progress-indicator:indeterminate {
+    -fx-background-color: transparent; /* Nền trong suốt khi đang load */
+}
+
+/* Khi loading xong */
+.progress-indicator:determinate {
+    -fx-progress-color: #4caf50; /* Màu sắc cho progress đã hoàn thành */
+}
+
+.sidebar-hidden {
+    -fx-border-width: 0;
+    -fx-effect: null;
+}
+
+.pink-btn:hover {
+    -fx-opacity: 0.8;
+}
+
+.custom-pie-chart {
+    -fx-background-color: #FFFFFF; /* Background color of the LineChart */
+    -fx-background-radius: 15px; /* Optional, for rounded corners */
+}
+
+.custom-line-chart {
+    -fx-background-color: #FFFFFF; /* Background color of the LineChart */
+    -fx-stroke: #002f7f; /* Customize line color */
+    -fx-legend-visible: true;
+    -fx-background-radius: 15px; /* Optional, for rounded corners */
+}
+
+.custom-line-chart .chart-series-line {
+    -fx-stroke-width: 2px;
+    -fx-stroke-line-cap: round;
+}
+
+.custom-line-chart .chart-legend-item-symbol {
+    -fx-background-color: #002f7f; /* Color for legend symbol */
+}
+
+.custom-x-axis {
+    -fx-tick-mark-visible: false; /* Ẩn các nét đứt trên trục x */
+    -fx-tick-label-fill: #666666; /* Màu sắc cho nhãn trục */
+    -fx-tick-label-font-size: 12px; /* Kích thước font cho nhãn trục */
+}
+
+.custom-y-axis {
+    -fx-tick-mark-visible: false; /* Ẩn các nét đứt trên trục y */
+    -fx-tick-label-fill: #666666; /* Màu sắc cho nhãn trục */
+    -fx-tick-label-font-size: 12px; /* Kích thước font cho nhãn trục */
+}
+
+
+/* Optional: Set the background of the chart area specifically */
+.custom-line-chart .chart-plot-background {
+    -fx-background-color: #FFFFFF; /* Background color for the chart area */
+}
+
+
 
