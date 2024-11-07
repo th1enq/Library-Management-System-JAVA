@@ -6,6 +6,8 @@ module src.librarysystem {
     requires jdk.compiler;
     requires com.google.gson;
     requires java.sql;
+    requires com.google.zxing;
+    requires com.google.zxing.javase;
 
 
     opens src.librarysystem to javafx.fxml;

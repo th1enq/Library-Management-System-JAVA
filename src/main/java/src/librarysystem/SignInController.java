@@ -7,12 +7,24 @@ import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import javafx.animation.TranslateTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.HBox;
+import javafx.scene.paint.Color;
+import javafx.stage.Screen;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import javafx.util.Duration;
 import javafx.scene.layout.VBox;
 import javafx.scene.Parent;
@@ -21,18 +33,123 @@ import javax.swing.*;
 
 public class SignInController implements Initializable {
 
-    public javafx.scene.control.TextField userName;
+    public javafx.scene.control.TextField userEmail;
 
     @FXML
-    private PasswordField password;
+    public Button passwordSeeing;
+    @FXML
+    public javafx.scene.control.TextField passwordVisible;
+    @FXML
+    public FontAwesomeIcon passwordSeeIcon;
+    @FXML
+    public Label signInErrorText;
 
     @FXML
+    public HBox errorAlert;
+
+    @FXML
+    private PasswordField userPassword;
+
+    private boolean isPasswordVisible = false;
+
+    private void returnHome() {
+        try {
+            // Load MainGUI.fxml
+            Parent mainRoot = FXMLLoader.load(getClass().getResource("MainGUI.fxml"));
+            Scene mainScene = new Scene(mainRoot);
+
+            // Get the current stage from any control in this scene
+            Stage currentStage = (Stage) userEmail.getScene().getWindow();
+
+            // Set the new scene on the current stage
+            currentStage.setScene(mainScene);
+
+            // Alternatively, you can set the position manually if you want more control
+             double x = (Screen.getPrimary().getVisualBounds().getWidth() - currentStage.getWidth()) / 2;
+             double y = (Screen.getPrimary().getVisualBounds().getHeight() - currentStage.getHeight()) / 2;
+             currentStage.setX(x);
+             currentStage.setY(y);
+
+            currentStage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void showAlert(String content) {
+        errorAlert.setVisible(true);
+        signInErrorText.setText(content);
+    }
+
     public void login() {
-//        connect.reg
+        if (userEmail.getText().isEmpty()) {
+            showAlert("Bạn chưa nhập email !!!");
+            return;
+        }
+
+        if(userPassword.getText().isEmpty()) {
+            showAlert("Bạn chưa nhập mật khẩu !!!");
+            return;
+        }
+
+        // Authenticate the user
+        if (DBInfo.checkPass(userEmail.getText(), userPassword.getText())) {
+            returnHome();
+        } else {
+            showAlert("Tài khoản hoặc mật khẩu không chính xác !!!");
+        }
     }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        userEmail.requestFocus();
 
+        passwordVisible.setManaged(false);
+        passwordVisible.setVisible(false);
+
+        // Bind the text of both fields
+        passwordVisible.textProperty().bindBidirectional(userPassword.textProperty());
+
+        errorAlert.setVisible(false);
+
+        userEmail.setOnKeyPressed(event -> {
+            if (event.getCode() == KeyCode.TAB) {
+                userPassword.requestFocus();
+                event.consume(); // Prevent default tab behavior
+            }
+            if (event.getCode() == KeyCode.ENTER) {
+                login();
+            }
+        });
+
+        userPassword.setOnKeyPressed(event -> {
+            if (event.getCode() == KeyCode.TAB) {
+                userEmail.requestFocus();
+                event.consume(); // Prevent default tab behavior
+            }
+            if (event.getCode() == KeyCode.ENTER) {
+                login();
+            }
+        });
+    }
+
+    public void togglePasswordVisibility(ActionEvent actionEvent) {
+        if (isPasswordVisible) {
+            passwordSeeIcon.setGlyphName("EYE_SLASH");
+            // Show PasswordField, hide TextField
+            passwordVisible.setVisible(false);
+            passwordVisible.setManaged(false);
+            userPassword.setVisible(true);
+            userPassword.setManaged(true);
+            isPasswordVisible = false;
+        } else {
+            // Show TextField, hide PasswordField
+            passwordSeeIcon.setGlyphName("EYE");
+            passwordVisible.setVisible(true);
+            passwordVisible.setManaged(true);
+            userPassword.setVisible(false);
+            userPassword.setManaged(false);
+            isPasswordVisible = true;
+        }
     }
 }

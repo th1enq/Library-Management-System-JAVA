@@ -3,12 +3,25 @@ package src.librarysystem;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.EncodeHintType;
+import com.google.zxing.WriterException;
+import com.google.zxing.client.j2se.MatrixToImageConfig;
+import com.google.zxing.client.j2se.MatrixToImageWriter;
+import com.google.zxing.common.BitMatrix;
+import com.google.zxing.qrcode.QRCodeWriter;
+import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
 
-import java.io.InputStreamReader;
+import javax.imageio.ImageIO;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Optional;
+import java.util.HashMap;
+import java.util.Map;
+import javafx.scene.image.Image;
 
 public class BookServices {
     public static ArrayList<Book> searchBooks(String query) {
@@ -104,7 +117,7 @@ public class BookServices {
                             language = volumeInfo.get("language").getAsString();
                         }
 
-                        String buyLink = saleInfo.has("buyLink") ? saleInfo.get("buyLink").getAsString() : "Unknown";
+                        String buyLink = volumeInfo.has("infoLink") ? volumeInfo.get("infoLink").getAsString() : "Unknown";
 
                         books.add(new Book(title, ISBN, authors, publisher, publishedDate, description, thumbnail, numPage, category, price, language, buyLink));
                     }
@@ -117,5 +130,40 @@ public class BookServices {
             e.printStackTrace();
         }
         return books;
+    }
+
+    public static Image generateQRCode(String bookUrl) {
+        int size = 200;
+        try {
+            QRCodeWriter qrCodeWriter = new QRCodeWriter();
+
+            Map<EncodeHintType, Object> hints = new HashMap<>();
+            hints.put(EncodeHintType.CHARACTER_SET, "UTF-8");
+            hints.put(EncodeHintType.ERROR_CORRECTION, ErrorCorrectionLevel.L);
+
+            BitMatrix bitMatrix = qrCodeWriter.encode(bookUrl, BarcodeFormat.QR_CODE, size, size, hints);
+
+            int qrColor = 0xFF000000; // QR code color (black)
+            int bgColor = 0xFFF9F9F9; // Background color (light gray)
+
+            MatrixToImageConfig config = new MatrixToImageConfig(qrColor, bgColor);
+
+            // Create the QR code image with custom colors
+            BufferedImage qrImage = MatrixToImageWriter.toBufferedImage(bitMatrix, config);
+
+            // Convert BufferedImage to ByteArrayInputStream
+            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+            ImageIO.write(qrImage, "png", outputStream);
+            ByteArrayInputStream inputStream = new ByteArrayInputStream(outputStream.toByteArray());
+
+            // Return JavaFX Image
+            return new Image(inputStream);
+
+        } catch (WriterException | IOException e) {
+            e.printStackTrace();
+        }
+
+        // Return null in case of failure
+        return null;
     }
 }
