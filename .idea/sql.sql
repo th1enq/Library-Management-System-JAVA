@@ -49,7 +49,7 @@ INSERT INTO book (title, authors, publisher, publishedDate, thumbnail, ISBN, des
 ('It', 'Stephen King', 'Viking', '1986-09-15', 'thumb20.jpg', '9780450411434', 'A group of kids facing a monster', '1138', 'Horror', '14.99', 'English', 'link20.com', 'YES', 5),
 -- Self-Help (2 books)
 ('The Power of Now', 'Eckhart Tolle', 'New World Library', '1997-10-01', 'thumb21.jpg', '9781577314806', 'A guide to spiritual enlightenment and living in the present moment.', '229', 'Self-Help', '14.99', 'English', 'link21.com', 'YES', 5),
-('Atomic Habits', 'James Clear', 'Avery', '2018-10-16', 'thumb22.jpg', '9780735211292', 'A proven way to build good habits and break bad ones.', '320', 'Self-Help', '18.99', 'English', 'link22.com', 'YES', 5);
+('Atomic Habits', 'James Clear', 'Penguin', '2018-10-16', 'thumb22.jpg', '9780735211292', 'A proven way to build good habits and break bad ones.', '320', 'Self-Help', '18.99', 'English', 'link22.com', 'YES', 5);
 
 DROP TABLE IF EXISTS `borrow_slip`;
 
