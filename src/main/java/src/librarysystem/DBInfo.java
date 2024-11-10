@@ -12,6 +12,8 @@ import java.util.ArrayList;
 import java.util.Vector;
 import javax.swing.event.UndoableEditEvent;
 import java.sql.Date;
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 
 /**
  * kieu du lieu gom 4 String.
@@ -33,35 +35,35 @@ class CustomData {
     this.thirst = thirst;
   }
 
-  public String getfirst() {
+  public String getFirst() {
     return first;
   }
 
-  public void setfirst(String first) {
+  public void setFirst(String first) {
     this.first = first;
   }
 
-  public String getsecond() {
+  public String getSecond() {
     return second;
   }
 
-  public void setsecond(String second) {
+  public void setSecond(String second) {
     this.second = second;
   }
 
-  public String getfourth() {
+  public String getFourth() {
     return fourth;
   }
 
-  public void setfourth(String fourth) {
+  public void setFourth(String fourth) {
     this.fourth = fourth;
   }
 
-  public String getthirst() {
+  public String getThirst() {
     return thirst;
   }
 
-  public void setthirst(String thirst) {
+  public void setThirst(String thirst) {
     this.thirst = thirst;
   }
 
@@ -71,6 +73,30 @@ class CustomData {
 
 }
 
+class strPair {
+
+  private String first;
+  private String second;
+
+  public strPair(String first, String second) {
+    this.first = first;
+    this.second = second;
+  }
+
+  public String getFirst() {
+    return first;
+  }
+
+  public String getSecond() {
+    return second;
+  }
+
+  @Override
+  public String toString() {
+    return "(" + first + ", " + second + ")";
+  }
+}
+
 public class DBInfo {
 
   public static String curUsername = "";
@@ -78,7 +104,7 @@ public class DBInfo {
   public static int curId = 0;
   public static int numUser;
   public static String userType;
-  public static ArrayList<String> noti;
+  public static ArrayList<strPair> noti;
 
   static {
     try {
@@ -128,7 +154,7 @@ public class DBInfo {
   /**
    * check xem trong Database co quyen sach can tim ko?.
    *
-   * @param itemName ten quyen sach can tim
+   * @param itemName ten Quyen sach can tim
    * @return
    */
   public static boolean inDb(String itemName) {
@@ -194,6 +220,7 @@ public class DBInfo {
       preparedStatement.setString(2, itemName);
       int rowAffected = preparedStatement.executeUpdate();
       if (rowAffected > 0) {
+        noti = getNotifications();
         System.out.println("Thay doi trang thai dong" + rowAffected);
         addSlip(itemName);
       }
@@ -222,6 +249,7 @@ public class DBInfo {
       rowsAffected = preparedStatement.executeUpdate();
       if (rowsAffected > 0) {
         System.out.println("xoa khoi slip thành công!");
+        noti = getNotifications();
         preparedStatement.close();
         con.close();
         Connection con2 = DBInfo.conn();
@@ -489,7 +517,7 @@ public class DBInfo {
     try {
       Connection con = DBInfo.conn();
       if (con == null) {
-        System.out.println("Ngu");
+        System.out.println("KO kết nối đc với db");
         return false;
       }
       PreparedStatement preparedStatement = con.prepareStatement(sql);
@@ -525,32 +553,50 @@ public class DBInfo {
       curUsername = Username;
       curId = findUserId(Username, Password);
       userType = findUserType(Username, Password);
-      // noti = getNoti(curId);
+      noti = getNotifications();
     }
   }
 
-  public static void addNoti(int userId, String title, String content) {
+  public static ArrayList<strPair> getNotifications() {
+    ArrayList<strPair> ret = new ArrayList<>();
+    try {
+      Connection conn = DBInfo.conn();
+      // sach sap den han tra
+      String sqlUpcoming = "SELECT book_name, return_date FROM borrow_slip WHERE return_date BETWEEN CURDATE() AND DATE_ADD(CURDATE(), INTERVAL 11 DAY) ORDER BY return_date";
+      PreparedStatement preparedStatement = conn.prepareStatement(sqlUpcoming);
+      ResultSet resultSet = preparedStatement.executeQuery();
 
-    try (Connection connection = DBInfo.conn()) {
-      String sql = "INSERT INTO notifications (user_id, title, content) VALUES (?, ?, ?)";
-      PreparedStatement statement = connection.prepareStatement(sql);
+      while (resultSet.next()) {
+        String bookName = resultSet.getString("book_name");
+        LocalDate returnDate = resultSet.getDate("return_date").toLocalDate();
+        LocalDate today = LocalDate.now();
+        long daysBetween = ChronoUnit.DAYS.between(today, returnDate);
 
-      // Set the values for the prepared statement
-      statement.setInt(1, userId);
-      statement.setString(2, title);
-      statement.setString(3, content);
-
-      // Execute the insertion
-      int rowsInserted = statement.executeUpdate();
-      if (rowsInserted > 0) {
-        System.out.println("A new notification was inserted successfully!");
-
+        ret.add(new strPair(daysBetween + " ngày nữa là đến hạn trả cuốn: ", bookName));
       }
+
+      // sach qua han
+      String sqlOverdue = "SELECT book_name, return_date FROM borrow_slip WHERE return_date < CURDATE()";
+      PreparedStatement statement2 = conn.prepareStatement(sqlOverdue);
+      ResultSet resultSet2 = statement2.executeQuery();
+
+      while (resultSet2.next()) {
+        String bookName = resultSet2.getString("book_name");
+        LocalDate returnDate = resultSet2.getDate("return_date").toLocalDate();
+        LocalDate today = LocalDate.now();
+        long daysOverdue = ChronoUnit.DAYS.between(returnDate, today);
+        ret.add(new strPair("Đã quá hạn " + daysOverdue + " ngày để trả cuốn: ", bookName));
+      }
+      resultSet.close();
+      resultSet2.close();
+      preparedStatement.close();
+      statement2.close();
+      conn.close();
     } catch (SQLException e) {
       e.printStackTrace();
     }
+    return ret;
   }
-
   public static String findUserType(String username, String password) {
     try {
       Connection con = DBInfo.conn();
@@ -817,30 +863,7 @@ public class DBInfo {
     ResultSet resultSet = null;
     try {
       con = DBInfo.conn();
-      int prev = 0;
-      String sql = "SELECT title, ISBN, authors, publisher, publishedDate, description,thumbnail, numPage, category, price, language, buyLink,avail,rating FROM book";
-      if (author != null && !author.equals("ALL")) {
-        sql += (" WHERE author = " + "'" + author + "'");
-        prev++;
-      }
-      if (category != null && !category.equals("ALL")) {
-        if (prev == 0) {
-          sql += " WHERE ";
-        } else {
-          sql += " and ";
-        }
-        sql += ("category = " + "'" + category + "'");
-        prev++;
-      }
-      if (publisher != null && !publisher.equals("ALL")) {
-        if (prev == 0) {
-          sql += " WHERE ";
-        } else {
-          sql += " and ";
-        }
-        sql += ("publisher = " + "'" + publisher + "'");
-        prev++;
-      }
+      final String sql = getString(author, category, publisher);
 
       //  System.out.println(sql);
       preparedStatement = con.prepareStatement(sql);
@@ -886,11 +909,43 @@ public class DBInfo {
     return bookList;
   }
 
+  private static String getString(String author, String category, String publisher) {
+    int prev = 0;
+    String sql = "SELECT title, ISBN, authors, publisher, publishedDate, description,thumbnail, numPage, category, price, language, buyLink,avail,rating FROM book";
+    if (author != null && !author.equals("ALL")) {
+      sql += (" WHERE author = " + "'" + author + "'");
+      prev++;
+    }
+    if (category != null && !category.equals("ALL")) {
+      if (prev == 0) {
+        sql += " WHERE ";
+      } else {
+        sql += " and ";
+      }
+      sql += ("category = " + "'" + category + "'");
+      prev++;
+    }
+    if (publisher != null && !publisher.equals("ALL")) {
+      if (prev == 0) {
+        sql += " WHERE ";
+      } else {
+        sql += " and ";
+      }
+      sql += ("publisher = " + "'" + publisher + "'");
+      prev++;
+    }
+    return sql;
+  }
+
   public static void main(String[] args) {
 
     login("vuvane@gmail.com", "password112");
-    // returnBook("Effective Java");
-    borrowBook("Effective Java");
+    returnBook("Effective Java");
+    //returnBook("Clean Code");
+   // borrowBook("Effective Java");
+   // borrowBook("Clean Code");
+    for(strPair i: noti){
+      System.out.println(i.getFirst() + ' ' + i.getSecond());
+    }
   }
-
 }

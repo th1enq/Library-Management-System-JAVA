@@ -52,10 +52,11 @@ public class DashBoardController {
 
         PieChart.Data science = new PieChart.Data("Science", 10);
         PieChart.Data manga = new PieChart.Data("Manga", 20);
-        PieChart.Data magazine = new PieChart.Data("Magazine", 50);
+        PieChart.Data magazine = new PieChart.Data("Magazine", 40);
         PieChart.Data horror = new PieChart.Data("Horror", 20);
+        PieChart.Data self_help = new PieChart.Data("Self_Help", 10);
 
-        pieChart.getData().addAll(science, manga, magazine, horror);
+        pieChart.getData().addAll(science, manga, magazine, horror, self_help);
 
         for (PieChart.Data data : pieChart.getData()) {
             Tooltip tooltip = new Tooltip();

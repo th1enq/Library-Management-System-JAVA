@@ -22,19 +22,34 @@ CREATE TABLE `book` (
     avail VARCHAR(50) NOT NULL DEFAULT "YES",
     rating INT NOT NULL DEFAULT 0
 );
-INSERT INTO book ( title, authors, publisher, publishedDate, thumbnail, ISBN, description, numPage, category, price, language, buyLink)
-VALUES
-('Effective Java', 'Joshua Bloch', 'Addison-Wesley', '2018-01-06', 'https://x...content-available-to-author-only...x.com/effective_java.jpg', '9780134685991', 'A comprehensive guide to best practices in Java programming.', 416, 'Programming', 45.50, 'English', 'https://x...content-available-to-author-only...x.com/buy_effective_java'),
-('Clean Code', 'Robert C. Martin', 'Prentice Hall', '2008-08-11', 'https://x...content-available-to-author-only...x.com/clean_code.jpg', '9780132350884', 'A handbook of agile software craftsmanship.', 464, 'Programming', 42.75, 'English', 'https://x...content-available-to-author-only...x.com/buy_clean_code'),
-('The Pragmatic Programmer', 'Andy Hunt, Dave Thomas', 'Addison-Wesley', '1999-10-30', 'https://x...content-available-to-author-only...x.com/pragmatic_programmer.jpg', '9780201616224', 'Tips and practices to become a pragmatic programmer.', 352, 'Programming', 39.99, 'English', 'https://x...content-available-to-author-only...x.com/buy_pragmatic_programmer'),
-('Head First Java', 'Kathy Sierra, Bert Bates', 'O’Reilly Media', '2005-02-09', 'https://x...content-available-to-author-only...x.com/head_first_java.jpg', '9780596009205', 'A brain-friendly guide to learning Java.', 720, 'Programming', 38.85, 'English', 'https://x...content-available-to-author-only...x.com/buy_head_first_java'),
-( 'Java: The Complete Reference', 'Herbert Schildt', 'McGraw-Hill', '2018-04-09', 'https://x...content-available-to-author-only...x.com/java_complete_reference.jpg', '9781260440232', 'Comprehensive reference guide to Java programming.', 1248, 'Programming', 59.99, 'English', 'https://x...content-available-to-author-only...x.com/buy_java_complete_reference'),
-( 'Introduction to Algorithms', 'Thomas H. Cormen, Charles E. Leiserson, Ronald L. Rivest, Clifford Stein', 'MIT Press', '2009-07-31', 'https://x...content-available-to-author-only...x.com/introduction_algorithms.jpg', '9780262033848', 'The bible of algorithms used in computer science.', 1292, 'Computer Science', 80.99, 'English', 'https://x...content-available-to-author-only...x.com/buy_introduction_algorithms'),
-( 'Design Patterns', 'Erich Gamma, Richard Helm, Ralph Johnson, John Vlissides', 'Addison-Wesley', '1994-10-31', 'https://x...content-available-to-author-only...x.com/design_patterns.jpg', '9780201633610', 'Guide to design patterns in software engineering.', 395, 'Software Engineering', 54.95, 'English', 'https://x...content-available-to-author-only...x.com/buy_design_patterns'),
-( 'Refactoring: Improving the Design of Existing Code', 'Martin Fowler', 'Addison-Wesley', '1999-07-08', 'https://x...content-available-to-author-only...x.com/refactoring.jpg', '9780201485677', 'Techniques to improve the design of existing code.', 455, 'Software Engineering', 49.99, 'English', 'https://x...content-available-to-author-only...x.com/buy_refactoring'),
-( 'Artificial Intelligence: A Modern Approach', 'Stuart Russell, Peter Norvig', 'Pearson', '2020-04-01', 'https://x...content-available-to-author-only...x.com/ai_modern_approach.jpg', '9780134610993', 'Comprehensive guide to artificial intelligence.', 1152, 'Artificial Intelligence', 69.50, 'English', 'https://x...content-available-to-author-only...x.com/buy_ai_modern_approach'),
-( 'Cracking the Coding Interview', 'Gayle Laakmann McDowell', 'CareerCup', '2015-07-01', 'https://x...content-available-to-author-only...x.com/cracking_coding_interview.jpg', '9780984782857', '189 programming interview questions and solutions.', 706, 'Career Development', 35.95, 'English', 'https://x...content-available-to-author-only...x.com/buy_cracking_coding_interview');
+INSERT INTO book (title, authors, publisher, publishedDate, thumbnail, ISBN, description, numPage, category, price, language, buyLink, avail, rating) VALUES
+-- Science (2 books)
+('A Brief History of Time', 'Stephen Hawking', 'Bantam', '1988-04-01', 'thumb1.jpg', '9780553380163', 'A landmark volume in science writing by one of the great minds of our time', '212', 'Science', '18.99', 'English', 'link1.com', 'YES', 5),
+('The Selfish Gene', 'Richard Dawkins', 'Oxford University Press', '1976-08-30', 'thumb2.jpg', '9780192860927', 'A classic exposition of evolutionary biology', '360', 'Science', '15.99', 'English', 'link2.com', 'YES', 5),
 
+-- Manga (4 books)
+('Naruto', 'Masashi Kishimoto', 'Shueisha', '1999-09-21', 'thumb3.jpg', '9781569319000', 'A young ninja who seeks recognition from his peers', '220', 'Manga', '9.99', 'Japanese', 'link3.com', 'YES', 5),
+('One Piece', 'Eiichiro Oda', 'Shueisha', '1997-07-22', 'thumb4.jpg', '9784088725093', 'The story of a young pirate and his adventures', '230', 'Manga', '9.99', 'Japanese', 'link4.com', 'YES', 5),
+('Attack on Titan', 'Hajime Isayama', 'Kodansha', '2009-09-09', 'thumb5.jpg', '9781612620244', 'Humanity fights against giant humanoid Titans', '192', 'Manga', '10.99', 'Japanese', 'link5.com', 'YES', 4),
+('My Hero Academia', 'Kohei Horikoshi', 'Shueisha', '2014-07-07', 'thumb6.jpg', '9781421582696', 'A boy born without superpowers in a world where they are common', '240', 'Manga', '10.99', 'Japanese', 'link6.com', 'YES', 5),
+
+-- Magazine (10 books)
+('National Geographic', 'Various', 'National Geographic Partners', '2023-01-01', 'thumb7.jpg', '9781426217777', 'Exploring the world and all its beauty', '100', 'Magazine', '5.99', 'English', 'link7.com', 'YES', 5),
+('Time', 'Various', 'Time USA', '2023-02-01', 'thumb8.jpg', '9781618932648', 'Covers world news, politics, and culture', '100', 'Magazine', '6.99', 'English', 'link8.com', 'YES', 5),
+('Forbes', 'Various', 'Forbes Media', '2023-03-01', 'thumb9.jpg', '9781618932649', 'Leading source for reliable business news', '90', 'Magazine', '6.99', 'English', 'link9.com', 'YES', 5),
+('The Economist', 'Various', 'The Economist Group', '2023-04-01', 'thumb10.jpg', '9781618932650', 'Delivers current affairs and international business news', '120', 'Magazine', '7.99', 'English', 'link10.com', 'YES', 5),
+('Scientific American', 'Various', 'Springer Nature', '2023-05-01', 'thumb11.jpg', '9781618932651', 'Popular science magazine', '110', 'Magazine', '7.99', 'English', 'link11.com', 'YES', 4),
+('People', 'Various', 'Meredith Corporation', '2023-06-01', 'thumb12.jpg', '9781618932652', 'Celebrity and human-interest stories', '95', 'Magazine', '5.99', 'English', 'link12.com', 'YES', 3),
+('Vogue', 'Various', 'Condé Nast', '2023-07-01', 'thumb13.jpg', '9781618932653', 'Fashion, beauty, and lifestyle magazine', '100', 'Magazine', '6.99', 'English', 'link13.com', 'YES', 5),
+('New Scientist', 'Various', 'New Scientist Ltd.', '2023-08-01', 'thumb14.jpg', '9781618932654', 'Science and technology news', '110', 'Magazine', '8.99', 'English', 'link14.com', 'YES', 4),
+-- Horror (4 books)
+('Dracula', 'Bram Stoker', 'Archibald Constable and Company', '1897-05-26', 'thumb17.jpg', '9781435159570', 'The story of the famous vampire', '418', 'Horror', '12.99', 'English', 'link17.com', 'YES', 5),
+('Frankenstein', 'Mary Shelley', 'Lackington, Hughes, Harding, Mavor & Jones', '1818-01-01', 'thumb18.jpg', '9780486282114', 'The story of Victor Frankenstein and his monstrous creation', '280', 'Horror', '9.99', 'English', 'link18.com', 'YES', 5),
+('The Shining', 'Stephen King', 'Doubleday', '1977-01-28', 'thumb19.jpg', '9780385121675', 'A family isolated in a haunted hotel', '447', 'Horror', '10.99', 'English', 'link19.com', 'YES', 5),
+('It', 'Stephen King', 'Viking', '1986-09-15', 'thumb20.jpg', '9780450411434', 'A group of kids facing a monster', '1138', 'Horror', '14.99', 'English', 'link20.com', 'YES', 5),
+-- Self-Help (2 books)
+('The Power of Now', 'Eckhart Tolle', 'New World Library', '1997-10-01', 'thumb21.jpg', '9781577314806', 'A guide to spiritual enlightenment and living in the present moment.', '229', 'Self-Help', '14.99', 'English', 'link21.com', 'YES', 5),
+('Atomic Habits', 'James Clear', 'Avery', '2018-10-16', 'thumb22.jpg', '9780735211292', 'A proven way to build good habits and break bad ones.', '320', 'Self-Help', '18.99', 'English', 'link22.com', 'YES', 5);
 
 DROP TABLE IF EXISTS `borrow_slip`;
 
@@ -45,8 +60,6 @@ CREATE TABLE `borrow_slip` (
     borrow_date DATE NOT NULL,
     return_date DATE NOT NULL
 );
-
-
 
 
 DROP TABLE IF EXISTS `registration`;
@@ -86,19 +99,21 @@ CREATE TABLE `author` (
     id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(255)
 );
-INSERT INTO `author` (name)
-VALUES
-('ALL'),
-('Joshua Bloch'),
-('Robert C. Martin'),
-('Andy Hunt, Dave Thomas'),
-('Kathy Sierra, Bert Bates'),
-('Herbert Schildt'),
-('Thomas H. Cormen, Charles E. Leiserson, Ronald L. Rivest, Clifford Stein'),
-('Erich Gamma, Richard Helm, Ralph Johnson, John Vlissides'),
-('Martin Fowler'),
-('Stuart Russell, Peter Norvig'),
-('Gayle Laakmann McDowell');
+INSERT INTO author (name) VALUES
+("ALL"),
+('Stephen Hawking'),
+('Richard Dawkins'),
+('Masashi Kishimoto'),
+('Eiichiro Oda'),
+('Hajime Isayama'),
+('Kohei Horikoshi'),
+('Various'),
+('Bram Stoker'),
+('Mary Shelley'),
+('Stephen King'),
+('Eckhart Tolle'),
+('James Clear');
+
 
 
 DROP TABLE IF EXISTS ` publisher`;
@@ -106,19 +121,25 @@ CREATE TABLE publisher (
     id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(255)
 );
-INSERT INTO `publisher` (name)
-VALUES
-('ALL'),
-('Addison-Wesley'),
-('Prentice Hall'),
-('Addison-Wesley'),
-('O’Reilly Media'),
-('McGraw-Hill'),
-('MIT Press'),
-('Addison-Wesley'),
-('Addison-Wesley'),
-('Pearson'),
-('CareerCup');
+INSERT INTO publisher (name) VALUES
+("ALL"),
+('Bantam'),
+('Oxford University Press'),
+('Shueisha'),
+('Kodansha'),
+('Avery'),
+('Doubleday'),
+('Viking'),
+('New World Library'),
+('Springer Nature'),
+('Meredith Corporation'),
+('Condé Nast'),
+('National Geographic Partners'),
+('Time USA'),
+('Forbes Media'),
+('The Economist Group'),
+('Pearson');
+
 
 DROP TABLE IF EXISTS ` category`;
 
@@ -126,19 +147,14 @@ CREATE TABLE `category` (
     id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(255)
 );
-INSERT INTO `category` (name)
-VALUES
-('ALL'),
-('Programming'),
-('Programming'),
-('Programming'),
-('Programming'),
-('Programming'),
-('Computer Science'),
-('Software Engineering'),
-('Software Engineering'),
-('Artificial Intelligence'),
-('Career Development');
+INSERT INTO category (name) VALUES
+("ALL"),
+('Science'),
+('Manga'),
+('Magazine'),
+('Horror'),
+('Self-Help');
+
 
 DROP TABLE IF EXISTS `notifications`;
 

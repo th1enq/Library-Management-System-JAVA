@@ -71,12 +71,12 @@
                   </Pane>
                </children>
             </Pane>
-            <Label layoutX="34.0" layoutY="43.0" prefHeight="47.0" prefWidth="92.0" text="Hello," textFill="#282423">
+            <Label layoutX="34.0" layoutY="43.0" prefHeight="47.0" prefWidth="92.0" text="Hello" textFill="#282423">
                <font>
                   <Font name="System Bold" size="32.0" />
                </font>
             </Label>
-            <Label layoutX="126.0" layoutY="43.0" prefHeight="47.0" prefWidth="161.0" text="23020161!" textFill="#f65867">
+            <Label layoutX="126.0" layoutY="43.0" prefHeight="47.0" prefWidth="161.0" text="!" textFill="#f65867">
                <font>
                   <Font name="System Bold" size="32.0" />
                </font>
@@ -86,25 +86,7 @@
                   <Font name="System Bold" size="21.0" />
                </font>
             </Label>
-            <Pane layoutX="934.0" layoutY="165.0" prefHeight="121.0" prefWidth="264.0" styleClass="slider" stylesheets="@stylesheet.css">
-               <children>
-                  <Label layoutX="21.0" layoutY="80.0" prefHeight="21.0" prefWidth="128.0" text="Borrowed Books" textFill="#282423">
-                     <font>
-                        <Font name="System Bold" size="15.0" />
-                     </font>
-                  </Label>
-                  <Label layoutX="21.0" layoutY="27.0" prefWidth="104.0" text="30" textFill="#282423">
-                     <font>
-                        <Font name="System Bold" size="32.0" />
-                     </font>
-                  </Label>
-                  <Pane layoutX="210.0" layoutY="7.0" prefHeight="41.0" prefWidth="40.0" styleClass="circle-btn" stylesheets="@stylesheet.css">
-                     <children>
-                        <FontAwesomeIcon glyphName="CUBE" layoutX="9.0" layoutY="28.0" size="1.8em" />
-                     </children>
-                  </Pane>
-               </children>
-            </Pane>
+
             <PieChart fx:id="pieChart" layoutX="42.0" layoutY="311.0" prefHeight="371.0" prefWidth="424.0" styleClass="custom-pie-chart" stylesheets="@stylesheet.css" />
             <LineChart fx:id="lineChart" layoutX="541.0" layoutY="311.0" prefHeight="389.0" prefWidth="657.0" styleClass="custom-line-chart" stylesheets="@stylesheet.css">
               <xAxis>
