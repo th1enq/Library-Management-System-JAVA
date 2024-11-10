@@ -37,13 +37,14 @@ VALUES
 
 
 DROP TABLE IF EXISTS `borrow_slip`;
-CREATE TABLE  `borrow_slip`(
+
+CREATE TABLE `borrow_slip` (
+    id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT NOT NULL,
-    book_name varchar(100) NOT NULL,
+    book_name VARCHAR(100) NOT NULL,
     borrow_date DATE NOT NULL,
     return_date DATE NOT NULL
 );
-
 
 
 
@@ -56,7 +57,7 @@ CREATE TABLE `registration` (
   `name` VARCHAR(100) DEFAULT NULL,
   `username` VARCHAR(20) NOT NULL,
   `password` VARCHAR(100) NOT NULL,
-  `usertype` ENUM('admin', 'user', 'guest') DEFAULT 'user',
+  `usertype` ENUM('admin', 'user') DEFAULT 'user',
   PRIMARY KEY (`id`),
   UNIQUE KEY `unique_username` (`username`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -139,4 +140,13 @@ VALUES
 ('Artificial Intelligence'),
 ('Career Development');
 
+DROP TABLE IF EXISTS `notifications`;
+
+CREATE TABLE `notifications` (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    title VARCHAR(255) NOT NULL,
+    content TEXT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
 
