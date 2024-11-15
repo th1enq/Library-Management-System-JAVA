@@ -1,6 +1,5 @@
 package src.librarysystem;
 
-import java.awt.desktop.SystemEventListener;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -12,6 +11,8 @@ import java.util.ArrayList;
 import java.util.Vector;
 import javax.swing.event.UndoableEditEvent;
 import java.sql.Date;
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 
 /**
  * kieu du lieu gom 4 String.
@@ -22,53 +23,77 @@ class CustomData {
 
     private String second;
 
-    private String thirst;
+    private String third;
 
     private String fourth;
 
-    public CustomData(String first, String second, String thirst, String fourth) {
+    public CustomData(String first, String second, String third, String fourth) {
         this.first = first;
         this.second = second;
         this.fourth = fourth;
-        this.thirst = thirst;
+        this.third = third;
     }
 
-    public String getfirst() {
+    public String getFirst() {
         return first;
     }
 
-    public void setfirst(String first) {
+    public void setFirst(String first) {
         this.first = first;
     }
 
-    public String getsecond() {
+    public String getSecond() {
         return second;
     }
 
-    public void setsecond(String second) {
+    public void setSecond(String second) {
         this.second = second;
     }
 
-    public String getfourth() {
+    public String getFourth() {
         return fourth;
     }
 
-    public void setfourth(String fourth) {
+    public void setFourth(String fourth) {
         this.fourth = fourth;
     }
 
-    public String getthirst() {
-        return thirst;
+    public String getThird() {
+        return third;
     }
 
-    public void setthirst(String thirst) {
-        this.thirst = thirst;
+    public void setthird(String third) {
+        this.third = third;
     }
 
     public void print() {
-        System.out.println(first + " " + second + " " + thirst + " " + fourth);
+        System.out.println(first + " " + second + " " + third + " " + fourth);
     }
 
+}
+
+class strPair {
+
+    private String first;
+    private String second;
+
+    public strPair(String first, String second) {
+        this.first = first;
+        this.second = second;
+    }
+
+    public String getFirst() {
+        return first;
+    }
+
+    public String getSecond() {
+        return second;
+    }
+
+    @Override
+    public String toString() {
+        return "(" + first + ", " + second + ")";
+    }
 }
 
 public class DBInfo {
@@ -76,7 +101,9 @@ public class DBInfo {
     public static String curUsername = "";
     public static String curPass = "";
     public static int curId = 0;
-    private static int numUser = 6;
+    public static int numUser;
+    public static String userType;
+    public static ArrayList<strPair> noti;
 
     static {
         try {
@@ -92,10 +119,11 @@ public class DBInfo {
         Connection con = null;
         try {
             con = DriverManager.getConnection("jdbc:mysql://localhost:3306/TESTT", "root", "");
-            System.out.println("Connection Established...");
+            System.out.println("Ket noi thanh cong");
         } catch (SQLException e) {
             e.printStackTrace();
         }
+
         return con;
     }
 
@@ -115,40 +143,17 @@ public class DBInfo {
     public static Vector<Vector> outerVector1;
     public static Vector colsName1;
 
-    public static void searchBooks_by(String itemName, String values) throws SQLException {
-
-    }
 
     public static Vector<Vector> outerVector2;
     public static Vector colsName2;
 
-    public static void viewLibrarians(String usertype) throws SQLException {
-
-    }
 
     public static String value;
-
-    public static String getNotice() {
-        Connection con = DBInfo.conn();
-        String query = "SELECT * FROM notice";
-        value = "";
-        try {
-            PreparedStatement ps = con.prepareStatement(query);
-            ResultSet res = ps.executeQuery();
-            while (res.next()) {
-                value = res.getString(2);
-                System.out.println("previous Notice is " + value);
-            }
-        } catch (SQLException e2) {
-            e2.printStackTrace();
-        }
-        return value;
-    }
 
     /**
      * check xem trong Database co quyen sach can tim ko?.
      *
-     * @param itemName ten quyen sach can tim
+     * @param itemName ten Quyen sach can tim
      * @return
      */
     public static boolean inDb(String itemName) {
@@ -178,21 +183,17 @@ public class DBInfo {
             String sql = "INSERT INTO borrow_slip(user_id, book_name, borrow_date, return_date) VALUES (?, ?, ?, ?)";
             PreparedStatement preparedStatement = con.prepareStatement(sql);
 
-            // Lấy ngày hiện tại và ngày sau 10 ngày
             LocalDate currentDate = LocalDate.now();
             LocalDate dateAfter10Days = currentDate.plusDays(10);
 
-            // Thiết lập giá trị cho các tham số
             preparedStatement.setInt(1, curId); // user_id
             preparedStatement.setString(2, itemName); // book_name
             preparedStatement.setDate(3, Date.valueOf(currentDate)); // borrow_date
             preparedStatement.setDate(4, Date.valueOf(dateAfter10Days)); // return_date
 
-            // Thực hiện chèn dữ liệu
             int rowsAffected = preparedStatement.executeUpdate();
             System.out.println("Slip added successfully! Rows affected: " + rowsAffected);
 
-            // Đóng PreparedStatement và Connection
             preparedStatement.close();
             con.close();
         } catch (SQLException e) {
@@ -208,6 +209,10 @@ public class DBInfo {
      */
     public static void borrowBook(String itemName) {
         try {
+            if (!inDb(itemName)) {
+                System.out.println("ko co cuon sach tren trong DB");
+                return;
+            }
             Connection con = DBInfo.conn();
             String sql = "UPDATE book SET avail = ? WHERE title = ?";
             PreparedStatement preparedStatement = con.prepareStatement(sql);
@@ -215,6 +220,7 @@ public class DBInfo {
             preparedStatement.setString(2, itemName);
             int rowAffected = preparedStatement.executeUpdate();
             if (rowAffected > 0) {
+                noti = getNotifications();
                 System.out.println("Thay doi trang thai dong" + rowAffected);
                 addSlip(itemName);
             }
@@ -234,13 +240,16 @@ public class DBInfo {
         Connection con = DBInfo.conn();
         try {
 
-            String sql = "DELETE FROM borrow_slip WHERE book_name = ?";
+            String sql = "DELETE FROM borrow_slip WHERE book_name = ? and user_id = ?";
             PreparedStatement preparedStatement = con.prepareStatement(sql);
             preparedStatement.setString(1, itemName);
+            preparedStatement.setInt(2, curId);
+            System.out.println(curId);
             int rowsAffected = 0;
             rowsAffected = preparedStatement.executeUpdate();
             if (rowsAffected > 0) {
                 System.out.println("xoa khoi slip thành công!");
+                noti = getNotifications();
                 preparedStatement.close();
                 con.close();
                 Connection con2 = DBInfo.conn();
@@ -406,6 +415,7 @@ public class DBInfo {
 
     /**
      * xóa sách.
+     *
      * @param A tên sách
      */
     public static void deleteBook(Book A) {
@@ -432,6 +442,54 @@ public class DBInfo {
         }
     }
 
+    public static int getUserCount() {
+        int count = 0;
+        String query = "SELECT COUNT(*) FROM registration";
+
+        try (Connection connection = DBInfo.conn()) {
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                count = resultSet.getInt(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return count;
+    }
+
+    public static int getBookCount() {
+        int count = 0;
+        String query = "SELECT COUNT(*) FROM book";
+
+        try (Connection connection = DBInfo.conn()) {
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                count = resultSet.getInt(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return count;
+    }
+
+    public static boolean isUsernameExists(String username) {
+        boolean exists = false;
+        String query = "SELECT 1 FROM registration WHERE username = ? LIMIT 1";
+        try (Connection connection = DBInfo.conn()) {
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setString(1, username);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            exists = resultSet.next();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return exists;
+    }
+
     /**
      * dang ki nguoi moi.
      *
@@ -447,7 +505,8 @@ public class DBInfo {
             Connection con = DBInfo.conn();
             String sql = "INSERT INTO registration(id,name, username, password, usertype) VALUE (?,?,?,?,?)";
             PreparedStatement preparedStatement = con.prepareStatement(sql);
-            numUser += 1;
+            numUser = getUserCount() + 1;
+            System.out.println(numUser);
             preparedStatement.setInt(1, numUser);
             preparedStatement.setString(2, name);
             preparedStatement.setString(3, username);
@@ -470,12 +529,12 @@ public class DBInfo {
      * @return true/false
      */
     public static boolean checkPass(String username, String password) {
-        String sql = "SELECT usertype FROM registration WHERE username = ? AND password = ?";
+        String sql = "SELECT usertype FROM registration WHERE username = ? AND password = ? AND is_banned = 0";
 
         try {
             Connection con = DBInfo.conn();
             if (con == null) {
-                System.out.println("Ngu");
+                System.out.println("KO kết nối đc với db");
                 return false;
             }
             PreparedStatement preparedStatement = con.prepareStatement(sql);
@@ -483,11 +542,11 @@ public class DBInfo {
             preparedStatement.setString(2, password);
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
-//                String userType = resultSet.getString("usertype");
-//                System.out.println("Đúng! Loại người dùng: " + userType);
+                String userType = resultSet.getString("usertype");
+                System.out.println("Đúng! Loại người dùng: " + userType);
                 return true;
             } else {
-//                System.out.println("Tên đăng nhập hoặc mật khẩu không đúng!");
+                System.out.println("Tên đăng nhập hoặc mật khẩu không đúng!");
 
             }
             preparedStatement.close();
@@ -510,6 +569,75 @@ public class DBInfo {
             curPass = Password;
             curUsername = Username;
             curId = findUserId(Username, Password);
+            userType = findUserType(Username, Password);
+            noti = getNotifications();
+        }
+    }
+
+    public static ArrayList<strPair> getNotifications() {
+        ArrayList<strPair> ret = new ArrayList<>();
+        try {
+            Connection conn = DBInfo.conn();
+            // sach sap den han tra
+            String sqlUpcoming = "SELECT book_name, return_date FROM borrow_slip WHERE return_date BETWEEN CURDATE() AND DATE_ADD(CURDATE(), INTERVAL 11 DAY) ORDER BY return_date";
+            PreparedStatement preparedStatement = conn.prepareStatement(sqlUpcoming);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                String bookName = resultSet.getString("book_name");
+                LocalDate returnDate = resultSet.getDate("return_date").toLocalDate();
+                LocalDate today = LocalDate.now();
+                long daysBetween = ChronoUnit.DAYS.between(today, returnDate);
+
+                ret.add(new strPair(daysBetween + " ngày nữa là đến hạn trả cuốn: ", bookName));
+            }
+
+            // sach qua han
+            String sqlOverdue = "SELECT book_name, return_date FROM borrow_slip WHERE return_date < CURDATE()";
+            PreparedStatement statement2 = conn.prepareStatement(sqlOverdue);
+            ResultSet resultSet2 = statement2.executeQuery();
+
+            while (resultSet2.next()) {
+                String bookName = resultSet2.getString("book_name");
+                LocalDate returnDate = resultSet2.getDate("return_date").toLocalDate();
+                LocalDate today = LocalDate.now();
+                long daysOverdue = ChronoUnit.DAYS.between(returnDate, today);
+                ret.add(new strPair("Đã quá hạn " + daysOverdue + " ngày để trả cuốn: ", bookName));
+            }
+            resultSet.close();
+            resultSet2.close();
+            preparedStatement.close();
+            statement2.close();
+            conn.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return ret;
+    }
+
+    public static String findUserType(String username, String password) {
+        try {
+            Connection con = DBInfo.conn();
+            String sql = "SELECT usertype FROM registration WHERE username = ? AND password = ?";
+            PreparedStatement preparedStatement = con.prepareStatement(sql);
+            preparedStatement.setString(1, username);
+            preparedStatement.setString(2, password);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                String type = resultSet.getString("usertype");
+                System.out.println("type của người dùng là: " + type);
+                return type;
+            } else {
+                System.out.println("Không tìm thấy người dùng với username và password đã cho.");
+
+            }
+            preparedStatement.close();
+            con.close();
+            return "KO TIM THAY";
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.out.println("Loi ham tim type biet user va pass");
+            return "KO TIM THAY";
         }
     }
 
@@ -678,17 +806,42 @@ public class DBInfo {
      *
      * @return arraylist gồm 4 thông số id, tên, tác giả, avail.
      */
-    public static ArrayList<CustomData> getUserList() {
+    public static ArrayList<User> getUserList() {
         Connection con = DBInfo.conn();
-        ArrayList<CustomData> ret = new ArrayList<>();
+        ArrayList<User> ret = new ArrayList<>();
         String query = "SELECT * FROM registration";
-        value = "";
+
         try {
             PreparedStatement ps = con.prepareStatement(query);
             ResultSet res = ps.executeQuery();
             while (res.next()) {
-                CustomData tmp = new CustomData(res.getString(1), res.getString(2), res.getString(3),
-                        res.getString(5));
+                User user = new User(
+                        res.getInt("id"),
+                        res.getString("name"),
+                        res.getString("username"),
+                        res.getString("password"),
+                        res.getString("usertype"),
+                        res.getBoolean("is_banned"),
+                        res.getString("avatar_link")
+                );
+                ret.add(user);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return ret;
+    }
+
+    public static ArrayList<CustomData> getBorrowedBookList() {
+        Connection con = DBInfo.conn();
+        ArrayList<CustomData> ret = new ArrayList<>();
+        String query = "SELECT * FROM borrow_slip WHERE user_id = " + curId;
+        try {
+            PreparedStatement ps = con.prepareStatement(query);
+            ResultSet res = ps.executeQuery();
+            while (res.next()) {
+                CustomData tmp = new CustomData(res.getString(3), res.getString(4), res.getString(5),
+                        "dummy");
                 tmp.print();
             }
         } catch (SQLException e2) {
@@ -753,30 +906,7 @@ public class DBInfo {
         ResultSet resultSet = null;
         try {
             con = DBInfo.conn();
-            int prev = 0;
-            String sql = "SELECT title, ISBN, authors, publisher, publishedDate, description,thumbnail, numPage, category, price, language, buyLink,avail,rating FROM book";
-            if (author != null && !author.equals("ALL")) {
-                sql += (" WHERE author = " + "'" + author + "'");
-                prev++;
-            }
-            if (category != null && !category.equals("ALL")) {
-                if (prev == 0) {
-                    sql += " WHERE ";
-                } else {
-                    sql += " and ";
-                }
-                sql += ("category = " + "'" + category + "'");
-                prev++;
-            }
-            if (publisher != null && !publisher.equals("ALL")) {
-                if (prev == 0) {
-                    sql += " WHERE ";
-                } else {
-                    sql += " and ";
-                }
-                sql += ("publisher = " + "'" + publisher + "'");
-                prev++;
-            }
+            final String sql = getString(author, category, publisher);
 
             //  System.out.println(sql);
             preparedStatement = con.prepareStatement(sql);
@@ -822,15 +952,109 @@ public class DBInfo {
         return bookList;
     }
 
-    public static void main(String[] args) {
-        //  ArrayList<CustomData> test = DBInfo.getBookList();
-        // DBInfo.rateBook("1984",6);
-        //ArrayList<Book> tmp = DBInfo.getBookList(null, "ALL", "ALL");
-        Book myBook = new Book("Tit Example", "123456789", "Author Example", "Publisher Example",
-                "2024-10-10", "Description Example", "Thumbnail Example",
-                "300", "Fiction", "19.99", "English", "http://buylink.com");
-        //DBInfo.deleteBook(myBook);
-        // DBInfo.addBook(myBook);
+    public static String getString(String author, String category, String publisher) {
+        int prev = 0;
+        String sql = "SELECT title, ISBN, authors, publisher, publishedDate, description,thumbnail, numPage, category, price, language, buyLink,avail,rating FROM book";
+        if (author != null && !author.equals("ALL")) {
+            sql += (" WHERE author = " + "'" + author + "'");
+            prev++;
+        }
+        if (category != null && !category.equals("ALL")) {
+            if (prev == 0) {
+                sql += " WHERE ";
+            } else {
+                sql += " and ";
+            }
+            sql += ("category = " + "'" + category + "'");
+            prev++;
+        }
+        if (publisher != null && !publisher.equals("ALL")) {
+            if (prev == 0) {
+                sql += " WHERE ";
+            } else {
+                sql += " and ";
+            }
+            sql += ("publisher = " + "'" + publisher + "'");
+            prev++;
+        }
+        return sql;
     }
 
+
+    public static void addComment(String book_title, String content) {
+        try {
+            Connection conn = DBInfo.conn();
+            String sql = "INSERT INTO comment (book_title, username, time, content) VALUES (?, ?, ?,?)";
+            PreparedStatement stmt = conn.prepareStatement(sql);
+            stmt.setString(1, book_title);
+            stmt.setString(2, curUsername);
+            java.sql.Date currentDate = java.sql.Date.valueOf(LocalDate.now());
+            stmt.setDate(3, currentDate);
+            stmt.setString(4, content);
+            int rowsInserted = stmt.executeUpdate();
+            if (rowsInserted > 0) {
+                System.out.println("Thêm bình luận thành công!");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    public static ArrayList<CustomData> getCommentList(String book_title) {
+        ArrayList<CustomData> ret = new ArrayList<>();
+        try {
+            Connection conn = DBInfo.conn();
+            // Sử dụng câu SQL với PreparedStatement
+            String sql = "SELECT * from comment WHERE book_title = ?";
+            PreparedStatement statement = conn.prepareStatement(sql);
+
+            // Sử dụng phương thức setString để thiết lập giá trị cho tham số
+            statement.setString(1, book_title);
+
+            // Thực hiện câu lệnh truy vấn
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                ret.add(new CustomData(
+                        resultSet.getString("username"),
+                        resultSet.getDate("time").toString(),
+                        resultSet.getString("content"),
+                        "dummy"
+                ));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return ret;
+    }
+
+    public static void main(String[] args) {
+/*
+    //System.out.println(DBInfo.checkPass("vuvane@gmail.com", "password112"));
+ //   DBInfo.login("nguyenvana", "password123");
+    DBInfo.Register(1,"bao","bao","bao","user");
+    borrowBook("Atomic Habits");
+    borrowBook("Attack on Titan");
+    /// lay ra danh sach sach dang duoc nguoi dung hien tai muon
+    ArrayList<CustomData> borrowedBook = new ArrayList<>();
+    borrowedBook = getBorrowedBookList();
+    for (CustomData i : borrowedBook) {
+      System.out.println(i.getFirst() + ' ' + i.getSecond() + ' ' + i.getThird());
+    }
+    /// them comment cho sach
+    DBInfo.addComment("Attack on Titan", "sach hay vcl");
+    DBInfo.addComment("Atomic Habits", "hay");
+    /// Lay danh sach nhung comment cua nguoi dung cho cuon "attack on titan";
+    ArrayList<CustomData> getComment = new ArrayList<>();
+    getComment = getCommentList("Attack on Titan");
+    for (CustomData i : getComment) {
+      System.out.println(i.getFirst() + ' ' + i.getSecond() + ' ' + i.getThird());
+    }
+*/
+        ArrayList<User> userList = new ArrayList<>();
+        userList = getUserList();
+        for (User i : userList) {
+            System.out.println(i.toString());
+        }
+    }
 }

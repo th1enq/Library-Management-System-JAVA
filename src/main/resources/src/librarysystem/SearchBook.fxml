@@ -15,11 +15,11 @@
    <children>
       <Pane prefHeight="708.0" prefWidth="1180.0" style="-fx-background-color: #f9f9f9;" styleClass="sidebar" stylesheets="@stylesheet.css">
          <children>
-            <ScrollPane fx:id="stackPane" layoutX="477.0" prefHeight="707.0" prefWidth="703.0" style="-fx-background-color: #f9f9f9;" stylesheets="@stylesheet.css">
+            <ScrollPane fx:id="stackPane" layoutX="477.0" prefHeight="707.0" prefWidth="703.0" styleClass="parent" stylesheets="@stylesheet.css">
                <content>
                   <VBox prefHeight="200.0" prefWidth="668.0" spacing="10" styleClass="sidebar" stylesheets="@stylesheet.css">
                      <children>
-                        <Pane nodeOrientation="LEFT_TO_RIGHT" prefHeight="200.0" prefWidth="500.0" style="-fx-opacity: 0.8;" styleClass="slider" stylesheets="@stylesheet.css">
+                        <Pane nodeOrientation="LEFT_TO_RIGHT" prefHeight="200.0" prefWidth="500.0" style="-fx-opacity: 0.8; -fx-background-color: #D0E8FF;" styleClass="slider-with-border" stylesheets="@stylesheet.css">
                            <children>
                               <ImageView fitHeight="150.0" fitWidth="138.0" layoutX="42.0" layoutY="25.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
@@ -33,9 +33,9 @@
                               </Label>
                               <Label layoutX="212.0" layoutY="111.0" prefHeight="17.0" prefWidth="181.0" text="Author" />
                               <Label layoutX="212.0" layoutY="149.0" prefHeight="17.0" prefWidth="181.0" text="ISBN" />
-                              <Label layoutX="458.0" layoutY="102.0" prefHeight="17.0" prefWidth="181.0" text="Publisher" />
-                              <Label layoutX="458.0" layoutY="140.0" prefHeight="17.0" prefWidth="181.0" text="Publish Date" />
-                              <FontAwesomeIcon glyphName="STAR_ALT" layoutX="212.0" layoutY="48.0" size="1.2em" wrappingWidth="13.542881965637207" />
+                              <Label layoutX="458.0" layoutY="111.0" prefHeight="17.0" prefWidth="181.0" text="Publisher" />
+                              <Label layoutX="458.0" layoutY="149.0" prefHeight="17.0" prefWidth="181.0" text="Publish Date" />
+                              <FontAwesomeIcon glyphName="STAR" layoutX="212.0" layoutY="48.0" size="1.2em" wrappingWidth="13.542881965637207" />
                               <FontAwesomeIcon glyphName="STAR_ALT" layoutX="236.0" layoutY="48.0" size="1.2em" wrappingWidth="13.542881965637207" />
                               <FontAwesomeIcon glyphName="STAR_ALT" layoutX="260.0" layoutY="48.0" size="1.2em" wrappingWidth="13.542881965637207" />
                               <FontAwesomeIcon glyphName="STAR_ALT" layoutX="284.0" layoutY="48.0" size="1.2em" wrappingWidth="13.542881965637207" />

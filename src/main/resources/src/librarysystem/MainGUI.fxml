@@ -31,7 +31,7 @@
                <graphic>
                   <FontAwesomeIcon fx:id="statisticsIcon" glyphName="PIE_CHART" size="2em" />
                </graphic></Button>
-            <Button fx:id="settingButton" layoutX="29.0" layoutY="534.0" mnemonicParsing="false" prefHeight="51.0" prefWidth="52.0" style="-fx-cursor: hand;" styleClass="tran-btn" stylesheets="@stylesheet.css">
+            <Button fx:id="settingButton" layoutX="29.0" layoutY="534.0" mnemonicParsing="false" onAction="#returnSetting" prefHeight="51.0" prefWidth="52.0" style="-fx-cursor: hand;" styleClass="tran-btn" stylesheets="@stylesheet.css">
                <graphic>
                   <FontAwesomeIcon fx:id="settingIcon" glyphName="GEAR" size="2em" text="" />
                </graphic></Button>
@@ -64,11 +64,6 @@
                </styleClass>
                <graphic>
                   <FontAwesomeIcon glyphName="MINUS" size="1.5em" text="" />
-               </graphic>
-            </Button>
-            <Button fx:id="buttonView" layoutX="29.0" layoutY="25.0" mnemonicParsing="false" onAction="#buttonToggle" prefHeight="51.0" prefWidth="52.0" style="-fx-cursor: hand;" styleClass="tran-btn" stylesheets="@stylesheet.css">
-               <graphic>
-                  <FontAwesomeIcon glyphName="LIST_UL" size="2em" />
                </graphic>
             </Button>
          </children>
