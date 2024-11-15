@@ -808,21 +808,28 @@ public class DBInfo {
    *
    * @return arraylist gồm 4 thông số id, tên, tác giả, avail.
    */
-  public static ArrayList<CustomData> getUserList() {
+  public static ArrayList<User> getUserList() {
     Connection con = DBInfo.conn();
-    ArrayList<CustomData> ret = new ArrayList<>();
+    ArrayList<User> ret = new ArrayList<>();
     String query = "SELECT * FROM registration";
-    value = "";
+
     try {
       PreparedStatement ps = con.prepareStatement(query);
       ResultSet res = ps.executeQuery();
       while (res.next()) {
-        CustomData tmp = new CustomData(res.getString(1), res.getString(2), res.getString(3),
-            res.getString(5));
-        tmp.print();
+        User user = new User(
+            res.getInt("id"),
+            res.getString("name"),
+            res.getString("username"),
+            res.getString("password"),
+            res.getString("usertype"),
+            res.getBoolean("is_banned"),
+            res.getString("avatar_link")
+        );
+        ret.add(user);
       }
-    } catch (SQLException e2) {
-      e2.printStackTrace();
+    } catch (SQLException e) {
+      e.printStackTrace();
     }
     return ret;
   }
@@ -1024,9 +1031,10 @@ public class DBInfo {
   }
 
   public static void main(String[] args) {
-
+/*
     //System.out.println(DBInfo.checkPass("vuvane@gmail.com", "password112"));
-    DBInfo.login("nguyenvana", "password123");
+ //   DBInfo.login("nguyenvana", "password123");
+    DBInfo.Register(1,"bao","bao","bao","user");
     borrowBook("Atomic Habits");
     borrowBook("Attack on Titan");
     /// lay ra danh sach sach dang duoc nguoi dung hien tai muon
@@ -1038,12 +1046,17 @@ public class DBInfo {
     /// them comment cho sach
     DBInfo.addComment("Attack on Titan", "sach hay vcl");
     DBInfo.addComment("Atomic Habits", "hay");
-    /// Lay danh sach nhung comment cua nguoi dung cho cuon "attack on titan";\
+    /// Lay danh sach nhung comment cua nguoi dung cho cuon "attack on titan";
     ArrayList<CustomData> getComment = new ArrayList<>();
     getComment = getCommentList("Attack on Titan");
     for (CustomData i : getComment) {
       System.out.println(i.getFirst() + ' ' + i.getSecond() + ' ' + i.getThird());
     }
-
+*/
+    ArrayList<User> userList = new ArrayList<>();
+    userList = getUserList();
+    for (User i : userList) {
+      System.out.println(i.toString());
+    }
   }
 }
