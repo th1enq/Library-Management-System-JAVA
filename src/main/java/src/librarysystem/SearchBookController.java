@@ -14,6 +14,8 @@ import javafx.scene.text.Font;
 
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextFlow;
 
 import java.util.ArrayList;
 
@@ -62,7 +64,16 @@ public class SearchBookController {
         }
 
         // Set the background color of the currently selected pane
-        pane.setStyle("-fx-background-color: #D0E8FF;");  // Soft blue for selected
+        pane.setStyle(
+                "-fx-border-width: 1px; " +
+                "-fx-border-color: #000; " +
+                "-fx-border-radius: 15px; " +
+                "-fx-background-color: #D0E8FF; " +
+                "-fx-background-radius: 15px; " +
+                "-fx-background-insets: 1px;"
+        );
+
+        // Soft blue for selected
 
         selectedPane = pane;  // Update selectedPane to the new selection
         updateMainDisplay(book);  // Load selected book details
@@ -96,7 +107,7 @@ public class SearchBookController {
     private Pane createBookPane(Book book) {
         Pane pane = new Pane();
         pane.setPrefSize(668, 200);
-        pane.getStyleClass().add("slider");
+        pane.getStyleClass().add("slider-with-border");
         pane.setStyle("-fx-cursor: hand;");
 
         // Create ImageView for book thumbnail
@@ -118,35 +129,54 @@ public class SearchBookController {
         pane.getChildren().add(imageView);
 
         // Create Title label
-        Label title = new Label(book.getTitle());
+        String originalTitle = book.getTitle();
+        String displayedTitle = originalTitle.length() > 50
+                ? originalTitle.substring(0, 50) + "..."
+                : originalTitle;
+
+        Label title = new Label(displayedTitle);
         title.setLayoutX(212);
         title.setLayoutY(72);
         title.setFont(new Font("System Bold", 15));
         pane.getChildren().add(title);
 
-        // Create Author label
-        Label author = new Label(book.getAuthors());
+// Create Author label
+        Text authorField = new Text("Author: ");
+        authorField.setStyle("-fx-font-weight: bold;");
+        Text authorValue = new Text(book.getAuthors());
+        TextFlow author = new TextFlow(authorField, authorValue);
         author.setLayoutX(212);
         author.setLayoutY(111);
         pane.getChildren().add(author);
 
-        // Create ISBN label
-        Label isbn = new Label(book.getISBN());
+// Create ISBN label
+        Text isbnField = new Text("ISBN: ");
+        isbnField.setStyle("-fx-font-weight: bold;");
+        Text isbnValue = new Text(book.getISBN());
+        TextFlow isbn = new TextFlow(isbnField, isbnValue);
         isbn.setLayoutX(212);
         isbn.setLayoutY(149);
         pane.getChildren().add(isbn);
 
-        // Create Publisher label
-        Label publisher = new Label(book.getPublisher());
+// Create Publisher label
+        Text publisherField = new Text("Publisher: ");
+        publisherField.setStyle("-fx-font-weight: bold;");
+        Text publisherValue = new Text(book.getPublisher());
+        TextFlow publisher = new TextFlow(publisherField, publisherValue);
         publisher.setLayoutX(458);
-        publisher.setLayoutY(102);
+        publisher.setLayoutY(111);
         pane.getChildren().add(publisher);
 
-        // Create Publish Date label
-        Label publishDate = new Label(book.getPublishedDate());
+// Create Publish Date label
+        Text publishDateField = new Text("Publish Date: ");
+        publishDateField.setStyle("-fx-font-weight: bold;");
+        Text publishDateValue = new Text(book.getPublishedDate());
+        TextFlow publishDate = new TextFlow(publishDateField, publishDateValue);
         publishDate.setLayoutX(458);
-        publishDate.setLayoutY(140);
+        publishDate.setLayoutY(149);
         pane.getChildren().add(publishDate);
+
+
 
         int rating = book.getRating();  // Get rating from Book instance
         double layoutX = 212.0;
@@ -155,19 +185,24 @@ public class SearchBookController {
 
         for (int i = 0; i < 5; i++) {
             FontAwesomeIcon starIcon = new FontAwesomeIcon();
-            starIcon.setGlyphName("STAR_ALT");
+
             starIcon.setLayoutX(layoutX + i * starSpacing);
             starIcon.setLayoutY(layoutY);
             starIcon.setSize("1.5em");
 
             // Set color based on the rating
             if (i < rating) {
-            } else {
+                starIcon.setGlyphName("STAR");
+                starIcon.getStyleClass().add("gold-star");
+            }
+            else {
+                starIcon.setGlyphName("STAR_ALT");
             }
 
             // Add each star icon to the pane
             pane.getChildren().add(starIcon);
         }
+
 
 
         // Handle pane selection
