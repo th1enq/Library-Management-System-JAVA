@@ -442,9 +442,26 @@ public class DBInfo {
     }
   }
 
-  public static int getRecordCount() {
+  public static int getUserCount() {
     int count = 0;
     String query = "SELECT COUNT(*) FROM registration";
+
+    try (Connection connection = DBInfo.conn()) {
+      PreparedStatement preparedStatement = connection.prepareStatement(query);
+      ResultSet resultSet = preparedStatement.executeQuery();
+      if (resultSet.next()) {
+        count = resultSet.getInt(1);
+      }
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
+
+    return count;
+  }
+
+  public static int getBookCount() {
+    int count = 0;
+    String query = "SELECT COUNT(*) FROM book";
 
     try (Connection connection = DBInfo.conn()) {
       PreparedStatement preparedStatement = connection.prepareStatement(query);
@@ -488,7 +505,7 @@ public class DBInfo {
       Connection con = DBInfo.conn();
       String sql = "INSERT INTO registration(id,name, username, password, usertype) VALUE (?,?,?,?,?)";
       PreparedStatement preparedStatement = con.prepareStatement(sql);
-      numUser = getRecordCount() + 1;
+      numUser = getUserCount() + 1;
       System.out.println(numUser);
       preparedStatement.setInt(1, numUser);
       preparedStatement.setString(2, name);
@@ -512,7 +529,7 @@ public class DBInfo {
    * @return true/false
    */
   public static boolean checkPass(String username, String password) {
-    String sql = "SELECT usertype FROM registration WHERE username = ? AND password = ?";
+    String sql = "SELECT usertype FROM registration WHERE username = ? AND password = ? AND is_banned = 0";
 
     try {
       Connection con = DBInfo.conn();
@@ -597,6 +614,7 @@ public class DBInfo {
     }
     return ret;
   }
+
   public static String findUserType(String username, String password) {
     try {
       Connection con = DBInfo.conn();
@@ -909,7 +927,7 @@ public class DBInfo {
     return bookList;
   }
 
-  private static String getString(String author, String category, String publisher) {
+  public static String getString(String author, String category, String publisher) {
     int prev = 0;
     String sql = "SELECT title, ISBN, authors, publisher, publishedDate, description,thumbnail, numPage, category, price, language, buyLink,avail,rating FROM book";
     if (author != null && !author.equals("ALL")) {
@@ -937,15 +955,16 @@ public class DBInfo {
     return sql;
   }
 
+
   public static void main(String[] args) {
 
-    login("vuvane@gmail.com", "password112");
-    returnBook("Effective Java");
+    System.out.println(DBInfo.checkPass("vuvane@gmail.com", "password112"));
+    //returnBook("Effective Java");
     //returnBook("Clean Code");
-   // borrowBook("Effective Java");
-   // borrowBook("Clean Code");
-    for(strPair i: noti){
-      System.out.println(i.getFirst() + ' ' + i.getSecond());
-    }
+    // borrowBook("Effective Java");
+    // borrowBook("Clean Code");
+//    for(strPair i: noti){
+    //    System.out.println(i.getFirst() + ' ' + i.getSecond());
+    // }
   }
 }

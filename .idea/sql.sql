@@ -71,9 +71,11 @@ CREATE TABLE `registration` (
   `username` VARCHAR(20) NOT NULL,
   `password` VARCHAR(100) NOT NULL,
   `usertype` ENUM('admin', 'user') DEFAULT 'user',
+  `is_banned` TINYINT(1) DEFAULT 0,
   PRIMARY KEY (`id`),
   UNIQUE KEY `unique_username` (`username`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
 
 
 
