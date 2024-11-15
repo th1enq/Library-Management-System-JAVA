@@ -16,7 +16,7 @@ public class LibraryManagementSystem extends Application {
     public void start(Stage stage) throws IOException {
         DBInfo.conn();
 
-        Parent root = FXMLLoader.load(getClass().getResource("Login.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("MainGUI.fxml"));
         Scene scene = new Scene(root);
         scene.setFill(Color.TRANSPARENT);
         stage.setScene(scene);

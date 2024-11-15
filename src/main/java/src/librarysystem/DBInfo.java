@@ -446,7 +446,7 @@ public class DBInfo {
 
   public static int getUserCount() {
     int count = 0;
-    String query = "SELECT COUNT(*) FROM registration";
+    String query = "SELECT COUNT(*) FROM registration WHERE usertype = 'user' ";
 
     try (Connection connection = DBInfo.conn()) {
       PreparedStatement preparedStatement = connection.prepareStatement(query);
@@ -507,9 +507,9 @@ public class DBInfo {
       Connection con = DBInfo.conn();
       String sql = "INSERT INTO registration(id,name, username, password, usertype) VALUE (?,?,?,?,?)";
       PreparedStatement preparedStatement = con.prepareStatement(sql);
-      numUser = getUserCount() + 1;
-      System.out.println(numUser);
-      preparedStatement.setInt(1, numUser);
+      int x = getUserCount() + 1;
+      System.out.println(x);
+      preparedStatement.setInt(1, x);
       preparedStatement.setString(2, name);
       preparedStatement.setString(3, username);
       preparedStatement.setString(4, password);
@@ -811,7 +811,7 @@ public class DBInfo {
   public static ArrayList<User> getUserList() {
     Connection con = DBInfo.conn();
     ArrayList<User> ret = new ArrayList<>();
-    String query = "SELECT * FROM registration";
+    String query = "SELECT * FROM registration WHERE usertype = 'user'" ;
 
     try {
       PreparedStatement ps = con.prepareStatement(query);

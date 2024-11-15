@@ -115,11 +115,11 @@ LOCK TABLES `registration` WRITE;
 INSERT INTO registration (id, name, username, password, usertype) VALUES
 ('1', 'Nguyen Van A', 'nguyenvana', 'password123', 'user'),
 ('2', 'Tran Thi B', 'tranthib', 'password456', 'user'),
-('3', 'Le Van C', 'levanc',  'password789', 'admin'),
-('4', 'Pham Thi D', 'phamthid', 'password101', 'user'),
-('5', 'Vu Van E', 'vuvane', 'password112', 'user');
+('3', 'Pham Thi D', 'phamthid', 'password101', 'user'),
+('4', 'Vu Van E', 'vuvane', 'password112', 'user'),
+('99998', 'Le Van C', 'levanc',  'password789', 'admin');
 INSERT INTO registration (id, name, username, password, usertype) VALUES
-('6', 'Nguyen Thi F', 'nguyenthif', 'adminPassword123', 'admin');
+('99999', 'Nguyen Thi F', 'nguyenthif', 'adminPassword123', 'admin');
 /*!40000 ALTER TABLE `registration` ENABLE KEYS */;
 UNLOCK TABLES;
 DROP TABLE IF EXISTS `author`;
