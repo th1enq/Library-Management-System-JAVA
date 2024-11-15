@@ -62,6 +62,8 @@ CREATE TABLE `borrow_slip` (
 );
 
 
+
+
 DROP TABLE IF EXISTS `registration`;
 SET @saved_cs_client     = @@character_set_client;
 SET character_set_client = utf8;
@@ -72,9 +74,33 @@ CREATE TABLE `registration` (
   `password` VARCHAR(100) NOT NULL,
   `usertype` ENUM('admin', 'user') DEFAULT 'user',
   `is_banned` TINYINT(1) DEFAULT 0,
+  `avatar_link` VARCHAR(200),
   PRIMARY KEY (`id`),
   UNIQUE KEY `unique_username` (`username`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+  DROP TABLE IF EXISTS `comment`;
+  SET @saved_cs_client     = @@character_set_client;
+  SET character_set_client = utf8;
+  CREATE TABLE `comment` (
+     `stt` INT AUTO_INCREMENT NOT NULL,
+     `book_title`  VARCHAR(200),
+     `username` VARCHAR(200),
+     `time`  DATE,
+     `content`  TEXT,
+     PRIMARY KEY (`stt`)
+  ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+INSERT INTO `comment` (book_title, username, time, content)
+VALUES
+('Attack on Titan', 'nguyenvana', '2024-11-15', 'Cuốn sách này rất thú vị, cốt truyện hấp dẫn!'),
+('Attack on Titan', 'tranthib', '2024-11-14', 'Nhân vật được xây dựng rất tốt, rất thích câu chuyện này.');
+
+INSERT INTO `comment` (book_title, username, time, content)
+VALUES
+('Atomic Habits', 'nguyenvana', '2024-11-13', 'Cuốn sách hữu ích cho việc thay đổi thói quen.'),
+('Atomic Habits', 'tranthib', '2024-11-12', 'Những nguyên tắc trong sách dễ áp dụng vào cuộc sống.');
+
+
 
 
 
@@ -87,11 +113,11 @@ CREATE TABLE `registration` (
 LOCK TABLES `registration` WRITE;
 /*!40000 ALTER TABLE `registration` DISABLE KEYS */;
 INSERT INTO registration (id, name, username, password, usertype) VALUES
-('1', 'Nguyen Van A', 'nguyenvana@gmail.com', 'password123', 'user'),
-('2', 'Tran Thi B', 'tranthib@gmail.com', 'password456', 'user'),
-('3', 'Le Van C', 'levanc@gmail.com',  'password789', 'admin'),
-('4', 'Pham Thi D', 'phamthid@gmail.com', 'password101', 'user'),
-('5', 'Vu Van E', 'vuvane@gmail.com', 'password112', 'user');
+('1', 'Nguyen Van A', 'nguyenvana', 'password123', 'user'),
+('2', 'Tran Thi B', 'tranthib', 'password456', 'user'),
+('3', 'Le Van C', 'levanc',  'password789', 'admin'),
+('4', 'Pham Thi D', 'phamthid', 'password101', 'user'),
+('5', 'Vu Van E', 'vuvane', 'password112', 'user');
 INSERT INTO registration (id, name, username, password, usertype) VALUES
 ('6', 'Nguyen Thi F', 'nguyenthif', 'adminPassword123', 'admin');
 /*!40000 ALTER TABLE `registration` ENABLE KEYS */;

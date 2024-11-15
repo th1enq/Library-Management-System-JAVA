@@ -8,8 +8,8 @@ module src.librarysystem {
     requires java.sql;
     requires com.google.zxing;
     requires com.google.zxing.javase;
+  requires mysql.connector.j;
 
-
-    opens src.librarysystem to javafx.fxml;
+  opens src.librarysystem to javafx.fxml;
     exports src.librarysystem;
 }

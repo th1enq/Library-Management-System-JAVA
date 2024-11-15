@@ -1,5 +1,6 @@
 package src.librarysystem;
 
+import com.mysql.cj.jdbc.CallableStatement;
 import java.awt.desktop.SystemEventListener;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -24,15 +25,15 @@ class CustomData {
 
   private String second;
 
-  private String thirst;
+  private String third;
 
   private String fourth;
 
-  public CustomData(String first, String second, String thirst, String fourth) {
+  public CustomData(String first, String second, String third, String fourth) {
     this.first = first;
     this.second = second;
     this.fourth = fourth;
-    this.thirst = thirst;
+    this.third = third;
   }
 
   public String getFirst() {
@@ -59,16 +60,16 @@ class CustomData {
     this.fourth = fourth;
   }
 
-  public String getThirst() {
-    return thirst;
+  public String getThird() {
+    return third;
   }
 
-  public void setThirst(String thirst) {
-    this.thirst = thirst;
+  public void setthird(String third) {
+    this.third = third;
   }
 
   public void print() {
-    System.out.println(first + " " + second + " " + thirst + " " + fourth);
+    System.out.println(first + " " + second + " " + third + " " + fourth);
   }
 
 }
@@ -120,7 +121,7 @@ public class DBInfo {
     Connection con = null;
     try {
       con = DriverManager.getConnection("jdbc:mysql://localhost:3306/TESTT", "root", "");
-      System.out.println("Connection Established...");
+      System.out.println("Ket noi thanh cong");
     } catch (SQLException e) {
       e.printStackTrace();
     }
@@ -211,6 +212,7 @@ public class DBInfo {
   public static void borrowBook(String itemName) {
     try {
       if (!inDb(itemName)) {
+        System.out.println("ko co cuon sach tren trong DB");
         return;
       }
       Connection con = DBInfo.conn();
@@ -825,6 +827,24 @@ public class DBInfo {
     return ret;
   }
 
+  public static ArrayList<CustomData> getBorrowedBookList() {
+    Connection con = DBInfo.conn();
+    ArrayList<CustomData> ret = new ArrayList<>();
+    String query = "SELECT * FROM borrow_slip WHERE user_id = " + curId;
+    try {
+      PreparedStatement ps = con.prepareStatement(query);
+      ResultSet res = ps.executeQuery();
+      while (res.next()) {
+        CustomData tmp = new CustomData(res.getString(3), res.getString(4), res.getString(5),
+            "dummy");
+        tmp.print();
+      }
+    } catch (SQLException e2) {
+      e2.printStackTrace();
+    }
+    return ret;
+  }
+
   /**
    * laay ra những giá trị phân biệt của 1 cột của 1 bảng trong database.
    *
@@ -956,15 +976,74 @@ public class DBInfo {
   }
 
 
+  public static void addComment(String book_title, String content) {
+    try {
+      Connection conn = DBInfo.conn();
+      String sql = "INSERT INTO comment (book_title, username, time, content) VALUES (?, ?, ?,?)";
+      PreparedStatement stmt = conn.prepareStatement(sql);
+      stmt.setString(1, book_title);
+      stmt.setString(2, curUsername);
+      java.sql.Date currentDate = java.sql.Date.valueOf(LocalDate.now());
+      stmt.setDate(3, currentDate);
+      stmt.setString(4, content);
+      int rowsInserted = stmt.executeUpdate();
+      if (rowsInserted > 0) {
+        System.out.println("Thêm bình luận thành công!");
+      }
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+  }
+
+
+  public static ArrayList<CustomData> getCommentList(String book_title) {
+    ArrayList<CustomData> ret = new ArrayList<>();
+    try {
+      Connection conn = DBInfo.conn();
+      // Sử dụng câu SQL với PreparedStatement
+      String sql = "SELECT * from comment WHERE book_title = ?";
+      PreparedStatement statement = conn.prepareStatement(sql);
+
+      // Sử dụng phương thức setString để thiết lập giá trị cho tham số
+      statement.setString(1, book_title);
+
+      // Thực hiện câu lệnh truy vấn
+      ResultSet resultSet = statement.executeQuery();
+      while (resultSet.next()) {
+        ret.add(new CustomData(
+            resultSet.getString("username"),
+            resultSet.getDate("time").toString(),
+            resultSet.getString("content"),
+            "dummy"
+        ));
+      }
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+    return ret;
+  }
+
   public static void main(String[] args) {
 
-    System.out.println(DBInfo.checkPass("vuvane@gmail.com", "password112"));
-    //returnBook("Effective Java");
-    //returnBook("Clean Code");
-    // borrowBook("Effective Java");
-    // borrowBook("Clean Code");
-//    for(strPair i: noti){
-    //    System.out.println(i.getFirst() + ' ' + i.getSecond());
-    // }
+    //System.out.println(DBInfo.checkPass("vuvane@gmail.com", "password112"));
+    DBInfo.login("nguyenvana", "password123");
+    borrowBook("Atomic Habits");
+    borrowBook("Attack on Titan");
+    /// lay ra danh sach sach dang duoc nguoi dung hien tai muon
+    ArrayList<CustomData> borrowedBook = new ArrayList<>();
+    borrowedBook = getBorrowedBookList();
+    for (CustomData i : borrowedBook) {
+      System.out.println(i.getFirst() + ' ' + i.getSecond() + ' ' + i.getThird());
+    }
+    /// them comment cho sach
+    DBInfo.addComment("Attack on Titan", "sach hay vcl");
+    DBInfo.addComment("Atomic Habits", "hay");
+    /// Lay danh sach nhung comment cua nguoi dung cho cuon "attack on titan";\
+    ArrayList<CustomData> getComment = new ArrayList<>();
+    getComment = getCommentList("Attack on Titan");
+    for (CustomData i : getComment) {
+      System.out.println(i.getFirst() + ' ' + i.getSecond() + ' ' + i.getThird());
+    }
+
   }
 }
