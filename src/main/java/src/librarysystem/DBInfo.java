@@ -106,6 +106,7 @@ public class DBInfo {
   public static int numUser;
   public static String userType;
   public static ArrayList<strPair> noti;
+  public static String curName = "";
 
   static {
     try {
@@ -572,8 +573,25 @@ public class DBInfo {
       curUsername = Username;
       curId = findUserId(Username, Password);
       userType = findUserType(Username, Password);
+      curName = findName(curId);
       noti = getNotifications();
     }
+  }
+
+  public static String findName(int id) {
+    String name = null;
+    String query = "SELECT name FROM registration WHERE id = ?";
+    try (Connection conn = DBInfo.conn();
+        PreparedStatement stmt = conn.prepareStatement(query)) {
+      stmt.setInt(1, id);
+      ResultSet rs = stmt.executeQuery();
+      if (rs.next()) {
+        name = rs.getString("name");
+      }
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
+    return name;
   }
 
   public static ArrayList<strPair> getNotifications() {
@@ -670,36 +688,61 @@ public class DBInfo {
   }
 
   /**
-   * chinh sua thong tin nguoi dung.
+   * chinh sua thong tin ng dung.
    *
    * @param id          id
-   * @param newUsername ten
-   * @param newPassword mk
+   * @param newName     ten moi
+   * @param newUsername username moi
+   * @param newPassword pass moi
    */
-  public static void updateUser(int id, String newUsername, String newPassword) {
+  public static void updateUser(int id, String newName, String newUsername, String newPassword) {
     Connection con = DBInfo.conn();
     try {
-
-      String sql = "UPDATE registration SET username = ?, password = ? WHERE id = ?";
-      PreparedStatement preparedStatement = con.prepareStatement(sql);
-
-      preparedStatement.setString(1, newUsername);
-      preparedStatement.setString(2, newPassword);
-      preparedStatement.setInt(3, id);
-      int rowsAffected = 0;
-      System.out.println(rowsAffected);
-      rowsAffected = preparedStatement.executeUpdate();
-
+      StringBuilder sql = new StringBuilder("UPDATE registration SET ");
+      boolean needComma = false;
+      if (newName != null) {
+        sql.append("name = ?");
+        needComma = true;
+      }
+      if (newUsername != null) {
+        if (needComma) {
+          sql.append(", ");
+        }
+        sql.append("username = ?");
+        needComma = true;
+      }
+      if (newPassword != null) {
+        if (needComma) {
+          sql.append(", ");
+        }
+        sql.append("password = ?");
+      }
+      sql.append(" WHERE id = ?");
+      PreparedStatement preparedStatement = con.prepareStatement(sql.toString());
+      int paramIndex = 1;
+      if (newName != null) {
+        preparedStatement.setString(paramIndex++, newName);
+      }
+      if (newUsername != null) {
+        preparedStatement.setString(paramIndex++, newUsername);
+      }
+      if (newPassword != null) {
+        preparedStatement.setString(paramIndex++, newPassword);
+      }
+      preparedStatement.setInt(paramIndex, id);
+      int rowsAffected = preparedStatement.executeUpdate();
       if (rowsAffected > 0) {
         System.out.println("Cập nhật thành công!");
       } else {
         System.out.println("Không tìm thấy người dùng với id: " + id);
       }
+
+      // Đóng kết nối
       preparedStatement.close();
       con.close();
-    } catch (SQLException EE) {
-      EE.printStackTrace();
-      System.out.println("Loi sua user va pass");
+    } catch (SQLException e) {
+      e.printStackTrace();
+      System.out.println("Lỗi khi sửa thông tin người dùng");
     }
   }
 
@@ -811,7 +854,7 @@ public class DBInfo {
   public static ArrayList<User> getUserList() {
     Connection con = DBInfo.conn();
     ArrayList<User> ret = new ArrayList<>();
-    String query = "SELECT * FROM registration WHERE usertype = 'user'" ;
+    String query = "SELECT * FROM registration WHERE usertype = 'user'";
 
     try {
       PreparedStatement ps = con.prepareStatement(query);
@@ -894,10 +937,10 @@ public class DBInfo {
   }
 
   /**
-   * Hamf sort cac cuon sach theo yeu cau cho trc.
+   * lay ra cac cuon sach theo yeu cau cho trc.
    *
-   * @param author    tacgia
-   * @param category  muc
+   * @param author    ten tac gia
+   * @param category  the loai
    * @param publisher NXB
    * @return array list chua cac cuon sach thoa man
    */
@@ -931,7 +974,6 @@ public class DBInfo {
         Book book = new Book(title, ISBN, Author, Publisher, publishedDate,
             description, thumbnail, numPage, Category, price,
             language, buyLink, avail, rating);
-        book.print();
         bookList.add(book);
       }
     } catch (SQLException e) {
@@ -1031,32 +1073,16 @@ public class DBInfo {
   }
 
   public static void main(String[] args) {
-/*
-    //System.out.println(DBInfo.checkPass("vuvane@gmail.com", "password112"));
- //   DBInfo.login("nguyenvana", "password123");
-    DBInfo.Register(1,"bao","bao","bao","user");
-    borrowBook("Atomic Habits");
-    borrowBook("Attack on Titan");
-    /// lay ra danh sach sach dang duoc nguoi dung hien tai muon
-    ArrayList<CustomData> borrowedBook = new ArrayList<>();
-    borrowedBook = getBorrowedBookList();
-    for (CustomData i : borrowedBook) {
-      System.out.println(i.getFirst() + ' ' + i.getSecond() + ' ' + i.getThird());
-    }
-    /// them comment cho sach
-    DBInfo.addComment("Attack on Titan", "sach hay vcl");
-    DBInfo.addComment("Atomic Habits", "hay");
-    /// Lay danh sach nhung comment cua nguoi dung cho cuon "attack on titan";
-    ArrayList<CustomData> getComment = new ArrayList<>();
-    getComment = getCommentList("Attack on Titan");
-    for (CustomData i : getComment) {
-      System.out.println(i.getFirst() + ' ' + i.getSecond() + ' ' + i.getThird());
-    }
-*/
-    ArrayList<User> userList = new ArrayList<>();
-    userList = getUserList();
-    for (User i : userList) {
+    /// cai nao khong thay doi thi dat = null
+    updateUser(findUserId("bao", "a"), "Nguyen B", null, null);
+    ArrayList<Book> test = new ArrayList<>();
+
+    /// lay tat ca sach trong db bang cach dat author, category,publisher = "ALL"
+    test = getBookList("ALL", "ALL", "ALL");
+    for (Book i : test) {
       System.out.println(i.toString());
     }
+    System.out.println(test.size());
   }
+
 }

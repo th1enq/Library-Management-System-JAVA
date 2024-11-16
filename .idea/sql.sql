@@ -75,9 +75,9 @@ CREATE TABLE `registration` (
   `usertype` ENUM('admin', 'user') DEFAULT 'user',
   `is_banned` TINYINT(1) DEFAULT 0,
   `avatar_link` VARCHAR(200),
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `unique_username` (`username`)
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
 
   DROP TABLE IF EXISTS `comment`;
   SET @saved_cs_client     = @@character_set_client;
