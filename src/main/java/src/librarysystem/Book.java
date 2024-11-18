@@ -20,6 +20,9 @@ public class Book {
   private String avail;
   private int rating;
 
+  public Book() {
+  }
+
   public Book(String title, String ISBN, String authors, String publisher,
       String publishedDate,
       String description, String thumbnail, String numPage, String category, String price,
@@ -60,62 +63,6 @@ public class Book {
     this.rating = rating;
   }
 
-  public String getTitle() {
-    return title;
-  }
-
-  public String getAuthors() {
-    return authors;
-  }
-
-  public String getPublishedDate() {
-    return publishedDate;
-  }
-
-  public String getThumbnail() {
-    return thumbnail;
-  }
-
-  public String getPublisher() {
-    return publisher;
-  }
-
-  public String getISBN() {
-    return ISBN;
-  }
-
-  public String getDescription() {
-    return description;
-  }
-
-  public String getNumPage() {
-    return numPage;
-  }
-
-  public String getCategory() {
-    return category;
-  }
-
-  public String getPrice() {
-    return price;
-  }
-
-  public String getLanguage() {
-    return language;
-  }
-
-  public String getBuyLink() {
-    return buyLink;
-  }
-
-  public String getAvail() {
-    return avail;
-  }
-
-  public int getRating() {
-    return rating;
-  }
-
   public String getType() {
     return type;
   }
@@ -124,9 +71,122 @@ public class Book {
     this.type = type;
   }
 
+  public String getTitle() {
+    return title;
+  }
+
+  public void setTitle(String title) {
+    this.title = title;
+  }
+
+  public String getAuthors() {
+    return authors;
+  }
+
+  public void setAuthors(String authors) {
+    this.authors = authors;
+  }
+
+  public String getPublisher() {
+    return publisher;
+  }
+
+  public void setPublisher(String publisher) {
+    this.publisher = publisher;
+  }
+
+  public String getPublishedDate() {
+    return publishedDate;
+  }
+
+  public void setPublishedDate(String publishedDate) {
+    this.publishedDate = publishedDate;
+  }
+
+  public String getThumbnail() {
+    return thumbnail;
+  }
+
+  public void setThumbnail(String thumbnail) {
+    this.thumbnail = thumbnail;
+  }
+
+  public String getISBN() {
+    return ISBN;
+  }
+
+  public void setISBN(String ISBN) {
+    this.ISBN = ISBN;
+  }
+
+  public String getDescription() {
+    return description;
+  }
+
+  public void setDescription(String description) {
+    this.description = description;
+  }
+
+  public String getNumPage() {
+    return numPage;
+  }
+
+  public void setNumPage(String numPage) {
+    this.numPage = numPage;
+  }
+
+  public String getCategory() {
+    return category;
+  }
+
+  public void setCategory(String category) {
+    this.category = category;
+  }
+
+  public String getPrice() {
+    return price;
+  }
+
+  public void setPrice(String price) {
+    this.price = price;
+  }
+
+  public String getLanguage() {
+    return language;
+  }
+
+  public void setLanguage(String language) {
+    this.language = language;
+  }
+
+  public String getBuyLink() {
+    return buyLink;
+  }
+
+  public void setBuyLink(String buyLink) {
+    this.buyLink = buyLink;
+  }
+
+  public String getAvail() {
+    return avail;
+  }
+
+  public void setAvail(String avail) {
+    this.avail = avail;
+  }
+
+  public int getRating() {
+    return rating;
+  }
+
+  public void setRating(int rating) {
+    this.rating = rating;
+  }
+
+
   @Override
   public String toString() {
-    return "Book {" +
+    return "Book ( " +
         "Type='" + type + '\'' +
         ", Title='" + title + '\'' +
         ", Authors='" + authors + '\'' +
@@ -142,7 +202,7 @@ public class Book {
         ", Buy Link='" + buyLink + '\'' +
         ", Availability='" + avail + '\'' +
         ", Rating=" + rating +
-        '}';
+        ") ";
   }
 
 }

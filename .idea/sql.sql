@@ -57,8 +57,8 @@ CREATE TABLE `borrow_slip` (
     id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT NOT NULL,
     book_name VARCHAR(100) NOT NULL,
-    borrow_date DATE NOT NULL,
-    return_date DATE NOT NULL
+    borrow_date DATETIME NOT NULL,
+    return_date DATETIME NOT NULL
 );
 
 
@@ -70,7 +70,7 @@ SET character_set_client = utf8;
 CREATE TABLE `registration` (
   `id` INT AUTO_INCREMENT NOT NULL,
   `name` VARCHAR(100) DEFAULT NULL,
-  `username` VARCHAR(20) NOT NULL,
+  `username` VARCHAR(20) NOT NULL UNIQUE,
   `password` VARCHAR(100) NOT NULL,
   `usertype` ENUM('admin', 'user') DEFAULT 'user',
   `is_banned` TINYINT(1) DEFAULT 0,
