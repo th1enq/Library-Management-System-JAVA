@@ -9,6 +9,7 @@ import java.sql.Timestamp;
 import java.time.*;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Vector;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
@@ -105,6 +106,7 @@ public class DBInfo {
   public static String userType;
   public static ArrayList<Pair<String, String>> noti;
   public static String curName = "";
+
   static {
     try {
       Class.forName("com.mysql.cj.jdbc.Driver");
@@ -284,6 +286,101 @@ public class DBInfo {
     } catch (SQLException EE) {
       EE.printStackTrace();
       System.out.println("Loi xoa user ");
+    }
+  }
+
+
+  public static void editBook(Book a, String newTitle, String newAuthor, String newPublisher,
+      String newThumbnail, String newDescription, String newPageNum, String newLanguage) {
+    String oldTitle = a.getTitle();
+
+    // Create a StringBuilder to dynamically build the SQL query
+    StringBuilder sql = new StringBuilder("UPDATE book SET ");
+    boolean isFirst = true;
+
+    // Use a list to keep track of the parameters to be updated
+    List<String> params = new ArrayList<>();
+
+    // Check each field and only add it to the update query if it's not empty
+    if (newTitle != null && !newTitle.isEmpty()) {
+      sql.append("title = ?");
+      params.add(newTitle);
+      isFirst = false;
+    }
+    if (newAuthor != null && !newAuthor.isEmpty()) {
+      if (!isFirst) {
+        sql.append(", ");
+      }
+      sql.append("authors = ?");
+      params.add(newAuthor);
+      isFirst = false;
+    }
+    if (newPublisher != null && !newPublisher.isEmpty()) {
+      if (!isFirst) {
+        sql.append(", ");
+      }
+      sql.append("publisher = ?");
+      params.add(newPublisher);
+      isFirst = false;
+    }
+    if (newDescription != null && !newDescription.isEmpty()) {
+      if (!isFirst) {
+        sql.append(", ");
+      }
+      sql.append("description = ?");
+      params.add(newDescription);
+      isFirst = false;
+    }
+    if (newPageNum != null && !newPageNum.isEmpty()) {
+      if (!isFirst) {
+        sql.append(", ");
+      }
+      sql.append("numPage = ?");
+      params.add(newPageNum);
+      isFirst = false;
+    }
+    if (newLanguage != null && !newLanguage.isEmpty()) {
+      if (!isFirst) {
+        sql.append(", ");
+      }
+      sql.append("language = ?");
+      params.add(newLanguage);
+      isFirst = false;
+    }
+    if (newThumbnail != null && !newThumbnail.isEmpty()) {
+      if (!isFirst) {
+        sql.append(", ");
+      }
+      sql.append("thumbnail = ?");
+      params.add(newThumbnail);
+    }
+
+    // If no parameters were set, there's nothing to update
+    if (params.isEmpty()) {
+      System.out.println("No updates were provided.");
+      return;
+    }
+
+    // Add the WHERE clause to the query
+    sql.append(" WHERE title = ?");
+
+    try  {
+      Connection conn = DBInfo.conn();
+      PreparedStatement pstmt = conn.prepareStatement(sql.toString());
+      for (int i = 0; i < params.size(); i++) {
+        pstmt.setString(i + 1, params.get(i));
+      }
+      pstmt.setString(params.size() + 1, oldTitle);
+
+      int rowsUpdated = pstmt.executeUpdate();
+      if (rowsUpdated > 0) {
+        System.out.println("The book was updated successfully!");
+      } else {
+        System.out.println("No book with the given title found.");
+      }
+
+    } catch (SQLException e) {
+      e.printStackTrace();
     }
   }
 
@@ -1239,10 +1336,10 @@ public class DBInfo {
 
     ////ham getUser theo ten User
 
-    ArrayList<Pair<Book, MyDateTime>> tmp = getBorrowedBookList(1);
-    for (Pair i : tmp) {
-      System.out.println(i.toString());
-    }
+    Book tmp = getBook("Atomic Habits");
+    DBInfo.editBook(tmp, "ttt", "a","","","","","");
+    Book x = getBook("ttt");
+    System.out.println(x.toString());
   }
 
 }
