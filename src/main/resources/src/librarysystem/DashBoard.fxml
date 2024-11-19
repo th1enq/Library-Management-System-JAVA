@@ -10,9 +10,9 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="707.0" prefWidth="1180.0" styleClass="sidebar" stylesheets="@stylesheet.css" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="src.librarysystem.DashBoardController">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="736.0" prefWidth="1180.0" styleClass="sidebar" stylesheets="@stylesheet.css" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="src.librarysystem.DashBoardController">
    <children>
-      <Pane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="732.0" prefWidth="1180.0">
+      <Pane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="736.0" prefWidth="1180.0">
          <children>
             <Pane layoutX="22.0" layoutY="165.0" prefHeight="121.0" prefWidth="264.0" styleClass="slider" stylesheets="@stylesheet.css">
                <children>
@@ -81,7 +81,7 @@
                   <Font name="System Bold" size="32.0" />
                </font>
             </Label>
-            <Label fx:id="currentTime" layoutX="34.0" layoutY="90.0" prefHeight="47.0" prefWidth="377.0" styleClass="cus" stylesheets="@../../fontstyle.css" text="Oct 9, 2024 | Wednesday, 11:00 PM" textFill="#282423">
+            <Label fx:id="currentTime" layoutX="34.0" layoutY="90.0" prefHeight="47.0" prefWidth="377.0" styleClass="cus" text="Oct 9, 2024 | Wednesday, 11:00 PM" textFill="#282423">
                <font>
                   <Font name="System Bold" size="21.0" />
                </font>

@@ -1,8 +1,11 @@
 package src.librarysystem;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import javafx.beans.value.ObservableValue;
 
 public class User {
+
     private int id;
     private String name;
     private String username;
@@ -10,11 +13,14 @@ public class User {
     private String userType;
     private boolean isBanned;
     private String avatarLink;
+    private ArrayList<Pair<Book, MyDateTime>> rentBook;
 
     public User() {
+        rentBook = new ArrayList<>();
     }
 
-    public User(int id, String name, String username, String password, String userType, boolean isBanned, String avatarLink) {
+    public User(int id, String name, String username, String password, String userType,
+                boolean isBanned, String avatarLink) {
         this.id = id;
         this.name = name;
         this.username = username;
@@ -22,6 +28,7 @@ public class User {
         this.userType = userType;
         this.isBanned = isBanned;
         this.avatarLink = avatarLink;
+        rentBook = DBInfo.getBorrowedBookList(this.id);
     }
 
     public User(int id, String name, String username, String password, String userType) {
@@ -90,6 +97,15 @@ public class User {
         this.avatarLink = avatarLink;
     }
 
+    public ArrayList<Pair<Book, MyDateTime>> getRentBook() {
+        return rentBook;
+    }
+
+    public void setRentBook(
+            ArrayList<Pair<Book, MyDateTime>> rentBook) {
+        this.rentBook = rentBook;
+    }
+
     @Override
     public String toString() {
         return
@@ -104,5 +120,27 @@ public class User {
 
     public ObservableValue<String> getStatus() {
         return null;
+    }
+
+    public void muonSach(Book book) {
+        if(checkSach(book)) {
+            System.out.println("Ban da muon cuon nay roi !!!");
+            return;
+        }
+        DBInfo.borrowBook(book.getTitle(), id);
+        rentBook = DBInfo.getBorrowedBookList(id);
+    }
+
+    public void traSach(Book book) throws Exception{
+        if(!checkSach(book)) {
+            System.out.println("Khong ton tai cuon nay trong list sach");
+            return;
+        }
+        DBInfo.returnBook(book.getTitle(), id);
+        rentBook = DBInfo.getBorrowedBookList(id);
+    }
+
+    public boolean checkSach(Book book) {
+        return rentBook.contains(book);
     }
 }
