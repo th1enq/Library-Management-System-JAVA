@@ -70,7 +70,7 @@ SET character_set_client = utf8;
 CREATE TABLE `registration` (
   `id` INT AUTO_INCREMENT NOT NULL,
   `name` VARCHAR(100) DEFAULT NULL,
-  `username` VARCHAR(20) NOT NULL UNIQUE,
+  `username` VARCHAR(200) NOT NULL UNIQUE,
   `password` VARCHAR(100) NOT NULL,
   `usertype` ENUM('admin', 'user') DEFAULT 'user',
   `is_banned` TINYINT(1) DEFAULT 0,
@@ -117,9 +117,8 @@ INSERT INTO registration (id, name, username, password, usertype) VALUES
 ('2', 'Tran Thi B', 'tranthib', 'password456', 'user'),
 ('3', 'Pham Thi D', 'phamthid', 'password101', 'user'),
 ('4', 'Vu Van E', 'vuvane', 'password112', 'user'),
-('99998', 'Le Van C', 'levanc',  'password789', 'admin');
-INSERT INTO registration (id, name, username, password, usertype) VALUES
-('99999', 'Nguyen Thi F', 'nguyenthif', 'adminPassword123', 'admin');
+('0', 'Le Van C', 'levanc',  'password789', 'admin');
+
 /*!40000 ALTER TABLE `registration` ENABLE KEYS */;
 UNLOCK TABLES;
 DROP TABLE IF EXISTS `author`;

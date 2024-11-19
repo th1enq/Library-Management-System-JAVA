@@ -105,7 +105,6 @@ public class DBInfo {
   public static String userType;
   public static ArrayList<Pair<String, String>> noti;
   public static String curName = "";
-
   static {
     try {
       Class.forName("com.mysql.cj.jdbc.Driver");
@@ -454,7 +453,7 @@ public class DBInfo {
 
   public static int getUserCount() {
     int count = 0;
-    String query = "SELECT COUNT(*) FROM registration WHERE usertype = 'user' ";
+    String query = "SELECT MAX(id) FROM registration WHERE usertype = 'user' ";
 
     try (Connection connection = DBInfo.conn()) {
       PreparedStatement preparedStatement = connection.prepareStatement(query);
