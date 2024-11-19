@@ -3,18 +3,15 @@
 <?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon?>
 <?import java.lang.String?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Font?>
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1300.0" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="src.librarysystem.MainGUI">
    <children>
       <Pane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="800.0" prefWidth="1300.0" styleClass="bg_white" stylesheets="@stylesheet.css">
          <children>
-            <VBox fx:id="mainVbox" layoutX="120.0" layoutY="92.0" prefHeight="707.0" prefWidth="1180.0" styleClass="sidebar" stylesheets="@stylesheet.css" />
+            <VBox fx:id="mainVbox" layoutX="120.0" layoutY="63.0" prefHeight="736.0" prefWidth="1180.0" styleClass="sidebar" stylesheets="@stylesheet.css" />
             <Button fx:id="homeButton" layoutX="29.0" layoutY="119.0" mnemonicParsing="false" onAction="#returnHome" prefHeight="51.0" prefWidth="52.0" style="-fx-cursor: hand;" styleClass="menu-btn-active" stylesheets="@stylesheet.css">
                <graphic>
                   <FontAwesomeIcon fx:id="homeIcon" glyphName="HOME" size="2em" />
@@ -39,15 +36,6 @@
                <graphic>
                   <FontAwesomeIcon fx:id="logOutIcon" glyphName="SIGN_OUT" selectionFill="#797979" size="2em" />
                </graphic></Button>
-            <HBox layoutX="479.0" layoutY="32.0" prefHeight="38.0" prefWidth="363.0">
-               <children>
-                  <TextField fx:id="bookQuery" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="38.0" prefWidth="364.0" promptText="Search ...." styleClass="search-btn" stylesheets="@stylesheet.css" HBox.hgrow="ALWAYS">
-                     <font>
-                        <Font size="14.0" />
-                     </font>
-                  </TextField>
-               </children>
-            </HBox>
             <Button fx:id="close" layoutX="1225.0" layoutY="-3.0" mnemonicParsing="false" onAction="#close" prefHeight="45.0" prefWidth="75.0" style="-fx-cursor: hand;" stylesheets="@stylesheet.css">
                <styleClass>
                   <String fx:value="tran-btn" />

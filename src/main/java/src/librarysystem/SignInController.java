@@ -7,6 +7,7 @@ import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import com.sun.tools.javac.Main;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import javafx.animation.TranslateTransition;
 import javafx.event.ActionEvent;
@@ -52,7 +53,10 @@ public class SignInController implements Initializable {
 
     private boolean isPasswordVisible = false;
 
+    private User currentUser = new User();
+
     private void returnHome() {
+        MainGUI.setCurrentUser(currentUser);
         try {
             // Load MainGUI.fxml
             Parent mainRoot = FXMLLoader.load(getClass().getResource("MainGUI.fxml"));
@@ -60,6 +64,7 @@ public class SignInController implements Initializable {
 
             // Get the current stage from any control in this scene
             Stage currentStage = (Stage) userEmail.getScene().getWindow();
+
 
             // Set the new scene on the current stage
             currentStage.setScene(mainScene);
@@ -94,6 +99,7 @@ public class SignInController implements Initializable {
 
         // Authenticate the user
         if (DBInfo.checkPass(userEmail.getText(), userPassword.getText())) {
+            currentUser = DBInfo.getUser(userEmail.getText());
             returnHome();
         } else {
             showAlert("Tài khoản hoặc mật khẩu không chính xác !!!");

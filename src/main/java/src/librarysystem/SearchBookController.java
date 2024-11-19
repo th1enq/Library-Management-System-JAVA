@@ -1,13 +1,18 @@
 package src.librarysystem;
 
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
@@ -17,241 +22,171 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 
+import java.io.IOException;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import  java.util.HashMap;
 
 public class SearchBookController {
+    @FXML
+    public Button apiModeButton;
+    @FXML
+    public Button libraryModeButton;
+    @FXML
+    public TextField bookQuery;
+    @FXML
+    public FlowPane flowPane;
 
-    @FXML
-    public ImageView imageBook;
-    @FXML
-    public Label titleBook;
-    @FXML
-    public Label authorBook;
-    @FXML
-    public Button seeDetailBook;  // Adjust based on your Book class
-    @FXML
-    public ScrollPane stackPane;
+    private boolean apiMode = false;
 
-    private int currentIndex = 0;
-    private ArrayList<Book> bookLists;
-    private ArrayList<Pane> paneList = new ArrayList<>();  // List to store all panes
+    private ArrayList<Book> currentApiBook;
+    private ArrayList<Book> currentLibraryBook;
+
+    private MainGUI mainGUI;
+
+    // HashMap để lưu cache ảnh
+    private HashMap<String, Image> imageCache = new HashMap<>();
+
+    public void setMainGUI(MainGUI mainGUI) {
+        this.mainGUI = mainGUI;
+    }
+
+    private void update() {
+        String activeMode = "-fx-background-color: #fff; -fx-cursor: hand;";
+        String inActiveMode = "-fx-background-color: transparent; -fx-cursor: hand;";
+        apiModeButton.setStyle(apiMode ? activeMode : inActiveMode);
+        libraryModeButton.setStyle(!apiMode ? activeMode : inActiveMode);
+    }
 
     public void initialize() {
-
-    }
-
-    public void show(ArrayList<Book> books) {
-        VBox vbox = new VBox(20); // Create a VBox for the books with 10px spacing
-        vbox.getStyleClass().add("sidebar");
-        vbox.setStyle("-fx-background-radius: 15px;");
-        paneList.clear();
-        for (Book book : books) {
-            Pane bookPane = createBookPane(book); // Create a Pane for each book
-            vbox.getChildren().add(bookPane); // Add the Pane to the VBox
-            paneList.add(bookPane);
-        }
-        stackPane.setContent(vbox); // Set the VBox as the content of the ScrollPane
-        bookLists = books;
-    }
-
-
-    private void processSelected(Pane pane, Book book) {
-        currentIndex = paneList.indexOf(pane);
-        if (selectedPane != null) {
-            // Reset the background color of the previously selected pane
-            selectedPane.setStyle("-fx-background-color: #FFFFFF;");
-            selectedPane.setStyle("-fx-cursor: hand;");
-        }
-
-        // Set the background color of the currently selected pane
-        pane.setStyle(
-                "-fx-border-width: 1px; " +
-                "-fx-border-color: #000; " +
-                "-fx-border-radius: 15px; " +
-                "-fx-background-color: #D0E8FF; " +
-                "-fx-background-radius: 15px; " +
-                "-fx-background-insets: 1px;"
-        );
-
-        // Soft blue for selected
-
-        selectedPane = pane;  // Update selectedPane to the new selection
-        updateMainDisplay(book);  // Load selected book details
-
-        scrollToPane(currentIndex);
-    }
-
-    private void scrollToPane(int index) {
-        if (paneList.isEmpty()) return;
-
-        // Get the total height of the VBox (container for all panes)
-        double totalHeight = paneList.size() * (200 + 20); // Pane height + VBox spacing
-
-        // Calculate the target scroll position based on the pane's position
-        double targetY = index * (200 + 20);
-
-        // Calculate scroll position within bounds by considering the height of the ScrollPane's viewport
-        double viewportHeight = stackPane.getViewportBounds().getHeight();
-        double vboxHeight = totalHeight + 20;  // Adding extra spacing
-
-        // Adjust scroll value to center the selected pane, so it appears in the viewport if possible
-        double scrollValue = (targetY - (viewportHeight / 2)) / (vboxHeight - viewportHeight);
-
-        // Ensure scrollValue is within the bounds of 0 to 1
-        stackPane.setVvalue(Math.max(0, Math.min(scrollValue, 1)));
-    }
-
-
-    private Pane selectedPane = null;  // Track the currently selected pane
-
-    private Pane createBookPane(Book book) {
-        Pane pane = new Pane();
-        pane.setPrefSize(668, 200);
-        pane.getStyleClass().add("slider-with-border");
-        pane.setStyle("-fx-cursor: hand;");
-
-        // Create ImageView for book thumbnail
-        ImageView imageView = new ImageView();
-        imageView.setFitHeight(150);
-        imageView.setFitWidth(138);
-        imageView.setLayoutX(42);
-        imageView.setLayoutY(25);
-
-        // Set image or default image if not available
-        if (book.getThumbnail() != null && !book.getThumbnail().isEmpty()) {
-            Image bookImage = new Image(book.getThumbnail());
-            imageView.setImage(bookImage);
-        } else {
-            String defaultImagePath = getClass().getResource("/images/unnamed.jpg").toExternalForm();
-            Image defaultImage = new Image(defaultImagePath);
-            imageView.setImage(defaultImage);
-        }
-        pane.getChildren().add(imageView);
-
-        // Create Title label
-        String originalTitle = book.getTitle();
-        String displayedTitle = originalTitle.length() > 50
-                ? originalTitle.substring(0, 50) + "..."
-                : originalTitle;
-
-        Label title = new Label(displayedTitle);
-        title.setLayoutX(212);
-        title.setLayoutY(72);
-        title.setFont(new Font("System Bold", 15));
-        pane.getChildren().add(title);
-
-// Create Author label
-        Text authorField = new Text("Author: ");
-        authorField.setStyle("-fx-font-weight: bold;");
-        Text authorValue = new Text(book.getAuthors());
-        TextFlow author = new TextFlow(authorField, authorValue);
-        author.setLayoutX(212);
-        author.setLayoutY(111);
-        pane.getChildren().add(author);
-
-// Create ISBN label
-        Text isbnField = new Text("ISBN: ");
-        isbnField.setStyle("-fx-font-weight: bold;");
-        Text isbnValue = new Text(book.getISBN());
-        TextFlow isbn = new TextFlow(isbnField, isbnValue);
-        isbn.setLayoutX(212);
-        isbn.setLayoutY(149);
-        pane.getChildren().add(isbn);
-
-// Create Publisher label
-        Text publisherField = new Text("Publisher: ");
-        publisherField.setStyle("-fx-font-weight: bold;");
-        Text publisherValue = new Text(book.getPublisher());
-        TextFlow publisher = new TextFlow(publisherField, publisherValue);
-        publisher.setLayoutX(458);
-        publisher.setLayoutY(111);
-        pane.getChildren().add(publisher);
-
-// Create Publish Date label
-        Text publishDateField = new Text("Publish Date: ");
-        publishDateField.setStyle("-fx-font-weight: bold;");
-        Text publishDateValue = new Text(book.getPublishedDate());
-        TextFlow publishDate = new TextFlow(publishDateField, publishDateValue);
-        publishDate.setLayoutX(458);
-        publishDate.setLayoutY(149);
-        pane.getChildren().add(publishDate);
-
-
-
-        int rating = book.getRating();  // Get rating from Book instance
-        double layoutX = 212.0;
-        double layoutY = 48.0;
-        double starSpacing = 24.0;
-
-        for (int i = 0; i < 5; i++) {
-            FontAwesomeIcon starIcon = new FontAwesomeIcon();
-
-            starIcon.setLayoutX(layoutX + i * starSpacing);
-            starIcon.setLayoutY(layoutY);
-            starIcon.setSize("1.5em");
-
-            // Set color based on the rating
-            if (i < rating) {
-                starIcon.setGlyphName("STAR");
-                starIcon.getStyleClass().add("gold-star");
+        bookQuery.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
+            if (event.getCode().toString().equals("ENTER")) {
+                searchQuery();
             }
-            else {
-                starIcon.setGlyphName("STAR_ALT");
-            }
-
-            // Add each star icon to the pane
-            pane.getChildren().add(starIcon);
-        }
-
-
-
-        // Handle pane selection
-        pane.setOnMouseClicked(event -> {
-            processSelected(pane, book);
         });
-
-        return pane;
+        apiMode = false;
+        update();
+        currentApiBook = null;
+        currentLibraryBook = DBInfo.getBookList("ALL", "ALL", "ALL");
+        displayBooks(currentLibraryBook);
     }
 
-
-    private void updateMainDisplay(Book book) {
-        // Update the main display with the selected book's details
-        if (book.getThumbnail() != null && !book.getThumbnail().isEmpty()) {
-            imageBook.setImage(new Image(book.getThumbnail()));
-        } else {
-            String defaultImagePath = getClass().getResource("/images/unnamed.jpg").toExternalForm();
-            imageBook.setImage(new Image(defaultImagePath));
-        }
-        titleBook.setText(book.getTitle());
-        authorBook.setText(book.getAuthors());
+    private void searchQuery() {
+        String query = bookQuery.getText();
+        currentApiBook = BookServices.searchBooks(query);
+        currentLibraryBook = DBInfo.getBookList("ALL", "ALL", "ALL");
+        displayBooks(apiMode ? currentApiBook : currentLibraryBook);
     }
 
+    @FXML
+    public void searchBook(ActionEvent actionEvent) {
+        System.out.println("search");
+        searchQuery();
+    }
 
-    public void previousBook(ActionEvent actionEvent) {
-        if(bookLists != null) {
-            currentIndex--;
-            if(currentIndex < 0) {
-                currentIndex = bookLists.size() - 1;
+    @FXML
+    private ScrollPane scrollPane;
+
+    public void displayBooks(ArrayList<Book> result) {
+        flowPane.getChildren().clear(); // Xóa các phần tử cũ
+        if (result == null) return;
+
+        // Cấu hình FlowPane
+        flowPane.setPrefWidth(1099);
+        flowPane.setHgap(60); // Khoảng cách ngang giữa các thẻ
+        flowPane.setVgap(20); // Khoảng cách dọc giữa các hàng
+        flowPane.setStyle("-fx-background-color: transparent; -fx-padding: 0 0 0 60px;");
+
+        for (Book book : result) {
+            Pane bookPane = new Pane();
+            bookPane.setPrefSize(460, 192);
+            bookPane.setStyle("-fx-background-color: #fff; -fx-background-radius: 30px; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0, 0, 4);");
+
+            if (apiMode) {
+                ImageView imageView = new ImageView();
+                imageView.setFitHeight(192);
+                imageView.setFitWidth(144);
+
+                String imageUrl = apiMode && book.getThumbnail() != null && !book.getThumbnail().isEmpty()
+                        ? book.getThumbnail()
+                        : "/images/bookTest1.jpg";
+
+                // Kiểm tra cache ảnh
+                if (imageCache.containsKey(imageUrl)) {
+                    imageView.setImage(imageCache.get(imageUrl)); // Sử dụng ảnh đã cache
+                } else {
+                    Image image = new Image(imageUrl, true);
+                    imageCache.put(imageUrl, image); // Lưu ảnh vào cache
+                    imageView.setImage(image);
+                }
+
+                bookPane.getChildren().add(imageView);
             }
-            processSelected(paneList.get(currentIndex), bookLists.get(currentIndex));
+
+            // Tạo Label cho tiêu đề
+            Label titleLabel = new Label(book.getTitle());
+            titleLabel.setLayoutX(160); // Căn lề phải hơn
+            titleLabel.setLayoutY(22);
+            titleLabel.setPrefSize(250, 17);
+            titleLabel.setStyle("-fx-font-weight: bold; -fx-font-size: 12px;");
+            bookPane.getChildren().add(titleLabel);
+
+            // Tạo Label cho tác giả
+            Label authorLabel = new Label(book.getAuthors());
+            authorLabel.setLayoutX(160); // Căn lề phải hơn
+            authorLabel.setLayoutY(49);
+            authorLabel.setPrefSize(250, 17);
+            authorLabel.setStyle("-fx-text-fill: #606060; -fx-font-size: 10px;");
+            bookPane.getChildren().add(authorLabel);
+
+            // Tạo nhãn danh mục
+            Label categoryLabel = new Label(book.getCategory() != null ? book.getCategory() : "Không phân loại");
+            categoryLabel.setLayoutX(160); // Căn lề phải hơn
+            categoryLabel.setLayoutY(119);
+            categoryLabel.setStyle("-fx-background-color: rgba(0, 128, 255, 0.1); -fx-text-fill: #0078D4; -fx-padding: 2 5; -fx-font-size: 10px;");
+            bookPane.getChildren().add(categoryLabel);
+
+            // Thêm đánh giá bằng font awesome icon
+            Label ratingLabel = new Label("\uf005 \uf005 \uf005 \uf005 \uf005"); // Unicode của icon STAR_ALT
+            ratingLabel.setLayoutX(160); // Căn lề phải hơn
+            ratingLabel.setLayoutY(85);
+            ratingLabel.setStyle("-fx-font-family: 'FontAwesome'; -fx-text-fill: #FFD700; -fx-font-size: 12px;");
+            bookPane.getChildren().add(ratingLabel);
+
+            // Tạo Button
+            Button detailButton = new Button("Xem chi tiết");
+            detailButton.setLayoutX(189);
+            detailButton.setLayoutY(153);
+            detailButton.setStyle("-fx-cursor: hand; -fx-background-color: transparent; -fx-border-color: #0078D4; -fx-border-radius: 5px; -fx-text-fill: #0078D4;");
+            detailButton.setOnAction(event -> {
+                mainGUI.returnDetailBook(book, apiMode);
+            });
+            bookPane.getChildren().add(detailButton);
+
+            // Thêm Pane vào FlowPane
+            flowPane.getChildren().add(bookPane);
         }
     }
 
-    public void nextBook(ActionEvent actionEvent) {
-        if(bookLists != null) {
-            currentIndex++;
-            if(currentIndex >= bookLists.size()) {
-                currentIndex = 0;
-            }
-            processSelected(paneList.get(currentIndex), bookLists.get(currentIndex));
+    @FXML
+    public void apiMode(ActionEvent actionEvent) {
+        System.out.println("api mode");
+        if (!apiMode) {
+            apiMode = true;
         }
+        update();
+        displayBooks(currentApiBook);
     }
 
-    public Button getSeeDetailBook() {
-        return seeDetailBook;
-    }
-
-    public Book getCurrentBook() {
-        return bookLists.get(currentIndex);
+    @FXML
+    public void libraryMode(ActionEvent actionEvent) {
+        System.out.println("library mode");
+        if (apiMode) {
+            apiMode = false;
+        }
+        update();
+        displayBooks(currentLibraryBook);
     }
 }
