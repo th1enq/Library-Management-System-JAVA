@@ -117,7 +117,7 @@ INSERT INTO registration (id, name, username, password, usertype) VALUES
 ('2', 'Tran Thi B', 'tranthib', 'password456', 'user'),
 ('3', 'Pham Thi D', 'phamthid', 'password101', 'user'),
 ('4', 'Vu Van E', 'vuvane', 'password112', 'user'),
-('0', 'Le Van C', 'levanc',  'password789', 'admin');
+('999999', 'Le Van C', 'levanc',  'password789', 'admin');
 
 /*!40000 ALTER TABLE `registration` ENABLE KEYS */;
 UNLOCK TABLES;
