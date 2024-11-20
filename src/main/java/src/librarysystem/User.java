@@ -127,12 +127,29 @@ public class User {
     rentBook = DBInfo.getBorrowedBookList(id);
   }
 
-  public void traSach(Book book) throws Exception{
+  public void traSach(Book book) throws Exception {
     DBInfo.returnBook(book.getTitle(), id);
     rentBook = DBInfo.getBorrowedBookList(id);
   }
 
   public boolean checkSach(Book book) {
     return rentBook.contains(book);
+  }
+
+  public void update(String newName, String newUsername, String newPassword,
+      String newAvatar_link) {
+    DBInfo.updateUser(id, newName, newUsername, newPassword, newAvatar_link);
+    if (newName != null) {
+      setName(newName);
+    }
+    if (newUsername != null) {
+      setUsername(newUsername);
+    }
+    if (newPassword != null) {
+      setPassword(newPassword);
+    }
+    if (newAvatar_link != null) {
+      setAvatarLink(newAvatar_link);
+    }
   }
 }

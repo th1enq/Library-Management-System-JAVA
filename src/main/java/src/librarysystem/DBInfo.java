@@ -102,7 +102,6 @@ public class DBInfo {
   public static String curUsername = "";
   public static String curPass = "";
   public static int curId = 0;
-  public static int numUser;
   public static String userType;
   public static ArrayList<Pair<String, String>> noti;
   public static String curName = "";
@@ -812,11 +811,18 @@ public class DBInfo {
    * @param newUsername username moi
    * @param newPassword pass moi
    */
-  public static void updateUser(int id, String newName, String newUsername, String newPassword) {
+  public static void updateUser(int id, String newName, String newUsername, String newPassword, String newAvatarLink) {
     Connection con = DBInfo.conn();
+    if (con == null) {
+      System.out.println("Không thể kết nối đến cơ sở dữ liệu.");
+      return;
+    }
+
+    PreparedStatement preparedStatement = null;
     try {
       StringBuilder sql = new StringBuilder("UPDATE registration SET ");
       boolean needComma = false;
+
       if (newName != null) {
         sql.append("name = ?");
         needComma = true;
@@ -833,10 +839,19 @@ public class DBInfo {
           sql.append(", ");
         }
         sql.append("password = ?");
+        needComma = true;
+      }
+      if (newAvatarLink != null) {
+        if (needComma) {
+          sql.append(", ");
+        }
+        sql.append("avatar_link = ?");
       }
       sql.append(" WHERE id = ?");
-      PreparedStatement preparedStatement = con.prepareStatement(sql.toString());
+
+      preparedStatement = con.prepareStatement(sql.toString());
       int paramIndex = 1;
+
       if (newName != null) {
         preparedStatement.setString(paramIndex++, newName);
       }
@@ -846,20 +861,31 @@ public class DBInfo {
       if (newPassword != null) {
         preparedStatement.setString(paramIndex++, newPassword);
       }
+      if (newAvatarLink != null) {
+        preparedStatement.setString(paramIndex++, newAvatarLink);
+      }
       preparedStatement.setInt(paramIndex, id);
+
       int rowsAffected = preparedStatement.executeUpdate();
       if (rowsAffected > 0) {
         System.out.println("Cập nhật thành công!");
       } else {
         System.out.println("Không tìm thấy người dùng với id: " + id);
       }
-
-      // Đóng kết nối
-      preparedStatement.close();
-      con.close();
     } catch (SQLException e) {
       e.printStackTrace();
-      System.out.println("Lỗi khi sửa thông tin người dùng");
+      System.out.println("Lỗi khi sửa thông tin người dùng.");
+    } finally {
+      try {
+        if (preparedStatement != null) {
+          preparedStatement.close();
+        }
+        if (con != null) {
+          con.close();
+        }
+      } catch (SQLException e) {
+        e.printStackTrace();
+      }
     }
   }
 
@@ -1334,12 +1360,8 @@ public class DBInfo {
 
   public static void main(String[] args) {
 
-    ////ham getUser theo ten User
-
-    Book tmp = getBook("Atomic Habits");
-    DBInfo.editBook(tmp, "ttt", "a","","","","","");
-    Book x = getBook("ttt");
-    System.out.println(x.toString());
+   User x =getUser("a");
+   x.update(null,null,null,"EvaElfie.link");
+   System.out.println(x.toString());
   }
-
 }
