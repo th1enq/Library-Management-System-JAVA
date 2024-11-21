@@ -168,6 +168,17 @@ public class User {
     this.rentBook = rentBook;
   }
 
+  public int getOverdue() {
+    return DBInfo.getOverdueAndUpcoming(id).getValue();
+  }
+
+  public int getUpcoming() {
+    return DBInfo.getOverdueAndUpcoming(id).getKey();
+  }
+
+  public ArrayList<Pair>getNotification(){
+    return DBInfo.getNotifications(id);
+  }
   @Override
   public String toString() {
     return "Registration{" +
@@ -221,6 +232,7 @@ public class User {
       setAvatarLink(newAvatar_link);
     }
   }
+
   public void update(String newName, String newUsername, String newPassword,
       String newAvatarLink, String newMSV, String newUniversity,
       String newPhone, String newCoverPhotoLink, Integer newReputation) {
@@ -256,6 +268,4 @@ public class User {
       setReputation(newReputation);
     }
   }
-
-
 }

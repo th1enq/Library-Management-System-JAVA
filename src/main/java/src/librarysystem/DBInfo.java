@@ -721,7 +721,7 @@ public class DBInfo {
           hoursBetween %= 24;
           minutesBetween %= 60;
 
-          ret.add(new Pair(daysBetween + " ngày " + hoursBetween + " giờ " + minutesBetween
+          ret.add(new Pair("Còn " + daysBetween + " ngày " + hoursBetween + " giờ " + minutesBetween
               + " phút nữa là đến hạn trả cuốn: ", bookName));
         }
       }
@@ -882,6 +882,89 @@ public class DBInfo {
       }
     }
   }
+
+  public static Pair<Integer, Integer> getOverdueAndUpcoming(int id) {
+
+    int upcoming = 0;
+    int overdue = 0;
+
+    String sqlUpcoming = "SELECT book_name, return_date FROM borrow_slip " +
+        "WHERE return_date BETWEEN NOW() AND DATE_ADD(NOW(), INTERVAL 11 DAY) " +
+        "AND user_id = ? ORDER BY return_date";
+
+    String sqlOverdue = "SELECT book_name, return_date FROM borrow_slip WHERE return_date < NOW() AND user_id = ?";
+
+    try (Connection conn = DBInfo.conn();
+        PreparedStatement preparedStatement = conn.prepareStatement(sqlUpcoming);
+        PreparedStatement statement2 = conn.prepareStatement(sqlOverdue)) {
+
+      preparedStatement.setInt(1, id);
+      try (ResultSet resultSet = preparedStatement.executeQuery()) {
+        while (resultSet.next()) {
+          upcoming++;
+        }
+      }
+
+      statement2.setInt(1, id);
+      try (ResultSet resultSet2 = statement2.executeQuery()) {
+        while (resultSet2.next()) {
+          overdue++;
+        }
+      }
+
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
+
+    return new Pair<Integer, Integer>(upcoming, overdue);
+  }
+
+  public static int countBorrowed() {
+    int upcoming = 0;
+
+    String sqlUpcoming = "SELECT book_name, return_date FROM borrow_slip " +
+        "WHERE return_date BETWEEN NOW() AND DATE_ADD(NOW(), INTERVAL 11 DAY)";
+
+    try (Connection conn = DBInfo.conn();
+        PreparedStatement preparedStatement = conn.prepareStatement(sqlUpcoming)) {
+
+      ResultSet resultSet = preparedStatement.executeQuery();
+
+      while (resultSet.next()) {
+        upcoming++;
+      }
+
+      resultSet.close();
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
+
+    return upcoming;
+  }
+
+  public static int countOverdue() {
+    int ret = 0;
+
+    String sql = "SELECT book_name, return_date FROM borrow_slip WHERE return_date < NOW()";
+
+
+    try (Connection conn = DBInfo.conn();
+        PreparedStatement preparedStatement = conn.prepareStatement(sql)) {
+
+      ResultSet resultSet = preparedStatement.executeQuery();
+
+      while (resultSet.next()) {
+        ret++;
+      }
+
+      resultSet.close();
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
+
+    return ret;
+  }
+
 
   /**
    * chinh sua thong tin ng dung.
@@ -1240,7 +1323,6 @@ public class DBInfo {
     return ret;
   }
 
-
   /**
    * laay ra những giá trị phân biệt của 1 cột của 1 bảng trong database.
    *
@@ -1370,7 +1452,6 @@ public class DBInfo {
     return sql;
   }
 
-
   public static void addComment(String book_title, String content) {
     try {
       Connection conn = DBInfo.conn();
@@ -1389,7 +1470,6 @@ public class DBInfo {
       e.printStackTrace();
     }
   }
-
 
   public static ArrayList<CustomData> getCommentList(String book_title) {
     ArrayList<CustomData> ret = new ArrayList<>();
@@ -1498,10 +1578,11 @@ public class DBInfo {
 
   public static void main(String[] args) {
 
-    ArrayList<Book> tmp= new ArrayList<>();
-    tmp = Filter.getInstance().getBookByCategorySubstr("rro");
-    for(Book i: tmp){
+    User X = DBInfo.getUser("nguyenvana");
+    ArrayList<Pair> noti = X.getNotification();
+    for (Pair i : noti) {
       System.out.println(i.toString());
     }
+    System.out.println(DBInfo.countBorrowed() + " " + DBInfo.countOverdue());
   }
 }
