@@ -4,6 +4,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
+import com.sun.tools.javac.Main;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import javafx.animation.FillTransition;
 import javafx.animation.ParallelTransition;
@@ -115,6 +116,8 @@ public class SettingController implements Initializable {
     public FontAwesomeIcon newPasswordIcon;
     @FXML
     public FontAwesomeIcon oldPasswordIcon;
+    @FXML
+    public Label bioName;
 
     private int currentMode = 0;
 
@@ -274,6 +277,12 @@ public class SettingController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        bioName.setText(MainGUI.currentUser.getName());
+        nameTextField.setText(MainGUI.currentUser.getName());
+        emailTextField.setText(MainGUI.currentUser.getUsername());
+        idTextField.setText(String.valueOf(MainGUI.currentUser.getId()));
+        userTextField.setText(MainGUI.currentUser.getUserType());
+
 
         oldPasswordVisiable.textProperty().bindBidirectional(oldPassword.textProperty());
         newPasswordVisiable.textProperty().bindBidirectional(newPassword.textProperty());
@@ -427,5 +436,29 @@ public class SettingController implements Initializable {
 
     @FXML
     public void updateProfile(ActionEvent actionEvent) {
+        if(currentMode == 0) {
+            MainGUI.currentUser.update(nameTextField.getText(), emailTextField.getText(), null, null);
+        }
+        else if(currentMode == 2) {
+            if(!MainGUI.currentUser.getPassword().equals(oldPassword.getText())) {
+                System.out.println("Mat khau cu khong chinh xac" + " " + MainGUI.currentUser.getPassword() + " " + oldPassword.getText());
+            }
+            else {
+                if(newPassword.getText().isEmpty() || newPassword == null) {
+                    System.out.println("Hay nhap mat khau moi");
+                    return;
+                }
+                if(confirmNewPassword.getText().isEmpty() || confirmNewPassword == null) {
+                    System.out.println("Hay xac nhan lai mat khau");
+                    return;
+                }
+                if(!newPassword.getText().equals(confirmNewPassword.getText())) {
+                    System.out.println("Mat khau nhap khong khop");
+                    return;
+                }
+                System.out.println("Doi mat khau thanh cong" + " " + newPassword.getText());
+                MainGUI.currentUser.update(null, null, newPassword.getText(), null);
+            }
+        }
     }
 }

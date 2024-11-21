@@ -103,27 +103,38 @@ public class SearchBookController {
             Pane bookPane = new Pane();
             bookPane.setPrefSize(460, 192);
             bookPane.setStyle("-fx-background-color: #fff; -fx-background-radius: 30px; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0, 0, 4);");
+            ImageView imageView = new ImageView();
+            imageView.setFitHeight(192);
+            imageView.setFitWidth(144);
 
-            if (apiMode) {
-                ImageView imageView = new ImageView();
-                imageView.setFitHeight(192);
-                imageView.setFitWidth(144);
+            String imageUrl;
 
-                String imageUrl = apiMode && book.getThumbnail() != null && !book.getThumbnail().isEmpty()
-                        ? book.getThumbnail()
-                        : "/images/bookTest1.jpg";
-
-                // Kiểm tra cache ảnh
-                if (imageCache.containsKey(imageUrl)) {
-                    imageView.setImage(imageCache.get(imageUrl)); // Sử dụng ảnh đã cache
-                } else {
-                    Image image = new Image(imageUrl, true);
-                    imageCache.put(imageUrl, image); // Lưu ảnh vào cache
-                    imageView.setImage(image);
-                }
-
-                bookPane.getChildren().add(imageView);
+            if (book.getThumbnail() != null && !book.getThumbnail().isEmpty()) {
+                // Use the thumbnail URL from the API
+                imageUrl = book.getThumbnail();
+            } else {
+                // Use the default local image for missing thumbnails
+                imageUrl = getClass().getResource("/images/unnamed.jpg").toExternalForm();
             }
+
+            // Check if the image is already in the cache
+            if (imageCache.containsKey(imageUrl)) {
+                imageView.setImage(imageCache.get(imageUrl)); // Use cached image
+            } else {
+                try {
+                    // Load the image (supports both local and remote URLs)
+                    Image image = new Image(imageUrl, true);
+                    imageCache.put(imageUrl, image); // Cache the image
+                    imageView.setImage(image);
+                } catch (Exception e) {
+                    // Fallback in case of an error (e.g., invalid URL)
+                    System.err.println("Failed to load image: " + imageUrl);
+                    imageView.setImage(new Image(getClass().getResource("/images/unnamed.jpg").toExternalForm()));
+                }
+            }
+
+
+            bookPane.getChildren().add(imageView);
 
             // Tạo Label cho tiêu đề
             Label titleLabel = new Label(book.getTitle());
@@ -176,6 +187,7 @@ public class SearchBookController {
         if (!apiMode) {
             apiMode = true;
         }
+        BookViewDetailController.setApiMode(apiMode);
         update();
         displayBooks(currentApiBook);
     }
@@ -186,6 +198,7 @@ public class SearchBookController {
         if (apiMode) {
             apiMode = false;
         }
+        BookViewDetailController.setApiMode(apiMode);
         update();
         displayBooks(currentLibraryBook);
     }

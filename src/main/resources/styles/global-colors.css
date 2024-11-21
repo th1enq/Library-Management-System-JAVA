@@ -1,0 +1,21 @@
+.root.dark-mode {
+    --background-color: #353334;
+    --sidebar-color: #201C1D;
+    --slider-color: ##4D4949;
+    --white-color: #FFFFFF;
+    --red-color: #F65867;
+    --grey-color: #838484;
+    --font-in-sidebar: #E1E0E0;
+    --hidden-color: #898888;
+}
+
+.root.light-mode {
+    --background-color: ##FFFFFF;
+    --sidebar-color: #F9F9F9;
+    --slider-color: ##FFFFFF;
+    --white-color: #F8F8F8;
+    --red-color: #F65867;
+    --grey-color: #676767;
+    --font-in-sidebar: #2B2B2B;
+    --hidden-color: #C4C4C4;
+}
