@@ -29,6 +29,10 @@ public class BookViewDetailController {
     @FXML
     public Button editButton;
     @FXML
+    public Button addBookButton;
+    @FXML
+    public Button rentBookButton;
+    @FXML
     private Label detailTitle;
     @FXML
     private Label detailAuthor;
@@ -47,12 +51,12 @@ public class BookViewDetailController {
 
     private boolean editMode = false;
 
-    private boolean apiMode = false;
+    public static boolean apiMode = false;
 
     private Book currentBook = new Book();
 
-    public void setApiMode(boolean apiMode) {
-        this.apiMode = apiMode;
+    public static void setApiMode(boolean apiMode) {
+        BookViewDetailController.apiMode = apiMode;
     }
 
     void update() {
@@ -94,13 +98,20 @@ public class BookViewDetailController {
 
             // Load the image and handle missing images
             String imagePath = book.getThumbnail(); // Assuming this method gets the image path
+
             if (imagePath != null && !imagePath.isEmpty()) {
-                // Load image from the URL or file path
-                detailImage.setImage(new Image(imagePath));
+                try {
+                    // Attempt to load the image from the provided path or URL
+                    detailImage.setImage(new Image(imagePath, true));
+                } catch (Exception e) {
+                    // If the image fails to load, set the default image
+                    detailImage.setImage(new Image(getClass().getResource("/images/unnamed.jpg").toExternalForm()));
+                }
             } else {
-                // Set a default image if no thumbnail is provided
-                detailImage.setImage(new Image("resources/images/unnamed.jpg")); // Path to your default image
+                // Use the default image if no thumbnail is provided
+                detailImage.setImage(new Image(getClass().getResource("/images/unnamed.jpg").toExternalForm()));
             }
+
             qrImage.setImage(BookServices.generateQRCode(book.getBuyLink()));
         } else {
             // If book is null, set default messages for each label
@@ -113,6 +124,9 @@ public class BookViewDetailController {
             // Optionally set a default image
             detailImage.setImage(new Image("resources/images/unnamed.jpg"));
         }
+
+        rentBookButton.setVisible(!apiMode);
+        addBookButton.setVisible(apiMode);
     }
 
     public Button getReturnSearchBook() {
@@ -155,5 +169,10 @@ public class BookViewDetailController {
 
         editMode = false;
         update();
+    }
+
+    @FXML
+    public void addBook(ActionEvent actionEvent) {
+        DBInfo.addBook(currentBook);
     }
 }

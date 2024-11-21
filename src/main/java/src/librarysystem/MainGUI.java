@@ -263,6 +263,9 @@ public class MainGUI implements Initializable {
                 userIcon.getStyleClass().add("icon-active-color");
                 userButton.getStyleClass().add("menu-btn-active");
                 break;
+            case 4 :
+                settingIcon.getStyleClass().add("icon-active-color");
+                settingButton.getStyleClass().add("menu-btn-active");
         }
     }
 
@@ -393,5 +396,16 @@ public class MainGUI implements Initializable {
 
     @FXML
     public void returnSetting(ActionEvent actionEvent) {
+        currentStage = 4;
+        try {
+            fxml = FXMLLoader.load(getClass().getResource("Setting.fxml"));
+            mainVbox.getChildren().removeAll();
+            mainVbox.getChildren().setAll(fxml);
+
+            fadeAnimation();
+        } catch (IOException ex) {
+            Logger.getLogger(LoginController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        update();
     }
 }

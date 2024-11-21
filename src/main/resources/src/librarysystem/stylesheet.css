@@ -1,3 +1,5 @@
+
+
 .parent {
     -fx-background-color: transparent;
 }
@@ -303,3 +305,63 @@
     -fx-text-alignment: center;
     -fx-alignment: CENTER
 }
+
+.choice-box {
+    -fx-border-color: #E8EAEC;
+    -fx-background-color: #FFFFFF;
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
+    -fx-padding: 10px;
+    -fx-font-size: 14px;
+    -fx-text-fill: #333; /* Text color */
+}
+
+.choice-box .list-cell {
+    -fx-background-color: #FFFFFF;
+    -fx-border-color: transparent;
+    -fx-text-fill: #767B90;
+    -fx-padding: 5px;
+}
+
+
+/* Base styling for the toggle button */
+.toggle-switch {
+    -fx-background-color: #ccc; /* Gray background for OFF state */
+    -fx-background-radius: 30px;
+    -fx-text-fill: white;
+    -fx-min-width: 60px;
+    -fx-min-height: 30px;
+    -fx-padding: 5px;
+    -fx-alignment: center;
+    -fx-font-weight: bold;
+    -fx-font-size: 14px;
+}
+
+/* When the button is selected (ON state) */
+.toggle-switch:selected {
+    -fx-background-color: #4CAF50; /* Green for ON state */
+    -fx-text-fill: white;
+}
+
+/* Style for the "ON"/"OFF" text */
+.toggle-switch .text {
+    -fx-background-color: transparent;
+    -fx-text-fill: white;
+}
+
+/* Styling for the circular thumb inside the switch */
+.toggle-switch .graphic {
+    -fx-background-color: white; /* Circle color */
+    -fx-background-radius: 50%;
+    -fx-min-width: 20px;
+    -fx-min-height: 20px;
+    -fx-padding: 5px;
+    -fx-alignment: center;
+    -fx-translate-x: 30px; /* Moves the thumb to the right when ON */
+}
+
+/* When the toggle button is selected (ON), move the thumb to the left */
+.toggle-switch:selected .graphic {
+    -fx-translate-x: -30px; /* Moves the thumb to the left */
+}
+

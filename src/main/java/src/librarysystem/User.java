@@ -6,150 +6,150 @@ import javafx.beans.value.ObservableValue;
 
 public class User {
 
-  private int id;
-  private String name;
-  private String username;
-  private String password;
-  private String userType;
-  private boolean isBanned;
-  private String avatarLink;
-  private ArrayList<Pair<Book, MyDateTime>> rentBook;
+    private int id;
+    private String name;
+    private String username;
+    private String password;
+    private String userType;
+    private boolean isBanned;
+    private String avatarLink;
+    private ArrayList<Pair<Book, MyDateTime>> rentBook;
 
-  public User() {
-    rentBook = new ArrayList<>();
-  }
-
-  public User(int id, String name, String username, String password, String userType,
-      boolean isBanned, String avatarLink) {
-    this.id = id;
-    this.name = name;
-    this.username = username;
-    this.password = password;
-    this.userType = userType;
-    this.isBanned = isBanned;
-    this.avatarLink = avatarLink;
-    rentBook = DBInfo.getBorrowedBookList(this.id);
-  }
-
-  public User(int id, String name, String username, String password, String userType) {
-    this.id = id;
-    this.name = name;
-    this.username = username;
-    this.password = password;
-    this.userType = userType;
-    this.isBanned = false;
-    this.avatarLink = null;
-  }
-
-  public int getId() {
-    return id;
-  }
-
-  public void setId(int id) {
-    this.id = id;
-  }
-
-  public String getName() {
-    return name;
-  }
-
-  public void setName(String name) {
-    this.name = name;
-  }
-
-  public String getUsername() {
-    return username;
-  }
-
-  public void setUsername(String username) {
-    this.username = username;
-  }
-
-  public String getPassword() {
-    return password;
-  }
-
-  public void setPassword(String password) {
-    this.password = password;
-  }
-
-  public String getUserType() {
-    return userType;
-  }
-
-  public void setUserType(String userType) {
-    this.userType = userType;
-  }
-
-  public boolean isBanned() {
-    return isBanned;
-  }
-
-  public void setBanned(boolean banned) {
-    isBanned = banned;
-  }
-
-  public String getAvatarLink() {
-    return avatarLink;
-  }
-
-  public void setAvatarLink(String avatarLink) {
-    this.avatarLink = avatarLink;
-  }
-
-  public ArrayList<Pair<Book, MyDateTime>> getRentBook() {
-    return rentBook;
-  }
-
-  public void setRentBook(
-      ArrayList<Pair<Book, MyDateTime>> rentBook) {
-    this.rentBook = rentBook;
-  }
-
-  @Override
-  public String toString() {
-    return
-        "id=" + id +
-            ", name=" + name + ' ' +
-            ", username=" + username + ' ' +
-            ", userType=" + userType + ' ' +
-            ", isBanned=" + isBanned +
-            ", avatarLink=" + avatarLink + ' '
-        ;
-  }
-
-  public ObservableValue<String> getStatus() {
-    return null;
-  }
-
-  public void muonSach(Book book) {
-    DBInfo.borrowBook(book.getTitle(), id);
-    rentBook = DBInfo.getBorrowedBookList(id);
-  }
-
-  public void traSach(Book book) throws Exception {
-    DBInfo.returnBook(book.getTitle(), id);
-    rentBook = DBInfo.getBorrowedBookList(id);
-  }
-
-  public boolean checkSach(Book book) {
-    return rentBook.contains(book);
-  }
-
-  public void update(String newName, String newUsername, String newPassword,
-      String newAvatar_link) {
-    DBInfo.updateUser(id, newName, newUsername, newPassword, newAvatar_link);
-    if (newName != null) {
-      setName(newName);
+    public User() {
+        rentBook = new ArrayList<>();
     }
-    if (newUsername != null) {
-      setUsername(newUsername);
+
+    public User(int id, String name, String username, String password, String userType,
+                boolean isBanned, String avatarLink) {
+        this.id = id;
+        this.name = name;
+        this.username = username;
+        this.password = password;
+        this.userType = userType;
+        this.isBanned = isBanned;
+        this.avatarLink = avatarLink;
+        rentBook = DBInfo.getBorrowedBookList(this.id);
     }
-    if (newPassword != null) {
-      setPassword(newPassword);
+
+    public User(int id, String name, String username, String password, String userType) {
+        this.id = id;
+        this.name = name;
+        this.username = username;
+        this.password = password;
+        this.userType = userType;
+        this.isBanned = false;
+        this.avatarLink = null;
     }
-    if (newAvatar_link != null) {
-      setAvatarLink(newAvatar_link);
+
+    public int getId() {
+        return id;
     }
-  }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getUserType() {
+        return userType;
+    }
+
+    public void setUserType(String userType) {
+        this.userType = userType;
+    }
+
+    public boolean isBanned() {
+        return isBanned;
+    }
+
+    public void setBanned(boolean banned) {
+        isBanned = banned;
+    }
+
+    public String getAvatarLink() {
+        return avatarLink;
+    }
+
+    public void setAvatarLink(String avatarLink) {
+        this.avatarLink = avatarLink;
+    }
+
+    public ArrayList<Pair<Book, MyDateTime>> getRentBook() {
+        return rentBook;
+    }
+
+    public void setRentBook(
+            ArrayList<Pair<Book, MyDateTime>> rentBook) {
+        this.rentBook = rentBook;
+    }
+
+    @Override
+    public String toString() {
+        return
+                "id=" + id +
+                        ", name=" + name + ' ' +
+                        ", username=" + username + ' ' +
+                        ", userType=" + userType + ' ' +
+                        ", isBanned=" + isBanned +
+                        ", avatarLink=" + avatarLink + ' '
+                ;
+    }
+
+    public ObservableValue<String> getStatus() {
+        return null;
+    }
+
+    public void muonSach(Book book) {
+        DBInfo.borrowBook(book.getTitle(), id);
+        rentBook = DBInfo.getBorrowedBookList(id);
+    }
+
+    public void traSach(Book book) throws Exception {
+        DBInfo.returnBook(book.getTitle(), id);
+        rentBook = DBInfo.getBorrowedBookList(id);
+    }
+
+    public boolean checkSach(Book book) {
+        return rentBook.contains(book);
+    }
+
+    public void update(String newName, String newUsername, String newPassword,
+                       String newAvatar_link) {
+        DBInfo.updateUser(id, newName, newUsername, newPassword, newAvatar_link);
+        if (newName != null) {
+            setName(newName);
+        }
+        if (newUsername != null) {
+            setUsername(newUsername);
+        }
+        if (newPassword != null) {
+            setPassword(newPassword);
+        }
+        if (newAvatar_link != null) {
+            setAvatarLink(newAvatar_link);
+        }
+    }
 }
