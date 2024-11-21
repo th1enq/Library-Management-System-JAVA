@@ -9,6 +9,7 @@ module src.librarysystem {
     requires com.google.zxing;
     requires com.google.zxing.javase;
   requires mysql.connector.j;
+  requires jcommander;
 
   opens src.librarysystem to javafx.fxml;
     exports src.librarysystem;

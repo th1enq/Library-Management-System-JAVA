@@ -436,7 +436,7 @@ public class SettingController implements Initializable {
 
     @FXML
     public void updateProfile(ActionEvent actionEvent) {
-        if(currentMode == 0) {
+       if(currentMode == 0) {
             MainGUI.currentUser.update(nameTextField.getText(), emailTextField.getText(), null, null);
         }
         else if(currentMode == 2) {
