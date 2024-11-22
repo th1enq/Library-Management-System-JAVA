@@ -275,6 +275,7 @@ public class User {
     if (newReputation != null) {
       setReputation(newReputation);
     }
+   // System.out.println(this);
   }
 
   public void acceptBorrowRequest(BorrowRequest a) {
