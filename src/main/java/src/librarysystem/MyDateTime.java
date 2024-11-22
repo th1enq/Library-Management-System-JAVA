@@ -32,7 +32,7 @@ public class MyDateTime implements Comparable<MyDateTime> {
     }
 
     public static void main(String[] args) {
-        MyDateTime myDateTime = new MyDateTime(LocalDateTime.now());
-        System.out.println("now: " + myDateTime.toString());
+        //  MyDateTime myDateTime = new MyDateTime(LocalDateTime.now());
+        //  System.out.println("now: " + myDateTime.toString());
     }
 }

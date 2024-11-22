@@ -306,62 +306,42 @@
     -fx-alignment: CENTER
 }
 
+/* Căn chỉnh văn bản vào giữa ChoiceBox */
 .choice-box {
-    -fx-border-color: #E8EAEC;
-    -fx-background-color: #FFFFFF;
-    -fx-border-radius: 5px;
-    -fx-background-radius: 5px;
-    -fx-padding: 10px;
+    -fx-alignment: center; /* Căn giữa cả ngang và dọc */
+    -fx-padding: 5px; /* Khoảng cách giữa văn bản và cạnh */
+    -fx-font-size: 14px; /* Kích thước chữ */
+    -fx-font-family: 'Arial'; /* Font chữ */
+    -fx-text-fill: #333333; /* Màu chữ */
+}
+
+/* Tùy chỉnh hộp lựa chọn */
+.choice-box .arrow {
+    -fx-background-color: #0066cc; /* Màu nền của mũi tên */
+    -fx-padding: 5px;
+}
+
+.choice-box .arrow:hover {
+    -fx-background-color: #004d99; /* Màu nền khi hover */
+}
+
+/* Tùy chỉnh danh sách thả xuống */
+.choice-box-popup {
+    -fx-background-color: #f9f9f9; /* Màu nền */
+    -fx-border-color: #cccccc; /* Đường viền */
+    -fx-border-radius: 5px; /* Góc bo tròn */
+}
+
+.choice-box-popup .list-cell {
+    -fx-padding: 5px;
     -fx-font-size: 14px;
-    -fx-text-fill: #333; /* Text color */
+    -fx-font-family: 'Arial';
+    -fx-text-fill: #333333;
 }
 
-.choice-box .list-cell {
-    -fx-background-color: #FFFFFF;
-    -fx-border-color: transparent;
-    -fx-text-fill: #767B90;
-    -fx-padding: 5px;
+.choice-box-popup .list-cell:hover {
+    -fx-background-color: #e6f7ff; /* Màu nền khi hover */
+    -fx-text-fill: #0066cc; /* Màu chữ khi hover */
 }
 
-
-/* Base styling for the toggle button */
-.toggle-switch {
-    -fx-background-color: #ccc; /* Gray background for OFF state */
-    -fx-background-radius: 30px;
-    -fx-text-fill: white;
-    -fx-min-width: 60px;
-    -fx-min-height: 30px;
-    -fx-padding: 5px;
-    -fx-alignment: center;
-    -fx-font-weight: bold;
-    -fx-font-size: 14px;
-}
-
-/* When the button is selected (ON state) */
-.toggle-switch:selected {
-    -fx-background-color: #4CAF50; /* Green for ON state */
-    -fx-text-fill: white;
-}
-
-/* Style for the "ON"/"OFF" text */
-.toggle-switch .text {
-    -fx-background-color: transparent;
-    -fx-text-fill: white;
-}
-
-/* Styling for the circular thumb inside the switch */
-.toggle-switch .graphic {
-    -fx-background-color: white; /* Circle color */
-    -fx-background-radius: 50%;
-    -fx-min-width: 20px;
-    -fx-min-height: 20px;
-    -fx-padding: 5px;
-    -fx-alignment: center;
-    -fx-translate-x: 30px; /* Moves the thumb to the right when ON */
-}
-
-/* When the toggle button is selected (ON), move the thumb to the left */
-.toggle-switch:selected .graphic {
-    -fx-translate-x: -30px; /* Moves the thumb to the left */
-}
 

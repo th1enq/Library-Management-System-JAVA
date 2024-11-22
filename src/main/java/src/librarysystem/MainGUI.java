@@ -1,18 +1,16 @@
 package src.librarysystem;
 
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import javafx.animation.*;
 import javafx.scene.control.*;
-import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.util.Duration;
-import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -20,7 +18,6 @@ import javafx.stage.StageStyle;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Currency;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -34,15 +31,19 @@ public class MainGUI implements Initializable {
     public FontAwesomeIcon homeIcon;
     @FXML
     public FontAwesomeIcon bookIcon;
-    public FontAwesomeIcon statisticsIcon;
+    @FXML
+    public FontAwesomeIcon nontificationsIcon;
     public FontAwesomeIcon userIcon;
     public FontAwesomeIcon settingIcon;
-    public Button statisticsButton;
+    @FXML
+    public Button nontificationsButton;
     public Button userButton;
     public Button settingButton;
     public FontAwesomeIcon logOutIcon;
     @FXML
     public TextField bookQuery;
+    @FXML
+    public Label currentModeText;
     @FXML
     private Button logOutButton;
 
@@ -68,10 +69,23 @@ public class MainGUI implements Initializable {
     private int currentStage = 0;
     private boolean buttonShowing = true;
 
+
     public static User currentUser = new User();
 
     public static void setCurrentUser(User x) {
         currentUser = x;
+    }
+
+    private boolean language = false;
+
+    public static boolean apiSearchMode = false;
+    public static ArrayList<Book> currentApiBook = new ArrayList<>();
+    public static ArrayList<Book> currentLibraryBook = Filter.getInstance().getBookByTitleSubstr("");
+
+    public void setPreviousStage(boolean apiSearchMode, ArrayList<Book> currentApiBook, ArrayList<Book> currentLibraryMode) {
+        MainGUI.apiSearchMode = apiSearchMode;
+        MainGUI.currentApiBook = currentApiBook;
+        MainGUI.currentLibraryBook = currentLibraryMode;
     }
 
     @FXML
@@ -153,80 +167,6 @@ public class MainGUI implements Initializable {
         });
     }
 
-
-    private void searchQuery() {
-        bookQuery.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
-            if (event.getCode().toString().equals("ENTER")) {
-                currentStage = 1;
-                query = bookQuery.getText();
-                turnOnLoading(); // Hiển thị màn hình loading ngay lập tức
-
-                // Sử dụng Task để tìm kiếm
-                Task<ArrayList<Book>> searchTask = new Task<>() {
-                    @Override
-                    protected ArrayList<Book> call() {
-
-                        // Giả định là BookServices.searchBooks có thể thực hiện một truy vấn lớn
-                        try {
-                            // Cập nhật trạng thái loading
-                            updateProgress(0, 100); // Đặt tiến trình về 0 trước khi bắt đầu
-
-                            // Thực hiện tìm kiếm
-                            result = BookServices.searchBooks(query);
-
-                            // Nếu cần mô phỏng tiến trình tìm kiếm, có thể sử dụng loop này
-                            for (int i = 1; i <= 100; i++) {
-                                Thread.sleep(10); // Thời gian giả lập
-                                updateProgress(i, 100); // Cập nhật tiến độ từ 0 đến 100
-                            }
-
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-
-                        return result;
-                    }
-
-
-                    @Override
-                    protected void succeeded() {
-                        System.out.println("done find book\n");
-                        try {
-                            FXMLLoader loader = new FXMLLoader(getClass().getResource("SearchBook.fxml"));
-                            fxml = loader.load();
-
-//                            SearchBookController searchBookController = loader.getController();
-//                            searchBookController.show(result); // Display results in the search view
-//
-//                            searchBookController.getSeeDetailBook().setOnAction(e -> {
-//                                returnDetailBook(searchBookController.getCurrentBook());
-//                            });
-
-                            mainVbox.getChildren().clear();
-                            mainVbox.getChildren().setAll(fxml); // Load SearchBook.fxml into mainVbox
-                        } catch (IOException ex) {
-                            Logger.getLogger(LoginController.class.getName()).log(Level.SEVERE, null, ex);
-                        }
-                    }
-
-
-                    @Override
-                    protected void failed() {
-                        // Xử lý khi có lỗi
-                        Throwable throwable = getException();
-                        throwable.printStackTrace();
-                    }
-                };
-                updateProgressLabel(searchTask);
-
-                new Thread(searchTask).start(); // Chạy Task trong một Thread mới
-            }
-        });
-        update();
-    }
-
     public void returnDetailBook(Book currentBook, boolean apiMode) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("BookViewDetail.fxml"));
@@ -248,25 +188,38 @@ public class MainGUI implements Initializable {
     }
 
     private void update() {
+        language = UISetting.getInstance().getVietNameseMode();
+        String mode = "";
         reset();
         System.out.println(currentStage);
         switch (currentStage) {
             case 0:
                 homeIcon.getStyleClass().add("icon-active-color");
                 homeButton.getStyleClass().add("menu-btn-active");
+                mode = language ? "Bảng điều khiển" : "Dashboard";
                 break;
             case 1:
                 bookIcon.getStyleClass().add("icon-active-color");
                 bookViewButton.getStyleClass().add("menu-btn-active");
+                mode = language ? "Thư viện sách" : "Library";
                 break;
             case 2 :
                 userIcon.getStyleClass().add("icon-active-color");
                 userButton.getStyleClass().add("menu-btn-active");
+                mode = language ? "Thành viên" : "User View";
+                break;
+            case 3 :
+                nontificationsIcon.getStyleClass().add("icon-active-color");
+                nontificationsButton.getStyleClass().add("menu-btn-active");
+                mode = language ? "Thông báo" : "Nontifications";
                 break;
             case 4 :
                 settingIcon.getStyleClass().add("icon-active-color");
                 settingButton.getStyleClass().add("menu-btn-active");
+                mode = language ? "Cài đặt" : "Setting";
+                break;
         }
+        currentModeText.setText(mode);
     }
 
     private void reset() {
@@ -274,21 +227,21 @@ public class MainGUI implements Initializable {
         homeIcon.getStyleClass().removeAll("icon-active-color", "icon-color");
         bookIcon.getStyleClass().removeAll("icon-active-color", "icon-color");
         userIcon.getStyleClass().removeAll("icon-active-color", "icon-color");
-        statisticsIcon.getStyleClass().removeAll("icon-active-color", "icon-color");
+        nontificationsIcon.getStyleClass().removeAll("icon-active-color", "icon-color");
         settingIcon.getStyleClass().removeAll("icon-active-color", "icon-color");
         logOutIcon.getStyleClass().removeAll("icon-active-color", "icon-color");
 
         homeButton.getStyleClass().removeAll("menu-btn-active", "parent");
         bookViewButton.getStyleClass().removeAll("menu-btn-active", "parent");
         userButton.getStyleClass().removeAll("menu-btn-active", "parent");
-        statisticsButton.getStyleClass().removeAll("menu-btn-active", "parent");
+        nontificationsButton.getStyleClass().removeAll("menu-btn-active", "parent");
         settingButton.getStyleClass().removeAll("menu-btn-active", "parent");
         logOutButton.getStyleClass().removeAll("menu-btn-active", "parent");
 
         homeIcon.getStyleClass().add("icon-color");
         bookIcon.getStyleClass().add("icon-color");
         userIcon.getStyleClass().add("icon-color");
-        statisticsIcon.getStyleClass().add("icon-color");
+        nontificationsIcon.getStyleClass().add("icon-color");
         settingIcon.getStyleClass().add("icon-color");
         logOutIcon.getStyleClass().add("icon-color");
 
@@ -296,7 +249,7 @@ public class MainGUI implements Initializable {
         homeButton.getStyleClass().add("parent");
         bookViewButton.getStyleClass().add("parent");
         userButton.getStyleClass().add("parent");
-        statisticsButton.getStyleClass().add("parent");
+        nontificationsButton.getStyleClass().add("parent");
         settingButton.getStyleClass().add("parent");
         logOutButton.getStyleClass().add("parent");
     }
@@ -321,14 +274,6 @@ public class MainGUI implements Initializable {
 
             fadeAnimation();
 
-//            dashBoardController.getSeeAllBook().setOnAction(event -> {
-//                bookView();
-//            });
-//
-//            dashBoardController.getAddBookButton().setOnAction(event -> {
-//                addBook();
-//            });
-
         } catch (IOException ex) {
             Logger.getLogger(LoginController.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -340,6 +285,7 @@ public class MainGUI implements Initializable {
         currentStage = 1;
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("BookView.fxml"));
+
             fxml = loader.load();
 
             SearchBookController searchBookController = loader.getController();
@@ -349,21 +295,6 @@ public class MainGUI implements Initializable {
             mainVbox.getChildren().setAll(fxml);
 
 
-        } catch (IOException ex) {
-            Logger.getLogger(LoginController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        update();
-    }
-
-    @FXML
-    private void addBook() {
-        currentStage = 1;
-        try {
-            fxml = FXMLLoader.load(getClass().getResource("AddBook.fxml"));
-            mainVbox.getChildren().removeAll();
-            mainVbox.getChildren().setAll(fxml);
-
-            fadeAnimation();
         } catch (IOException ex) {
             Logger.getLogger(LoginController.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -385,20 +316,25 @@ public class MainGUI implements Initializable {
         update();
     }
 
-    // Helper method to create a fade transition for a button
-    private FadeTransition createFadeTransition(Button button, double targetOpacity, double duration) {
-        FadeTransition fadeTransition = new FadeTransition(Duration.seconds(duration), button);
-        fadeTransition.setToValue(targetOpacity);
-        fadeTransition.setInterpolator(Interpolator.EASE_BOTH);
-        fadeTransition.setOnFinished(event -> button.setVisible(buttonShowing));
-        return fadeTransition;
-    }
-
     @FXML
     public void returnSetting(ActionEvent actionEvent) {
         currentStage = 4;
         try {
             fxml = FXMLLoader.load(getClass().getResource("Setting.fxml"));
+            mainVbox.getChildren().removeAll();
+            mainVbox.getChildren().setAll(fxml);
+
+            fadeAnimation();
+        } catch (IOException ex) {
+            Logger.getLogger(LoginController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        update();
+    }
+
+    public void returnNontifications(ActionEvent actionEvent) {
+        currentStage = 3;
+        try {
+            fxml = FXMLLoader.load(getClass().getResource("Nontifications.fxml"));
             mainVbox.getChildren().removeAll();
             mainVbox.getChildren().setAll(fxml);
 

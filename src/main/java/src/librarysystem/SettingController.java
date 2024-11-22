@@ -277,17 +277,22 @@ public class SettingController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        System.out.println(MainGUI.currentUser.toString());
         bioName.setText(MainGUI.currentUser.getName());
         nameTextField.setText(MainGUI.currentUser.getName());
         emailTextField.setText(MainGUI.currentUser.getUsername());
-        idTextField.setText(String.valueOf(MainGUI.currentUser.getId()));
+        idTextField.setText(MainGUI.currentUser.getMSV());
         userTextField.setText(MainGUI.currentUser.getUserType());
-
+//        if(MainGUI.currentUser.getUniversity() != null) {
+//            universityChoose.setValue(MainGUI.currentUser.getUniversity());
+//        }
+//        System.out.println(MainGUI.currentUser.getUniversity());
+//        universityChoose.setValue(MainGUI.currentUser.getUniversity());
+//        phoneTextField.setText(MainGUI.currentUser.getPhone());
 
         oldPasswordVisiable.textProperty().bindBidirectional(oldPassword.textProperty());
         newPasswordVisiable.textProperty().bindBidirectional(newPassword.textProperty());
         confirmNewPasswordVisiable.textProperty().bindBidirectional(confirmNewPassword.textProperty());
-
 
         Path clip;
         double height = coverImage.getFitHeight();
@@ -324,7 +329,9 @@ public class SettingController implements Initializable {
         toogleDarkMode.setTranslateY(48);
         toogleDarkMode.switchedOn.addListener((observable, oldValue, newValue) -> {
             textDarkMode.setText(newValue ? "On" : "Off");
+            UISetting.getInstance().setDarkMode(!UISetting.getInstance().getDarkMode());
         });
+        toogleDarkMode.switchedOn.set(UISetting.getInstance().getDarkMode());
         paneContainer.getChildren().add(toogleDarkMode);
 
         ToggleSwitch toogleTimeFormat = new ToggleSwitch();
@@ -332,7 +339,9 @@ public class SettingController implements Initializable {
         toogleTimeFormat.setTranslateY(132);
         toogleTimeFormat.switchedOn.addListener((observable, oldValue, newValue) -> {
             textTimeFormat.setText(newValue ? "12-hour" : "24-hour");
+            UISetting.getInstance().setTime24formatMode(!UISetting.getInstance().getTime24formatMode());
         });
+        toogleTimeFormat.switchedOn.set(UISetting.getInstance().getTime24formatMode());
         paneContainer.getChildren().add(toogleTimeFormat);
 
         ToggleSwitch toogleLanguage = new ToggleSwitch();
@@ -340,7 +349,9 @@ public class SettingController implements Initializable {
         toogleLanguage.setTranslateY(216);
         toogleLanguage.switchedOn.addListener((observable, oldValue, newValue) -> {
             textLanguage.setText(newValue ? "Vietnamese" : "English");
+            UISetting.getInstance().setVietnameseMode(!UISetting.getInstance().getVietNameseMode());
         });
+        toogleLanguage.switchedOn.set(UISetting.getInstance().getVietNameseMode());
         paneContainer.getChildren().add(toogleLanguage);
 
         ToggleSwitch toogleEmailNontifications = new ToggleSwitch();
@@ -437,7 +448,7 @@ public class SettingController implements Initializable {
     @FXML
     public void updateProfile(ActionEvent actionEvent) {
         if(currentMode == 0) {
-            MainGUI.currentUser.update(nameTextField.getText(), emailTextField.getText(), null, null);
+            MainGUI.currentUser.update(nameTextField.getText(), emailTextField.getText(), null, avatar.getImage().getUrl(), idTextField.getText(), String.valueOf(universityChoose.getValue()), phoneTextField.getText(), coverImage.getImage().getUrl(), null);
         }
         else if(currentMode == 2) {
             if(!MainGUI.currentUser.getPassword().equals(oldPassword.getText())) {

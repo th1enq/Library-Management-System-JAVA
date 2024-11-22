@@ -24,7 +24,166 @@ import java.util.Map;
 import javafx.scene.image.Image;
 
 public class BookServices {
-    public static ArrayList<Book> searchBooks(String query) {
+    private static BookServices instance;
+
+    private BookServices() {}
+
+    public static BookServices getInstance() {
+        if (instance == null) {
+            synchronized (BookServices.class) {
+                if (instance == null) {
+                    instance = new BookServices();
+                }
+            }
+        }
+        return instance;
+    }
+
+    public ArrayList<Book> loadBook(JsonObject jsonResponse) {
+        ArrayList<Book> books = new ArrayList<>();
+
+        JsonArray items = jsonResponse.getAsJsonArray("items");
+
+        if (items != null) {
+            for (int i = 0; i < items.size(); i++) {
+                JsonObject volumeInfo = items.get(i).getAsJsonObject().getAsJsonObject("volumeInfo");
+                String title = volumeInfo.get("title").getAsString();
+
+                // Process authors (remove brackets and format nicely)
+                String authors = "Unknown";
+                if (volumeInfo.has("authors")) {
+                    JsonArray authorsArray = volumeInfo.getAsJsonArray("authors");
+                    StringBuilder authorsBuilder = new StringBuilder();
+                    for (int j = 0; j < authorsArray.size(); j++) {
+                        authorsBuilder.append(authorsArray.get(j).getAsString());
+                        if (j < authorsArray.size() - 1) {
+                            authorsBuilder.append(", ");
+                        }
+                    }
+                    authors = authorsBuilder.toString();
+                }
+
+                String publishedDate = volumeInfo.has("publishedDate") ? volumeInfo.get("publishedDate").getAsString() : "Unknown";
+                String publisher = volumeInfo.has("publisher") ? volumeInfo.get("publisher").getAsString() : "Unknown";
+
+                String numPage = volumeInfo.has("pageCount") ? String.valueOf(volumeInfo.get("pageCount").getAsInt()) : "Unknown";
+
+                String category = "Unknown";
+                if(volumeInfo.has("categories")) {
+                    JsonArray categoriesArray = volumeInfo.getAsJsonArray("categories");
+                    StringBuilder categoriesBuilder = new StringBuilder();
+                    for (int j = 0; j < categoriesArray.size(); j++) {
+                        categoriesBuilder.append(categoriesArray.get(j).getAsString());
+                        if (j < categoriesArray.size() - 1) {
+                            categoriesBuilder.append(", ");
+                        }
+                    }
+                    category = categoriesBuilder.toString();
+                }
+
+                // Get book cover image link
+                String thumbnail = "";
+                if (volumeInfo.has("imageLinks")) {
+                    thumbnail = volumeInfo.getAsJsonObject("imageLinks").get("thumbnail").getAsString();
+                }
+
+                String description = volumeInfo.has("description") ? volumeInfo.get("description").getAsString() : "No Description";
+                String ISBN = "None";
+                if (volumeInfo.has("industryIdentifiers")) {
+                    JsonArray identifiers = volumeInfo.getAsJsonArray("industryIdentifiers");
+                    for (int j = 0; j < (int) identifiers.size(); j++) {
+                        JsonObject identifier = identifiers.get(j).getAsJsonObject();
+                        String type = identifier.get("type").getAsString();
+                        String identifierValue = identifier.get("identifier").getAsString();
+
+                        ISBN = identifierValue;
+                    }
+                }
+
+                JsonObject saleInfo = items.get(i).getAsJsonObject().getAsJsonObject("saleInfo");
+
+                String price = "Unknown";
+                if (saleInfo.has("retailPrice")) {
+                    JsonObject retailPriceObject = saleInfo.getAsJsonObject("retailPrice");
+
+                    // Lấy giá trị số tiền và loại tiền tệ nếu có
+                    if (retailPriceObject.has("amount") && retailPriceObject.has("currencyCode")) {
+                        double amount = retailPriceObject.get("amount").getAsDouble();
+                        String currencyCode = retailPriceObject.get("currencyCode").getAsString();
+                        price = amount + " " + currencyCode;  // Kết hợp giá trị và loại tiền tệ
+                    }
+                }
+
+                String language = "Unknown";
+                if (volumeInfo.has("language")) {
+                    language = volumeInfo.get("language").getAsString();
+                }
+
+                String buyLink = volumeInfo.has("infoLink") ? volumeInfo.get("infoLink").getAsString() : "Unknown";
+
+                books.add(new Book(title, ISBN, authors, publisher, publishedDate, description, thumbnail, numPage, category, price, language, buyLink));
+            }
+        }
+        return books;
+    }
+
+    public ArrayList<Book> searchBooksByAuthor(String query) {
+        ArrayList<Book> books = new ArrayList<>();
+        try {
+            String API_KEY = "AIzaSyCI2U6tHVrTcuYbsFilyfbUy4hwkYftIYw";
+            String formattedQuery = "inauthor:" + query.replace(" ", "+");
+            String apiUrl = "https://www.googleapis.com/books/v1/volumes?q=" + formattedQuery + "&maxResults=20&key=" + API_KEY;
+
+            URL url = new URL(apiUrl);
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod("GET");
+            connection.connect();
+
+            int responseCode = connection.getResponseCode();
+            if (responseCode == 200) {
+                InputStreamReader reader = new InputStreamReader(connection.getInputStream());
+                JsonObject jsonResponse = JsonParser.parseReader(reader).getAsJsonObject();
+                books = loadBook(jsonResponse);
+            } else {
+                System.out.println("Error: Could not fetch data from API. Response code: " + responseCode);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return books;
+    }
+
+
+    public ArrayList<Book> searchBooksByCategory(String query) {
+        ArrayList<Book> books = new ArrayList<>();
+        try {
+            String API_KEY = "AIzaSyCI2U6tHVrTcuYbsFilyfbUy4hwkYftIYw";
+            String formattedQuery = "subject:" + query.replace(" ", "+");
+            String apiUrl = "https://www.googleapis.com/books/v1/volumes?q=" + formattedQuery + "&maxResults=20&key=" + API_KEY;
+
+            URL url = new URL(apiUrl);
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod("GET");
+            connection.connect();
+
+            int responseCode = connection.getResponseCode();
+            if (responseCode == 200) {
+                InputStreamReader reader = new InputStreamReader(connection.getInputStream());
+                JsonObject jsonResponse = JsonParser.parseReader(reader).getAsJsonObject();
+                books = loadBook(jsonResponse);
+            } else {
+                System.out.println("Error: Could not fetch data from API. Response code: " + responseCode);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return books;
+    }
+
+
+    public ArrayList<Book> searchBooksByTitle(String query) {
         ArrayList<Book> books = new ArrayList<>();
         try {
             String API_KEY = "AIzaSyCI2U6tHVrTcuYbsFilyfbUy4hwkYftIYw";
@@ -40,88 +199,7 @@ public class BookServices {
             if (responseCode == 200) {
                 InputStreamReader reader = new InputStreamReader(connection.getInputStream());
                 JsonObject jsonResponse = JsonParser.parseReader(reader).getAsJsonObject();
-                JsonArray items = jsonResponse.getAsJsonArray("items");
-
-                if (items != null) {
-                    for (int i = 0; i < items.size(); i++) {
-                        JsonObject volumeInfo = items.get(i).getAsJsonObject().getAsJsonObject("volumeInfo");
-                        String title = volumeInfo.get("title").getAsString();
-
-                        // Process authors (remove brackets and format nicely)
-                        String authors = "Unknown";
-                        if (volumeInfo.has("authors")) {
-                            JsonArray authorsArray = volumeInfo.getAsJsonArray("authors");
-                            StringBuilder authorsBuilder = new StringBuilder();
-                            for (int j = 0; j < authorsArray.size(); j++) {
-                                authorsBuilder.append(authorsArray.get(j).getAsString());
-                                if (j < authorsArray.size() - 1) {
-                                    authorsBuilder.append(", ");
-                                }
-                            }
-                            authors = authorsBuilder.toString();
-                        }
-
-                        String publishedDate = volumeInfo.has("publishedDate") ? volumeInfo.get("publishedDate").getAsString() : "Unknown";
-                        String publisher = volumeInfo.has("publisher") ? volumeInfo.get("publisher").getAsString() : "Unknown";
-
-                        String numPage = volumeInfo.has("pageCount") ? String.valueOf(volumeInfo.get("pageCount").getAsInt()) : "Unknown";
-
-                        String category = "Unknown";
-                        if(volumeInfo.has("categories")) {
-                            JsonArray categoriesArray = volumeInfo.getAsJsonArray("categories");
-                            StringBuilder categoriesBuilder = new StringBuilder();
-                            for (int j = 0; j < categoriesArray.size(); j++) {
-                                categoriesBuilder.append(categoriesArray.get(j).getAsString());
-                                if (j < categoriesArray.size() - 1) {
-                                    categoriesBuilder.append(", ");
-                                }
-                            }
-                            category = categoriesBuilder.toString();
-                        }
-
-                        // Get book cover image link
-                        String thumbnail = "";
-                        if (volumeInfo.has("imageLinks")) {
-                            thumbnail = volumeInfo.getAsJsonObject("imageLinks").get("thumbnail").getAsString();
-                        }
-
-                        String description = volumeInfo.has("description") ? volumeInfo.get("description").getAsString() : "No Description";
-                        String ISBN = "None";
-                        if (volumeInfo.has("industryIdentifiers")) {
-                            JsonArray identifiers = volumeInfo.getAsJsonArray("industryIdentifiers");
-                            for (int j = 0; j < (int) identifiers.size(); j++) {
-                                JsonObject identifier = identifiers.get(j).getAsJsonObject();
-                                String type = identifier.get("type").getAsString();
-                                String identifierValue = identifier.get("identifier").getAsString();
-
-                                ISBN = identifierValue;
-                            }
-                        }
-
-                        JsonObject saleInfo = items.get(i).getAsJsonObject().getAsJsonObject("saleInfo");
-
-                        String price = "Unknown";
-                        if (saleInfo.has("retailPrice")) {
-                            JsonObject retailPriceObject = saleInfo.getAsJsonObject("retailPrice");
-
-                            // Lấy giá trị số tiền và loại tiền tệ nếu có
-                            if (retailPriceObject.has("amount") && retailPriceObject.has("currencyCode")) {
-                                double amount = retailPriceObject.get("amount").getAsDouble();
-                                String currencyCode = retailPriceObject.get("currencyCode").getAsString();
-                                price = amount + " " + currencyCode;  // Kết hợp giá trị và loại tiền tệ
-                            }
-                        }
-
-                        String language = "Unknown";
-                        if (volumeInfo.has("language")) {
-                            language = volumeInfo.get("language").getAsString();
-                        }
-
-                        String buyLink = volumeInfo.has("infoLink") ? volumeInfo.get("infoLink").getAsString() : "Unknown";
-
-                        books.add(new Book(title, ISBN, authors, publisher, publishedDate, description, thumbnail, numPage, category, price, language, buyLink));
-                    }
-                }
+                books = loadBook(jsonResponse);
             } else {
                 System.out.println("Error: Could not fetch data from API. Response code: " + responseCode);
             }
@@ -132,7 +210,7 @@ public class BookServices {
         return books;
     }
 
-    public static Image generateQRCode(String bookUrl) {
+    public Image generateQRCode(String bookUrl) {
         int size = 200;
         try {
             QRCodeWriter qrCodeWriter = new QRCodeWriter();

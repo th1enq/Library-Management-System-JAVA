@@ -1,6 +1,5 @@
 package src.librarysystem;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import javafx.beans.value.ObservableValue;
 
@@ -13,7 +12,13 @@ public class User {
     private String userType;
     private boolean isBanned;
     private String avatarLink;
+    private String MSV;
+    private String university;
+    private String phone;
+    private String coverPhotoLink;
+    private int reputation;
     private ArrayList<Pair<Book, MyDateTime>> rentBook;
+
 
     public User() {
         rentBook = new ArrayList<>();
@@ -39,6 +44,26 @@ public class User {
         this.userType = userType;
         this.isBanned = false;
         this.avatarLink = null;
+        rentBook = DBInfo.getBorrowedBookList(this.id);
+
+    }
+
+    public User(int id, String name, String username, String password, String userType,
+                boolean isBanned, String avatarLink, String MSV, String university,
+                String phone, String coverPhotoLink, int reputation) {
+        this.id = id;
+        this.name = name;
+        this.username = username;
+        this.password = password;
+        this.userType = userType;
+        this.isBanned = isBanned;
+        this.avatarLink = avatarLink;
+        this.MSV = MSV;
+        this.university = university;
+        this.phone = phone;
+        this.coverPhotoLink = coverPhotoLink;
+        this.reputation = reputation;
+        rentBook = DBInfo.getBorrowedBookList(this.id);
     }
 
     public int getId() {
@@ -47,6 +72,8 @@ public class User {
 
     public void setId(int id) {
         this.id = id;
+        rentBook = DBInfo.getBorrowedBookList(this.id);
+
     }
 
     public String getName() {
@@ -97,6 +124,52 @@ public class User {
         this.avatarLink = avatarLink;
     }
 
+    public String getMSV() {
+        return MSV;
+    }
+
+    public void setMSV(String MSV) {
+        this.MSV = MSV;
+    }
+
+    public String getUniversity() {
+        return university;
+    }
+
+    public void setUniversity(String university) {
+        this.university = university;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String getCoverPhotoLink() {
+        return coverPhotoLink;
+    }
+
+    public void setCoverPhotoLink(String coverPhotoLink) {
+        this.coverPhotoLink = coverPhotoLink;
+    }
+
+    public int getReputation() {
+        return reputation;
+    }
+
+    public void setReputation(int reputation) {
+        this.reputation = reputation;
+    }
+
+
+
+    public ArrayList<Notification> getNotifications() {
+        return  DBInfo.getNotificationsByUserId(id);
+    }
+
     public ArrayList<Pair<Book, MyDateTime>> getRentBook() {
         return rentBook;
     }
@@ -106,17 +179,32 @@ public class User {
         this.rentBook = rentBook;
     }
 
+    public int getOverdue() {
+        return DBInfo.getOverdueAndUpcoming(id).getValue();
+    }
+
+    public int getUpcoming() {
+        return DBInfo.getOverdueAndUpcoming(id).getKey();
+    }
+
     @Override
     public String toString() {
-        return
+        return "Registration{" +
                 "id=" + id +
-                        ", name=" + name + ' ' +
-                        ", username=" + username + ' ' +
-                        ", userType=" + userType + ' ' +
-                        ", isBanned=" + isBanned +
-                        ", avatarLink=" + avatarLink + ' '
-                ;
+                ", name='" + name + '\'' +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", userType='" + userType + '\'' +
+                ", isBanned=" + isBanned +
+                ", avatarLink='" + avatarLink + '\'' +
+                ", MSV='" + MSV + '\'' +
+                ", university='" + university + '\'' +
+                ", phone='" + phone + '\'' +
+                ", coverPhotoLink='" + coverPhotoLink + '\'' +
+                ", reputation=" + reputation +
+                '}';
     }
+
 
     public ObservableValue<String> getStatus() {
         return null;
@@ -151,5 +239,69 @@ public class User {
         if (newAvatar_link != null) {
             setAvatarLink(newAvatar_link);
         }
+    }
+
+    public void update(String newName, String newUsername, String newPassword,
+                       String newAvatarLink, String newMSV, String newUniversity,
+                       String newPhone, String newCoverPhotoLink, Integer newReputation) {
+
+        DBInfo.updateUser(id, newName, newUsername, newPassword, newAvatarLink,
+                newMSV, newUniversity, newPhone, newCoverPhotoLink, newReputation);
+
+        if (newName != null) {
+            setName(newName);
+        }
+        if (newUsername != null) {
+            setUsername(newUsername);
+        }
+        if (newPassword != null) {
+            setPassword(newPassword);
+        }
+        if (newAvatarLink != null) {
+            setAvatarLink(newAvatarLink);
+        }
+        if (newMSV != null) {
+            setMSV(newMSV);
+        }
+        if (newUniversity != null) {
+            setUniversity(newUniversity);
+        }
+        if (newPhone != null) {
+            setPhone(newPhone);
+        }
+        if (newCoverPhotoLink != null) {
+            setCoverPhotoLink(newCoverPhotoLink);
+        }
+        if (newReputation != null) {
+            setReputation(newReputation);
+        }
+    }
+
+    public void acceptBorrowRequest(BorrowRequest a) {
+        if (this.userType.equals("admin")) {
+            DBInfo.acceptBorrowRequest(a);
+        }
+    }
+
+    public ArrayList<BorrowRequest> getBorrowRequest() {
+        return DBInfo.getBorrowRequest();
+    }
+    public void deleteNotifications() {
+        DBInfo.deleteNotificationsByUserId(id);
+    }
+
+    public void sendNotification(int receiver_id,String tmp) {
+        DBInfo.sendNotification(this.id, receiver_id, tmp);
+
+    }
+
+    public void sendNotification(User receiver,String tmp) {
+        DBInfo.sendNotification(this.id, receiver.getId(), tmp);
+
+    }
+
+    public void reply(Notification A, String tmp) {
+        DBInfo.sendNotification(this.id, A.getSenderId(), tmp);
+
     }
 }

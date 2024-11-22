@@ -29,6 +29,12 @@ public class DashBoardController {
     @FXML
     public Label nameUser;
     @FXML
+    public Label totalBooks;
+    @FXML
+    public Label totalUsers;
+    @FXML
+    public Label borrowedBooks;
+    @FXML
     private Button seeAllBook;
 
     @FXML
@@ -51,7 +57,8 @@ public class DashBoardController {
     public void initialize() {
         updateCurrentTime(); // Initial time set
         startClock(); // Start the clock
-//        nameUser.setText();
+        nameUser.setText(MainGUI.currentUser.getName());
+//        totalBooks.setText();
 
         PieChart.Data science = new PieChart.Data("Science", 10);
         PieChart.Data manga = new PieChart.Data("Manga", 20);

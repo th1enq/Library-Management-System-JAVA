@@ -91,7 +91,7 @@
                   </Button>
                </children>
             </Pane>
-            <AnchorPane layoutX="218.0" layoutY="101.0" prefHeight="313.0" prefWidth="192.0" styleClass="frame-shadow" stylesheets="@stylesheet.css">
+            <AnchorPane layoutX="200.0" layoutY="101.0" prefHeight="313.0" prefWidth="192.0" styleClass="frame-shadow" stylesheets="@stylesheet.css">
                <children>
                   <ImageView fx:id="detailImage" fitHeight="313.0" fitWidth="263.0" layoutY="-1.0" pickOnBounds="true" preserveRatio="true">
                      <image>
