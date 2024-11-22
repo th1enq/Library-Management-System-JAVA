@@ -11,7 +11,8 @@ public class Filter {
 
   private static Filter instance;
 
-  private Filter() {}
+  private Filter() {
+  }
 
   public static Filter getInstance() {
     if (instance == null) {
@@ -23,6 +24,7 @@ public class Filter {
     }
     return instance;
   }
+
   public ArrayList<Book> getBookByTitleSubstr(String substr) {
     Connection con = null;
     PreparedStatement preparedStatement = null;
@@ -31,7 +33,7 @@ public class Filter {
     ArrayList<Book> ret = new ArrayList<>();
     try {
       con = DBInfo.conn();
-      String sql = "SELECT * FROM book WHERE title like '%" + substr +"%'";
+      String sql = "SELECT * FROM book WHERE title like '%" + substr + "%'";
       preparedStatement = con.prepareStatement(sql);
       resultSet = preparedStatement.executeQuery();
 
@@ -80,6 +82,7 @@ public class Filter {
     }
     return ret;
   }
+
   public ArrayList<Book> getBookByAuthorSubstr(String substr) {
     Connection con = null;
     PreparedStatement preparedStatement = null;
@@ -88,7 +91,7 @@ public class Filter {
     ArrayList<Book> ret = new ArrayList<>();
     try {
       con = DBInfo.conn();
-      String sql = "SELECT * FROM book WHERE authors like '%" + substr +"%'";
+      String sql = "SELECT * FROM book WHERE authors like '%" + substr + "%'";
       preparedStatement = con.prepareStatement(sql);
       resultSet = preparedStatement.executeQuery();
 
@@ -146,7 +149,7 @@ public class Filter {
     ArrayList<Book> ret = new ArrayList<>();
     try {
       con = DBInfo.conn();
-      String sql = "SELECT * FROM book WHERE category like '%" + substr +"%'";
+      String sql = "SELECT * FROM book WHERE category like '%" + substr + "%'";
       preparedStatement = con.prepareStatement(sql);
       resultSet = preparedStatement.executeQuery();
 
@@ -194,6 +197,78 @@ public class Filter {
       }
     }
     return ret;
+  }
+
+  public static ArrayList<User> getUserBySubstr(String tmp) {
+    ArrayList<User> userList = new ArrayList<>();
+    String sql =
+        "SELECT * from registration WHERE username like " + "'%" + tmp + "%' and usertype = 'user'";
+    try (Connection conn = DBInfo.conn();
+        PreparedStatement stmt = conn.prepareStatement(sql)) {
+      ResultSet rs = stmt.executeQuery();
+      while (rs.next()) {
+        int id = rs.getInt("id");
+        String name = rs.getString("name");
+        String username = rs.getString("username");
+        String password = rs.getString("password");
+        String userType = rs.getString("usertype");
+        boolean isBanned = rs.getBoolean("is_banned");
+        String avatarLink = rs.getString("avatar_link");
+        String MSV = rs.getString("MSV");
+        String university = rs.getString("University");
+        String phone = rs.getString("Phone");
+        String coverPhotoLink = rs.getString("Cover_photo_link");
+        int reputation = rs.getInt("Reputation");
+
+        User user = new User(id, name, username, password, userType, isBanned, avatarLink, MSV,
+            university, phone, coverPhotoLink, reputation);
+        userList.add(user);
+      }
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
+
+    return userList;
+  }
+
+  public static ArrayList<User> getUserList(String tmp) {
+    ArrayList<User> userList = new ArrayList<>();
+    String sql = "SELECT * FROM registration";
+
+    if (!tmp.equals("ALL")) {
+      sql += " WHERE usertype = ?";
+    }
+
+    try (Connection conn = DBInfo.conn();
+        PreparedStatement stmt = conn.prepareStatement(sql)) {
+      if (!tmp.equals("ALL")) {
+        stmt.setString(1, tmp);
+      }
+
+      ResultSet rs = stmt.executeQuery();
+      while (rs.next()) {
+        int id = rs.getInt("id");
+        String name = rs.getString("name");
+        String username = rs.getString("username");
+        String password = rs.getString("password");
+        String userType = rs.getString("usertype");
+        boolean isBanned = rs.getBoolean("is_banned");
+        String avatarLink = rs.getString("avatar_link");
+        String MSV = rs.getString("MSV");
+        String university = rs.getString("University");
+        String phone = rs.getString("Phone");
+        String coverPhotoLink = rs.getString("Cover_photo_link");
+        int reputation = rs.getInt("Reputation");
+
+        User user = new User(id, name, username, password, userType, isBanned, avatarLink, MSV,
+            university, phone, coverPhotoLink, reputation);
+        userList.add(user);
+      }
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
+
+    return userList;
   }
 
 }

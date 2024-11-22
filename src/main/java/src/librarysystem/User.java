@@ -1,6 +1,5 @@
 package src.librarysystem;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import javafx.beans.value.ObservableValue;
 
@@ -19,6 +18,7 @@ public class User {
   private String coverPhotoLink;
   private int reputation;
   private ArrayList<Pair<Book, MyDateTime>> rentBook;
+
 
   public User() {
     rentBook = new ArrayList<>();
@@ -44,6 +44,8 @@ public class User {
     this.userType = userType;
     this.isBanned = false;
     this.avatarLink = null;
+    rentBook = DBInfo.getBorrowedBookList(this.id);
+
   }
 
   public User(int id, String name, String username, String password, String userType,
@@ -61,6 +63,7 @@ public class User {
     this.phone = phone;
     this.coverPhotoLink = coverPhotoLink;
     this.reputation = reputation;
+    rentBook = DBInfo.getBorrowedBookList(this.id);
   }
 
   public int getId() {
@@ -69,6 +72,8 @@ public class User {
 
   public void setId(int id) {
     this.id = id;
+    rentBook = DBInfo.getBorrowedBookList(this.id);
+
   }
 
   public String getName() {
@@ -159,6 +164,12 @@ public class User {
     this.reputation = reputation;
   }
 
+
+
+  public ArrayList<Notification> getNotifications() {
+    return  DBInfo.getNotificationsByUserId(id);
+  }
+
   public ArrayList<Pair<Book, MyDateTime>> getRentBook() {
     return rentBook;
   }
@@ -176,9 +187,6 @@ public class User {
     return DBInfo.getOverdueAndUpcoming(id).getKey();
   }
 
-  public ArrayList<Pair>getNotification(){
-    return DBInfo.getNotifications(id);
-  }
   @Override
   public String toString() {
     return "Registration{" +
@@ -268,4 +276,34 @@ public class User {
       setReputation(newReputation);
     }
   }
+
+  public void acceptBorrowRequest(BorrowRequest a) {
+    if (this.userType.equals("admin")) {
+      DBInfo.acceptBorrowRequest(a);
+    }
+  }
+
+  public ArrayList<BorrowRequest> getBorrowRequest() {
+    return DBInfo.getBorrowRequest();
+  }
+  public void deleteNotifications() {
+    DBInfo.deleteNotificationsByUserId(id);
+  }
+
+  public void sendNotification(int receiver_id,String tmp) {
+    DBInfo.sendNotification(this.id, receiver_id, tmp);
+
+  }
+
+  public void sendNotification(User receiver,String tmp) {
+    DBInfo.sendNotification(this.id, receiver.getId(), tmp);
+
+  }
+
+  public void reply(Notification A, String tmp) {
+    DBInfo.sendNotification(this.id, A.getSenderId(), tmp);
+
+  }
+  
+
 }

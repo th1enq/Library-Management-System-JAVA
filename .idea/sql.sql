@@ -3,8 +3,6 @@ DROP DATABASE IF EXISTS TESTT;
 CREATE DATABASE TESTT;
 USE TESTT;
 
-
-
 DROP TABLE IF EXISTS `book`;
 CREATE TABLE `book` (
     title VARCHAR(255) PRIMARY KEY,
@@ -60,6 +58,16 @@ CREATE TABLE `borrow_slip` (
     borrow_date DATETIME NOT NULL,
     return_date DATETIME NOT NULL
 );
+CREATE TABLE `borrow_request` (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    book_name VARCHAR(100) NOT NULL,
+    borrow_date DATETIME NOT NULL,
+    return_date DATETIME NOT NULL,
+    accepted TINYINT(1) DEFAULT 0
+);
+
+
 
 
 
@@ -105,15 +113,16 @@ VALUES
 ('Atomic Habits', 'nguyenvana', '2024-11-13', 'Cuốn sách hữu ích cho việc thay đổi thói quen.'),
 ('Atomic Habits', 'tranthib', '2024-11-12', 'Những nguyên tắc trong sách dễ áp dụng vào cuộc sống.');
 
+CREATE TABLE Messages (
+    message_id INT AUTO_INCREMENT PRIMARY KEY,
+    sender_id INT NOT NULL,
+    receiver_id INT NOT NULL,
+    content TEXT NOT NULL,
+    sent_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (sender_id) REFERENCES registration(id),
+    FOREIGN KEY (receiver_id) REFERENCES registration(id)
+);
 
-
-
-
-
-
-
---
---
 
 LOCK TABLES `registration` WRITE;
 /*!40000 ALTER TABLE `registration` DISABLE KEYS */;
@@ -191,10 +200,11 @@ INSERT INTO category (name) VALUES
 DROP TABLE IF EXISTS `notifications`;
 
 CREATE TABLE `notifications` (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    user_id INT NOT NULL,
-    title VARCHAR(255) NOT NULL,
-    content TEXT NOT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
+  `id` INT AUTO_INCREMENT NOT NULL,
+  `sender_id` INT NOT NULL,
+  `receiver_id` INT DEFAULT NULL,
+  `message` TEXT NOT NULL,
+  `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
