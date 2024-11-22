@@ -154,6 +154,7 @@ public class BookViewDetailController {
 
     @FXML
     public void removeBook(ActionEvent actionEvent) {
+        System.out.println(currentBook.toString());
         DBInfo.deleteBook(currentBook);
     }
 

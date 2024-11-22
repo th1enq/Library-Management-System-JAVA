@@ -80,7 +80,7 @@ public class MainGUI implements Initializable {
 
     public static boolean apiSearchMode = false;
     public static ArrayList<Book> currentApiBook = new ArrayList<>();
-    public static ArrayList<Book> currentLibraryBook = Filter.getInstance().getBookByTitleSubstr("");
+    public static ArrayList<Book> currentLibraryBook = DBInfo.getBookList("ALL", "ALL", "ALL");
 
     public void setPreviousStage(boolean apiSearchMode, ArrayList<Book> currentApiBook, ArrayList<Book> currentLibraryMode) {
         MainGUI.apiSearchMode = apiSearchMode;

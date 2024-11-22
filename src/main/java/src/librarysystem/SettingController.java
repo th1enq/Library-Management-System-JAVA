@@ -283,12 +283,7 @@ public class SettingController implements Initializable {
         emailTextField.setText(MainGUI.currentUser.getUsername());
         idTextField.setText(MainGUI.currentUser.getMSV());
         userTextField.setText(MainGUI.currentUser.getUserType());
-//        if(MainGUI.currentUser.getUniversity() != null) {
-//            universityChoose.setValue(MainGUI.currentUser.getUniversity());
-//        }
-//        System.out.println(MainGUI.currentUser.getUniversity());
-//        universityChoose.setValue(MainGUI.currentUser.getUniversity());
-//        phoneTextField.setText(MainGUI.currentUser.getPhone());
+        phoneTextField.setText(MainGUI.currentUser.getPhone());
 
         oldPasswordVisiable.textProperty().bindBidirectional(oldPassword.textProperty());
         newPasswordVisiable.textProperty().bindBidirectional(newPassword.textProperty());

@@ -199,7 +199,7 @@ public class Filter {
         return ret;
     }
 
-    public static ArrayList<User> getUserBySubstr(String tmp) {
+    public ArrayList<User> getUserBySubstr(String tmp) {
         ArrayList<User> userList = new ArrayList<>();
         String sql =
                 "SELECT * from registration WHERE username like " + "'%" + tmp + "%' and usertype = 'user'";
@@ -231,7 +231,7 @@ public class Filter {
         return userList;
     }
 
-    public static ArrayList<User> getUserList(String tmp) {
+    public ArrayList<User> getUserList(String tmp) {
         ArrayList<User> userList = new ArrayList<>();
         String sql = "SELECT * FROM registration";
 

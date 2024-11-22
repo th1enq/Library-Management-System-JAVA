@@ -38,6 +38,11 @@ public class UserController {
     @FXML
     private ScrollPane userScrollPane;
 
+    // 0: View all user
+    // 1: view admin
+    // 2: view student
+    private int filterMode = 0;
+
     private Pane createUserPane(User user) {
         Pane pane = new Pane();
         pane.setPrefSize(1075, 71);
@@ -88,11 +93,31 @@ public class UserController {
         return pane;
     }
 
+    private void update() {
+        viewAllButton.setStyle("-fx-background-color: transparent; -fx-background-radius: 5px; -fx-cursor: hand;");
+        viewAdminButton.setStyle("-fx-background-color: transparent; -fx-background-radius: 5px; -fx-cursor: hand;");
+        viewUserButton.setStyle("-fx-background-color: transparent; -fx-background-radius: 5px; -fx-cursor: hand;");
+        switch (filterMode) {
+            case 0:
+                viewAllButton.setStyle("-fx-background-color: #fff; -fx-background-radius: 5px; -fx-cursor: hand;");
+                break;
+            case 1:
+                viewAdminButton.setStyle("-fx-background-color: #fff; -fx-background-radius: 5px; -fx-cursor: hand;");
+                break;
+            case 2:
+                viewUserButton.setStyle("-fx-background-color: #fff; -fx-background-radius: 5px; -fx-cursor: hand;");
+                break;
+        }
+    }
+
     public void initialize() {
+        displayUser();
+    }
+
+    private void displayUser() {
         VBox vbox = new VBox();
         vbox.setSpacing(0);
         vbox.setStyle("-fx-background-color: #FFFFFF;");
-
         for (User user : userList) {
             Pane userPane = createUserPane(user);
             vbox.getChildren().add(userPane);
@@ -102,12 +127,27 @@ public class UserController {
     }
 
     public void viewAll(ActionEvent actionEvent) {
+        if(filterMode == 0) return;
+        filterMode = 0;
+        update();
+        userList = DBInfo.getUserList();
+        displayUser();
     }
 
     public void viewAdmin(ActionEvent actionEvent) {
+        if(filterMode == 1) return;
+        filterMode = 1;
+        update();
+        userList = Filter.getInstance().getUserList("admin");
+        displayUser();
     }
 
     public void viewUser(ActionEvent actionEvent) {
+        if(filterMode == 2) return;
+        filterMode = 2;
+        update();
+        userList = Filter.getInstance().getUserList("user");
+        displayUser();
     }
 
     public void addNewUser(ActionEvent actionEvent) {

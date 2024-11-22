@@ -40,7 +40,7 @@ public class SearchBookController {
     private boolean apiMode = false;
 
     private ArrayList<Book> currentApiBook = new ArrayList<>();
-    private ArrayList<Book> currentLibraryBook = Filter.getInstance().getBookByTitleSubstr("");
+    private ArrayList<Book> currentLibraryBook = DBInfo.getBookList("ALL", "ALL", "ALL");
 
     private MainGUI mainGUI;
 
@@ -70,7 +70,6 @@ public class SearchBookController {
         currentApiBook = MainGUI.currentApiBook;
         currentLibraryBook = MainGUI.currentLibraryBook;
 
-        System.out.println(apiMode + " " + currentApiBook.toString() + " " + currentLibraryBook.toString());
         bookQuery.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
             if (event.getCode().toString().equals("ENTER")) {
                 searchQuery();
@@ -107,6 +106,14 @@ public class SearchBookController {
 
     private void searchQuery() {
         String query = bookQuery.getText();
+        if(query.isEmpty() || query == null) {
+            if(apiMode) {
+                return;
+            }
+            else {
+                currentLibraryBook = DBInfo.getBookList("ALL", "ALL", "ALL");
+            }
+        }
         if(apiMode) {
             switch (filterMode) {
                 case 0:
@@ -249,6 +256,7 @@ public class SearchBookController {
         currentApiBook = null;
         update();
         displayBooks(currentApiBook);
+        mainGUI.setPreviousStage(apiMode, currentApiBook, currentLibraryBook);
     }
 
     @FXML
@@ -258,8 +266,9 @@ public class SearchBookController {
             apiMode = false;
         }
         BookViewDetailController.setApiMode(apiMode);
-        currentLibraryBook = Filter.getInstance().getBookByTitleSubstr("");
+        currentLibraryBook = DBInfo.getBookList("ALL", "ALL", "ALL");
         update();
         displayBooks(currentLibraryBook);
+        mainGUI.setPreviousStage(apiMode, currentApiBook, currentLibraryBook);
     }
 }

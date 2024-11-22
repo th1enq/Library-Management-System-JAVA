@@ -110,7 +110,7 @@
                </children></Pane>
             <StackPane layoutX="843.0" layoutY="271.0" prefHeight="36.0" prefWidth="246.0" style="-fx-background-color: #fff;">
                <children>
-                  <TextField prefHeight="64.0" prefWidth="246.0" promptText="Search">
+                  <TextField prefHeight="64.0" prefWidth="246.0" promptText="Search" style="-fx-background-radius: 10px;">
                      <StackPane.margin>
                         <Insets />
                      </StackPane.margin>
