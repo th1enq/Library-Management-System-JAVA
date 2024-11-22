@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon?>
+<?import java.lang.String?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="736.0" prefWidth="1180.0" styleClass="sidebar" stylesheets="@stylesheet.css" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <ScrollPane prefWidth="1170.0" stylesheets="@stylesheet.css">
+         <content>
+            <Pane prefHeight="736.0" prefWidth="1164.0">
+               <children>
+                  <Pane layoutX="23.0" layoutY="95.0" prefHeight="157.0" prefWidth="1134.0" style="-fx-border-color: #666565; -fx-border-radius: 10px; -fx-background-radius: 10px;">
+                     <children>
+                        <FontAwesomeIcon glyphName="WARNING" layoutX="28.0" layoutY="47.0" size="2em" />
+                        <Label layoutX="82.0" layoutY="23.0" text="Thông báo hệ thống">
+                           <font>
+                              <Font name="System Bold" size="20.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="82.0" layoutY="70.0" text="Sách &quot;React for begginer&quot; đã quá hạn trả. Vui lòng trả sách trong 3 ngày tới.">
+                           <font>
+                              <Font size="15.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="82.0" layoutY="106.0" text="2024-11-22 20:59" textFill="#666565">
+                           <font>
+                              <Font size="13.0" />
+                           </font>
+                        </Label>
+                        <Button layoutX="1093.0" layoutY="11.0" mnemonicParsing="false">
+                           <graphic>
+                              <FontAwesomeIcon glyphName="CLOSE" size="1.2em" />
+                           </graphic>
+                        </Button>
+                     </children>
+                  </Pane>
+                  <Pane layoutX="24.0" layoutY="291.0" prefHeight="157.0" prefWidth="1131.0" style="-fx-border-color: #666565; -fx-border-radius: 10px; -fx-background-radius: 10px;">
+                     <children>
+                        <FontAwesomeIcon glyphName="WARNING" layoutX="28.0" layoutY="47.0" size="2em" />
+                        <Label layoutX="82.0" layoutY="23.0" text="Thông báo hệ thống">
+                           <font>
+                              <Font name="System Bold" size="20.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="82.0" layoutY="70.0" text="Bạn bị phạt 50.000đ vì trả sách trễ. Uy tín của bạn hiện còn 4/5">
+                           <font>
+                              <Font size="15.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="82.0" layoutY="106.0" text="2024-11-22 20:59" textFill="#666565">
+                           <font>
+                              <Font size="13.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </Pane>
+                  <Pane layoutX="26.0" layoutY="484.0" prefHeight="157.0" prefWidth="1131.0" style="-fx-border-color: #666565; -fx-border-radius: 10px; -fx-background-radius: 10px;">
+                     <children>
+                        <FontAwesomeIcon glyphName="CHECK" layoutX="28.0" layoutY="47.0" size="2em" />
+                        <Label layoutX="82.0" layoutY="23.0" text="Thông báo hệ thống">
+                           <font>
+                              <Font name="System Bold" size="20.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="82.0" layoutY="70.0" text="Bạn đã cập nhật thông tin thành công.">
+                           <font>
+                              <Font size="15.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="82.0" layoutY="106.0" text="2024-11-22 20:59" textFill="#666565">
+                           <font>
+                              <Font size="13.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </Pane>
+                   <Button layoutX="753.0" layoutY="31.0" mnemonicParsing="false" prefHeight="47.0" prefWidth="158.0" style="-fx-background-color: transparent; -fx-border-radius: 10px; -fx-border-color: grey; -fx-background-radius: 10px; -fx-cursor: hand;" text=" Tạo yêu cầu">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                     <graphic>
+                        <FontAwesomeIcon glyphName="UPLOAD" size="1.2em" />
+                     </graphic></Button>
+                  <Button layoutX="949.0" layoutY="31.0" mnemonicParsing="false" prefHeight="47.0" prefWidth="158.0" style="-fx-background-color: #000; -fx-border-radius: 10px; -fx-border-color: grey; -fx-background-radius: 10px; -fx-cursor: hand;" text=" Clear all" textFill="WHITE">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                     <graphic>
+                        <FontAwesomeIcon fill="WHITE" glyphName="CLOSE" size="1.2em" />
+                     </graphic>
+                  </Button>
+               </children>
+            </Pane>
+         </content>
+         <styleClass>
+            <String fx:value="scroll-pane" />
+            <String fx:value="sidebar" />
+         </styleClass>
+      </ScrollPane>
+   </children>
+</VBox>

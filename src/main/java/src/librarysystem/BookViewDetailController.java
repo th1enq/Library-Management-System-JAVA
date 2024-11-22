@@ -112,7 +112,7 @@ public class BookViewDetailController {
                 detailImage.setImage(new Image(getClass().getResource("/images/unnamed.jpg").toExternalForm()));
             }
 
-            qrImage.setImage(BookServices.generateQRCode(book.getBuyLink()));
+            qrImage.setImage(BookServices.getInstance().generateQRCode(book.getBuyLink()));
         } else {
             // If book is null, set default messages for each label
             detailTitle.setText("No Book Selected");
@@ -154,7 +154,8 @@ public class BookViewDetailController {
 
     @FXML
     public void removeBook(ActionEvent actionEvent) {
-
+        System.out.println(currentBook.toString());
+        DBInfo.deleteBook(currentBook);
     }
 
     public void saveEditBook(ActionEvent actionEvent) {

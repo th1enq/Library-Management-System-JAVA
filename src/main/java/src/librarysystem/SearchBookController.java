@@ -1,14 +1,11 @@
 package src.librarysystem;
 
-import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
+import com.beust.ah.A;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
@@ -17,7 +14,6 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 
-import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
@@ -38,13 +34,21 @@ public class SearchBookController {
     public TextField bookQuery;
     @FXML
     public FlowPane flowPane;
+    @FXML
+    public ComboBox filterModeButton;
 
     private boolean apiMode = false;
 
-    private ArrayList<Book> currentApiBook;
-    private ArrayList<Book> currentLibraryBook;
+    private ArrayList<Book> currentApiBook = new ArrayList<>();
+    private ArrayList<Book> currentLibraryBook = DBInfo.getBookList("ALL", "ALL", "ALL");
 
     private MainGUI mainGUI;
+
+    // 0 : title
+    // 1 : author
+    // 2 : category
+    @FXML
+    private int filterMode = 0;
 
     // HashMap để lưu cache ảnh
     private HashMap<String, Image> imageCache = new HashMap<>();
@@ -54,6 +58,7 @@ public class SearchBookController {
     }
 
     private void update() {
+        bookQuery.clear();
         String activeMode = "-fx-background-color: #fff; -fx-cursor: hand;";
         String inActiveMode = "-fx-background-color: transparent; -fx-cursor: hand;";
         apiModeButton.setStyle(apiMode ? activeMode : inActiveMode);
@@ -61,40 +66,100 @@ public class SearchBookController {
     }
 
     public void initialize() {
+        apiMode = MainGUI.apiSearchMode;
+        currentApiBook = MainGUI.currentApiBook;
+        currentLibraryBook = MainGUI.currentLibraryBook;
+
         bookQuery.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
             if (event.getCode().toString().equals("ENTER")) {
                 searchQuery();
             }
         });
-        apiMode = false;
         update();
-        currentApiBook = null;
-        currentLibraryBook = DBInfo.getBookList("ALL", "ALL", "ALL");
-        displayBooks(currentLibraryBook);
+
+        filterModeButton.getItems().addAll("Title", "Author", "Category");
+        filterModeButton.setValue("Title");
+
+        filterModeButton.setOnAction(event -> {
+            String selectedValue = String.valueOf(filterModeButton.getValue()); // No casting required if ComboBox<String>
+            switch (selectedValue) {
+                case "Title":
+                    filterMode = 0;
+                    break;
+                case "Author":
+                    filterMode = 1;
+                    break;
+                case "Category":
+                    filterMode = 2;
+                    break;
+                default:
+                    throw new IllegalArgumentException("Unexpected value: " + selectedValue);
+            }
+        });
+        if(apiMode) {
+            displayBooks(currentApiBook);
+        }
+        else {
+            displayBooks(currentLibraryBook);
+        }
     }
 
     private void searchQuery() {
         String query = bookQuery.getText();
-        currentApiBook = BookServices.searchBooks(query);
-        currentLibraryBook = DBInfo.getBookList("ALL", "ALL", "ALL");
-        displayBooks(apiMode ? currentApiBook : currentLibraryBook);
+        if(query.isEmpty() || query == null) {
+            if(apiMode) {
+                return;
+            }
+            else {
+                currentLibraryBook = DBInfo.getBookList("ALL", "ALL", "ALL");
+            }
+        }
+        if(apiMode) {
+            switch (filterMode) {
+                case 0:
+                    currentApiBook = BookServices.getInstance().searchBooksByTitle(query);
+                    break;
+                case 1:
+                    currentApiBook = BookServices.getInstance().searchBooksByAuthor(query);
+                    break;
+                case 2:
+                    currentApiBook = BookServices.getInstance().searchBooksByCategory(query);
+                    break;
+            }
+        }
+        else {
+            switch (filterMode) {
+                case 0:
+                    currentLibraryBook = Filter.getInstance().getBookByTitleSubstr(query);
+                    break;
+                case 1:
+                    currentLibraryBook = Filter.getInstance().getBookByAuthorSubstr(query);
+                    break;
+                case 2:
+                    currentLibraryBook = Filter.getInstance().getBookByCategorySubstr(query);
+                    break;
+            }
+        }
+        if(apiMode) {
+            displayBooks(currentApiBook);
+        }
+        else {
+            displayBooks(currentLibraryBook);
+        }
+        mainGUI.setPreviousStage(apiMode, currentApiBook, currentLibraryBook);
     }
 
     @FXML
     public void searchBook(ActionEvent actionEvent) {
-        System.out.println("search");
         searchQuery();
     }
-
-    @FXML
-    private ScrollPane scrollPane;
 
     public void displayBooks(ArrayList<Book> result) {
         flowPane.getChildren().clear(); // Xóa các phần tử cũ
         if (result == null) return;
 
         // Cấu hình FlowPane
-        flowPane.setPrefWidth(1099);
+        flowPane.setPrefWidth(1080);
         flowPane.setHgap(60); // Khoảng cách ngang giữa các thẻ
         flowPane.setVgap(20); // Khoảng cách dọc giữa các hàng
         flowPane.setStyle("-fx-background-color: transparent; -fx-padding: 0 0 0 60px;");
@@ -188,8 +253,10 @@ public class SearchBookController {
             apiMode = true;
         }
         BookViewDetailController.setApiMode(apiMode);
+        currentApiBook = null;
         update();
         displayBooks(currentApiBook);
+        mainGUI.setPreviousStage(apiMode, currentApiBook, currentLibraryBook);
     }
 
     @FXML
@@ -199,7 +266,9 @@ public class SearchBookController {
             apiMode = false;
         }
         BookViewDetailController.setApiMode(apiMode);
+        currentLibraryBook = DBInfo.getBookList("ALL", "ALL", "ALL");
         update();
         displayBooks(currentLibraryBook);
+        mainGUI.setPreviousStage(apiMode, currentApiBook, currentLibraryBook);
     }
 }

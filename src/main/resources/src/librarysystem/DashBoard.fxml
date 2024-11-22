@@ -21,7 +21,7 @@
                         <Font name="System Bold" size="15.0" />
                      </font>
                   </Label>
-                  <Label layoutX="21.0" layoutY="27.0" prefWidth="104.0" text="1223" textFill="#282423">
+                  <Label fx:id="totalBooks" layoutX="21.0" layoutY="27.0" prefWidth="104.0" text="1223" textFill="#282423">
                      <font>
                         <Font name="System Bold" size="32.0" />
                      </font>
@@ -40,7 +40,7 @@
                         <Font name="System Bold" size="15.0" />
                      </font>
                   </Label>
-                  <Label layoutX="21.0" layoutY="27.0" prefWidth="104.0" text="10" textFill="#282423">
+                  <Label fx:id="totalUsers" layoutX="21.0" layoutY="27.0" prefWidth="104.0" text="10" textFill="#282423">
                      <font>
                         <Font name="System Bold" size="32.0" />
                      </font>
@@ -59,7 +59,7 @@
                         <Font name="System Bold" size="15.0" />
                      </font>
                   </Label>
-                  <Label layoutX="21.0" layoutY="27.0" prefWidth="104.0" text="30" textFill="#282423">
+                  <Label fx:id="borrowedBooks" layoutX="21.0" layoutY="27.0" prefWidth="104.0" text="30" textFill="#282423">
                      <font>
                         <Font name="System Bold" size="32.0" />
                      </font>
@@ -76,7 +76,7 @@
                   <Font name="System Bold" size="32.0" />
                </font>
             </Label>
-            <Label fx:id="nameUser" layoutX="126.0" layoutY="43.0" prefHeight="47.0" prefWidth="161.0" stylesheets="@stylesheet.css" text="23020161!" textFill="#f65867">
+            <Label fx:id="nameUser" layoutX="126.0" layoutY="43.0" prefHeight="47.0" prefWidth="346.0" stylesheets="@stylesheet.css" text="23020161!" textFill="#f65867">
                <font>
                   <Font name="System Bold" size="32.0" />
                </font>
@@ -93,7 +93,7 @@
                         <Font name="System Bold" size="15.0" />
                      </font>
                   </Label>
-                  <Label layoutX="21.0" layoutY="27.0" prefWidth="104.0" text="30" textFill="#282423">
+                  <Label fx:id="overdueBooks" layoutX="21.0" layoutY="27.0" prefWidth="104.0" text="30" textFill="#282423">
                      <font>
                         <Font name="System Bold" size="32.0" />
                      </font>

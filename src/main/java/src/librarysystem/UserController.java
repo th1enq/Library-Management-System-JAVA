@@ -1,6 +1,7 @@
 package src.librarysystem;
 
-import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
+import javafx.scene.Node;
+import javafx.scene.effect.GaussianBlur;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -12,7 +13,16 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Paint;
 import javafx.scene.text.Font;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
+import javafx.stage.Window;
+import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.apache.poi.ss.usermodel.Cell;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Optional;
 
@@ -21,10 +31,17 @@ public class UserController {
     public Button viewAdminButton;
     public Button viewUserButton;
     public VBox contentVBox;
+    @FXML
+    public VBox containerVbox;
 
     private ArrayList<User> userList = DBInfo.getUserList();
     @FXML
     private ScrollPane userScrollPane;
+
+    // 0: View all user
+    // 1: view admin
+    // 2: view student
+    private int filterMode = 0;
 
     private Pane createUserPane(User user) {
         Pane pane = new Pane();
@@ -76,11 +93,31 @@ public class UserController {
         return pane;
     }
 
+    private void update() {
+        viewAllButton.setStyle("-fx-background-color: transparent; -fx-background-radius: 5px; -fx-cursor: hand;");
+        viewAdminButton.setStyle("-fx-background-color: transparent; -fx-background-radius: 5px; -fx-cursor: hand;");
+        viewUserButton.setStyle("-fx-background-color: transparent; -fx-background-radius: 5px; -fx-cursor: hand;");
+        switch (filterMode) {
+            case 0:
+                viewAllButton.setStyle("-fx-background-color: #fff; -fx-background-radius: 5px; -fx-cursor: hand;");
+                break;
+            case 1:
+                viewAdminButton.setStyle("-fx-background-color: #fff; -fx-background-radius: 5px; -fx-cursor: hand;");
+                break;
+            case 2:
+                viewUserButton.setStyle("-fx-background-color: #fff; -fx-background-radius: 5px; -fx-cursor: hand;");
+                break;
+        }
+    }
+
     public void initialize() {
+        displayUser();
+    }
+
+    private void displayUser() {
         VBox vbox = new VBox();
         vbox.setSpacing(0);
         vbox.setStyle("-fx-background-color: #FFFFFF;");
-
         for (User user : userList) {
             Pane userPane = createUserPane(user);
             vbox.getChildren().add(userPane);
@@ -89,73 +126,146 @@ public class UserController {
         userScrollPane.setContent(vbox);
     }
 
-    private void populateScrollPane(ArrayList<User> users) {
-        GridPane container = new GridPane();
-        container.setHgap(20); // Khoảng cách giữa các cột
-        container.setVgap(10); // Khoảng cách giữa các hàng
-        container.setStyle("-fx-padding: 10;"); // Thêm khoảng cách bên trong
-
-        // Thêm dòng tiêu đề
-        Label nameTitle = new Label("Name");
-        Label roleTitle = new Label("Role");
-        Label borrowedBooksTitle = new Label("Borrowed Books");
-        Label overdueBooksTitle = new Label("Overdue Books");
-        Label lastVisitedTitle = new Label("Last Visited");
-        Label actionTitle = new Label("Action");
-
-        // Căn chỉnh các tiêu đề
-        nameTitle.setStyle("-fx-font-weight: bold;");
-        roleTitle.setStyle("-fx-font-weight: bold;");
-        borrowedBooksTitle.setStyle("-fx-font-weight: bold;");
-        overdueBooksTitle.setStyle("-fx-font-weight: bold;");
-        lastVisitedTitle.setStyle("-fx-font-weight: bold;");
-        actionTitle.setStyle("-fx-font-weight: bold;");
-
-        // Thêm tiêu đề vào dòng đầu tiên
-        container.add(nameTitle, 0, 0);
-        container.add(roleTitle, 1, 0);
-        container.add(borrowedBooksTitle, 2, 0);
-        container.add(overdueBooksTitle, 3, 0);
-        container.add(lastVisitedTitle, 4, 0);
-        container.add(actionTitle, 5, 0);
-
-        // Thêm dữ liệu người dùng
-        int row = 1; // Bắt đầu từ hàng thứ hai (sau tiêu đề)
-        for (User user : users) {
-            Label nameLabel = new Label(user.getName());
-            Label roleLabel = new Label(user.getUserType());
-            Label borrowedBooksLabel = new Label(String.valueOf(user.getId()));
-            Label overdueBooksLabel = new Label(String.valueOf(user.getId()));
-            Label lastVisitedLabel = new Label(user.getUsername());
-
-            // Tạo nút Action
-            Button actionButton = new Button("Details");
-            actionButton.setOnAction(e -> {
-                System.out.println("View details for " + user.getName());
-            });
-
-            // Thêm các thành phần vào GridPane
-            container.add(nameLabel, 0, row);
-            container.add(roleLabel, 1, row);
-            container.add(borrowedBooksLabel, 2, row);
-            container.add(overdueBooksLabel, 3, row);
-            container.add(lastVisitedLabel, 4, row);
-            container.add(actionButton, 5, row);
-
-            row++;
-        }
-
-        // Đặt GridPane vào ScrollPane
-        userScrollPane.setContent(container);
-    }
-
-
     public void viewAll(ActionEvent actionEvent) {
+        if(filterMode == 0) return;
+        filterMode = 0;
+        update();
+        userList = DBInfo.getUserList();
+        displayUser();
     }
 
     public void viewAdmin(ActionEvent actionEvent) {
+        if(filterMode == 1) return;
+        filterMode = 1;
+        update();
+        userList = Filter.getInstance().getUserList("admin");
+        displayUser();
     }
 
     public void viewUser(ActionEvent actionEvent) {
+        if(filterMode == 2) return;
+        filterMode = 2;
+        update();
+        userList = Filter.getInstance().getUserList("user");
+        displayUser();
+    }
+
+    public void addNewUser(ActionEvent actionEvent) {
+        GaussianBlur blurEffect = new GaussianBlur(10);
+        containerVbox.setEffect(blurEffect); // Làm mờ phần nội dung chính
+
+        // Tạo form tạo người dùng mới
+        VBox addUserForm = new VBox();
+        addUserForm.setStyle("-fx-background-color: #ffffff; -fx-border-color: #b9b3b3; -fx-padding: 20;");
+        addUserForm.setPrefSize(400, 300);
+
+        Label titleLabel = new Label("Add New User");
+        titleLabel.setFont(new Font("System Bold", 16));
+        titleLabel.setAlignment(Pos.CENTER);
+
+        TextField nameField = new TextField();
+        nameField.setPromptText("Enter Name");
+
+        TextField usernameField = new TextField();
+        usernameField.setPromptText("Enter Username");
+
+        ComboBox<String> userTypeComboBox = new ComboBox<>();
+        userTypeComboBox.setItems(FXCollections.observableArrayList("Admin", "User"));
+        userTypeComboBox.setPromptText("Select User Type");
+
+        Button saveButton = new Button("Save");
+        saveButton.setOnAction(e -> {
+            // Lưu người dùng mới
+            System.out.println("User added: " + nameField.getText());
+            // Tắt hiệu ứng làm mờ và đóng form
+            containerVbox.setEffect(null);
+            containerVbox.getChildren().remove(addUserForm);
+        });
+
+        Button cancelButton = new Button("Cancel");
+        cancelButton.setOnAction(e -> {
+            // Tắt hiệu ứng làm mờ và đóng form
+            containerVbox.setEffect(null);
+            containerVbox.getChildren().remove(addUserForm);
+        });
+
+        HBox buttonBox = new HBox(10, saveButton, cancelButton);
+        buttonBox.setAlignment(Pos.CENTER);
+
+        addUserForm.getChildren().addAll(titleLabel, nameField, usernameField, userTypeComboBox, buttonBox);
+        addUserForm.setSpacing(15);
+
+        // Đặt form ở trung tâm
+        StackPane.setAlignment(addUserForm, Pos.CENTER);
+
+        // Hiển thị form
+        containerVbox.getChildren().add(addUserForm);
+    }
+
+    @FXML
+    public void exportCSV(ActionEvent actionEvent) {
+        // Lấy Stage từ ActionEvent
+        Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
+
+        // Tạo đối tượng FileChooser để cho phép người dùng chọn vị trí và tên file
+        FileChooser fileChooser = new FileChooser();
+
+        // Đặt filter để chỉ hiển thị file Excel (.xlsx)
+        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Excel Files (*.xlsx)", "*.xlsx");
+        fileChooser.getExtensionFilters().add(extFilter);
+
+        // Mở hộp thoại chọn file
+        File selectedFile = fileChooser.showSaveDialog(stage);
+
+        // Kiểm tra xem người dùng đã chọn file hay chưa
+        if (selectedFile != null) {
+            // Đảm bảo rằng file có phần mở rộng .xlsx nếu người dùng không nhập
+            String fileName = selectedFile.getAbsolutePath();
+            if (!fileName.endsWith(".xlsx")) {
+                fileName += ".xlsx";
+            }
+
+            // Tạo một workbook Excel (sử dụng XSSFWorkbook cho định dạng .xlsx)
+            Workbook workbook = new XSSFWorkbook();
+
+            // Tạo một sheet trong workbook
+            Sheet sheet = workbook.createSheet("Students");
+
+            // Tạo tiêu đề cho bảng
+            Row headerRow = sheet.createRow(0);
+            String[] columns = {"ID", "Name", "Email", "MSV", "University", "Phone", "Reputation"};
+
+            // Tạo các cell cho tiêu đề
+            for (int i = 0; i < columns.length; i++) {
+                Cell cell = headerRow.createCell(i);
+                cell.setCellValue(columns[i]);
+            }
+
+            // Điền dữ liệu từ userList vào bảng Excel
+            int rowNum = 1; // Dữ liệu bắt đầu từ hàng 2 (hàng đầu tiên là tiêu đề)
+            for (User user : userList) {
+                Row row = sheet.createRow(rowNum++);
+
+                row.createCell(0).setCellValue(user.getId());
+                row.createCell(1).setCellValue(user.getName());
+                row.createCell(2).setCellValue(user.getUsername());
+                row.createCell(3).setCellValue(user.getMSV());
+                row.createCell(4).setCellValue(user.getUniversity());
+                row.createCell(5).setCellValue(user.getPhone());
+                row.createCell(6).setCellValue(user.getReputation());
+            }
+
+            // Ghi workbook vào file được chọn
+            try (FileOutputStream fileOut = new FileOutputStream(new File(fileName))) {
+                workbook.write(fileOut);
+                workbook.close();
+                System.out.println("File Excel đã được xuất thành công!");
+            } catch (IOException e) {
+                e.printStackTrace();
+                System.out.println("Lỗi khi xuất file Excel!");
+            }
+        } else {
+            System.out.println("Không có file nào được chọn.");
+        }
     }
 }

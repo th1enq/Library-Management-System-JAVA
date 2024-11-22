@@ -7,8 +7,6 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.StackPane?>
@@ -16,7 +14,7 @@
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="707.0" prefWidth="1180.0" styleClass="sidebar" stylesheets="@stylesheet.css" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="src.librarysystem.UserController">
+<VBox fx:id="containerVbox" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="736.0" prefWidth="1180.0" styleClass="sidebar" stylesheets="@stylesheet.css" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="src.librarysystem.UserController">
    <children>
       <Pane prefHeight="709.0" prefWidth="1180.0">
          <children>
@@ -49,7 +47,7 @@
                   <Font size="14.0" />
                </font>
             </Label>
-            <Button layoutX="753.0" layoutY="31.0" mnemonicParsing="false" prefHeight="47.0" prefWidth="158.0" style="-fx-background-color: transparent; -fx-border-radius: 10px; -fx-border-color: grey; -fx-background-radius: 10px; -fx-cursor: hand;" text="  Export CSV">
+            <Button layoutX="753.0" layoutY="31.0" mnemonicParsing="false" onAction="#exportCSV" prefHeight="47.0" prefWidth="158.0" style="-fx-background-color: transparent; -fx-border-radius: 10px; -fx-border-color: grey; -fx-background-radius: 10px; -fx-cursor: hand;" text="  Export CSV">
                <graphic>
                   <FontAwesomeIcon glyphName="UPLOAD" size="1.1em" />
                </graphic>
@@ -95,7 +93,7 @@
                   </Pane>
                </children>
             </Pane>
-            <Button layoutX="966.0" layoutY="31.0" mnemonicParsing="false" prefHeight="47.0" prefWidth="158.0" style="-fx-background-color: #000; -fx-border-radius: 10px; -fx-border-color: grey; -fx-background-radius: 10px; -fx-cursor: hand;" text="  Add new user" textFill="#fafafa">
+            <Button layoutX="966.0" layoutY="31.0" mnemonicParsing="false" onAction="#addNewUser" prefHeight="47.0" prefWidth="158.0" style="-fx-background-color: #000; -fx-border-radius: 10px; -fx-border-color: grey; -fx-background-radius: 10px; -fx-cursor: hand;" text="  Add new user" textFill="#fafafa">
                <graphic>
                   <FontAwesomeIcon fill="WHITE" glyphName="PLUS" size="1.1em" />
                </graphic>
@@ -112,7 +110,7 @@
                </children></Pane>
             <StackPane layoutX="843.0" layoutY="271.0" prefHeight="36.0" prefWidth="246.0" style="-fx-background-color: #fff;">
                <children>
-                  <TextField prefHeight="64.0" prefWidth="246.0" promptText="Search">
+                  <TextField prefHeight="64.0" prefWidth="246.0" promptText="Search" style="-fx-background-radius: 10px;">
                      <StackPane.margin>
                         <Insets />
                      </StackPane.margin>
@@ -130,7 +128,7 @@
                   </FontAwesomeIcon>
                </children>
             </StackPane>
-            <Pane layoutX="45.0" layoutY="337.0" prefHeight="340.0" prefWidth="1075.0">
+            <Pane layoutX="43.0" layoutY="325.0" prefHeight="395.0" prefWidth="1075.0">
                <children>
                   <Pane prefHeight="41.0" prefWidth="1075.0" style="-fx-background-color: #f6f6f6; -fx-border-color: #b9b3b3;">
                      <children>
@@ -164,7 +162,7 @@
                   </Pane>
                   <AnchorPane layoutY="41.0" prefHeight="299.0" prefWidth="1075.0">
                      <children>
-                        <ScrollPane fx:id="userScrollPane" fitToWidth="true" prefHeight="299.0" prefWidth="1075.0">
+                        <ScrollPane fx:id="userScrollPane" fitToWidth="true" prefHeight="355.0" prefWidth="1075.0">
                            <content>
                               <VBox fx:id="contentVBox" spacing="10" />
                            </content>
