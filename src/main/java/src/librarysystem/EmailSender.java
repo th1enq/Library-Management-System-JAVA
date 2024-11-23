@@ -8,6 +8,7 @@ import java.util.logging.Logger;
 
 public class EmailSender {
 
+  //(mail nguoi nhan, chu de mail, noi dung mail)
   public static void sendEmail(String recipient, String subject, String content) {
     // Cấu hình các thuộc tính SMTP
     Properties properties = new Properties();
