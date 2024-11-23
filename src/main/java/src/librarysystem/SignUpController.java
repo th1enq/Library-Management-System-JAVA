@@ -110,12 +110,12 @@ public class SignUpController implements Initializable {
         else if(userPassword.getText().isEmpty()) {
             showAlert("Bạn chưa nhập mật khẩu !!!");
         }
-        else if(DBInfo.checkPass(userEmail.getText(), userPassword.getText())) {
+        else if(!DBInfo.checkUnique(userEmail.getText())) {
             showAlert("Tài khoản đã tồn tại !!!");
         }
         else {
             showAlert("Đăng kí thành công !!!");
-            DBInfo.Register(Integer.parseInt(userStudentID.getText()), userName.getText(), userEmail.getText(), userPassword.getText(), "user");
+            DBInfo.Register(0, userName.getText(), userEmail.getText(), userPassword.getText(), "user", userStudentID.getText());
         }
     }
 }

@@ -201,14 +201,14 @@ public class Filter {
 
   public ArrayList<User> getUserBySubstr(String tmp, String type) {
     ArrayList<User> userList = new ArrayList<>();
-    StringBuilder sql = new StringBuilder("SELECT * FROM registration WHERE username LIKE ?");
+    StringBuilder sql = new StringBuilder("SELECT * FROM registration WHERE name LIKE ?");
 
     if (!"ALL".equalsIgnoreCase(type)) {
       sql.append(" AND usertype = ?");
     }
 
     try (Connection conn = DBInfo.conn();
-        PreparedStatement stmt = conn.prepareStatement(sql.toString())) {
+         PreparedStatement stmt = conn.prepareStatement(sql.toString())) {
 
       stmt.setString(1, "%" + tmp + "%");
 
@@ -233,7 +233,7 @@ public class Filter {
         int reputation = rs.getInt("Reputation");
 
         User user = new User(id, name, username, password, userType, isBanned, avatarLink, MSV,
-            university, phone, coverPhotoLink, reputation);
+                university, phone, coverPhotoLink, reputation);
         userList.add(user);
       }
     } catch (SQLException e) {
@@ -242,7 +242,6 @@ public class Filter {
 
     return userList;
   }
-
 
   public static ArrayList<User> getUserList(String tmp) {
     ArrayList<User> userList = new ArrayList<>();

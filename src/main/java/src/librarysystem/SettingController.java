@@ -284,6 +284,7 @@ public class SettingController implements Initializable {
         idTextField.setText(MainGUI.currentUser.getMSV());
         userTextField.setText(MainGUI.currentUser.getUserType());
         phoneTextField.setText(MainGUI.currentUser.getPhone());
+        universityChoose.setValue(String.valueOf(MainGUI.currentUser.getUniversity()));
 
         oldPasswordVisiable.textProperty().bindBidirectional(oldPassword.textProperty());
         newPasswordVisiable.textProperty().bindBidirectional(newPassword.textProperty());
@@ -444,6 +445,7 @@ public class SettingController implements Initializable {
     public void updateProfile(ActionEvent actionEvent) {
         if(currentMode == 0) {
             MainGUI.currentUser.update(nameTextField.getText(), emailTextField.getText(), null, avatar.getImage().getUrl(), idTextField.getText(), String.valueOf(universityChoose.getValue()), phoneTextField.getText(), coverImage.getImage().getUrl(), null);
+            System.out.println("Update thong tin" + MainGUI.currentUser.toString());
         }
         else if(currentMode == 2) {
             if(!MainGUI.currentUser.getPassword().equals(oldPassword.getText())) {
