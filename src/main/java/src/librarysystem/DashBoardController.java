@@ -35,6 +35,8 @@ public class DashBoardController {
     @FXML
     public Label borrowedBooks;
     @FXML
+    public Label overdueBooks;
+    @FXML
     private Button seeAllBook;
 
     @FXML
@@ -60,7 +62,8 @@ public class DashBoardController {
         nameUser.setText(MainGUI.currentUser.getName());
         totalBooks.setText(String.valueOf(DBInfo.getBookList("ALL", "ALL", "ALL").size()));
         totalUsers.setText(String.valueOf(Filter.getInstance().getUserList("ALL").size()));
-//        total
+        borrowedBooks.setText(String.valueOf(DBInfo.countBorrowed()));
+        overdueBooks.setText(String.valueOf(DBInfo.countOverdue()));
 
         PieChart.Data science = new PieChart.Data("Science", 10);
         PieChart.Data manga = new PieChart.Data("Manga", 20);
