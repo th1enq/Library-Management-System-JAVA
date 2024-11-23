@@ -65,34 +65,23 @@ public class DashBoardController {
         borrowedBooks.setText(String.valueOf(DBInfo.countBorrowed()));
         overdueBooks.setText(String.valueOf(DBInfo.countOverdue()));
 
-        PieChart.Data science = new PieChart.Data("Science", 10);
-        PieChart.Data manga = new PieChart.Data("Manga", 20);
-        PieChart.Data magazine = new PieChart.Data("Magazine", 40);
-        PieChart.Data horror = new PieChart.Data("Horror", 20);
-        PieChart.Data self_help = new PieChart.Data("Self_Help", 10);
-
-        pieChart.getData().addAll(science, manga, magazine, horror, self_help);
-
-        for (PieChart.Data data : pieChart.getData()) {
-            Tooltip tooltip = new Tooltip();
-            tooltip.setText(getPercentage(data) + "%");
-            Tooltip.install(data.getNode(), tooltip);
-
-            // Update tooltip text on hover
-            data.getNode().setOnMouseEntered(event -> {
+        ObservableList<PieChart.Data> pieChartData = ChartController.getPieChartData();
+        if (pieChartData.isEmpty()) {
+            System.out.println("No data found for PieChart.");
+        } else {
+            pieChart.setData(pieChartData);
+            for (PieChart.Data data : pieChart.getData()) {
+                Tooltip tooltip = new Tooltip();
                 tooltip.setText(getPercentage(data) + "%");
-            });
-        }
+                Tooltip.install(data.getNode(), tooltip);
 
-        ObservableList<XYChart.Data<String, Number>> weekData = FXCollections.observableArrayList(
-                new XYChart.Data<>("Monday", 20),
-                new XYChart.Data<>("Tuesday", 10),
-                new XYChart.Data<>("Wednesday", 5),
-                new XYChart.Data<>("Thursday", 10),
-                new XYChart.Data<>("Friday", 20),
-                new XYChart.Data<>("Saturday", 20),
-                new XYChart.Data<>("Sunday", 15)
-        );
+                // Update tooltip text on hover
+                data.getNode().setOnMouseEntered(event -> {
+                    tooltip.setText(getPercentage(data) + "%");
+                });
+            }
+        }
+        ObservableList<XYChart.Data<String, Number>> weekData = ChartController.getLoginData();
 
         // Create a series and add data
         XYChart.Series<String, Number> series = new XYChart.Series<>();

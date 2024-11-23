@@ -136,7 +136,7 @@ public class BookViewDetailController {
     @FXML
     public void rentBook(ActionEvent actionEvent) {
         MainGUI.currentUser.muonSach(currentBook);
-        System.out.println("Muon sach thanh cong");
+        System.out.println("Yêu cầu mượn sách đã được gửi đến admin, hãy chờ admin phê duyệt");
         for(Pair<Book, MyDateTime> x : MainGUI.currentUser.getRentBook()) {
             System.out.println(x.getKey().toString() + " " + x.getValue().toString());
         }

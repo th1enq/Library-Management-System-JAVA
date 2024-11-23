@@ -206,7 +206,8 @@ public class DBInfo {
         String phone = rs.getString("Phone");
         String coverPhotoLink = rs.getString("Cover_photo_link");
         int reputation = rs.getInt("Reputation");
-        user = new User(id, name, username, password, userType, isBanned, avatarLink, MSV, university, phone, coverPhotoLink, reputation);
+        user = new User(id, name, username, password, userType, isBanned, avatarLink, MSV,
+            university, phone, coverPhotoLink, reputation);
       }
 
     } catch (SQLException e) {
@@ -349,7 +350,7 @@ public class DBInfo {
       preparedStatement.setTimestamp(4, Timestamp.valueOf(dateTimeAfter10Days));
       int rowsAffected = preparedStatement.executeUpdate();
       System.out.println("Slip added successfully! Rows affected: " + rowsAffected);
-      sendNotification(1000,id,"Đã mượn sách thành công");
+      sendNotification(1000, id, "Đã mượn sách thành công");
 
     } catch (SQLException e) {
       System.out.println("Error adding slip");
@@ -378,7 +379,7 @@ public class DBInfo {
     try {
       if (!inDb(itemName)) {
         System.out.println("ko co cuon sach tren trong DB");
-        sendNotification(1000,id,"Cuốn sách bạn muốn mươợn đã hết, vui lòng mượn cuốn khác");
+        sendNotification(1000, id, "Cuốn sách bạn muốn mươợn đã hết, vui lòng mượn cuốn khác");
         return;
       }
       Connection con = DBInfo.conn();
@@ -390,7 +391,7 @@ public class DBInfo {
       if (rowAffected > 0) {
         System.out.println("Thay doi trang thai dong" + rowAffected);
         // addSlip(itemName, id);
-        sendNotification(1000,id,"Yêu cầu mượn sách đang chờ được admin xét duyệt");
+        sendNotification(1000, id, "Yêu cầu mượn sách đang chờ được admin xét duyệt");
         addBorrowRequest(itemName, id);
       }
       preparedStatement.close();
@@ -508,7 +509,7 @@ public class DBInfo {
         int rowAffected2 = preparedStatement2.executeUpdate();
         if (rowAffected2 > 0) {
           System.out.println("Thay doi trang thai dong" + rowAffected2);
-          sendNotification(1000,id,"Trả sách thành công");
+          sendNotification(1000, id, "Trả sách thành công");
 
         } else {
           System.out.println("Thay doi trang thai ko thanh cong");
@@ -688,37 +689,117 @@ public class DBInfo {
     }
   }
 
-  public static void addCategory(String a) {
-    try {
-      Connection con = DBInfo.conn();
-      String sql = "INSERT INTO category(name) VALUE (?)";
-      PreparedStatement preparedStatement = con.prepareStatement(sql);
-      preparedStatement.setString(1, a);
-      int rowsAffected = preparedStatement.executeUpdate();
-      System.out.println("Category added successfully! Rows affected: " + rowsAffected);
-      preparedStatement.close();
-      con.close();
-    } catch (SQLException EE) {
-      System.out.println("Error adding Category");
-      EE.printStackTrace();
+  public static void addCategory(String categoryName) {
+    String checkSql = "SELECT cnt FROM category WHERE name = ?";
+    String updateCntSql = "UPDATE category SET cnt = cnt + 1 WHERE name = ?";
+    String insertSql = "INSERT INTO category (name, cnt) VALUES (?, 1)";
+    String updateAllSql = "UPDATE category SET cnt = cnt + 1 WHERE name = 'ALL'";
+
+    try (Connection con = DBInfo.conn()) {
+      // Kiểm tra danh mục có tồn tại hay không
+      try (PreparedStatement checkStmt = con.prepareStatement(checkSql)) {
+        checkStmt.setString(1, categoryName);
+        ResultSet rs = checkStmt.executeQuery();
+
+        if (rs.next()) {
+          try (PreparedStatement updateStmt = con.prepareStatement(updateCntSql)) {
+            updateStmt.setString(1, categoryName);
+            updateStmt.executeUpdate();
+          }
+          System.out.println("Category exists. Incremented cnt for: " + categoryName);
+        } else {
+          try (PreparedStatement insertStmt = con.prepareStatement(insertSql)) {
+            insertStmt.setString(1, categoryName);
+            insertStmt.executeUpdate();
+          }
+          System.out.println("Category not found. Added new category: " + categoryName);
+        }
+      }
+
+      // Tăng cnt của danh mục "ALL"
+      try (PreparedStatement updateAllStmt = con.prepareStatement(updateAllSql)) {
+        updateAllStmt.executeUpdate();
+      }
+      System.out.println("Incremented cnt for category: ALL");
+
+    } catch (SQLException e) {
+      System.out.println("Error adding or updating category");
+      e.printStackTrace();
     }
   }
 
-  public static void deleteCategory(String a) {
-    try {
-      Connection con = DBInfo.conn();
-      String sql = "DELETE FROM category WHERE name = ?";
-      PreparedStatement preparedStatement = con.prepareStatement(sql);
-      preparedStatement.setString(1, a);
-      int rowsAffected = preparedStatement.executeUpdate();
-      System.out.println("Category deleted successfully! Rows affected: " + rowsAffected);
-      preparedStatement.close();
-      con.close();
-    } catch (SQLException EE) {
-      System.out.println("Error deleting Category");
-      EE.printStackTrace();
+  public static ArrayList<Pair<String, Integer>> getCategoryData() {
+    ArrayList<Pair<String, Integer>> categoryList = new ArrayList<>();
+    String sql = "SELECT name, cnt FROM category";
+
+    try (Connection con = DBInfo.conn();
+        PreparedStatement stmt = con.prepareStatement(sql);
+        ResultSet rs = stmt.executeQuery()) {
+
+      while (rs.next()) {
+        String name = rs.getString("name");
+        int cnt = rs.getInt("cnt");
+
+        Pair<String, Integer> category = new Pair<>(name, cnt);
+        categoryList.add(category);
+      }
+
+    } catch (SQLException e) {
+      System.out.println("Error fetching category data");
+      e.printStackTrace();
+    }
+
+    return categoryList;
+  }
+
+  public static void deleteCategory(String categoryName) {
+    String checkSql = "SELECT cnt FROM category WHERE name = ?";
+    String updateCntSql = "UPDATE category SET cnt = cnt - 1 WHERE name = ?";
+    String deleteSql = "DELETE FROM category WHERE name = ?";
+    String updateAllSql = "UPDATE category SET cnt = cnt - 1 WHERE name = 'ALL'"; // Giảm cnt của ALL
+
+    try (Connection con = DBInfo.conn()) {
+      // Kiểm tra danh mục có tồn tại không
+      try (PreparedStatement checkStmt = con.prepareStatement(checkSql)) {
+        checkStmt.setString(1, categoryName);
+        ResultSet rs = checkStmt.executeQuery();
+
+        if (rs.next()) {
+          int cnt = rs.getInt("cnt");
+
+          // Nếu cnt > 1, chỉ cần giảm cnt của danh mục đó đi 1
+          if (cnt > 1) {
+            try (PreparedStatement updateStmt = con.prepareStatement(updateCntSql)) {
+              updateStmt.setString(1, categoryName);
+              updateStmt.executeUpdate();
+              System.out.println("Decreased cnt for category: " + categoryName);
+            }
+          } else if (cnt == 1) {
+            // Nếu cnt == 1, xóa danh mục đó
+            try (PreparedStatement deleteStmt = con.prepareStatement(deleteSql)) {
+              deleteStmt.setString(1, categoryName);
+              int rowsAffected = deleteStmt.executeUpdate();
+              System.out.println("Category deleted successfully! Rows affected: " + rowsAffected);
+            }
+            System.out.println("Deleted category as cnt reached 0: " + categoryName);
+          }
+        } else {
+          System.out.println("Category not found. No deletion performed.");
+        }
+      }
+
+      // Giảm cnt của danh mục "ALL" trong mọi trường hợp
+      try (PreparedStatement updateAllStmt = con.prepareStatement(updateAllSql)) {
+        updateAllStmt.executeUpdate();
+        System.out.println("Decreased cnt for category: ALL");
+      }
+
+    } catch (SQLException e) {
+      System.out.println("Error deleting or updating category");
+      e.printStackTrace();
     }
   }
+
 
   public static void addBook(Book A) {
     try {
@@ -767,7 +848,7 @@ public class DBInfo {
     try {
       Connection con = DBInfo.conn();
       if (!inDb(A.getTitle())) {
-        System.out.println("ko co quyen sach nay");
+        System.out.println("Sách đang được cho mượn hoặc không có trên hệ thống");
         con.close();
         return;
       }
@@ -863,7 +944,7 @@ public class DBInfo {
    * @param usertype admin hay ngdung binh thuong
    */
   public static void Register(int id, String name, String username, String password,
-                              String usertype, String MSV) {
+      String usertype, String MSV) {
     try {
       Connection con = DBInfo.conn();
       String sql = "INSERT INTO registration(id,name, username, password, usertype, MSV) VALUE (?,?,?,?,?,?)";
@@ -1461,7 +1542,7 @@ public class DBInfo {
         book.setAuthors(resultSet.getString("authors"));
         book.setPublisher(resultSet.getString("publisher"));
 
-        LocalDate publishedDate = resultSet.getDate("publishedDate").toLocalDate();
+        String publishedDate = resultSet.getString("publishedDate");
         book.setPublishedDate(publishedDate.toString());
 
         book.setThumbnail(resultSet.getString("thumbnail"));
@@ -1699,6 +1780,46 @@ public class DBInfo {
     return ret;
   }
 
+  public static void ban(User X) {
+    String username = X.getUsername();
+    try {
+      Connection con = DBInfo.conn();
+      String sql = "UPDATE registration SET is_banned = ? WHERE username = ?";
+      PreparedStatement preparedStatement = con.prepareStatement(sql);
+      preparedStatement.setInt(1, 1);
+      preparedStatement.setString(2, username);
+      int rowAffected = preparedStatement.executeUpdate();
+      if (rowAffected > 0) {
+        System.out.println("da ban ng dung o dong " + rowAffected);
+      }
+      preparedStatement.close();
+      con.close();
+
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
+  }
+
+  public static void unBan(User X) {
+    String username = X.getUsername();
+    try {
+      Connection con = DBInfo.conn();
+      String sql = "UPDATE registration SET is_banned = ? WHERE username = ?";
+      PreparedStatement preparedStatement = con.prepareStatement(sql);
+      preparedStatement.setInt(1, 0);
+      preparedStatement.setString(2, username);
+      int rowAffected = preparedStatement.executeUpdate();
+      if (rowAffected > 0) {
+        System.out.println("da unBan ng dung o dong " + rowAffected);
+      }
+      preparedStatement.close();
+      con.close();
+
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
+  }
+
   public static User getUser(String username) {
     User user = null;
     Connection conn = null;
@@ -1783,14 +1904,6 @@ public class DBInfo {
   }
 
   public static void main(String[] args) {
-    User x = getUser("nguyenvana");
-    try {
-      x.traSach(getBook("Forbes"));
-    } catch (Exception e) {
-      throw new RuntimeException(e);
-    }
-    for(Notification i : x.getNotifications()){
-      System.out.println(i);
-    }
+   login("nguyenvana","password123");
   }
 }

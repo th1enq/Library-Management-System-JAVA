@@ -3,6 +3,7 @@ package src.librarysystem;
 import java.awt.*;
 import java.io.IOException;
 import java.net.URL;
+import java.time.LocalDate;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -100,6 +101,10 @@ public class SignInController implements Initializable {
         // Authenticate the user
         if (DBInfo.checkPass(userEmail.getText(), userPassword.getText())) {
             currentUser = DBInfo.getUser(userEmail.getText());
+            String today = LocalDate.now().toString();
+            String dayOfWeek = LocalDate.now().getDayOfWeek().toString();
+            System.out.println(today + " " + dayOfWeek);
+            ChartController.updateLoginCount(dayOfWeek);
             returnHome();
         } else {
             showAlert("Tài khoản hoặc mật khẩu không chính xác !!!");

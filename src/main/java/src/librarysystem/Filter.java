@@ -44,7 +44,7 @@ public class Filter {
         book.setAuthors(resultSet.getString("authors"));
         book.setPublisher(resultSet.getString("publisher"));
 
-        LocalDate publishedDate = resultSet.getDate("publishedDate").toLocalDate();
+        String publishedDate = resultSet.getString("publishedDate");
         book.setPublishedDate(publishedDate.toString());
 
         book.setThumbnail(resultSet.getString("thumbnail"));
@@ -160,7 +160,7 @@ public class Filter {
         book.setAuthors(resultSet.getString("authors"));
         book.setPublisher(resultSet.getString("publisher"));
 
-        LocalDate publishedDate = resultSet.getDate("publishedDate").toLocalDate();
+        String publishedDate = resultSet.getString("publishedDate");
         book.setPublishedDate(publishedDate.toString());
 
         book.setThumbnail(resultSet.getString("thumbnail"));

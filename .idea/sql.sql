@@ -54,14 +54,14 @@ DROP TABLE IF EXISTS `borrow_slip`;
 CREATE TABLE `borrow_slip` (
     id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT NOT NULL,
-    book_name VARCHAR(100) NOT NULL,
+    book_name VARCHAR(500) NOT NULL,
     borrow_date DATETIME NOT NULL,
     return_date DATETIME NOT NULL
 );
 CREATE TABLE `borrow_request` (
     id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT NOT NULL,
-    book_name VARCHAR(100) NOT NULL,
+    book_name VARCHAR(500) NOT NULL,
     borrow_date DATETIME NOT NULL,
     return_date DATETIME NOT NULL,
     accepted TINYINT(1) DEFAULT 0
@@ -97,7 +97,7 @@ CREATE TABLE `registration` (
   SET character_set_client = utf8;
   CREATE TABLE `comment` (
      `stt` INT AUTO_INCREMENT NOT NULL,
-     `book_title`  VARCHAR(200),
+     `book_title`  VARCHAR(500),
      `username` VARCHAR(200),
      `time`  DATE,
      `content`  TEXT,
@@ -112,6 +112,25 @@ INSERT INTO `comment` (book_title, username, time, content)
 VALUES
 ('Atomic Habits', 'nguyenvana', '2024-11-13', 'Cuốn sách hữu ích cho việc thay đổi thói quen.'),
 ('Atomic Habits', 'tranthib', '2024-11-12', 'Những nguyên tắc trong sách dễ áp dụng vào cuộc sống.');
+
+CREATE TABLE daily_logins (
+    id INT AUTO_INCREMENT NOT NULL,
+    date DATE NOT NULL,
+    day_of_week ENUM('Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday') NOT NULL,
+    login_count INT NOT NULL DEFAULT 0,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (day_of_week)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+INSERT INTO daily_logins (date, day_of_week, login_count)
+VALUES
+('2024-11-20', 'Monday', 20),
+('2024-11-21', 'Tuesday', 10),
+('2024-11-22', 'Wednesday', 5),
+('2024-11-23', 'Thursday', 10),
+('2024-11-24', 'Friday', 20),
+('2024-11-25', 'Saturday', 20),
+('2024-11-26', 'Sunday', 15);
+
 
 CREATE TABLE Messages (
     message_id INT AUTO_INCREMENT PRIMARY KEY,
@@ -186,15 +205,16 @@ DROP TABLE IF EXISTS ` category`;
 
 CREATE TABLE `category` (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(255)
+    name VARCHAR(255),
+    cnt INT DEFAULT '0'
 );
-INSERT INTO category (name) VALUES
-("ALL"),
-('Science'),
-('Manga'),
-('Magazine'),
-('Horror'),
-('Self-Help');
+INSERT INTO category (name,cnt) VALUES
+("ALL",20),
+('Science',2),
+('Manga',4),
+('Magazine',10),
+('Horror',4),
+('Self-Help',2);
 
 
 DROP TABLE IF EXISTS `notifications`;
