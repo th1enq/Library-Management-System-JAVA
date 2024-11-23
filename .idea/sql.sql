@@ -82,11 +82,11 @@ CREATE TABLE `registration` (
   `password` VARCHAR(100) NOT NULL,
   `usertype` ENUM('admin', 'user') DEFAULT 'user',
   `is_banned` TINYINT(1) DEFAULT 0,
-  `avatar_link` VARCHAR(200),
+  `avatar_link` VARCHAR(500),
   `MSV`   VARCHAR(100),
   `University` VARCHAR(100),
   `Phone`    VARCHAR(100),
-  `Cover_photo_link`  VARCHAR(100),
+  `Cover_photo_link`  VARCHAR(500),
   `Reputation`  INT DEFAULT 5,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
