@@ -206,7 +206,8 @@ public class DBInfo {
         String phone = rs.getString("Phone");
         String coverPhotoLink = rs.getString("Cover_photo_link");
         int reputation = rs.getInt("Reputation");
-        user = new User(id, name, username, password, userType, isBanned, avatarLink, MSV, university, phone, coverPhotoLink, reputation);
+        user = new User(id, name, username, password, userType, isBanned, avatarLink, MSV,
+            university, phone, coverPhotoLink, reputation);
       }
 
     } catch (SQLException e) {
@@ -332,6 +333,44 @@ public class DBInfo {
     return false;
   }
 
+  public static void ban(User X){
+    String username = X.getUsername();
+    try {
+      Connection con = DBInfo.conn();
+      String sql = "UPDATE registration SET is_banned = ? WHERE username = ?";
+      PreparedStatement preparedStatement = con.prepareStatement(sql);
+      preparedStatement.setInt(1, 1);
+      preparedStatement.setString(2, username);
+      int rowAffected = preparedStatement.executeUpdate();
+      if (rowAffected > 0) {
+        System.out.println("da ban ng dung o dong " + rowAffected);
+      }
+      preparedStatement.close();
+      con.close();
+
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
+  }
+  public static void unBan(User X){
+    String username = X.getUsername();
+    try {
+      Connection con = DBInfo.conn();
+      String sql = "UPDATE registration SET is_banned = ? WHERE username = ?";
+      PreparedStatement preparedStatement = con.prepareStatement(sql);
+      preparedStatement.setInt(1, 0);
+      preparedStatement.setString(2, username);
+      int rowAffected = preparedStatement.executeUpdate();
+      if (rowAffected > 0) {
+        System.out.println("da unBan ng dung o dong " + rowAffected);
+      }
+      preparedStatement.close();
+      con.close();
+
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
+  }
   public static void addSlip(String itemName, int id) {
     Connection con = null;
     PreparedStatement preparedStatement = null;
@@ -349,7 +388,7 @@ public class DBInfo {
       preparedStatement.setTimestamp(4, Timestamp.valueOf(dateTimeAfter10Days));
       int rowsAffected = preparedStatement.executeUpdate();
       System.out.println("Slip added successfully! Rows affected: " + rowsAffected);
-      sendNotification(1000,id,"Đã mượn sách thành công");
+      sendNotification(1000, id, "Đã mượn sách thành công");
 
     } catch (SQLException e) {
       System.out.println("Error adding slip");
@@ -378,7 +417,7 @@ public class DBInfo {
     try {
       if (!inDb(itemName)) {
         System.out.println("ko co cuon sach tren trong DB");
-        sendNotification(1000,id,"Cuốn sách bạn muốn mươợn đã hết, vui lòng mượn cuốn khác");
+        sendNotification(1000, id, "Cuốn sách bạn muốn mươợn đã hết, vui lòng mượn cuốn khác");
         return;
       }
       Connection con = DBInfo.conn();
@@ -390,7 +429,7 @@ public class DBInfo {
       if (rowAffected > 0) {
         System.out.println("Thay doi trang thai dong" + rowAffected);
         // addSlip(itemName, id);
-        sendNotification(1000,id,"Yêu cầu mượn sách đang chờ được admin xét duyệt");
+        sendNotification(1000, id, "Yêu cầu mượn sách đang chờ được admin xét duyệt");
         addBorrowRequest(itemName, id);
       }
       preparedStatement.close();
@@ -508,7 +547,7 @@ public class DBInfo {
         int rowAffected2 = preparedStatement2.executeUpdate();
         if (rowAffected2 > 0) {
           System.out.println("Thay doi trang thai dong" + rowAffected2);
-          sendNotification(1000,id,"Trả sách thành công");
+          sendNotification(1000, id, "Trả sách thành công");
 
         } else {
           System.out.println("Thay doi trang thai ko thanh cong");
@@ -875,6 +914,28 @@ public class DBInfo {
       preparedStatement.setString(3, username);
       preparedStatement.setString(4, password);
       preparedStatement.setString(5, usertype);
+      int rowsAffected = preparedStatement.executeUpdate();
+      System.out.println("Register successfully! Rows affected: " + rowsAffected);
+      preparedStatement.close();
+      con.close();
+    } catch (SQLException ee) {
+      ee.printStackTrace();
+    }
+  }
+  public static void Register(int id, String name, String username, String password,
+      String usertype, String MSV) {
+    try {
+      Connection con = DBInfo.conn();
+      String sql = "INSERT INTO registration(id,name, username, password, usertype, MSV) VALUE (?,?,?,?,?,?)";
+      PreparedStatement preparedStatement = con.prepareStatement(sql);
+      int x = getUserCount() + 1;
+      System.out.println(x);
+      preparedStatement.setInt(1, x);
+      preparedStatement.setString(2, name);
+      preparedStatement.setString(3, username);
+      preparedStatement.setString(4, password);
+      preparedStatement.setString(5, usertype);
+      preparedStatement.setString(6, MSV);
       int rowsAffected = preparedStatement.executeUpdate();
       System.out.println("Register successfully! Rows affected: " + rowsAffected);
       preparedStatement.close();
@@ -1784,9 +1845,10 @@ public class DBInfo {
   }
 
   public static void main(String[] args) {
-   ArrayList<User> tmp = Filter.getInstance().getUserBySubstr("van","ALL");
-   for(User i  : tmp){
-     System.out.println(i);
-   }
+
+    User X = getUser("nguyenvana");
+    User Y = getUser("levanc");
+
+    Y.unBan(X);
   }
 }

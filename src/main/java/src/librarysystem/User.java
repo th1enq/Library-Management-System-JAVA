@@ -2,6 +2,7 @@ package src.librarysystem;
 
 import java.util.ArrayList;
 import javafx.beans.value.ObservableValue;
+import org.apache.poi.hssf.record.UseSelFSRecord;
 
 public class User {
 
@@ -165,9 +166,8 @@ public class User {
   }
 
 
-
   public ArrayList<Notification> getNotifications() {
-    return  DBInfo.getNotificationsByUserId(id);
+    return DBInfo.getNotificationsByUserId(id);
   }
 
   public ArrayList<Pair<Book, MyDateTime>> getRentBook() {
@@ -199,7 +199,7 @@ public class User {
         ", avatarLink='" + avatarLink + '\'' +
         ", MSV='" + MSV + '\'' +
         ", university='" + university + '\'' +
-        ", phone='" + phone +'\'' +
+        ", phone='" + phone + '\'' +
         ", coverPhotoLink='" + coverPhotoLink + '\'' +
         ", reputation=" + reputation +
         '}';
@@ -275,7 +275,7 @@ public class User {
     if (newReputation != null) {
       setReputation(newReputation);
     }
-   // System.out.println(this);
+    // System.out.println(this);
   }
 
   public void acceptBorrowRequest(BorrowRequest a) {
@@ -287,24 +287,37 @@ public class User {
   public ArrayList<BorrowRequest> getBorrowRequest() {
     return DBInfo.getBorrowRequest();
   }
+
   public void deleteNotifications() {
     DBInfo.deleteNotificationsByUserId(id);
   }
 
-  public void sendNotification(int receiver_id,String tmp) {
+  public void sendNotification(int receiver_id, String tmp) {
     DBInfo.sendNotification(this.id, receiver_id, tmp);
 
   }
 
-  public void sendNotification(User receiver,String tmp) {
+  public void sendNotification(User receiver, String tmp) {
     DBInfo.sendNotification(this.id, receiver.getId(), tmp);
 
   }
 
   public void reply(Notification A, String tmp) {
     DBInfo.sendNotification(this.id, A.getSenderId(), tmp);
-
   }
-  
+
+  public void ban(User X) {
+    if (userType.equals("admin")) {
+      DBInfo.ban(X);
+      X.setBanned(true);
+    }
+  }
+
+  public void unBan(User X){
+    if (userType.equals("admin")) {
+      DBInfo.unBan(X);
+      X.setBanned(false);
+    }
+  }
 
 }
