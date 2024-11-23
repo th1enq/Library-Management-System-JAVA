@@ -58,7 +58,9 @@ public class DashBoardController {
         updateCurrentTime(); // Initial time set
         startClock(); // Start the clock
         nameUser.setText(MainGUI.currentUser.getName());
-//        totalBooks.setText();
+        totalBooks.setText(String.valueOf(DBInfo.getBookList("ALL", "ALL", "ALL").size()));
+        totalUsers.setText(String.valueOf(Filter.getInstance().getUserList("ALL").size()));
+//        total
 
         PieChart.Data science = new PieChart.Data("Science", 10);
         PieChart.Data manga = new PieChart.Data("Manga", 20);

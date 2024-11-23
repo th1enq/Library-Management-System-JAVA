@@ -863,10 +863,10 @@ public class DBInfo {
    * @param usertype admin hay ngdung binh thuong
    */
   public static void Register(int id, String name, String username, String password,
-      String usertype) {
+                              String usertype, String MSV) {
     try {
       Connection con = DBInfo.conn();
-      String sql = "INSERT INTO registration(id,name, username, password, usertype) VALUE (?,?,?,?,?)";
+      String sql = "INSERT INTO registration(id,name, username, password, usertype, MSV) VALUE (?,?,?,?,?,?)";
       PreparedStatement preparedStatement = con.prepareStatement(sql);
       int x = getUserCount() + 1;
       System.out.println(x);
@@ -875,6 +875,7 @@ public class DBInfo {
       preparedStatement.setString(3, username);
       preparedStatement.setString(4, password);
       preparedStatement.setString(5, usertype);
+      preparedStatement.setString(6, MSV);
       int rowsAffected = preparedStatement.executeUpdate();
       System.out.println("Register successfully! Rows affected: " + rowsAffected);
       preparedStatement.close();
@@ -1718,6 +1719,11 @@ public class DBInfo {
         user.setUserType(rs.getString("usertype"));
         user.setBanned(rs.getBoolean("is_banned"));
         user.setAvatarLink(rs.getString("avatar_link"));
+        user.setMSV(rs.getString("MSV"));
+        user.setCoverPhotoLink(rs.getString("Cover_photo_link"));
+        user.setPhone(rs.getString("Phone"));
+        user.setUniversity(rs.getString("University"));
+        user.setReputation(rs.getInt("Reputation"));
       }
     } catch (SQLException e) {
       e.printStackTrace();

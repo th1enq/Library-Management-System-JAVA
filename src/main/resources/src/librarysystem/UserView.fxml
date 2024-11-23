@@ -4,9 +4,12 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.StackPane?>
@@ -14,164 +17,218 @@
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-<VBox fx:id="containerVbox" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="736.0" prefWidth="1180.0" styleClass="sidebar" stylesheets="@stylesheet.css" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="src.librarysystem.UserController">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="736.0" prefWidth="1180.0" styleClass="sidebar" stylesheets="@stylesheet.css" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="src.librarysystem.UserController">
    <children>
-      <Pane prefHeight="709.0" prefWidth="1180.0">
+      <StackPane prefHeight="740.0" prefWidth="1180.0">
          <children>
-            <Pane layoutX="36.0" layoutY="102.0" prefHeight="121.0" prefWidth="264.0" styleClass="slider" stylesheets="@stylesheet.css">
+
+            <Pane fx:id="containerPane" prefHeight="1180.0" prefWidth="709.0">
                <children>
-                  <Label layoutX="21.0" layoutY="80.0" prefHeight="21.0" prefWidth="141.0" text="General customers" textFill="#282423">
-                     <font>
-                        <Font name="System Bold" size="15.0" />
-                     </font>
-                  </Label>
-                  <Label layoutX="21.0" layoutY="27.0" prefWidth="104.0" text="20" textFill="#282423">
-                     <font>
-                        <Font name="System Bold" size="32.0" />
-                     </font>
-                  </Label>
-                  <Pane layoutX="210.0" layoutY="7.0" prefHeight="41.0" prefWidth="40.0" styleClass="circle-btn" stylesheets="@stylesheet.css">
+                  <Pane layoutX="36.0" layoutY="102.0" prefHeight="121.0" prefWidth="264.0" styleClass="slider" stylesheets="@stylesheet.css">
                      <children>
-                        <FontAwesomeIcon glyphName="DATABASE" layoutX="11.0" layoutY="28.0" size="1.8em" />
+                        <Label layoutX="21.0" layoutY="80.0" prefHeight="21.0" prefWidth="141.0" text="General customers" textFill="#282423">
+                           <font>
+                              <Font name="System Bold" size="15.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="totalCustomers" layoutX="21.0" layoutY="27.0" prefWidth="104.0" text="20" textFill="#282423">
+                           <font>
+                              <Font name="System Bold" size="32.0" />
+                           </font>
+                        </Label>
+                        <Pane layoutX="210.0" layoutY="7.0" prefHeight="41.0" prefWidth="40.0" styleClass="circle-btn" stylesheets="@stylesheet.css">
+                           <children>
+                              <FontAwesomeIcon glyphName="DATABASE" layoutX="11.0" layoutY="28.0" size="1.8em" />
+                           </children>
+                        </Pane>
                      </children>
                   </Pane>
-               </children>
-            </Pane>
-            <Label layoutX="43.0" layoutY="14.0" prefHeight="36.0" prefWidth="150.0" text="Customers">
-               <font>
-                  <Font name="System Bold" size="25.0" />
-               </font>
-            </Label>
-            <Label layoutX="43.0" layoutY="54.0" prefHeight="20.0" prefWidth="204.0" text="Find all plaform customers here" textFill="#4a4848">
-               <font>
-                  <Font size="14.0" />
-               </font>
-            </Label>
-            <Button layoutX="753.0" layoutY="31.0" mnemonicParsing="false" onAction="#exportCSV" prefHeight="47.0" prefWidth="158.0" style="-fx-background-color: transparent; -fx-border-radius: 10px; -fx-border-color: grey; -fx-background-radius: 10px; -fx-cursor: hand;" text="  Export CSV">
-               <graphic>
-                  <FontAwesomeIcon glyphName="UPLOAD" size="1.1em" />
-               </graphic>
-               <font>
-                  <Font size="15.0" />
-               </font>
-            </Button>
-            <Pane layoutX="425.0" layoutY="108.0" prefHeight="121.0" prefWidth="264.0" styleClass="slider" stylesheets="@stylesheet.css">
-               <children>
-                  <Label layoutX="21.0" layoutY="80.0" prefWidth="104.0" text="Admins" textFill="#282423">
+                  <Label layoutX="43.0" layoutY="14.0" prefHeight="36.0" prefWidth="150.0" text="Customers">
                      <font>
-                        <Font name="System Bold" size="15.0" />
+                        <Font name="System Bold" size="25.0" />
                      </font>
                   </Label>
-                  <Label layoutX="21.0" layoutY="27.0" prefWidth="104.0" text="3" textFill="#282423">
+                  <Label layoutX="43.0" layoutY="54.0" prefHeight="20.0" prefWidth="204.0" text="Find all plaform customers here" textFill="#4a4848">
                      <font>
-                        <Font name="System Bold" size="32.0" />
+                        <Font size="14.0" />
                      </font>
                   </Label>
-                  <Pane layoutX="210.0" layoutY="7.0" prefHeight="41.0" prefWidth="40.0" styleClass="circle-btn" stylesheets="@stylesheet.css">
-                     <children>
-                        <FontAwesomeIcon glyphName="DATABASE" layoutX="11.0" layoutY="28.0" size="1.8em" />
-                     </children>
-                  </Pane>
-               </children>
-            </Pane>
-            <Pane layoutX="814.0" layoutY="108.0" prefHeight="121.0" prefWidth="264.0" styleClass="slider" stylesheets="@stylesheet.css">
-               <children>
-                  <Label layoutX="21.0" layoutY="80.0" prefWidth="104.0" text="Students" textFill="#282423">
-                     <font>
-                        <Font name="System Bold" size="15.0" />
-                     </font>
-                  </Label>
-                  <Label layoutX="21.0" layoutY="27.0" prefWidth="104.0" text="10" textFill="#282423">
-                     <font>
-                        <Font name="System Bold" size="32.0" />
-                     </font>
-                  </Label>
-                  <Pane layoutX="210.0" layoutY="7.0" prefHeight="41.0" prefWidth="40.0" styleClass="circle-btn" stylesheets="@stylesheet.css">
-                     <children>
-                        <FontAwesomeIcon glyphName="DATABASE" layoutX="11.0" layoutY="28.0" size="1.8em" />
-                     </children>
-                  </Pane>
-               </children>
-            </Pane>
-            <Button layoutX="966.0" layoutY="31.0" mnemonicParsing="false" onAction="#addNewUser" prefHeight="47.0" prefWidth="158.0" style="-fx-background-color: #000; -fx-border-radius: 10px; -fx-border-color: grey; -fx-background-radius: 10px; -fx-cursor: hand;" text="  Add new user" textFill="#fafafa">
-               <graphic>
-                  <FontAwesomeIcon fill="WHITE" glyphName="PLUS" size="1.1em" />
-               </graphic>
-               <font>
-                  <Font size="15.0" />
-               </font>
-            </Button>
-            <Line endX="1004.5999755859375" endY="1.52587890625E-5" layoutX="137.0" layoutY="255.0" startX="-100.0" stroke="#b9b3b3" />
-            <Pane layoutX="36.0" layoutY="274.0" prefHeight="41.0" prefWidth="204.0" style="-fx-background-color: #f6f6f6; -fx-background-radius: 5px;">
-               <children>
-                  <Button fx:id="viewAllButton" layoutX="8.0" layoutY="6.0" mnemonicParsing="false" onAction="#viewAll" prefHeight="30.0" prefWidth="63.0" style="-fx-background-color: #fff; -fx-background-radius: 5px; -fx-cursor: hand;" text="View All" />
-                  <Button fx:id="viewAdminButton" layoutX="71.0" layoutY="6.0" mnemonicParsing="false" onAction="#viewAdmin" prefHeight="30.0" prefWidth="63.0" style="-fx-background-color: transparent; -fx-background-radius: 5px; -fx-cursor: hand;" text="Admin" />
-                  <Button fx:id="viewUserButton" layoutX="134.0" layoutY="6.0" mnemonicParsing="false" onAction="#viewUser" prefHeight="30.0" prefWidth="63.0" style="-fx-background-color: transparent; -fx-background-radius: 5px; -fx-cursor: hand;" text="User" />
-               </children></Pane>
-            <StackPane layoutX="843.0" layoutY="271.0" prefHeight="36.0" prefWidth="246.0" style="-fx-background-color: #fff;">
-               <children>
-                  <TextField prefHeight="64.0" prefWidth="246.0" promptText="Search" style="-fx-background-radius: 10px;">
-                     <StackPane.margin>
-                        <Insets />
-                     </StackPane.margin>
-                     <padding>
-                        <Insets left="50.0" />
-                     </padding>
+                  <Button layoutX="753.0" layoutY="31.0" mnemonicParsing="false" onAction="#exportCSV" prefHeight="47.0" prefWidth="158.0" style="-fx-background-color: transparent; -fx-border-radius: 10px; -fx-border-color: grey; -fx-background-radius: 10px; -fx-cursor: hand;" text="  Export CSV">
+                     <graphic>
+                        <FontAwesomeIcon glyphName="UPLOAD" size="1.1em" />
+                     </graphic>
                      <font>
                         <Font size="15.0" />
                      </font>
-                  </TextField>
-                  <FontAwesomeIcon glyphName="SEARCH" size="1.3em" StackPane.alignment="CENTER_LEFT">
-                     <StackPane.margin>
-                        <Insets left="20.0" />
-                     </StackPane.margin>
-                  </FontAwesomeIcon>
-               </children>
-            </StackPane>
-            <Pane layoutX="43.0" layoutY="325.0" prefHeight="395.0" prefWidth="1075.0">
-               <children>
-                  <Pane prefHeight="41.0" prefWidth="1075.0" style="-fx-background-color: #f6f6f6; -fx-border-color: #b9b3b3;">
+                  </Button>
+                  <Pane layoutX="425.0" layoutY="108.0" prefHeight="121.0" prefWidth="264.0" styleClass="slider" stylesheets="@stylesheet.css">
                      <children>
-                        <CheckBox layoutX="14.0" layoutY="12.0" mnemonicParsing="false" text="  Name">
+                        <Label layoutX="21.0" layoutY="80.0" prefWidth="104.0" text="Admins" textFill="#282423">
                            <font>
-                              <Font size="14.0" />
-                           </font>
-                        </CheckBox>
-                        <Label layoutX="290.0" layoutY="12.0" text="Role">
-                           <font>
-                              <Font size="14.0" />
+                              <Font name="System Bold" size="15.0" />
                            </font>
                         </Label>
-                        <Label layoutX="451.0" layoutY="12.0" text="Borrowed Books">
+                        <Label fx:id="totalAdmins" layoutX="21.0" layoutY="27.0" prefWidth="104.0" text="3" textFill="#282423">
                            <font>
-                              <Font size="14.0" />
+                              <Font name="System Bold" size="32.0" />
                            </font>
                         </Label>
-                        <Label layoutX="649.0" layoutY="12.0" text="Overdue Books">
-                           <font>
-                              <Font size="14.0" />
-                           </font>
-                        </Label>
-                        <Label layoutX="841.0" layoutY="12.0" text="Last visited">
-                           <font>
-                              <Font size="14.0" />
-                           </font>
-                        </Label>
-                        <Label layoutX="1007.0" layoutY="12.0" text="Action" />
+                        <Pane layoutX="210.0" layoutY="7.0" prefHeight="41.0" prefWidth="40.0" styleClass="circle-btn" stylesheets="@stylesheet.css">
+                           <children>
+                              <FontAwesomeIcon glyphName="DATABASE" layoutX="11.0" layoutY="28.0" size="1.8em" />
+                           </children>
+                        </Pane>
                      </children>
                   </Pane>
-                  <AnchorPane layoutY="41.0" prefHeight="299.0" prefWidth="1075.0">
+                  <Pane layoutX="814.0" layoutY="108.0" prefHeight="121.0" prefWidth="264.0" styleClass="slider" stylesheets="@stylesheet.css">
                      <children>
-                        <ScrollPane fx:id="userScrollPane" fitToWidth="true" prefHeight="355.0" prefWidth="1075.0">
-                           <content>
-                              <VBox fx:id="contentVBox" spacing="10" />
-                           </content>
-                        </ScrollPane>
+                        <Label layoutX="21.0" layoutY="80.0" prefWidth="104.0" text="Students" textFill="#282423">
+                           <font>
+                              <Font name="System Bold" size="15.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="totalUsers" layoutX="21.0" layoutY="27.0" prefWidth="104.0" text="10" textFill="#282423">
+                           <font>
+                              <Font name="System Bold" size="32.0" />
+                           </font>
+                        </Label>
+                        <Pane layoutX="210.0" layoutY="7.0" prefHeight="41.0" prefWidth="40.0" styleClass="circle-btn" stylesheets="@stylesheet.css">
+                           <children>
+                              <FontAwesomeIcon glyphName="DATABASE" layoutX="11.0" layoutY="28.0" size="1.8em" />
+                           </children>
+                        </Pane>
                      </children>
-                  </AnchorPane>
+                  </Pane>
+                  <Button layoutX="966.0" layoutY="31.0" mnemonicParsing="false" onAction="#addNewUser" prefHeight="47.0" prefWidth="158.0" style="-fx-background-color: #000; -fx-border-radius: 10px; -fx-border-color: grey; -fx-background-radius: 10px; -fx-cursor: hand;" text="  Add new user" textFill="#fafafa">
+                     <graphic>
+                        <FontAwesomeIcon fill="WHITE" glyphName="PLUS" size="1.1em" />
+                     </graphic>
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </Button>
+                  <Line endX="1004.5999755859375" endY="1.52587890625E-5" layoutX="137.0" layoutY="255.0" startX="-100.0" stroke="#b9b3b3" />
+                  <Pane layoutX="36.0" layoutY="274.0" prefHeight="41.0" prefWidth="204.0" style="-fx-background-color: #f6f6f6; -fx-background-radius: 5px;">
+                     <children>
+                        <Button fx:id="viewAllButton" layoutX="8.0" layoutY="6.0" mnemonicParsing="false" onAction="#viewAll" prefHeight="30.0" prefWidth="63.0" style="-fx-background-color: #fff; -fx-background-radius: 5px; -fx-cursor: hand;" text="View All" />
+                        <Button fx:id="viewAdminButton" layoutX="71.0" layoutY="6.0" mnemonicParsing="false" onAction="#viewAdmin" prefHeight="30.0" prefWidth="63.0" style="-fx-background-color: transparent; -fx-background-radius: 5px; -fx-cursor: hand;" text="Admin" />
+                        <Button fx:id="viewUserButton" layoutX="134.0" layoutY="6.0" mnemonicParsing="false" onAction="#viewUser" prefHeight="30.0" prefWidth="63.0" style="-fx-background-color: transparent; -fx-background-radius: 5px; -fx-cursor: hand;" text="User" />
+                     </children>
+                  </Pane>
+                  <StackPane layoutX="843.0" layoutY="271.0" prefHeight="36.0" prefWidth="246.0" style="-fx-background-color: #fff;">
+                     <children>
+                        <TextField fx:id="searchUserButton" onAction="#searchUser" prefHeight="64.0" prefWidth="246.0" promptText="Search" style="-fx-background-radius: 10px;">
+                           <StackPane.margin>
+                              <Insets />
+                           </StackPane.margin>
+                           <padding>
+                              <Insets left="50.0" />
+                           </padding>
+                           <font>
+                              <Font size="15.0" />
+                           </font>
+                        </TextField>
+                        <FontAwesomeIcon glyphName="SEARCH" size="1.3em" StackPane.alignment="CENTER_LEFT">
+                           <StackPane.margin>
+                              <Insets left="20.0" />
+                           </StackPane.margin>
+                        </FontAwesomeIcon>
+                     </children>
+                  </StackPane>
+                  <Pane layoutX="43.0" layoutY="325.0" prefHeight="395.0" prefWidth="1075.0">
+                     <children>
+                        <Pane prefHeight="41.0" prefWidth="1075.0" style="-fx-background-color: #f6f6f6; -fx-border-color: #b9b3b3; -fx-border-width: 1 1 0 1;">
+                           <children>
+                              <CheckBox fx:id="markAll" layoutX="14.0" layoutY="12.0" mnemonicParsing="false" text="  Name">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </CheckBox>
+                              <Label layoutX="290.0" layoutY="12.0" text="Role">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </Label>
+                              <Label layoutX="410.0" layoutY="11.0" text="Borrowed Books">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </Label>
+                              <Label layoutX="591.0" layoutY="11.0" text="Overdue Books">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </Label>
+                              <Label layoutX="783.0" layoutY="12.0" text="Last visited">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </Label>
+                              <Label layoutX="973.0" layoutY="12.0" text="Action" />
+                           </children>
+                        </Pane>
+                        <AnchorPane layoutY="41.0" prefHeight="299.0" prefWidth="1075.0">
+                           <children>
+                              <ScrollPane fx:id="userScrollPane" fitToWidth="true" prefHeight="355.0" prefWidth="1075.0" style="-fx-border-width: 0 1 1 1;">
+                                 <content>
+                                    <VBox fx:id="contentVBox" spacing="10" />
+                                 </content>
+                              </ScrollPane>
+                           </children>
+                        </AnchorPane>
+                     </children>
+                  </Pane>
+               </children>
+            </Pane>
+            <Pane fx:id="tempPane" prefHeight="540.0" prefWidth="1180.0" style="-fx-background-color: transparent;" visible="false">
+               <children>
+                  <Pane layoutX="213.0" layoutY="127.0" prefHeight="481.0" prefWidth="753.0" style="-fx-background-color: #fff; -fx-background-radius: 20px; -fx-border-color: #b9b3b3; -fx-border-radius: 20px; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.5), 10, 0.5, 5, 5);">
+                     <children>
+                        <ImageView fitHeight="293.0" fitWidth="313.0" layoutX="64.0" layoutY="121.0" pickOnBounds="true">
+                           <image>
+                              <Image url="@../../images/d7b61727da369058e783ec02c0a6609c033bee601c797ffd33c23e0ba92f8e43_2560x520.jpeg" />
+                           </image>
+                        </ImageView>
+                        <Label layoutX="101.0" layoutY="48.0" text="Add new user">
+                           <font>
+                              <Font name="System Bold" size="30.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="449.0" layoutY="159.0" text="Type your email or username:" textFill="#676767">
+                           <font>
+                              <Font name="System Bold" size="15.0" />
+                           </font>
+                        </Label>
+                        <TextField fx:id="userNameAdd" layoutX="449.0" layoutY="191.0" prefHeight="36.0" prefWidth="230.0" promptText="Sample@vnu.edu.vn" style="-fx-background-radius: 10px;">
+                           <padding>
+                              <Insets left="15.0" />
+                           </padding>
+                        </TextField>
+                        <Label layoutX="449.0" layoutY="246.0" text="Select role" textFill="#676767">
+                           <font>
+                              <Font name="System Bold" size="15.0" />
+                           </font>
+                        </Label>
+                        <ComboBox fx:id="roleChoice" layoutX="449.0" layoutY="286.0" prefHeight="36.0" prefWidth="230.0" promptText="User" style="-fx-background-radius: 10px; -fx-border-radius: 10px; -fx-border-color: #676767; -fx-background-color: #fff;">
+                           <padding>
+                              <Insets left="10.0" />
+                           </padding>
+                        </ComboBox>
+                        <Button layoutX="486.0" layoutY="367.0" mnemonicParsing="false" onAction="#cancelAdd" prefHeight="45.0" prefWidth="86.0" style="-fx-background-color: #fff; -fx-border-color: #676767; -fx-border-radius: 10px; -fx-cursor: hand;" text="Cancel" textFill="#716f6f">
+                           <font>
+                              <Font name="System Bold" size="14.0" />
+                           </font>
+                        </Button>
+                        <Button layoutX="593.0" layoutY="367.0" mnemonicParsing="false" onAction="#submitAdd" prefHeight="45.0" prefWidth="86.0" style="-fx-background-color: #005EFC; -fx-background-radius: 10px; -fx-cursor: hand;" text="Submit" textFill="WHITE">
+                           <font>
+                              <Font name="System Bold" size="14.0" />
+                           </font>
+                        </Button>
+                     </children>
+                  </Pane>
                </children>
             </Pane>
          </children>
-      </Pane>
+      </StackPane>
    </children>
 </VBox>

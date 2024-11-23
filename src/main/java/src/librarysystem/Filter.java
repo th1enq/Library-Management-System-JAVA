@@ -199,13 +199,25 @@ public class Filter {
     return ret;
   }
 
-  public static ArrayList<User> getUserBySubstr(String tmp) {
+  public ArrayList<User> getUserBySubstr(String tmp, String type) {
     ArrayList<User> userList = new ArrayList<>();
-    String sql =
-        "SELECT * from registration WHERE username like " + "'%" + tmp + "%' and usertype = 'user'";
+    StringBuilder sql = new StringBuilder("SELECT * FROM registration WHERE name LIKE ?");
+
+    if (!"ALL".equalsIgnoreCase(type)) {
+      sql.append(" AND usertype = ?");
+    }
+
     try (Connection conn = DBInfo.conn();
-        PreparedStatement stmt = conn.prepareStatement(sql)) {
+         PreparedStatement stmt = conn.prepareStatement(sql.toString())) {
+
+      stmt.setString(1, "%" + tmp + "%");
+
+      if (!"ALL".equalsIgnoreCase(type)) {
+        stmt.setString(2, type);
+      }
+
       ResultSet rs = stmt.executeQuery();
+
       while (rs.next()) {
         int id = rs.getInt("id");
         String name = rs.getString("name");
@@ -221,7 +233,7 @@ public class Filter {
         int reputation = rs.getInt("Reputation");
 
         User user = new User(id, name, username, password, userType, isBanned, avatarLink, MSV,
-            university, phone, coverPhotoLink, reputation);
+                university, phone, coverPhotoLink, reputation);
         userList.add(user);
       }
     } catch (SQLException e) {

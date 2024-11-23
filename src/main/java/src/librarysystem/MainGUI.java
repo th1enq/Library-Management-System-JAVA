@@ -43,8 +43,6 @@ public class MainGUI implements Initializable {
     @FXML
     public TextField bookQuery;
     @FXML
-    public Label currentModeText;
-    @FXML
     private Button logOutButton;
 
     @FXML
@@ -79,13 +77,10 @@ public class MainGUI implements Initializable {
     private boolean language = false;
 
     public static boolean apiSearchMode = false;
-    public static ArrayList<Book> currentApiBook = new ArrayList<>();
-    public static ArrayList<Book> currentLibraryBook = DBInfo.getBookList("ALL", "ALL", "ALL");
-
-    public void setPreviousStage(boolean apiSearchMode, ArrayList<Book> currentApiBook, ArrayList<Book> currentLibraryMode) {
+    public static String previousQuery = "";
+    public static void setPreviousStage(boolean apiSearchMode, String previousQuery) {
         MainGUI.apiSearchMode = apiSearchMode;
-        MainGUI.currentApiBook = currentApiBook;
-        MainGUI.currentLibraryBook = currentLibraryMode;
+        MainGUI.previousQuery = previousQuery;
     }
 
     @FXML
@@ -189,37 +184,30 @@ public class MainGUI implements Initializable {
 
     private void update() {
         language = UISetting.getInstance().getVietNameseMode();
-        String mode = "";
         reset();
         System.out.println(currentStage);
         switch (currentStage) {
             case 0:
                 homeIcon.getStyleClass().add("icon-active-color");
                 homeButton.getStyleClass().add("menu-btn-active");
-                mode = language ? "Bảng điều khiển" : "Dashboard";
                 break;
             case 1:
                 bookIcon.getStyleClass().add("icon-active-color");
                 bookViewButton.getStyleClass().add("menu-btn-active");
-                mode = language ? "Thư viện sách" : "Library";
                 break;
             case 2 :
                 userIcon.getStyleClass().add("icon-active-color");
                 userButton.getStyleClass().add("menu-btn-active");
-                mode = language ? "Thành viên" : "User View";
                 break;
             case 3 :
                 nontificationsIcon.getStyleClass().add("icon-active-color");
                 nontificationsButton.getStyleClass().add("menu-btn-active");
-                mode = language ? "Thông báo" : "Nontifications";
                 break;
             case 4 :
                 settingIcon.getStyleClass().add("icon-active-color");
                 settingButton.getStyleClass().add("menu-btn-active");
-                mode = language ? "Cài đặt" : "Setting";
                 break;
         }
-        currentModeText.setText(mode);
     }
 
     private void reset() {
