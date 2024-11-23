@@ -18,8 +18,8 @@ public class EmailSender {
     properties.put("mail.smtp.starttls.enable", "true"); // Bật STARTTLS
 
     // Thông tin đăng nhập
-    String email = "nxhieuidol@gmail.com"; // Email của bạn
-    String appPassword = "ktim ojwo zmyv eyfm"; // Mật khẩu ứng dụng
+    String email = "json00906@gmail.com"; // Email của bạn
+    String appPassword = "ofnm kjvt vgen vszq"; // Mật khẩu ứng dụng
 
     // Tạo phiên làm việc với xác thực
     Session session = Session.getInstance(properties, new Authenticator() {
@@ -50,7 +50,7 @@ public class EmailSender {
     // Test gửi email
 
     //(mail nguoi nhan, chu de mail, noi dung mail)
-    sendEmail("23020158@vnu.edu.vn", "Ma xac nhan la 177013",
-        "This is a test email sent using Jakarta Mail.");
+    sendEmail("23020158@vnu.edu.vn", "Ma xac nhan 2",
+        "Ma xac nhan la 177013.");
   }
 }
