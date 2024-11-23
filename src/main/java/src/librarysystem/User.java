@@ -199,7 +199,7 @@ public class User {
         ", avatarLink='" + avatarLink + '\'' +
         ", MSV='" + MSV + '\'' +
         ", university='" + university + '\'' +
-        ", phone='" + phone + '\'' +
+        ", phone='" + phone +'\'' +
         ", coverPhotoLink='" + coverPhotoLink + '\'' +
         ", reputation=" + reputation +
         '}';

@@ -1718,6 +1718,13 @@ public class DBInfo {
         user.setUserType(rs.getString("usertype"));
         user.setBanned(rs.getBoolean("is_banned"));
         user.setAvatarLink(rs.getString("avatar_link"));
+        user.setMSV(rs.getString("MSV"));
+        user.setCoverPhotoLink(rs.getString("Cover_photo_link"));
+        user.setPhone(rs.getString("Phone"));
+        user.setUniversity(rs.getString("University"));
+        user.setReputation(rs.getInt("Reputation"));
+
+
       }
     } catch (SQLException e) {
       e.printStackTrace();
@@ -1777,14 +1784,9 @@ public class DBInfo {
   }
 
   public static void main(String[] args) {
-    User x = getUser("nguyenvana");
-    try {
-      x.traSach(getBook("Forbes"));
-    } catch (Exception e) {
-      throw new RuntimeException(e);
-    }
-    for(Notification i : x.getNotifications()){
-      System.out.println(i);
-    }
+   ArrayList<User> tmp = Filter.getInstance().getUserBySubstr("van","ALL");
+   for(User i  : tmp){
+     System.out.println(i);
+   }
   }
 }

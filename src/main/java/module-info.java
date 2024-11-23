@@ -8,10 +8,10 @@ module src.librarysystem {
     requires com.google.zxing.javase;
     requires jcommander;
     requires org.apache.poi.ooxml;
-    requires java.desktop;
-    requires fontawesomefx;
+  requires fontawesomefx;
+  requires jakarta.mail;
+  requires java.desktop;
 
-
-    opens src.librarysystem to javafx.fxml;
+  opens src.librarysystem to javafx.fxml;
     exports src.librarysystem;
 }
