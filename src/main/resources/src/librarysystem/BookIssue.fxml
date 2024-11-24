@@ -7,7 +7,6 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
 <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="736.0" prefWidth="1180.0" styleClass="sidebar" stylesheets="@stylesheet.css" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="src.librarysystem.BookIssueController">
@@ -17,17 +16,12 @@
                 <Insets />
             </VBox.margin>
          <children>
-            <Label layoutX="24.0" layoutY="14.0" text="Top Choices">
+            <Label layoutX="27.0" layoutY="268.0" text="Book Issue">
                <font>
                   <Font name="System Bold" size="25.0" />
                </font>
             </Label>
-            <Label layoutX="24.0" layoutY="194.0" text="Book Issue">
-               <font>
-                  <Font name="System Bold" size="25.0" />
-               </font>
-            </Label>
-            <Button layoutX="966.0" layoutY="230.0" mnemonicParsing="false" onAction="#exportCSV" prefHeight="47.0" prefWidth="158.0" style="-fx-background-color: transparent; -fx-border-radius: 10px; -fx-border-color: grey; -fx-background-radius: 10px; -fx-cursor: hand;" text="  Export CSV">
+            <Button layoutX="969.0" layoutY="304.0" mnemonicParsing="false" onAction="#exportCSV" prefHeight="47.0" prefWidth="158.0" style="-fx-background-color: transparent; -fx-border-radius: 10px; -fx-border-color: grey; -fx-background-radius: 10px; -fx-cursor: hand;" text="  Export CSV">
                <graphic>
                   <FontAwesomeIcon glyphName="UPLOAD" size="1.1em" />
                </graphic>
@@ -35,7 +29,7 @@
                   <Font size="15.0" />
                </font>
             </Button>
-            <Pane layoutX="24.0" layoutY="244.0" prefHeight="41.0" prefWidth="478.0" style="-fx-background-color: #f6f6f6; -fx-background-radius: 5px;">
+            <Pane layoutX="27.0" layoutY="318.0" prefHeight="41.0" prefWidth="478.0" style="-fx-background-color: #f6f6f6; -fx-background-radius: 5px;">
                <children>
                   <Button fx:id="viewAll" layoutX="8.0" layoutY="6.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="79.0" style="-fx-background-color: #fff; -fx-background-radius: 5px; -fx-cursor: hand;" text="All">
                      <font>
@@ -65,14 +59,14 @@
                   </Button>
                </children>
             </Pane>
-            <StackPane fx:id="stackPane" layoutX="27.0" layoutY="344.0" prefHeight="383.0" prefWidth="1136.0">
+            <StackPane fx:id="stackPane" layoutX="27.0" layoutY="416.0" prefHeight="311.0" prefWidth="1136.0">
                <children>
-                  <Pane fx:id="containerPane" minHeight="0.0" minWidth="0.0" prefHeight="390.0" prefWidth="1136.0" style="-fx-background-color: #fff;">
+                  <Pane fx:id="containerPane" minHeight="0.0" minWidth="0.0" prefHeight="390.0" prefWidth="1136.0" style="-fx-background-color: #fff; -fx-background-radius: 0 0 20 20; -fx-border-color: #000; -fx-border-radius: 0 0 20 20; -fx-border-width: 0 1 1 1;">
 
                   </Pane>
                </children>
             </StackPane>
-            <Pane layoutX="27.0" layoutY="302.0" prefHeight="41.0" prefWidth="1136.0" style="-fx-background-radius: 20 20 0 0; -fx-background-color: #fff;">
+            <Pane layoutX="27.0" layoutY="375.0" prefHeight="41.0" prefWidth="1136.0" style="-fx-background-radius: 20 20 0 0; -fx-background-color: #fff; -fx-border-radius: 20 20 0 0; -fx-border-color: #000;">
                <children>
                   <Label layoutX="37.0" layoutY="10.0" text="User ID" textFill="#727070">
                      <font>
@@ -109,7 +103,6 @@
                         <Font name="System Bold" size="14.0" />
                      </font>
                   </Label>
-                  <Line endX="970.4000244140625" endY="1.0" layoutX="135.0" layoutY="40.0" startX="-110.79999542236328" startY="1.0" />
                </children>
             </Pane>
             <Button layoutX="305.0" layoutY="150.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="30.0" style="-fx-background-color: transparent;" />

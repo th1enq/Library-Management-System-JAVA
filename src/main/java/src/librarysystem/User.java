@@ -280,14 +280,25 @@ public class User {
 
   public void acceptBorrowRequest(BookIssue a) {
     if (this.userType.equals("admin")) {
-      DBInfo.acceptBorrowRequest(a.getUserId(),a.getBookTitle());
-    }
+      DBInfo.acceptBorrowRequest(a.getUserId(), a.getBookTitle());
+    }// else {
+    // DBInfo.sendNotification(1000, this.getId(), "Chỉ admin có quyền làm việc này");
+    // }
+  }
+
+  public void denyBorrowRequest(BookIssue a) {
+    if (this.userType.equals("admin")) {
+      DBInfo.denyBorrowRequest(a.getUserId(), a.getBookTitle());
+    } //else {
+    // DBInfo.sendNotification(1000, this.getId(), "Chỉ admin có quyền làm việc này");
+    // }
   }
 
   public void deleteNotifications() {
     DBInfo.deleteNotificationsByUserId(id);
   }
-  public void deleteOneNotification(Notification i){
+
+  public void deleteOneNotification(Notification i) {
     DBInfo.deleteOneNotification(i);
   }
 
@@ -312,7 +323,7 @@ public class User {
     }
   }
 
-  public void unBan(User X){
+  public void unBan(User X) {
     if (userType.equals("admin")) {
       DBInfo.unBan(X);
       X.setBanned(false);
