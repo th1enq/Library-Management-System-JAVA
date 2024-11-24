@@ -74,10 +74,8 @@ CREATE TABLE `borrow_request` (
     borrow_date DATETIME NOT NULL,
     return_date DATETIME NOT NULL,
     accepted TINYINT(1) DEFAULT 0
-    --accepted = 1 => da xu li(co the chap thuan hoac khong)
+    -- accepted = 1 => đã xử lý (có thể chấp thuận hoặc không) --
 );
-
-
 
 
 

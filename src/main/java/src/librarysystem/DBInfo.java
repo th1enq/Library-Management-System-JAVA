@@ -549,7 +549,7 @@ public class DBInfo {
       if (rowsUpdated > 0) {
         sendNotification(1000,userId,"Yêu cầu mượn sách của bạn đối với cuốn \"" + bookName +"\" đã bị từ chối");   ;
 
-        System.out.println("Yêu cầu mượn sách của user_id = " + userId + " cho sách '" + bookName + "' đã được chấp nhận.");
+        System.out.println("Yêu cầu mượn sách của user_id = " + userId + " cho sách '" + bookName + "' đã bị từ chối.");
       } else {
         System.out.println("Không tìm thấy yêu cầu mượn sách cho user_id = " + userId + " và sách '" + bookName + "'.");
       }
@@ -2212,7 +2212,7 @@ public class DBInfo {
     }
     tmp = BookIssueDB.getPendingList();
     for (BookIssue i : tmp) {
-      Y.acceptBorrowRequest(i);
+      Y.denyBorrowRequest(i);
     }
     tmp = BookIssueDB.getPendingList();
     for (BookIssue i : tmp) {

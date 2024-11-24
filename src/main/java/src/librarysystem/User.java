@@ -288,7 +288,7 @@ public class User {
 
   public void denyBorrowRequest(BookIssue a) {
     if (this.userType.equals("admin")) {
-      DBInfo.acceptBorrowRequest(a.getUserId(), a.getBookTitle());
+      DBInfo.denyBorrowRequest(a.getUserId(), a.getBookTitle());
     } //else {
      // DBInfo.sendNotification(1000, this.getId(), "Chỉ admin có quyền làm việc này");
    // }
