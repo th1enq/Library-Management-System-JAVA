@@ -238,3 +238,14 @@ CREATE TABLE `notifications` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+INSERT INTO `borrow_history` (`id`, `user_id`, `book_name`, `borrow_date`, `return_date`) VALUES
+(1, 1, 'Naruto', '2024-11-24 20:26:02', '2024-11-24 20:26:42'),
+(2, 1, 'Dracula', '2024-11-24 20:26:02', '2024-11-24 20:26:42');
+
+INSERT INTO `borrow_request` (`id`, `user_id`, `book_name`, `borrow_date`, `return_date`, `accepted`) VALUES
+(1, 1, 'Naruto', '2024-11-24 20:26:02', '2024-12-04 20:26:02', 1),
+(4, 1, 'Forbes', '2024-11-24 20:41:03', '2024-12-04 20:41:03', 0),
+(5, 1, 'Time', '2024-11-24 20:41:03', '2024-12-04 20:41:03', 0);
+
+INSERT INTO `borrow_slip` (`id`, `user_id`, `book_name`, `borrow_date`, `return_date`) VALUES
+(3, 1, 'Forbes', '2024-11-24 20:42:53', '2024-12-04 20:42:53');

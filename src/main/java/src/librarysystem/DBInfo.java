@@ -2159,9 +2159,13 @@ public class DBInfo {
   public static void main(String[] args) throws Exception {
 
     User X= getUser("nguyenvana");
-    X.traSach(DBInfo.getBook("Naruto"));
-    X.traSach(DBInfo.getBook("Dracula"));
+    X.muonSach(DBInfo.getBook("Forbes"));
+    X.muonSach(DBInfo.getBook("Time"));
     User Y = getUser("levanc");
+    for(BorrowRequest i:X.getBorrowRequest()){
+      Y.acceptBorrowRequest(i);
+      break;
+    }
 
       ArrayList<BookIssue> tmp = BookIssueDB.getTotalList();
       for(BookIssue i:tmp){
