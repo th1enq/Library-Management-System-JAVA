@@ -530,6 +530,26 @@ public class DBInfo {
       if (rowsUpdated > 0) {
         System.out.println("Yêu cầu mượn sách của user_id = " + userId + " cho sách '" + bookName + "' đã được chấp nhận.");
         addSlip(bookName,userId);
+        sendNotification(1000,userId,"Yêu cầu mượn sách của bạn đối với cuốn \"" + bookName +"\" đã được phê duyệt");   ;
+      } else {
+        System.out.println("Không tìm thấy yêu cầu mượn sách cho user_id = " + userId + " và sách '" + bookName + "'.");
+      }
+    } catch (SQLException e) {
+      System.err.println("Lỗi khi cập nhật yêu cầu mượn sách: " + e.getMessage());
+    }
+  }
+  public static void denyBorrowRequest(int userId, String bookName) {
+    String sql = "UPDATE borrow_request SET accepted = 1 WHERE user_id = ? AND book_name = ?";
+    try (Connection conn = DBInfo.conn(); PreparedStatement stmt = conn.prepareStatement(sql)) {
+      stmt.setInt(1, userId);
+      stmt.setString(2, bookName);
+
+      int rowsUpdated = stmt.executeUpdate();
+
+      if (rowsUpdated > 0) {
+        sendNotification(1000,userId,"Yêu cầu mượn sách của bạn đối với cuốn \"" + bookName +"\" đã bị từ chối");   ;
+
+        System.out.println("Yêu cầu mượn sách của user_id = " + userId + " cho sách '" + bookName + "' đã được chấp nhận.");
       } else {
         System.out.println("Không tìm thấy yêu cầu mượn sách cho user_id = " + userId + " và sách '" + bookName + "'.");
       }
@@ -2186,11 +2206,19 @@ public class DBInfo {
 
     User Y = getUser("levanc");
 
-    ArrayList<BookIssue> tmp = BookIssueDB.getTotalList();
+    ArrayList<BookIssue> tmp = BookIssueDB.getPendingList();
     for (BookIssue i : tmp) {
       i.displayIssueInfo();
     }
-    
+    tmp = BookIssueDB.getPendingList();
+    for (BookIssue i : tmp) {
+      Y.acceptBorrowRequest(i);
+    }
+    tmp = BookIssueDB.getPendingList();
+    for (BookIssue i : tmp) {
+      i.displayIssueInfo();
+    }
+
 
   }
 }

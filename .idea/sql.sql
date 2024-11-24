@@ -68,12 +68,13 @@ CREATE TABLE `borrow_history` (
     return_date DATETIME NOT NULL
 );
 CREATE TABLE `borrow_request` (
-    id INT AUTO_INCREMENT ,
+    id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT NOT NULL,
     book_name VARCHAR(500) NOT NULL,
     borrow_date DATETIME NOT NULL,
     return_date DATETIME NOT NULL,
     accepted TINYINT(1) DEFAULT 0
+    --accepted = 1 => da xu li(co the chap thuan hoac khong)
 );
 
 
