@@ -21,6 +21,7 @@ public class BookIssueDB {
       rs = pstmt.executeQuery();
 
       while (rs.next()) {
+        boolean okToAdd = false;
         int userId = rs.getInt("user_id");
         String bookTitle = rs.getString("book_name");
         MyDateTime issueDate = new MyDateTime(rs.getTimestamp("borrow_date").toLocalDateTime());
@@ -32,10 +33,15 @@ public class BookIssueDB {
         bookIssue.setIssueDate(issueDate);
         bookIssue.setReturnDate(returnDate);
         bookIssue.setBookAuthor(DBInfo.getAuthor(bookTitle));
-        bookIssue.setUsername(DBInfo.getUserById(userId).getUsername());
+        if (DBInfo.getUserById(userId) != null) {
+          bookIssue.setUsername(DBInfo.getUserById(userId).getUsername());
+          okToAdd = true;
+        }
         bookIssue.setStatus(BookIssue.STATUS_PENDING);
 
-        ret.add(bookIssue);
+        if (okToAdd) {
+          ret.add(bookIssue);
+        }
       }
     } catch (SQLException e) {
       System.out.println("Lỗi khi lấy danh sách processing:");
@@ -72,6 +78,8 @@ public class BookIssueDB {
       rs = pstmt.executeQuery();
 
       while (rs.next()) {
+        boolean okToAdd = false;
+
         int userId = rs.getInt("user_id");
         String bookTitle = rs.getString("book_name");
         MyDateTime issueDate = new MyDateTime(rs.getTimestamp("borrow_date").toLocalDateTime());
@@ -82,10 +90,15 @@ public class BookIssueDB {
         bookIssue.setIssueDate(issueDate);
         bookIssue.setReturnDate(returnDate);
         bookIssue.setBookAuthor(DBInfo.getAuthor(bookTitle));
-        bookIssue.setUsername(DBInfo.getUserById(userId).getUsername());
+        if (DBInfo.getUserById(userId) != null) {
+          bookIssue.setUsername(DBInfo.getUserById(userId).getUsername());
+          okToAdd = true;
+        }
         bookIssue.setStatus(BookIssue.STATUS_DELAY);
 
-        ret.add(bookIssue);
+        if (okToAdd) {
+          ret.add(bookIssue);
+        }
       }
     } catch (SQLException e) {
       System.out.println("Lỗi khi lấy danh sách delay:");
@@ -122,6 +135,8 @@ public class BookIssueDB {
       rs = pstmt.executeQuery();
 
       while (rs.next()) {
+        boolean okToAdd = false;
+
         int userId = rs.getInt("user_id");
         String bookTitle = rs.getString("book_name");
         MyDateTime issueDate = new MyDateTime(rs.getTimestamp("borrow_date").toLocalDateTime());
@@ -132,9 +147,14 @@ public class BookIssueDB {
         bookIssue.setIssueDate(issueDate);
         bookIssue.setReturnDate(returnDate);
         bookIssue.setBookAuthor(DBInfo.getAuthor(bookTitle));
-        bookIssue.setUsername(DBInfo.getUserById(userId).getUsername());
+        if (DBInfo.getUserById(userId) != null) {
+          bookIssue.setUsername(DBInfo.getUserById(userId).getUsername());
+          okToAdd = true;
+        }
         bookIssue.setStatus(BookIssue.STATUS_RETURNED);
-        ret.add(bookIssue);
+        if (okToAdd) {
+          ret.add(bookIssue);
+        }
       }
     } catch (SQLException e) {
       System.out.println("Lỗi khi lấy danh sách delay:");
@@ -172,6 +192,8 @@ public class BookIssueDB {
       rs = pstmt.executeQuery();
 
       while (rs.next()) {
+        boolean okToAdd = false;
+
         int userId = rs.getInt("user_id");
         String bookTitle = rs.getString("book_name");
         MyDateTime issueDate = new MyDateTime(rs.getTimestamp("borrow_date").toLocalDateTime());
@@ -182,7 +204,10 @@ public class BookIssueDB {
         bookIssue.setIssueDate(issueDate);
         bookIssue.setReturnDate(returnDate);
         bookIssue.setBookAuthor(DBInfo.getAuthor(bookTitle));
-        bookIssue.setUsername(DBInfo.getUserById(userId).getUsername());
+        if (DBInfo.getUserById(userId) != null) {
+          bookIssue.setUsername(DBInfo.getUserById(userId).getUsername());
+          okToAdd = true;
+        }
         long daysLate =
             java.time.Duration.between(issueDate.toLocalDateTime(), returnDate.toLocalDateTime())
                 .toDays() - 10;
@@ -191,7 +216,9 @@ public class BookIssueDB {
         } else {
           bookIssue.setStatus("LATE 1 DAY");
         }
-        ret.add(bookIssue);
+        if (okToAdd) {
+          ret.add(bookIssue);
+        }
       }
     } catch (SQLException e) {
       System.out.println("Lỗi khi lấy danh sách sách trả muộn:");
@@ -222,6 +249,8 @@ public class BookIssueDB {
     ResultSet rs = null;
 
     try {
+      boolean okToAdd = false;
+
       con = DBInfo.conn();
       String sql = "SELECT user_id, book_name, borrow_date, return_date FROM borrow_slip WHERE return_date > NOW()";
       pstmt = con.prepareStatement(sql);
@@ -238,9 +267,14 @@ public class BookIssueDB {
         bookIssue.setIssueDate(issueDate);
         bookIssue.setReturnDate(returnDate);
         bookIssue.setBookAuthor(DBInfo.getAuthor(bookTitle));
-        bookIssue.setUsername(DBInfo.getUserById(userId).getUsername());
+        if (DBInfo.getUserById(userId) != null) {
+          bookIssue.setUsername(DBInfo.getUserById(userId).getUsername());
+          okToAdd = true;
+        }
         bookIssue.setStatus("Borrowed");
-        ret.add(bookIssue);
+        if (okToAdd) {
+          ret.add(bookIssue);
+        }
       }
     } catch (SQLException e) {
       System.out.println("Lỗi khi lấy danh sách dang muon:");
