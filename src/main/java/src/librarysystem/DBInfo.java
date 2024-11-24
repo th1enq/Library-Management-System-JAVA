@@ -2192,15 +2192,10 @@ public class DBInfo {
   public static void main(String[] args) throws Exception {
 
     User X= getUser("nguyenvana");
-    X.muonSach(DBInfo.getBook("Forbes"));
-    X.muonSach(DBInfo.getBook("Time"));
-    User Y = getUser("levanc");
-    for(BorrowRequest i:X.getBorrowRequest()){
-      Y.acceptBorrowRequest(i);
-      break;
-    }
 
-      ArrayList<BookIssue> tmp = BookIssueDB.getTotalList();
+    User Y = getUser("levanc");
+
+      ArrayList<BookIssue> tmp = BookIssueDB.getLateList();
       for(BookIssue i:tmp){
         i.displayIssueInfo();
       }

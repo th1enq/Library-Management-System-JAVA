@@ -146,6 +146,57 @@ public class BookIssueDB {
     ret.addAll(ret2);
     ArrayList<BookIssue> ret3= getReturnedList();
     ret.addAll(ret3);
+    ArrayList<BookIssue> ret4= getLateList();
+    ret.addAll(ret4);
     return ret;
   }
+  public static ArrayList<BookIssue> getLateList() {
+    ArrayList<BookIssue> ret = new ArrayList<>();
+    Connection con = null;
+    PreparedStatement pstmt = null;
+    ResultSet rs = null;
+
+    try {
+      con = DBInfo.conn();
+
+      String sql = "SELECT user_id, book_name, borrow_date, return_date FROM borrow_history WHERE DATEDIFF(return_date, borrow_date) > 10";
+      pstmt = con.prepareStatement(sql);
+      rs = pstmt.executeQuery();
+
+      while (rs.next()) {
+        int userId = rs.getInt("user_id");
+        String bookTitle = rs.getString("book_name");
+        MyDateTime issueDate = new MyDateTime(rs.getTimestamp("borrow_date").toLocalDateTime());
+        MyDateTime returnDate = new MyDateTime(rs.getTimestamp("return_date").toLocalDateTime());
+        BookIssue bookIssue = new BookIssue();
+        bookIssue.setUserId(userId);
+        bookIssue.setBookTitle(bookTitle);
+        bookIssue.setIssueDate(issueDate);
+        bookIssue.setReturnDate(returnDate);
+        bookIssue.setBookAuthor(DBInfo.getAuthor(bookTitle));
+        bookIssue.setUsername(DBInfo.getUserById(userId).getUsername());
+        long daysLate = java.time.Duration.between(issueDate.toLocalDateTime(), returnDate.toLocalDateTime()).toDays() - 10;
+        if (daysLate > 1) {
+          bookIssue.setStatus("LATE " + daysLate + " DAYS");
+        } else {
+          bookIssue.setStatus("LATE 1 DAY");
+        }
+        ret.add(bookIssue);
+      }
+    } catch (SQLException e) {
+      System.out.println("Lỗi khi lấy danh sách sách trả muộn:");
+      e.printStackTrace();
+    } finally {
+      try {
+        if (rs != null) rs.close();
+        if (pstmt != null) pstmt.close();
+        if (con != null) con.close();
+      } catch (SQLException e) {
+        e.printStackTrace();
+      }
+    }
+
+    return ret;
+  }
+
 }

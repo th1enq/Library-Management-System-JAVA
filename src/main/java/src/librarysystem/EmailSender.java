@@ -54,7 +54,7 @@ public class EmailSender {
     // Test gửi email
 
     //(mail nguoi nhan, chu de mail, noi dung mail)
-  //  sendEmail("23020158@vnu.edu.vn", "Ma xac nhan 2",
-      //  "Ma xac nhan la 177013.");
+   sendEmail("23020159@vnu.edu.vn", "Email 2",
+       "The dan tv ????");
   }
 }
