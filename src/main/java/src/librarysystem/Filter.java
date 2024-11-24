@@ -55,7 +55,7 @@ public class Filter {
         book.setPrice(resultSet.getString("price"));
         book.setLanguage(resultSet.getString("language"));
         book.setBuyLink(resultSet.getString("buyLink"));
-        book.setAvail(resultSet.getString("avail"));
+        book.setAvail(resultSet.getInt("avail"));
         book.setRating(resultSet.getInt("rating"));
         ret.add(book);
       }
@@ -113,7 +113,7 @@ public class Filter {
         book.setPrice(resultSet.getString("price"));
         book.setLanguage(resultSet.getString("language"));
         book.setBuyLink(resultSet.getString("buyLink"));
-        book.setAvail(resultSet.getString("avail"));
+        book.setAvail(resultSet.getInt("avail"));
         book.setRating(resultSet.getInt("rating"));
         ret.add(book);
       }
@@ -171,7 +171,7 @@ public class Filter {
         book.setPrice(resultSet.getString("price"));
         book.setLanguage(resultSet.getString("language"));
         book.setBuyLink(resultSet.getString("buyLink"));
-        book.setAvail(resultSet.getString("avail"));
+        book.setAvail(resultSet.getInt("avail"));
         book.setRating(resultSet.getInt("rating"));
         ret.add(book);
       }
