@@ -715,7 +715,6 @@ public class DBInfo {
           System.out.println("Category not found. Added new category: " + categoryName);
         }
       }
-
       // Tăng cnt của danh mục "ALL"
       try (PreparedStatement updateAllStmt = con.prepareStatement(updateAllSql)) {
         updateAllStmt.executeUpdate();
@@ -728,6 +727,27 @@ public class DBInfo {
     }
   }
 
+  public static void deleteOneNotification(Notification notification) {
+    int senderId = notification.getSenderId();
+    int receiverId = notification.getReceiverId();
+    String message = notification.getMessage();
+    String sql = "DELETE FROM notifications WHERE sender_id = ? AND receiver_id = ? AND message = ? LIMIT 1";
+
+    try (Connection connection = DBInfo.conn();
+        PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+
+      preparedStatement.setInt(1, senderId);
+      preparedStatement.setInt(2, receiverId);
+      preparedStatement.setString(3, message);
+
+      int rowsAffected = preparedStatement.executeUpdate();
+      if(rowsAffected>0)  {
+        System.out.println("Xoa thong bao thanh cong");
+      }
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+  }
   public static ArrayList<Pair<String, Integer>> getCategoryData() {
     ArrayList<Pair<String, Integer>> categoryList = new ArrayList<>();
     String sql = "SELECT name, cnt FROM category";
@@ -1905,5 +1925,21 @@ public class DBInfo {
 
   public static void main(String[] args) {
    login("nguyenvana","password123");
+   User X= getUser("nguyenvana");
+   X.muonSach(DBInfo.getBook("Dracula"));
+   X.muonSach(DBInfo.getBook("Naruto"));
+
+    ArrayList<Notification>tmp = X.getNotifications();
+    for(Notification i: tmp){
+      System.out.println(i);
+    }
+    System.out.println("_____");
+   for(Notification i: tmp){
+     X.deleteOneNotification(i);
+     break;
+   }
+    for(Notification i: X.getNotifications()){
+      System.out.println(i);
+    }
   }
 }

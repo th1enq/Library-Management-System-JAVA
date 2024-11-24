@@ -291,6 +291,9 @@ public class User {
   public void deleteNotifications() {
     DBInfo.deleteNotificationsByUserId(id);
   }
+  public void deleteOneNotification(Notification i){
+    DBInfo.deleteOneNotification(i);
+  }
 
   public void sendNotification(int receiver_id, String tmp) {
     DBInfo.sendNotification(this.id, receiver_id, tmp);

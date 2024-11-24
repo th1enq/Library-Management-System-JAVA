@@ -119,17 +119,18 @@ CREATE TABLE daily_logins (
     day_of_week ENUM('Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday') NOT NULL,
     login_count INT NOT NULL DEFAULT 0,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-    PRIMARY KEY (day_of_week)
+    PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
 INSERT INTO daily_logins (date, day_of_week, login_count)
 VALUES
-('2024-11-20', 'Monday', 20),
-('2024-11-21', 'Tuesday', 10),
-('2024-11-22', 'Wednesday', 5),
-('2024-11-23', 'Thursday', 10),
-('2024-11-24', 'Friday', 20),
-('2024-11-25', 'Saturday', 20),
-('2024-11-26', 'Sunday', 15);
+('2024-11-20', 'Wednesday', 20),
+('2024-11-21', 'Thursday', 10),
+('2024-11-22', 'Friday', 5),
+('2024-11-23', 'Saturday', 10),
+('2024-11-24', 'Sunday', 20),
+('2024-11-25', 'Monday', 20),
+('2024-11-26', 'Tuesday', 15);
 
 
 CREATE TABLE Messages (
