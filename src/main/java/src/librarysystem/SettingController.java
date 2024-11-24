@@ -28,7 +28,7 @@ import javafx.scene.shape.*;
 import javafx.stage.FileChooser;
 import javafx.util.Duration;
 
-public class SettingController implements Initializable {
+public class SettingController extends BaseController implements Initializable {
 
   @FXML
   public ImageView coverImage;
@@ -445,7 +445,7 @@ public class SettingController implements Initializable {
   public void updateProfile(ActionEvent actionEvent) {
     if(currentMode == 0) {
       MainGUI.currentUser.update(nameTextField.getText(), emailTextField.getText(), null, avatar.getImage().getUrl(), idTextField.getText(), String.valueOf(universityChoose.getValue()), phoneTextField.getText(), coverImage.getImage().getUrl(), null);
-      System.out.println("Update thong tin" + MainGUI.currentUser.toString());
+      sendNotification(1000, MainGUI.currentUser.getId(), "Cập nhật thông tin thành công !!!");
     }
     else if(currentMode == 2) {
       if(!MainGUI.currentUser.getPassword().equals(oldPassword.getText())) {
@@ -464,7 +464,7 @@ public class SettingController implements Initializable {
           System.out.println("Mat khau nhap khong khop");
           return;
         }
-        System.out.println("Doi mat khau thanh cong" + " " + newPassword.getText());
+        sendNotification(1000, MainGUI.currentUser.getId(), "Đổi mật khẩu thành công !!!");
         MainGUI.currentUser.update(null, null, newPassword.getText(), null);
       }
     }

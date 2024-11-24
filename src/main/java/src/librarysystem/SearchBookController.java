@@ -25,7 +25,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import  java.util.HashMap;
 
-public class SearchBookController {
+public class SearchBookController extends BaseController {
     @FXML
     public Button apiModeButton;
     @FXML
@@ -43,8 +43,6 @@ public class SearchBookController {
     private ArrayList<Book> currentApiBook = new ArrayList<>();
     private ArrayList<Book> currentLibraryBook = DBInfo.getBookList("ALL", "ALL", "ALL");
 
-    private MainGUI mainGUI;
-
     // 0 : title
     // 1 : author
     // 2 : category
@@ -53,10 +51,6 @@ public class SearchBookController {
 
     // HashMap để lưu cache ảnh
     private HashMap<String, Image> imageCache = new HashMap<>();
-
-    public void setMainGUI(MainGUI mainGUI) {
-        this.mainGUI = mainGUI;
-    }
 
     private void update() {
         bookQuery.clear();
@@ -238,7 +232,7 @@ public class SearchBookController {
             detailButton.setLayoutY(153);
             detailButton.setStyle("-fx-cursor: hand; -fx-background-color: transparent; -fx-border-color: #0078D4; -fx-border-radius: 5px; -fx-text-fill: #0078D4;");
             detailButton.setOnAction(event -> {
-                mainGUI.returnDetailBook(book, apiMode);
+                returnDetailBook(book, apiMode);
             });
             bookPane.getChildren().add(detailButton);
 
@@ -257,7 +251,7 @@ public class SearchBookController {
         currentApiBook = null;
         update();
         displayBooks(currentApiBook);
-        mainGUI.setPreviousStage(apiMode, query);
+        MainGUI.setPreviousStage(apiMode, query);
     }
 
     @FXML
@@ -271,6 +265,6 @@ public class SearchBookController {
         update();
         query = "";
         displayBooks(currentLibraryBook);
-        mainGUI.setPreviousStage(apiMode, query);
+        MainGUI.setPreviousStage(apiMode, query);
     }
 }

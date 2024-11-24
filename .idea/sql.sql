@@ -26,14 +26,14 @@ INSERT INTO book (title, authors, publisher, publishedDate, thumbnail, ISBN, des
 ('The Selfish Gene', 'Richard Dawkins', 'Oxford University Press', '1976-08-30', 'http://books.google.com/books/content?id=o59HDAAAQBAJ&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api', '9780192860927', 'A classic exposition of evolutionary biology', '360', 'Science', '15.99', 'English', 'https://play.google.com/store/books/details?id=o59HDAAAQBAJ&source=gbs_api', 'YES', 5),
 
 -- Manga (4 books)
-('Naruto', 'Masashi Kishimoto', 'Shueisha', '1999-09-21', 'http://books.google.com/books/content?id=bQbwAQAAQBAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api', '9781569319000', 'A young ninja who seeks recognition from his peers', '220', 'Manga', '9.99', 'Japanese', 'http://books.google.com.vn/books?id=bQbwAQAAQBAJ&dq=naruto&hl=&source=gbs_api', 'YES', 5),
+('Naruto', 'Masashi Kishimoto', 'Shueisha', '1999-09-21', 'http://books.google.com/books/content?id=bQbwAQAAQBAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api', '9781569319000', 'A young ninja who seeks recognition from his peers', '220', 'Manga', '9.99', 'Japanese', 'http://b...content-available-to-author-only...m.vn/books?id=bQbwAQAAQBAJ&dq=naruto&hl=&source=gbs_api', 'YES', 5),
 ('One Piece', 'Eiichiro Oda', 'Shueisha', '1997-07-22', 'http://books.google.com/books/content?id=B83LDwAAQBAJ&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api', '9784088725093', 'The story of a young pirate and his adventures', '230', 'Manga', '9.99', 'Japanese', 'https://play.google.com/store/books/details?id=B83LDwAAQBAJ&source=gbs_api', 'YES', 5),
 ('Attack on Titan', 'Hajime Isayama', 'Kodansha', '2009-09-09', 'http://books.google.com/books/content?id=sX0qDwAAQBAJ&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api', '9781612620244', 'Humanity fights against giant humanoid Titans', '192', 'Manga', '10.99', 'Japanese', 'https://play.google.com/store/books/details?id=sX0qDwAAQBAJ&source=gbs_api', 'YES', 4),
-('My Hero Academia', 'Kohei Horikoshi', 'Shueisha', '2014-07-07', 'http://books.google.com/books/content?id=nQA-CgAAQBAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api', '9781421582696', 'A boy born without superpowers in a world where they are common', '240', 'Manga', '10.99', 'Japanese', 'http://books.google.com.vn/books?id=nQA-CgAAQBAJ&dq=My+Hero+Academia&hl=&source=gbs_api', 'YES', 5),
+('My Hero Academia', 'Kohei Horikoshi', 'Shueisha', '2014-07-07', 'http://books.google.com/books/content?id=nQA-CgAAQBAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api', '9781421582696', 'A boy born without superpowers in a world where they are common', '240', 'Manga', '10.99', 'Japanese', 'http://b...content-available-to-author-only...m.vn/books?id=nQA-CgAAQBAJ&dq=My+Hero+Academia&hl=&source=gbs_api', 'YES', 5),
 
 -- Magazine (10 books)
 ('National Geographic', 'Various', 'National Geographic Partners', '2023-01-01', 'http://books.google.com/books/content?id=VCYjAQAAMAAJ&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api', '9781426217777', 'Exploring the world and all its beauty', '100', 'Magazine', '5.99', 'English', 'https://play.google.com/store/books/details?id=VCYjAQAAMAAJ&source=gbs_api', 'YES', 5),
-('Time', 'Various', 'Time USA', '2023-02-01', 'http://books.google.com/books/content?id=lwgAAAAAMBAJ&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api', '9781618932648', 'Covers world news, politics, and culture', '100', 'Magazine', '6.99', 'English', 'http://books.google.com.vn/books?id=lwgAAAAAMBAJ&dq=times&hl=&source=gbs_api', 'YES', 5),
+('Time', 'Various', 'Time USA', '2023-02-01', 'http://books.google.com/books/content?id=lwgAAAAAMBAJ&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api', '9781618932648', 'Covers world news, politics, and culture', '100', 'Magazine', '6.99', 'English', 'http://b...content-available-to-author-only...m.vn/books?id=lwgAAAAAMBAJ&dq=times&hl=&source=gbs_api', 'YES', 5),
 ('Forbes', 'Various', 'Forbes Media', '2023-03-01', 'http://books.google.com/books/content?id=E047cuo415YC&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api', '9781618932649', 'Leading source for reliable business news', '90', 'Magazine', '6.99', 'English', 'https://play.google.com/store/books/details?id=E047cuo415YC&source=gbs_api', 'YES', 5),
 ('The Economist', 'Various', 'The Economist Group', '2023-04-01', 'http://books.google.com/books/content?id=TDVRAQAAMAAJ&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api', '9781618932650', 'Delivers current affairs and international business news', '120', 'Magazine', '7.99', 'English', 'https://play.google.com/store/books/details?id=TDVRAQAAMAAJ&source=gbs_api', 'YES', 5),
 ('Scientific American', 'Various', 'Springer Nature', '2023-05-01', 'http://books.google.com/books/content?id=rGiAErFjXJsC&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api', '9781618932651', 'Popular science magazine', '110', 'Magazine', '7.99', 'English', 'play.google.com/store/books/details?id=rGiAErFjXJsC&source=gbs_api', 'YES', 4),
@@ -119,17 +119,18 @@ CREATE TABLE daily_logins (
     day_of_week ENUM('Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday') NOT NULL,
     login_count INT NOT NULL DEFAULT 0,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-    PRIMARY KEY (day_of_week)
+    PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
 INSERT INTO daily_logins (date, day_of_week, login_count)
 VALUES
-('2024-11-20', 'Monday', 20),
-('2024-11-21', 'Tuesday', 10),
-('2024-11-22', 'Wednesday', 5),
-('2024-11-23', 'Thursday', 10),
-('2024-11-24', 'Friday', 20),
-('2024-11-25', 'Saturday', 20),
-('2024-11-26', 'Sunday', 15);
+('2024-11-20', 'Wednesday', 20),
+('2024-11-21', 'Thursday', 10),
+('2024-11-22', 'Friday', 5),
+('2024-11-23', 'Saturday', 10),
+('2024-11-24', 'Sunday', 20),
+('2024-11-25', 'Monday', 20),
+('2024-11-26', 'Tuesday', 15);
 
 
 CREATE TABLE Messages (
