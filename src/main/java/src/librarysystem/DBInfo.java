@@ -2186,18 +2186,11 @@ public class DBInfo {
 
     User Y = getUser("levanc");
 
-    ArrayList<BookIssue> tmp = BookIssueDB.getProcessingList();
+    ArrayList<BookIssue> tmp = BookIssueDB.getTotalList();
     for (BookIssue i : tmp) {
       i.displayIssueInfo();
     }
-    tmp = BookIssueDB.getProcessingList();
-    for (BookIssue i : tmp) {
-      Y.acceptBorrowRequest(i);
-    }
-    tmp = BookIssueDB.getProcessingList();
-    for (BookIssue i : tmp) {
-     i.displayIssueInfo();
-    }
+    
 
   }
 }
