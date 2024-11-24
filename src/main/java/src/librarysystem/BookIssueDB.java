@@ -249,7 +249,6 @@ public class BookIssueDB {
     ResultSet rs = null;
 
     try {
-      boolean okToAdd = false;
 
       con = DBInfo.conn();
       String sql = "SELECT user_id, book_name, borrow_date, return_date FROM borrow_slip WHERE return_date > NOW()";
@@ -257,6 +256,7 @@ public class BookIssueDB {
       rs = pstmt.executeQuery();
 
       while (rs.next()) {
+        boolean okToAdd = false;
         int userId = rs.getInt("user_id");
         String bookTitle = rs.getString("book_name");
         MyDateTime issueDate = new MyDateTime(rs.getTimestamp("borrow_date").toLocalDateTime());
