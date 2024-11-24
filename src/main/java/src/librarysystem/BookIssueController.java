@@ -41,8 +41,10 @@ public class BookIssueController extends BaseController {
     @FXML
     public Button viewLate;
 
+    private int currentMode = 0;
+
     private int currentPage = 0; // Current page
-    private static final int ITEMS_PER_PAGE = 5; // Max items per page
+    private static final int ITEMS_PER_PAGE = 4; // Max items per page
     private ArrayList<ArrayList<BookIssue>> paginatedBookIssueList; // Paginated book issues
     private ArrayList<BookIssue> bookIssueList = BookIssueDB.getTotalList(); // Default book issue list
 
@@ -52,21 +54,48 @@ public class BookIssueController extends BaseController {
         displayPage(currentPage);
 
         // Set button actions
-        viewAll.setOnAction(event -> handleCategorySelection(BookIssueDB.getTotalList(), viewAll));
-        viewBorrowed.setOnAction(event -> handleCategorySelection(BookIssueDB.getBorrowedList(), viewBorrowed));
-        viewReturned.setOnAction(event -> handleCategorySelection(BookIssueDB.getReturnedList(), viewReturned));
-        viewDelay.setOnAction(event -> handleCategorySelection(BookIssueDB.getDelayList(), viewDelay));
-        viewPending.setOnAction(event -> handleCategorySelection(BookIssueDB.getPendingList(), viewPending));
-        viewLate.setOnAction(event -> handleCategorySelection(BookIssueDB.getLateList(), viewLate));
+        viewAll.setOnAction(event -> handleCategorySelection(BookIssueDB.getTotalList(), viewAll, 0));
+        viewBorrowed.setOnAction(event -> handleCategorySelection(BookIssueDB.getBorrowedList(), viewBorrowed, 1));
+        viewReturned.setOnAction(event -> handleCategorySelection(BookIssueDB.getReturnedList(), viewReturned, 2));
+        viewDelay.setOnAction(event -> handleCategorySelection(BookIssueDB.getDelayList(), viewDelay, 3));
+        viewPending.setOnAction(event -> handleCategorySelection(BookIssueDB.getPendingList(), viewPending, 4));
+        viewLate.setOnAction(event -> handleCategorySelection(BookIssueDB.getLateList(), viewLate, 5));
     }
 
-    private void handleCategorySelection(ArrayList<BookIssue> list, Button selectedButton) {
+    private void update() {
+        switch (currentMode) {
+            case 0:
+                bookIssueList = BookIssueDB.getTotalList();
+                break;
+            case 1:
+                bookIssueList = BookIssueDB.getBorrowedList();
+                break;
+            case 2:
+                bookIssueList = BookIssueDB.getReturnedList();
+                break;
+            case 3:
+                bookIssueList = BookIssueDB.getDelayList();
+                break;
+            case 4:
+                bookIssueList = BookIssueDB.getPendingList();
+                break;
+            case 5:
+                bookIssueList = BookIssueDB.getLateList();
+                break;
+        }
+        paginatedBookIssueList = paginateBookIssueList(bookIssueList);
+        currentPage = Math.min(currentPage, paginatedBookIssueList.size() - 1);
+        displayPage(currentPage);
+    }
+
+    private void handleCategorySelection(ArrayList<BookIssue> list, Button selectedButton, int mode) {
         resetCategoryButtonStyles();
         selectedButton.setStyle("-fx-background-color: #fff; -fx-background-radius: 5px; -fx-cursor: hand;");
         bookIssueList = list;
         paginatedBookIssueList = paginateBookIssueList(bookIssueList);
         currentPage = 0; // Reset to the first page
         displayPage(currentPage);
+        currentMode = mode;
     }
 
     private void resetCategoryButtonStyles() {
@@ -109,7 +138,7 @@ public class BookIssueController extends BaseController {
         if (currentPage > 0) {
             Button leftButton = new Button();
             leftButton.setLayoutX(1007);
-            leftButton.setLayoutY(344);
+            leftButton.setLayoutY(275);
             leftButton.setPrefSize(30, 30);
             leftButton.setStyle("-fx-background-color: transparent; -fx-cursor: hand;");
 
@@ -126,7 +155,7 @@ public class BookIssueController extends BaseController {
         if (currentPage < paginatedBookIssueList.size() - 1) {
             Button rightButton = new Button();
             rightButton.setLayoutX(1070);
-            rightButton.setLayoutY(344);
+            rightButton.setLayoutY(275);
             rightButton.setPrefSize(30, 30);
             rightButton.setStyle("-fx-background-color: transparent; -fx-cursor: hand;");
 
@@ -172,7 +201,7 @@ public class BookIssueController extends BaseController {
             // Set an action for the "Check" button (add appropriate handler)
             checkButton.setOnAction(event -> {
                 MainGUI.currentUser.acceptBorrowRequest(book);
-
+                update();
             });
 
             Button denyButton = new Button();
@@ -186,7 +215,8 @@ public class BookIssueController extends BaseController {
             denyButton.setGraphic(denyIcon);
             // Set an action for the "Deny" button (add appropriate handler)
             denyButton.setOnAction(event -> {
-//                MainGUI.currentUser.
+                MainGUI.currentUser.denyBorrowRequest(book);
+                update();
             });
             pane.getChildren().addAll(checkButton, denyButton);
         }

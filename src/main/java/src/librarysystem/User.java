@@ -26,7 +26,7 @@ public class User {
   }
 
   public User(int id, String name, String username, String password, String userType,
-      boolean isBanned, String avatarLink) {
+              boolean isBanned, String avatarLink) {
     this.id = id;
     this.name = name;
     this.username = username;
@@ -50,8 +50,8 @@ public class User {
   }
 
   public User(int id, String name, String username, String password, String userType,
-      boolean isBanned, String avatarLink, String MSV, String university,
-      String phone, String coverPhotoLink, int reputation) {
+              boolean isBanned, String avatarLink, String MSV, String university,
+              String phone, String coverPhotoLink, int reputation) {
     this.id = id;
     this.name = name;
     this.username = username;
@@ -175,7 +175,7 @@ public class User {
   }
 
   public void setRentBook(
-      ArrayList<Pair<Book, MyDateTime>> rentBook) {
+          ArrayList<Pair<Book, MyDateTime>> rentBook) {
     this.rentBook = rentBook;
   }
 
@@ -190,19 +190,19 @@ public class User {
   @Override
   public String toString() {
     return "Registration{" +
-        "id=" + id +
-        ", name='" + name + '\'' +
-        ", username='" + username + '\'' +
-        ", password='" + password + '\'' +
-        ", userType='" + userType + '\'' +
-        ", isBanned=" + isBanned +
-        ", avatarLink='" + avatarLink + '\'' +
-        ", MSV='" + MSV + '\'' +
-        ", university='" + university + '\'' +
-        ", phone='" + phone + '\'' +
-        ", coverPhotoLink='" + coverPhotoLink + '\'' +
-        ", reputation=" + reputation +
-        '}';
+            "id=" + id +
+            ", name='" + name + '\'' +
+            ", username='" + username + '\'' +
+            ", password='" + password + '\'' +
+            ", userType='" + userType + '\'' +
+            ", isBanned=" + isBanned +
+            ", avatarLink='" + avatarLink + '\'' +
+            ", MSV='" + MSV + '\'' +
+            ", university='" + university + '\'' +
+            ", phone='" + phone + '\'' +
+            ", coverPhotoLink='" + coverPhotoLink + '\'' +
+            ", reputation=" + reputation +
+            '}';
   }
 
 
@@ -225,7 +225,7 @@ public class User {
   }
 
   public void update(String newName, String newUsername, String newPassword,
-      String newAvatar_link) {
+                     String newAvatar_link) {
     DBInfo.updateUser(id, newName, newUsername, newPassword, newAvatar_link);
     if (newName != null) {
       setName(newName);
@@ -242,11 +242,11 @@ public class User {
   }
 
   public void update(String newName, String newUsername, String newPassword,
-      String newAvatarLink, String newMSV, String newUniversity,
-      String newPhone, String newCoverPhotoLink, Integer newReputation) {
+                     String newAvatarLink, String newMSV, String newUniversity,
+                     String newPhone, String newCoverPhotoLink, Integer newReputation) {
 
     DBInfo.updateUser(id, newName, newUsername, newPassword, newAvatarLink,
-        newMSV, newUniversity, newPhone, newCoverPhotoLink, newReputation);
+            newMSV, newUniversity, newPhone, newCoverPhotoLink, newReputation);
 
     if (newName != null) {
       setName(newName);
@@ -282,16 +282,16 @@ public class User {
     if (this.userType.equals("admin")) {
       DBInfo.acceptBorrowRequest(a.getUserId(), a.getBookTitle());
     }// else {
-     // DBInfo.sendNotification(1000, this.getId(), "Chỉ admin có quyền làm việc này");
-   // }
+    // DBInfo.sendNotification(1000, this.getId(), "Chỉ admin có quyền làm việc này");
+    // }
   }
 
   public void denyBorrowRequest(BookIssue a) {
     if (this.userType.equals("admin")) {
       DBInfo.denyBorrowRequest(a.getUserId(), a.getBookTitle());
     } //else {
-     // DBInfo.sendNotification(1000, this.getId(), "Chỉ admin có quyền làm việc này");
-   // }
+    // DBInfo.sendNotification(1000, this.getId(), "Chỉ admin có quyền làm việc này");
+    // }
   }
 
   public void deleteNotifications() {
