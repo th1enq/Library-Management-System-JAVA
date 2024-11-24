@@ -17,8 +17,9 @@ public class Book {
     private String price;
     private String language;
     private String buyLink;
-    private String avail;
+    private int avail;
     private int rating;
+    private  int numView;
 
     public Book() {
     }
@@ -39,14 +40,14 @@ public class Book {
         this.price = price;
         this.language = language;
         this.buyLink = buyLink;
-        this.avail = "YES";
+        this.avail = 1;
         this.rating = 0;
     }
 
     public Book(String title, String ISBN, String authors, String publisher,
                 String publishedDate,
                 String description, String thumbnail, String numPage, String category, String price,
-                String language, String buyLink, String avail, int rating) {
+                String language, String buyLink, int avail, int rating) {
         this.title = title;
         this.ISBN = ISBN;
         this.authors = authors;
@@ -167,11 +168,11 @@ public class Book {
         this.buyLink = buyLink;
     }
 
-    public String getAvail() {
+    public int getAvail() {
         return avail;
     }
 
-    public void setAvail(String avail) {
+    public void setAvail(int avail) {
         this.avail = avail;
     }
 
@@ -183,6 +184,13 @@ public class Book {
         this.rating = rating;
     }
 
+    public void setNumView(int numView){
+        this.numView = numView;
+    }
+
+    public int getNumView() {
+        return numView;
+    }
 
     @Override
     public String toString() {

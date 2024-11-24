@@ -136,7 +136,6 @@ public class BookViewDetailController extends BaseController {
     @FXML
     public void rentBook(ActionEvent actionEvent) {
         MainGUI.currentUser.muonSach(currentBook);
-        sendNotification(1000, MainGUI.currentUser.getId(), "Yêu cầu mượn sách đã được gửi!" + "\n" + "Vui lòng chờ admin phê duyệt!");
     }
 
     @FXML

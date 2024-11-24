@@ -278,14 +278,10 @@ public class User {
     // System.out.println(this);
   }
 
-  public void acceptBorrowRequest(BorrowRequest a) {
+  public void acceptBorrowRequest(BookIssue a) {
     if (this.userType.equals("admin")) {
-      DBInfo.acceptBorrowRequest(a);
+      DBInfo.acceptBorrowRequest(a.getUserId(),a.getBookTitle());
     }
-  }
-
-  public ArrayList<BorrowRequest> getBorrowRequest() {
-    return DBInfo.getBorrowRequest();
   }
 
   public void deleteNotifications() {

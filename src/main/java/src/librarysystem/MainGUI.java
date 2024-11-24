@@ -63,6 +63,10 @@ public class MainGUI implements Initializable {
     @FXML
     public ImageView profileImage;
     @FXML
+    public Button bookIssueButton;
+    @FXML
+    public FontAwesomeIcon bookIssueIcon;
+    @FXML
     private Button logOutButton;
 
     @FXML
@@ -241,6 +245,10 @@ public class MainGUI implements Initializable {
                 settingIcon.getStyleClass().add("icon-active-color");
                 settingButton.getStyleClass().add("menu-btn-active");
                 break;
+            case 5 :
+                bookIssueIcon.getStyleClass().add("icon-active-color");
+                bookIssueButton.getStyleClass().add("menu-btn-active");
+                break;
         }
     }
 
@@ -252,6 +260,7 @@ public class MainGUI implements Initializable {
         nontificationsIcon.getStyleClass().removeAll("icon-active-color", "icon-color");
         settingIcon.getStyleClass().removeAll("icon-active-color", "icon-color");
         logOutIcon.getStyleClass().removeAll("icon-active-color", "icon-color");
+        bookIssueIcon.getStyleClass().removeAll("icon-active-color", "icon-color");
 
         homeButton.getStyleClass().removeAll("menu-btn-active", "parent");
         bookViewButton.getStyleClass().removeAll("menu-btn-active", "parent");
@@ -259,6 +268,7 @@ public class MainGUI implements Initializable {
         nontificationsButton.getStyleClass().removeAll("menu-btn-active", "parent");
         settingButton.getStyleClass().removeAll("menu-btn-active", "parent");
         logOutButton.getStyleClass().removeAll("menu-btn-active", "parent");
+        bookIssueButton.getStyleClass().removeAll("menu-btn-active", "parent");
 
         homeIcon.getStyleClass().add("icon-color");
         bookIcon.getStyleClass().add("icon-color");
@@ -266,6 +276,7 @@ public class MainGUI implements Initializable {
         nontificationsIcon.getStyleClass().add("icon-color");
         settingIcon.getStyleClass().add("icon-color");
         logOutIcon.getStyleClass().add("icon-color");
+        bookIssueIcon.getStyleClass().add("icon-color");
 
 
         homeButton.getStyleClass().add("parent");
@@ -274,6 +285,7 @@ public class MainGUI implements Initializable {
         nontificationsButton.getStyleClass().add("parent");
         settingButton.getStyleClass().add("parent");
         logOutButton.getStyleClass().add("parent");
+        bookIssueButton.getStyleClass().add("parent");
     }
 
     private void fadeAnimation() {
@@ -431,7 +443,7 @@ public class MainGUI implements Initializable {
 
         // Define the total length (377) and the number of steps (50 steps for smoother animation)
         double totalLength = 377;
-        int steps = 40; // Number of steps for smoother animation
+        int steps = 30; // Number of steps for smoother animation
         double stepLength = totalLength / steps;  // Calculate step length (377 / 50)
 
         // Create a Timeline to animate the length of the line (timeNotiStroke)
@@ -456,7 +468,7 @@ public class MainGUI implements Initializable {
         FadeTransition fadeOut = new FadeTransition(Duration.millis(300), popUpPane);
         fadeOut.setFromValue(1);         // Start fully visible
         fadeOut.setToValue(0);           // Fade to invisible
-        fadeOut.setDelay(Duration.millis(4000));  // Delay the fade-out by 5 seconds
+        fadeOut.setDelay(Duration.millis(3000));  // Delay the fade-out by 5 seconds
 
         // When the fade-out finishes, hide the notification pane
         fadeOut.setOnFinished(event -> popUpPane.setVisible(false));
@@ -471,4 +483,23 @@ public class MainGUI implements Initializable {
     }
 
 
+    public void returnBookIssue(ActionEvent actionEvent) {
+        currentStage = 5;
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("BookIssue.fxml"));
+
+            fxml = loader.load();
+
+            BookIssueController bookIssueController = loader.getController();
+            bookIssueController.setMainGUIController(this);
+
+            mainVbox.getChildren().removeAll();
+            mainVbox.getChildren().setAll(fxml);
+
+
+        } catch (IOException ex) {
+            Logger.getLogger(LoginController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        update();
+    }
 }

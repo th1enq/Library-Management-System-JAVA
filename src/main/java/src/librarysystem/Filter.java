@@ -55,7 +55,7 @@ public class Filter {
         book.setPrice(resultSet.getString("price"));
         book.setLanguage(resultSet.getString("language"));
         book.setBuyLink(resultSet.getString("buyLink"));
-        book.setAvail(resultSet.getString("avail"));
+        book.setAvail(resultSet.getInt("avail"));
         book.setRating(resultSet.getInt("rating"));
         ret.add(book);
       }
@@ -113,7 +113,7 @@ public class Filter {
         book.setPrice(resultSet.getString("price"));
         book.setLanguage(resultSet.getString("language"));
         book.setBuyLink(resultSet.getString("buyLink"));
-        book.setAvail(resultSet.getString("avail"));
+        book.setAvail(resultSet.getInt("avail"));
         book.setRating(resultSet.getInt("rating"));
         ret.add(book);
       }
@@ -171,7 +171,7 @@ public class Filter {
         book.setPrice(resultSet.getString("price"));
         book.setLanguage(resultSet.getString("language"));
         book.setBuyLink(resultSet.getString("buyLink"));
-        book.setAvail(resultSet.getString("avail"));
+        book.setAvail(resultSet.getInt("avail"));
         book.setRating(resultSet.getInt("rating"));
         ret.add(book);
       }
@@ -252,7 +252,7 @@ public class Filter {
     }
 
     try (Connection conn = DBInfo.conn();
-        PreparedStatement stmt = conn.prepareStatement(sql)) {
+         PreparedStatement stmt = conn.prepareStatement(sql)) {
       if (!tmp.equals("ALL")) {
         stmt.setString(1, tmp);
       }
@@ -273,7 +273,7 @@ public class Filter {
         int reputation = rs.getInt("Reputation");
 
         User user = new User(id, name, username, password, userType, isBanned, avatarLink, MSV,
-            university, phone, coverPhotoLink, reputation);
+                university, phone, coverPhotoLink, reputation);
         userList.add(user);
       }
     } catch (SQLException e) {

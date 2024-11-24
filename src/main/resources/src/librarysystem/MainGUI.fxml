@@ -25,27 +25,22 @@
                         <FontAwesomeIcon fx:id="homeIcon" glyphName="HOME" size="2em" />
                      </graphic>
                   </Button>
-                  <Button fx:id="bookViewButton" layoutX="29.0" layoutY="231.0" mnemonicParsing="false" onAction="#bookView" prefHeight="51.0" prefWidth="52.0" style="-fx-cursor: hand;" styleClass="tran-btn" stylesheets="@stylesheet.css">
+                  <Button fx:id="bookViewButton" layoutX="29.0" layoutY="214.0" mnemonicParsing="false" onAction="#bookView" prefHeight="51.0" prefWidth="52.0" style="-fx-cursor: hand;" styleClass="tran-btn" stylesheets="@stylesheet.css">
                      <graphic>
-                        <FontAwesomeIcon fx:id="bookIcon" glyphName="BOOK" size="2em" />
+                        <FontAwesomeIcon fx:id="bookIcon" glyphName="SEARCH" size="2em" />
                      </graphic>
                   </Button>
-                  <Button fx:id="userButton" layoutX="29.0" layoutY="326.0" mnemonicParsing="false" onAction="#userView" prefHeight="51.0" prefWidth="52.0" style="-fx-cursor: hand;" styleClass="tran-btn" stylesheets="@stylesheet.css">
-                     <graphic>
-                        <FontAwesomeIcon fx:id="userIcon" glyphName="USER" size="2em" />
-                     </graphic>
-                  </Button>
-                  <Button fx:id="nontificationsButton" layoutX="29.0" layoutY="429.0" mnemonicParsing="false" onAction="#returnNontifications" prefHeight="51.0" prefWidth="52.0" style="-fx-cursor: hand;" styleClass="tran-btn" stylesheets="@stylesheet.css">
+                  <Button fx:id="nontificationsButton" layoutX="29.0" layoutY="499.0" mnemonicParsing="false" onAction="#returnNontifications" prefHeight="51.0" prefWidth="52.0" style="-fx-cursor: hand;" styleClass="tran-btn" stylesheets="@stylesheet.css">
                      <graphic>
                         <FontAwesomeIcon fx:id="nontificationsIcon" glyphName="BELL" size="2em" />
                      </graphic>
                   </Button>
-                  <Button fx:id="settingButton" layoutX="29.0" layoutY="534.0" mnemonicParsing="false" onAction="#returnSetting" prefHeight="51.0" prefWidth="52.0" style="-fx-cursor: hand;" styleClass="tran-btn" stylesheets="@stylesheet.css">
+                  <Button fx:id="settingButton" layoutX="29.0" layoutY="594.0" mnemonicParsing="false" onAction="#returnSetting" prefHeight="51.0" prefWidth="52.0" style="-fx-cursor: hand;" styleClass="tran-btn" stylesheets="@stylesheet.css">
                      <graphic>
                         <FontAwesomeIcon fx:id="settingIcon" glyphName="GEARS" size="2em" text="" />
                      </graphic>
                   </Button>
-                  <Button fx:id="logOutButton" layoutX="29.0" layoutY="683.0" mnemonicParsing="false" onAction="#logout" prefHeight="51.0" prefWidth="52.0" style="-fx-cursor: hand;" styleClass="tran-btn" stylesheets="@stylesheet.css">
+                  <Button fx:id="logOutButton" layoutX="29.0" layoutY="718.0" mnemonicParsing="false" onAction="#logout" prefHeight="51.0" prefWidth="52.0" style="-fx-cursor: hand;" styleClass="tran-btn" stylesheets="@stylesheet.css">
                      <graphic>
                         <FontAwesomeIcon fx:id="logOutIcon" glyphName="SIGN_OUT" selectionFill="#797979" size="2em" />
                      </graphic>
@@ -108,6 +103,16 @@
                         <Line fx:id="timeNotiStroke" endX="277.0" endY="1.52587890625E-5" layoutX="115.0" layoutY="122.0" startX="-100.0" stroke="#85e177" style="-fx-stroke-width: 2px;" />
                      </children>
                   </Pane>
+                  <Button fx:id="bookIssueButton" layoutX="29.0" layoutY="309.0" mnemonicParsing="false" onAction="#returnBookIssue" prefHeight="51.0" prefWidth="52.0" style="-fx-cursor: hand;" styleClass="tran-btn" stylesheets="@stylesheet.css">
+                     <graphic>
+                        <FontAwesomeIcon fx:id="bookIssueIcon" glyphName="BOOK" size="2em" />
+                     </graphic>
+                  </Button>
+                  <Button fx:id="userButton" layoutX="29.0" layoutY="404.0" mnemonicParsing="false" onAction="#userView" prefHeight="51.0" prefWidth="52.0" style="-fx-cursor: hand;" styleClass="tran-btn" stylesheets="@stylesheet.css">
+                     <graphic>
+                        <FontAwesomeIcon fx:id="userIcon" glyphName="USER" size="2em" />
+                     </graphic>
+                  </Button>
                </children>
             </Pane>
          </children>

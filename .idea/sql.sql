@@ -17,41 +17,50 @@ CREATE TABLE `book` (
     price VARCHAR(30),
     language VARCHAR(50),
     buyLink VARCHAR(255),
-    avail VARCHAR(50) NOT NULL DEFAULT "YES",
-    rating INT NOT NULL DEFAULT 0
+    avail INT DEFAULT 1,
+    rating INT NOT NULL DEFAULT 0,
+    numView INT DEFAULT 0
 );
-INSERT INTO book (title, authors, publisher, publishedDate, thumbnail, ISBN, description, numPage, category, price, language, buyLink, avail, rating) VALUES
+INSERT INTO book (title, authors, publisher, publishedDate, thumbnail, ISBN, description, numPage, category, price, language, buyLink, rating) VALUES
 -- Science (2 books)
-('A Brief History of Time', 'Stephen Hawking', 'Bantam', '1988-04-01', 'http://books.google.com/books/content?id=oZhagX6UWOMC&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api', '9780553380163', 'A landmark volume in science writing by one of the great minds of our time', '212', 'Science', '18.99', 'English', 'https://play.google.com/store/books/details?id=oZhagX6UWOMC&rdid=book-oZhagX6UWOMC&rdot=1&source=gbs_atb&pcampaignid=books_booksearch_atb&pli=1', 'YES', 5),
-('The Selfish Gene', 'Richard Dawkins', 'Oxford University Press', '1976-08-30', 'http://books.google.com/books/content?id=o59HDAAAQBAJ&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api', '9780192860927', 'A classic exposition of evolutionary biology', '360', 'Science', '15.99', 'English', 'https://play.google.com/store/books/details?id=o59HDAAAQBAJ&source=gbs_api', 'YES', 5),
+('A Brief History of Time', 'Stephen Hawking', 'Bantam', '1988-04-01', 'http://books.google.com/books/content?id=oZhagX6UWOMC&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api', '9780553380163', 'A landmark volume in science writing by one of the great minds of our time', '212', 'Science', '18.99', 'English', 'https://play.google.com/store/books/details?id=oZhagX6UWOMC&rdid=book-oZhagX6UWOMC&rdot=1&source=gbs_atb&pcampaignid=books_booksearch_atb&pli=1',  5),
+('The Selfish Gene', 'Richard Dawkins', 'Oxford University Press', '1976-08-30', 'http://books.google.com/books/content?id=o59HDAAAQBAJ&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api', '9780192860927', 'A classic exposition of evolutionary biology', '360', 'Science', '15.99', 'English', 'https://play.google.com/store/books/details?id=o59HDAAAQBAJ&source=gbs_api',  5),
 
 -- Manga (4 books)
-('Naruto', 'Masashi Kishimoto', 'Shueisha', '1999-09-21', 'http://books.google.com/books/content?id=bQbwAQAAQBAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api', '9781569319000', 'A young ninja who seeks recognition from his peers', '220', 'Manga', '9.99', 'Japanese', 'http://b...content-available-to-author-only...m.vn/books?id=bQbwAQAAQBAJ&dq=naruto&hl=&source=gbs_api', 'YES', 5),
-('One Piece', 'Eiichiro Oda', 'Shueisha', '1997-07-22', 'http://books.google.com/books/content?id=B83LDwAAQBAJ&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api', '9784088725093', 'The story of a young pirate and his adventures', '230', 'Manga', '9.99', 'Japanese', 'https://play.google.com/store/books/details?id=B83LDwAAQBAJ&source=gbs_api', 'YES', 5),
-('Attack on Titan', 'Hajime Isayama', 'Kodansha', '2009-09-09', 'http://books.google.com/books/content?id=sX0qDwAAQBAJ&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api', '9781612620244', 'Humanity fights against giant humanoid Titans', '192', 'Manga', '10.99', 'Japanese', 'https://play.google.com/store/books/details?id=sX0qDwAAQBAJ&source=gbs_api', 'YES', 4),
-('My Hero Academia', 'Kohei Horikoshi', 'Shueisha', '2014-07-07', 'http://books.google.com/books/content?id=nQA-CgAAQBAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api', '9781421582696', 'A boy born without superpowers in a world where they are common', '240', 'Manga', '10.99', 'Japanese', 'http://b...content-available-to-author-only...m.vn/books?id=nQA-CgAAQBAJ&dq=My+Hero+Academia&hl=&source=gbs_api', 'YES', 5),
+('Naruto', 'Masashi Kishimoto', 'Shueisha', '1999-09-21', 'http://books.google.com/books/content?id=bQbwAQAAQBAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api', '9781569319000', 'A young ninja who seeks recognition from his peers', '220', 'Manga', '9.99', 'Japanese', 'http://books.google.com.vn/books?id=bQbwAQAAQBAJ&dq=naruto&hl=&source=gbs_api',  5),
+('One Piece', 'Eiichiro Oda', 'Shueisha', '1997-07-22', 'http://books.google.com/books/content?id=B83LDwAAQBAJ&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api', '9784088725093', 'The story of a young pirate and his adventures', '230', 'Manga', '9.99', 'Japanese', 'https://play.google.com/store/books/details?id=B83LDwAAQBAJ&source=gbs_api',  5),
+('Attack on Titan', 'Hajime Isayama', 'Kodansha', '2009-09-09', 'http://books.google.com/books/content?id=sX0qDwAAQBAJ&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api', '9781612620244', 'Humanity fights against giant humanoid Titans', '192', 'Manga', '10.99', 'Japanese', 'https://play.google.com/store/books/details?id=sX0qDwAAQBAJ&source=gbs_api',  5),
+('My Hero Academia', 'Kohei Horikoshi', 'Shueisha', '2014-07-07', 'http://books.google.com/books/content?id=nQA-CgAAQBAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api', '9781421582696', 'A boy born without superpowers in a world where they are common', '240', 'Manga', '10.99', 'Japanese', 'http://books.google.com.vn/books?id=nQA-CgAAQBAJ&dq=My+Hero+Academia&hl=&source=gbs_api', 5),
 
 -- Magazine (10 books)
-('National Geographic', 'Various', 'National Geographic Partners', '2023-01-01', 'http://books.google.com/books/content?id=VCYjAQAAMAAJ&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api', '9781426217777', 'Exploring the world and all its beauty', '100', 'Magazine', '5.99', 'English', 'https://play.google.com/store/books/details?id=VCYjAQAAMAAJ&source=gbs_api', 'YES', 5),
-('Time', 'Various', 'Time USA', '2023-02-01', 'http://books.google.com/books/content?id=lwgAAAAAMBAJ&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api', '9781618932648', 'Covers world news, politics, and culture', '100', 'Magazine', '6.99', 'English', 'http://b...content-available-to-author-only...m.vn/books?id=lwgAAAAAMBAJ&dq=times&hl=&source=gbs_api', 'YES', 5),
-('Forbes', 'Various', 'Forbes Media', '2023-03-01', 'http://books.google.com/books/content?id=E047cuo415YC&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api', '9781618932649', 'Leading source for reliable business news', '90', 'Magazine', '6.99', 'English', 'https://play.google.com/store/books/details?id=E047cuo415YC&source=gbs_api', 'YES', 5),
-('The Economist', 'Various', 'The Economist Group', '2023-04-01', 'http://books.google.com/books/content?id=TDVRAQAAMAAJ&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api', '9781618932650', 'Delivers current affairs and international business news', '120', 'Magazine', '7.99', 'English', 'https://play.google.com/store/books/details?id=TDVRAQAAMAAJ&source=gbs_api', 'YES', 5),
-('Scientific American', 'Various', 'Springer Nature', '2023-05-01', 'http://books.google.com/books/content?id=rGiAErFjXJsC&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api', '9781618932651', 'Popular science magazine', '110', 'Magazine', '7.99', 'English', 'play.google.com/store/books/details?id=rGiAErFjXJsC&source=gbs_api', 'YES', 4),
-('People', 'Various', 'Meredith Corporation', '2023-06-01', 'http://books.google.com/books/content?id=2Z6voNKabXYC&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api', '9781618932652', 'Celebrity and human-interest stories', '95', 'Magazine', '5.99', 'English', 'link12.com', 'YES', 3),
-('Vogue', 'Various', 'Condé Nast', '2023-07-01', 'http://books.google.com/books/content?id=VAjhEAAAQBAJ&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api', '9781618932653', 'Fashion, beauty, and lifestyle magazine', '100', 'Magazine', '6.99', 'English', 'link13.com', 'YES', 5),
-('New Scientist', 'Various', 'New Scientist Ltd.', '2023-08-01', 'http://books.google.com/books/content?id=-M4-AQAAIAAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api', '9781618932654', 'Science and technology news', '110', 'Magazine', '8.99', 'English', 'link14.com', 'YES', 4),
+('National Geographic', 'Various', 'National Geographic Partners', '2023-01-01', 'http://books.google.com/books/content?id=VCYjAQAAMAAJ&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api', '9781426217777', 'Exploring the world and all its beauty', '100', 'Magazine', '5.99', 'English', 'https://play.google.com/store/books/details?id=VCYjAQAAMAAJ&source=gbs_api',  5),
+('Time', 'Various', 'Time USA', '2023-02-01', 'http://books.google.com/books/content?id=lwgAAAAAMBAJ&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api', '9781618932648', 'Covers world news, politics, and culture', '100', 'Magazine', '6.99', 'English', 'http://books.google.com.vn/books?id=lwgAAAAAMBAJ&dq=times&hl=&source=gbs_api',  5),
+('Forbes', 'Various', 'Forbes Media', '2023-03-01', 'http://books.google.com/books/content?id=E047cuo415YC&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api', '9781618932649', 'Leading source for reliable business news', '90', 'Magazine', '6.99', 'English', 'https://play.google.com/store/books/details?id=E047cuo415YC&source=gbs_api',  5),
+('The Economist', 'Various', 'The Economist Group', '2023-04-01', 'http://books.google.com/books/content?id=TDVRAQAAMAAJ&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api', '9781618932650', 'Delivers current affairs and international business news', '120', 'Magazine', '7.99', 'English', 'https://play.google.com/store/books/details?id=TDVRAQAAMAAJ&source=gbs_api',  5),
+('Scientific American', 'Various', 'Springer Nature', '2023-05-01', 'http://books.google.com/books/content?id=rGiAErFjXJsC&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api', '9781618932651', 'Popular science magazine', '110', 'Magazine', '7.99', 'English', 'play.google.com/store/books/details?id=rGiAErFjXJsC&source=gbs_api',  4),
+('People', 'Various', 'Meredith Corporation', '2023-06-01', 'http://books.google.com/books/content?id=2Z6voNKabXYC&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api', '9781618932652', 'Celebrity and human-interest stories', '95', 'Magazine', '5.99', 'English', 'link12.com', 3),
+('Vogue', 'Various', 'Condé Nast', '2023-07-01', 'http://books.google.com/books/content?id=VAjhEAAAQBAJ&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api', '9781618932653', 'Fashion, beauty, and lifestyle magazine', '100', 'Magazine', '6.99', 'English', 'link13.com',  5),
+('New Scientist', 'Various', 'New Scientist Ltd.', '2023-08-01', 'http://books.google.com/books/content?id=-M4-AQAAIAAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api', '9781618932654', 'Science and technology news', '110', 'Magazine', '8.99', 'English', 'link14.com',  4),
 -- Horror (4 books)
-('Dracula', 'Bram Stoker', 'Archibald Constable and Company', '1897-05-26', 'http://books.google.com/books/content?id=39lCAQAAMAAJ&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api', '9781435159570', 'The story of the famous vampire', '418', 'Horror', '12.99', 'English', 'link17.com', 'YES', 5),
-('Frankenstein', 'Mary Shelley', 'Lackington, Hughes, Harding, Mavor & Jones', '1818-01-01', 'http://books.google.com/books/content?id=9xHCAgAAQBAJ&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api', '9780486282114', 'The story of Victor Frankenstein and his monstrous creation', '280', 'Horror', '9.99', 'English', 'link18.com', 'YES', 5),
-('The Shining', 'Stephen King', 'Doubleday', '1977-01-28', 'http://books.google.com/books/content?id=VR5eEAAAQBAJ&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api', '9780385121675', 'A family isolated in a haunted hotel', '447', 'Horror', '10.99', 'English', 'link19.com', 'YES', 5),
-('It', 'Stephen King', 'Viking', '1986-09-15', 'http://books.google.com/books/content?id=fVWQDQAAQBAJ&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api', '9780450411434', 'A group of kids facing a monster', '1138', 'Horror', '14.99', 'English', 'link20.com', 'YES', 5),
+('Dracula', 'Bram Stoker', 'Archibald Constable and Company', '1897-05-26', 'http://books.google.com/books/content?id=39lCAQAAMAAJ&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api', '9781435159570', 'The story of the famous vampire', '418', 'Horror', '12.99', 'English', 'link17.com', 5),
+('Frankenstein', 'Mary Shelley', 'Lackington, Hughes, Harding, Mavor & Jones', '1818-01-01', 'http://books.google.com/books/content?id=9xHCAgAAQBAJ&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api', '9780486282114', 'The story of Victor Frankenstein and his monstrous creation', '280', 'Horror', '9.99', 'English', 'link18.com',  5),
+('The Shining', 'Stephen King', 'Doubleday', '1977-01-28', 'http://books.google.com/books/content?id=VR5eEAAAQBAJ&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api', '9780385121675', 'A family isolated in a haunted hotel', '447', 'Horror', '10.99', 'English', 'link19.com', 5),
+('It', 'Stephen King', 'Viking', '1986-09-15', 'http://books.google.com/books/content?id=fVWQDQAAQBAJ&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api', '9780450411434', 'A group of kids facing a monster', '1138', 'Horror', '14.99', 'English', 'link20.com',  5),
 -- Self-Help (2 books)
-('The Power of Now', 'Eckhart Tolle', 'New World Library', '1997-10-01', 'http://books.google.com/books/content?id=QFQ7DwAAQBAJ&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api', '9781577314806', 'A guide to spiritual enlightenment and living in the present moment.', '229', 'Self-Help', '14.99', 'English', 'link21.com', 'YES', 5),
-('Atomic Habits', 'James Clear', 'Penguin', '2018-10-16', 'http://books.google.com/books/content?id=Jrx6EAAAQBAJ&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api', '9780735211292', 'A proven way to build good habits and break bad ones.', '320', 'Self-Help', '18.99', 'English', 'link22.com', 'YES', 5);
+('The Power of Now', 'Eckhart Tolle', 'New World Library', '1997-10-01', 'http://books.google.com/books/content?id=QFQ7DwAAQBAJ&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api', '9781577314806', 'A guide to spiritual enlightenment and living in the present moment.', '229', 'Self-Help', '14.99', 'English', 'link21.com', 5),
+('Atomic Habits', 'James Clear', 'Penguin', '2018-10-16', 'http://books.google.com/books/content?id=Jrx6EAAAQBAJ&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api', '9780735211292', 'A proven way to build good habits and break bad ones.', '320', 'Self-Help', '18.99', 'English', 'link22.com',5);
 
 DROP TABLE IF EXISTS `borrow_slip`;
 
 CREATE TABLE `borrow_slip` (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    book_name VARCHAR(500) NOT NULL,
+    borrow_date DATETIME NOT NULL,
+    return_date DATETIME NOT NULL
+);
+
+CREATE TABLE `borrow_history` (
     id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT NOT NULL,
     book_name VARCHAR(500) NOT NULL,
@@ -229,3 +238,36 @@ CREATE TABLE `notifications` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+INSERT INTO `borrow_history` (`id`, `user_id`, `book_name`, `borrow_date`, `return_date`) VALUES
+(1, 1, 'Naruto', '2024-11-24 20:26:02', '2024-11-24 20:26:42'),
+(2, 2, 'Dracula', '2024-11-24 20:30:10', '2024-11-24 20:40:10'),
+(3, 3, 'Time', '2024-11-24 21:00:00', '2024-11-24 21:20:00'),
+(4, 1, 'Forbes', '2024-11-24 20:45:30', '2024-11-24 21:05:30'),
+(5, 2, 'Naruto', '2024-11-24 22:10:00', '2024-11-24 22:30:00'),
+(6, 3, 'Dracula', '2024-11-24 22:30:00', '2024-11-24 22:50:00'),
+(7, 1, 'Time', '2024-11-24 23:00:00', '2024-11-24 23:20:00'),
+(8, 2, 'Forbes', '2024-11-24 23:10:30', '2024-11-24 23:30:30'),
+(9, 3, 'Naruto', '2024-11-24 23:40:00', '2024-11-24 23:55:00'),
+(10, 1, 'Dracula', '2024-11-25 00:00:00', '2024-11-25 00:30:00');
+INSERT INTO `borrow_request` (`id`, `user_id`, `book_name`, `borrow_date`, `return_date`, `accepted`) VALUES
+(1, 1, 'Naruto', '2024-11-24 20:26:02', '2024-12-04 20:26:02', 1),
+(2, 2, 'Forbes', '2024-11-24 20:41:03', '2024-12-04 20:41:03', 1),
+(3, 3, 'Time', '2024-11-24 20:50:10', '2024-12-04 20:50:10', 1),
+(4, 1, 'Forbes', '2024-11-24 21:00:00', '2024-12-04 21:00:00', 0),
+(5, 2, 'Time', '2024-11-24 21:30:00', '2024-12-04 21:30:00', 0),
+(6, 3, 'Dracula', '2024-11-24 22:00:00', '2024-12-04 22:00:00', 1),
+(7, 1, 'Dracula', '2024-11-24 22:30:30', '2024-12-04 22:30:30', 1),
+(8, 2, 'Naruto', '2024-11-24 23:00:00', '2024-12-04 23:00:00', 0),
+(9, 3, 'Naruto', '2024-11-24 23:30:00', '2024-12-04 23:30:00', 1),
+(10, 1, 'Forbes', '2024-11-25 00:00:00', '2024-12-05 00:00:00', 0);
+INSERT INTO `borrow_slip` (`id`, `user_id`, `book_name`, `borrow_date`, `return_date`) VALUES
+(1, 1, 'Naruto', '2024-11-24 20:26:02', '2024-12-04 20:26:02'),
+(2, 2, 'Forbes', '2024-11-24 20:35:30', '2024-12-04 20:35:30'),
+(3, 3, 'Dracula', '2024-11-24 21:00:00', '2024-12-04 21:00:00'),
+(4, 1, 'Time', '2024-11-24 21:30:00', '2024-12-04 21:30:00'),
+(5, 2, 'Naruto', '2024-11-24 22:00:00', '2024-12-04 22:00:00'),
+(6, 3, 'Forbes', '2024-11-24 22:30:00', '2024-12-04 22:30:00'),
+(7, 1, 'Dracula', '2024-11-24 23:00:00', '2024-12-04 23:00:00'),
+(8, 2, 'Time', '2024-11-24 23:15:00', '2024-12-04 23:15:00'),
+(9, 3, 'Forbes', '2024-11-24 23:40:00', '2024-12-04 23:40:00'),
+(10, 1, 'Dracula', '2024-11-25 00:10:00', '2024-12-05 00:10:00');

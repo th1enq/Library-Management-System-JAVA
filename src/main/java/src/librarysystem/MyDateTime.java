@@ -2,6 +2,7 @@ package src.librarysystem;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.Temporal;
 
 public class MyDateTime implements Comparable<MyDateTime> {
 
@@ -31,8 +32,13 @@ public class MyDateTime implements Comparable<MyDateTime> {
     return this.dateTime.compareTo(other.dateTime);
   }
 
-  public static void main(String[] args) {
-  //  MyDateTime myDateTime = new MyDateTime(LocalDateTime.now());
-  //  System.out.println("now: " + myDateTime.toString());
+  public LocalDateTime toLocalDateTime() {
+    return this.dateTime;
   }
+  public static void main(String[] args) {
+    //  MyDateTime myDateTime = new MyDateTime(LocalDateTime.now());
+    //  System.out.println("now: " + myDateTime.toString());
+  }
+
+
 }
