@@ -68,7 +68,7 @@ CREATE TABLE `borrow_history` (
     return_date DATETIME NOT NULL
 );
 CREATE TABLE `borrow_request` (
-    id INT AUTO_INCREMENT PRIMARY KEY,
+    id INT AUTO_INCREMENT ,
     user_id INT NOT NULL,
     book_name VARCHAR(500) NOT NULL,
     borrow_date DATETIME NOT NULL,

@@ -1,27 +1,19 @@
 package src.librarysystem;
 
-public class BorrowRequest {
-  private int  id;
-  private int userId;
-  private String bookName;
-  private String borrowDate;
-  private String returnDate;
+public class BorrowRequest extends BookIssue {
+  private int id;
   private int accepted;
-
   public BorrowRequest() {
+    super(); 
   }
 
-  public BorrowRequest(int id, int userId, String bookName, String borrowDate, String returnDate, int accepted) {
+  public BorrowRequest(int id, int userId, String username, String bookTitle, String bookAuthor, MyDateTime issueDate, MyDateTime returnDate, int accepted) {
+    super(userId, username, bookTitle, bookAuthor, issueDate, returnDate,STATUS_PROCESSING );
     this.id = id;
-    this.userId = userId;
-    this.bookName = bookName;
-    this.borrowDate = borrowDate;
-    this.returnDate = returnDate;
     this.accepted = accepted;
   }
 
-
-  // Getter và Setter cho từng thuộc tính
+  // Getter và Setter cho `id`
   public int getId() {
     return id;
   }
@@ -30,38 +22,7 @@ public class BorrowRequest {
     this.id = id;
   }
 
-  public int getUserId() {
-    return userId;
-  }
-
-  public void setUserId(int userId) {
-    this.userId = userId;
-  }
-
-  public String getBookName() {
-    return bookName;
-  }
-
-  public void setBookName(String bookName) {
-    this.bookName = bookName;
-  }
-
-  public String getBorrowDate() {
-    return borrowDate;
-  }
-
-  public void setBorrowDate(String borrowDate) {
-    this.borrowDate = borrowDate;
-  }
-
-  public String getReturnDate() {
-    return returnDate;
-  }
-
-  public void setReturnDate(String returnDate) {
-    this.returnDate = returnDate;
-  }
-
+  // Getter và Setter cho `accepted`
   public int isAccepted() {
     return accepted;
   }
@@ -74,10 +35,13 @@ public class BorrowRequest {
   public String toString() {
     return "BorrowRequest{" +
         "id=" + id +
-        ", userId=" + userId +
-        ", bookName='" + bookName + '\'' +
-        ", borrowDate='" + borrowDate + '\'' +
-        ", returnDate='" + returnDate + '\'' +
+        ", userId=" + getUserId() +
+        ", username='" + getUsername() + '\'' +
+        ", bookTitle='" + getBookTitle() + '\'' +
+        ", bookAuthor='" + getBookAuthor() + '\'' +
+        ", issueDate=" + getIssueDate() +
+        ", returnDate=" + (getReturnDate() != null ? getReturnDate() : "Chưa thiết lập") +
+        ", status='" + getStatus() + '\'' +
         ", accepted=" + accepted +
         '}';
   }

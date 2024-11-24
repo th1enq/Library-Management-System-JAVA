@@ -474,84 +474,69 @@ public class DBInfo {
 
   public static void addBorrowRequest(String itemName, int id) {
     Connection con = null;
-    PreparedStatement preparedStatement = null;
+    PreparedStatement checkStmt = null;
+    PreparedStatement insertStmt = null;
+
     try {
       con = DBInfo.conn();
-      String sql = "INSERT INTO borrow_request(user_id, book_name, borrow_date, return_date) VALUES (?, ?, ?, ?)";
-      preparedStatement = con.prepareStatement(sql);
+
+      // Kiểm tra xem yêu cầu đã tồn tại chưa
+      String checkSql = "SELECT COUNT(*) FROM borrow_request WHERE user_id = ? AND book_name = ?";
+      checkStmt = con.prepareStatement(checkSql);
+      checkStmt.setInt(1, id);
+      checkStmt.setString(2, itemName);
+
+      ResultSet rs = checkStmt.executeQuery();
+      if (rs.next() && rs.getInt(1) > 0) {
+        System.out.println("Yêu cầu mượn sách đã tồn tại cho user_id = " + id + " và sách '" + itemName + "'.");
+        return;
+      }
+      String insertSql = "INSERT INTO borrow_request (user_id, book_name, borrow_date, return_date) VALUES (?, ?, ?, ?)";
+      insertStmt = con.prepareStatement(insertSql);
 
       LocalDateTime currentDateTime = LocalDateTime.now();
       LocalDateTime dateTimeAfter10Days = currentDateTime.plusDays(10);
+      insertStmt.setInt(1, id);
+      insertStmt.setString(2, itemName);
+      insertStmt.setTimestamp(3, Timestamp.valueOf(currentDateTime));
+      insertStmt.setTimestamp(4, Timestamp.valueOf(dateTimeAfter10Days));
 
-      preparedStatement.setInt(1, id);
-      preparedStatement.setString(2, itemName);
-      preparedStatement.setTimestamp(3, Timestamp.valueOf(currentDateTime));
-      preparedStatement.setTimestamp(4, Timestamp.valueOf(dateTimeAfter10Days));
-      int rowsAffected = preparedStatement.executeUpdate();
-      System.out.println("Request added successfully! Rows affected: " + rowsAffected);
+      int rowsAffected = insertStmt.executeUpdate();
+      System.out.println("Yêu cầu mượn sách đã được thêm thành công! Rows affected: " + rowsAffected);
 
     } catch (SQLException e) {
-      System.out.println("Error adding request");
+      System.out.println("Lỗi khi thêm yêu cầu mượn sách.");
       e.printStackTrace();
     } finally {
-      // Ensure resources are closed
       try {
-        if (preparedStatement != null) {
-          preparedStatement.close();
-        }
-        if (con != null) {
-          con.close();
-        }
+        if (checkStmt != null) checkStmt.close();
+        if (insertStmt != null) insertStmt.close();
+        if (con != null) con.close();
       } catch (SQLException e) {
         e.printStackTrace();
       }
     }
   }
 
-  public static ArrayList<BorrowRequest> getBorrowRequest() {
-    ArrayList<BorrowRequest> borrowRequestList = new ArrayList<>();
-    String sql = "SELECT * FROM borrow_request WHERE accepted = 0";
 
-    try (Connection conn = DBInfo.conn();
-        PreparedStatement stmt = conn.prepareStatement(sql)) {
-      ResultSet rs = stmt.executeQuery();
+  public static void acceptBorrowRequest(int userId, String bookName) {
+    String sql = "UPDATE borrow_request SET accepted = 1 WHERE user_id = ? AND book_name = ?";
+    try (Connection conn = DBInfo.conn(); PreparedStatement stmt = conn.prepareStatement(sql)) {
+      stmt.setInt(1, userId);
+      stmt.setString(2, bookName);
 
-      while (rs.next()) {
-        int id = rs.getInt("id");
-        int userId = (rs.getInt("user_id"));
-        String bookName = rs.getString("book_name");
-        String borrowDate = rs.getString("borrow_date");
-        String returnDate = rs.getString("return_date");
-
-        BorrowRequest request = new BorrowRequest(id, userId, bookName, borrowDate, returnDate, 0);
-        borrowRequestList.add(request);
-      }
-    } catch (SQLException e) {
-      e.printStackTrace();
-    }
-
-    return borrowRequestList;
-  }
-
-  public static void acceptBorrowRequest(BorrowRequest request) {
-    int id = request.getId();
-    String sql = "UPDATE borrow_request SET accepted = 1 WHERE id = ?";
-
-    try (Connection conn = DBInfo.conn();
-        PreparedStatement stmt = conn.prepareStatement(sql)) {
-      stmt.setInt(1, id);
       int rowsUpdated = stmt.executeUpdate();
+
       if (rowsUpdated > 0) {
-        System.out.println("Yêu cầu mượn sách với ID = " + id + " đã được chấp nhận.");
-        addSlip(request.getBookName(), request.getUserId());
+        System.out.println("Yêu cầu mượn sách của user_id = " + userId + " cho sách '" + bookName + "' đã được chấp nhận.");
+        addSlip(bookName,userId);
       } else {
-        System.out.println("Không tìm thấy yêu cầu mượn sách với ID = " + id);
+        System.out.println("Không tìm thấy yêu cầu mượn sách cho user_id = " + userId + " và sách '" + bookName + "'.");
       }
     } catch (SQLException e) {
       System.err.println("Lỗi khi cập nhật yêu cầu mượn sách: " + e.getMessage());
     }
   }
-
   /**
    * tra sach
    */
@@ -2197,13 +2182,21 @@ public class DBInfo {
 
   public static void main(String[] args) throws Exception {
 
-    User X = getUser("nguyenvana");
+    User X = getUser("tranthib");
 
     User Y = getUser("levanc");
 
-    ArrayList<BookIssue> tmp = BookIssueDB.getBorrowedList();
+    ArrayList<BookIssue> tmp = BookIssueDB.getProcessingList();
     for (BookIssue i : tmp) {
       i.displayIssueInfo();
+    }
+    tmp = BookIssueDB.getProcessingList();
+    for (BookIssue i : tmp) {
+      Y.acceptBorrowRequest(i);
+    }
+    tmp = BookIssueDB.getProcessingList();
+    for (BookIssue i : tmp) {
+     i.displayIssueInfo();
     }
 
   }
