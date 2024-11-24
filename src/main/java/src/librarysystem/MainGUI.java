@@ -2,8 +2,13 @@ package src.librarysystem;
 
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import javafx.animation.*;
+import javafx.scene.Cursor;
 import javafx.scene.control.*;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
+import javafx.scene.shape.Line;
 import javafx.util.Duration;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
@@ -21,6 +26,7 @@ import java.util.ArrayList;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.scene.layout.Region;
 
 import javafx.event.ActionEvent;
 
@@ -42,6 +48,20 @@ public class MainGUI implements Initializable {
     public FontAwesomeIcon logOutIcon;
     @FXML
     public TextField bookQuery;
+    @FXML
+    public Pane popUpPane;
+    @FXML
+    public  Label labelNoti;
+    @FXML
+    public Label contentNoti;
+    @FXML
+    public ImageView imageNoti;
+    @FXML
+    public Line timeNotiStroke;
+    @FXML
+    public Label numberNontifications;
+    @FXML
+    public ImageView profileImage;
     @FXML
     private Button logOutButton;
 
@@ -132,7 +152,20 @@ public class MainGUI implements Initializable {
             Logger.getLogger(LoginController.class.getName()).log(Level.SEVERE, null, ex);
         }
         update();
-        System.out.println(currentUser.toString());
+        sendNotification(1000, currentUser.getId(), "Đăng nhập thành công !!!");
+        updateNotifications();
+
+        double radius = 30; // Bán kính hình tròn (150 / 2)
+        Circle clipAvatar = new Circle(30, 30, radius); // Tâm (75, 75) với bán kính 75
+        profileImage.setClip(clipAvatar);
+        profileImage.setCursor(Cursor.HAND);  // Set the cursor to hand when hovering over profileImage
+        profileImage.setOnMouseClicked(event -> {
+            returnSetting(new ActionEvent());
+        });
+    }
+
+    void updateNotifications() {
+        numberNontifications.setText(String.valueOf(currentUser.getNotifications().size()));
     }
 
     private Label loadingLabel;
@@ -172,6 +205,7 @@ public class MainGUI implements Initializable {
             mainVbox.getChildren().clear();
             mainVbox.getChildren().setAll(fxml);
 
+            bookViewDetailController.setMainGUIController(this);
             bookViewDetailController.initialize(currentBook);
             bookViewDetailController.setApiMode(apiMode);
             bookViewDetailController.getReturnSearchBook().setOnAction(e -> {
@@ -277,7 +311,7 @@ public class MainGUI implements Initializable {
             fxml = loader.load();
 
             SearchBookController searchBookController = loader.getController();
-            searchBookController.setMainGUI(this);
+            searchBookController.setMainGUIController(this);
 
             mainVbox.getChildren().removeAll();
             mainVbox.getChildren().setAll(fxml);
@@ -293,7 +327,13 @@ public class MainGUI implements Initializable {
     private void userView() {
         currentStage = 2;
         try {
-            fxml = FXMLLoader.load(getClass().getResource("userView.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("UserView.fxml"));
+
+            fxml = loader.load();
+
+            UserController userController = loader.getController();
+            userController.setMainGUIController(this);
+
             mainVbox.getChildren().removeAll();
             mainVbox.getChildren().setAll(fxml);
 
@@ -308,21 +348,42 @@ public class MainGUI implements Initializable {
     public void returnSetting(ActionEvent actionEvent) {
         currentStage = 4;
         try {
-            fxml = FXMLLoader.load(getClass().getResource("Setting.fxml"));
+            // Tải Setting.fxml
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("Setting.fxml"));
+            fxml = loader.load();
+
+            // Lấy controller từ Setting.fxml
+            SettingController settingController = loader.getController();
+
+            // Gọi phương thức setMainGUIController để truyền MainGUIController cho SettingController
+            settingController.setMainGUIController(this);
+
+            // Thay thế giao diện cũ bằng giao diện mới (Setting)
             mainVbox.getChildren().removeAll();
             mainVbox.getChildren().setAll(fxml);
 
+            // Áp dụng hiệu ứng fade (nếu cần)
             fadeAnimation();
         } catch (IOException ex) {
             Logger.getLogger(LoginController.class.getName()).log(Level.SEVERE, null, ex);
         }
         update();
     }
+
 
     public void returnNontifications(ActionEvent actionEvent) {
         currentStage = 3;
         try {
-            fxml = FXMLLoader.load(getClass().getResource("Nontifications.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("Nontifications.fxml"));
+            fxml = loader.load();
+
+            // Lấy controller từ Setting.fxml
+            NotificationController notificationController = loader.getController();
+
+            // Gọi phương thức setMainGUIController để truyền MainGUIController cho SettingController
+            notificationController.setMainGUIController(this);
+
+            // Thay thế giao diện cũ bằng giao diện mới (Setting)
             mainVbox.getChildren().removeAll();
             mainVbox.getChildren().setAll(fxml);
 
@@ -332,4 +393,82 @@ public class MainGUI implements Initializable {
         }
         update();
     }
+
+    @FXML
+    public void closePopUp(ActionEvent actionEvent) {
+        // Create a FadeTransition for the popUpPane
+        FadeTransition fadeOut = new FadeTransition(Duration.millis(300), popUpPane);
+        fadeOut.setFromValue(1);  // Start fully visible
+        fadeOut.setToValue(0);    // Fade to invisible
+
+        // Set a delay before the fade-out effect starts, if needed, or remove it for immediate fade-out
+        fadeOut.setDelay(Duration.millis(0));  // Set to 0 for immediate fade-out, adjust delay if needed
+
+        // When the fade-out finishes, hide the popUpPane
+        fadeOut.setOnFinished(event -> popUpPane.setVisible(false));
+
+        // Play the fade-out animation
+        fadeOut.play();
+    }
+
+
+    public void sendNotification(int senderId, int receiverId, String content) {
+        Notification newNotification = new Notification(senderId, receiverId, content);
+        DBInfo.sendNotification(senderId, receiverId, content);
+
+        // Make the popUpPane visible and set initial opacity to 0
+        popUpPane.setVisible(true);
+        popUpPane.setOpacity(0);
+
+        // Create Fade-in effect for the notification
+        FadeTransition fadeIn = new FadeTransition(Duration.millis(300), popUpPane);
+        fadeIn.setFromValue(0);
+        fadeIn.setToValue(1);
+
+        // Set initial position of the timeNotiStroke (progress bar) with endX at -100
+        timeNotiStroke.setStartX(-100);   // Start position (off-screen)
+        timeNotiStroke.setEndX(-100);     // Start with endX at -100 (invisible)
+
+        // Define the total length (377) and the number of steps (50 steps for smoother animation)
+        double totalLength = 377;
+        int steps = 40; // Number of steps for smoother animation
+        double stepLength = totalLength / steps;  // Calculate step length (377 / 50)
+
+        // Create a Timeline to animate the length of the line (timeNotiStroke)
+        Timeline timeline = new Timeline();
+
+        // Create 50 keyframes to increment the length over 5 seconds
+        for (int i = 1; i <= steps; i++) {
+            final int step = i;
+            // Each keyframe will occur at 0.1 second intervals (5 seconds divided by 50 steps)
+            KeyFrame keyFrame = new KeyFrame(Duration.seconds(i * 0.1), e -> {
+                // Update the endX position for each step
+                timeNotiStroke.setEndX(-100 + step * stepLength);  // Increment endX smoothly
+            });
+            timeline.getKeyFrames().add(keyFrame);
+        }
+
+        timeline.setCycleCount(1);  // Run the timeline animation only once
+        timeline.setAutoReverse(false);  // Disable auto-reverse, keep the final value at 277
+        timeline.play();  // Start the timeline animation
+
+        // Fade out the notification after 5 seconds (instead of 2 seconds)
+        FadeTransition fadeOut = new FadeTransition(Duration.millis(300), popUpPane);
+        fadeOut.setFromValue(1);         // Start fully visible
+        fadeOut.setToValue(0);           // Fade to invisible
+        fadeOut.setDelay(Duration.millis(4000));  // Delay the fade-out by 5 seconds
+
+        // When the fade-out finishes, hide the notification pane
+        fadeOut.setOnFinished(event -> popUpPane.setVisible(false));
+
+        // Play the animations: Fade-in, progress bar animation, then fade-out
+        fadeIn.play();
+        fadeOut.play();
+
+        // Update the notification content
+        labelNoti.setText("Thông báo từ " + newNotification.getReceiver());
+        contentNoti.setText(content);
+    }
+
+
 }

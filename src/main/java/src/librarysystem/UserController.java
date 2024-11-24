@@ -29,7 +29,7 @@ import java.util.ArrayList;
 import java.util.Optional;
 import java.util.Set;
 
-public class UserController {
+public class UserController extends BaseController {
     public Button viewAllButton;
     public Button viewAdminButton;
     public Button viewUserButton;
@@ -135,6 +135,7 @@ public class UserController {
                 DBInfo.DeleteUser(x.getUsername());
                 userList.remove(x);
             }
+            sendNotification(1000, 1000, "Xóa thành công");
             update();
         });
 
@@ -221,7 +222,6 @@ public class UserController {
             Pane userPane = createUserPane(user, index++);
             vbox.getChildren().add(userPane);
         }
-
         userScrollPane.setContent(vbox);
     }
 
@@ -310,6 +310,7 @@ public class UserController {
                 workbook.write(fileOut);
                 workbook.close();
                 System.out.println("File Excel đã được xuất thành công!");
+                sendNotification(1000, 1000, "Xuất file Excel thành viên thành công");
             } catch (IOException e) {
                 e.printStackTrace();
                 System.out.println("Lỗi khi xuất file Excel!");
@@ -385,5 +386,7 @@ public class UserController {
         tempPane.setVisible(false);
         containerPane.setEffect(null);
         userNameAdd.clear();
+
+        sendNotification(1000, 1000, "Tạo thành công tài khoản !!!");
     }
 }

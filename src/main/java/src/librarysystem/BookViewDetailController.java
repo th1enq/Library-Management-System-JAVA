@@ -9,7 +9,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
-public class BookViewDetailController {
+public class BookViewDetailController extends BaseController {
     @FXML
     public ImageView qrImage;
     @FXML
@@ -136,16 +136,13 @@ public class BookViewDetailController {
     @FXML
     public void rentBook(ActionEvent actionEvent) {
         MainGUI.currentUser.muonSach(currentBook);
-        System.out.println("Yêu cầu mượn sách đã được gửi đến admin, hãy chờ admin phê duyệt");
-        for(Pair<Book, MyDateTime> x : MainGUI.currentUser.getRentBook()) {
-            System.out.println(x.getKey().toString() + " " + x.getValue().toString());
-        }
+        sendNotification(1000, MainGUI.currentUser.getId(), "Yêu cầu mượn sách đã được gửi!" + "\n" + "Vui lòng chờ admin phê duyệt!");
     }
 
     @FXML
     public void editBook(ActionEvent actionEvent) {
         if(apiMode) {
-            System.out.println("Không thể chỉnh sửa sách từ API");
+            sendNotification(1000, MainGUI.currentUser.getId(), "Bạn không thể chỉnh sửa sách từ thư viện online !!!");
             return;
         }
         editMode = true;
@@ -154,7 +151,11 @@ public class BookViewDetailController {
 
     @FXML
     public void removeBook(ActionEvent actionEvent) {
-        System.out.println(currentBook.toString());
+        if(apiMode == true) {
+            sendNotification(1000, MainGUI.currentUser.getId(), "Không thể xóa sách từ thư viện online !!!");
+            return;
+        }
+        sendNotification(1000, MainGUI.currentUser.getId(), "Xóa sách thành công !!!");
         DBInfo.deleteBook(currentBook);
     }
 
@@ -168,12 +169,15 @@ public class BookViewDetailController {
 
         DBInfo.editBook(currentBook, detailTitle.getText(), detailAuthor.getText(), detailPushlisher.getText(), currentBook.getThumbnail(), detailDescription.getText(), detailPaperback.getText(), detailLanguage.getText());
 
+        sendNotification(1000, MainGUI.currentUser.getId(), "Chỉnh sửa sách thành công !!!");
+
         editMode = false;
         update();
     }
 
     @FXML
     public void addBook(ActionEvent actionEvent) {
+        sendNotification(1000, MainGUI.currentUser.getId(), "Thêm thành công vào thư viện !!!");
         DBInfo.addBook(currentBook);
     }
 }
