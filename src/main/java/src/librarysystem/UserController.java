@@ -52,6 +52,12 @@ public class UserController extends BaseController {
     public TextField userNameAdd;
     @FXML
     public CheckBox markAll;
+    @FXML
+    public Pane removeConfirm;
+    @FXML
+    public Button cancelDelete;
+    @FXML
+    public Button submitDelete;
 
     private ArrayList<User> userList = Filter.getInstance().getUserList("ALL");
     @FXML
@@ -131,12 +137,7 @@ public class UserController extends BaseController {
             if(!selectedUser.contains(user)) {
                 selectedUser.add(user);
             }
-            for (User x : selectedUser) {
-                DBInfo.DeleteUser(x.getUsername());
-                userList.remove(x);
-            }
-            sendNotification(1000, 1000, "Xóa thành công");
-            update();
+            removeSelectedUser();
         });
 
         // WARNING Button (FontAwesome "WARNING")
@@ -161,6 +162,12 @@ public class UserController extends BaseController {
         return pane;
     }
 
+
+    private void removeSelectedUser() {
+        GaussianBlur blurEffect = new GaussianBlur(10);
+        containerPane.setEffect(blurEffect); // Làm mờ phần nội dung chính
+        removeConfirm.setVisible(true);
+    }
 
     private void update() {
         viewAllButton.setStyle("-fx-background-color: transparent; -fx-background-radius: 5px; -fx-cursor: hand;");
@@ -210,7 +217,24 @@ public class UserController extends BaseController {
             }
         });
 
+        roleChoice.getItems().addAll("User", "Admin");
+        roleChoice.setValue("User");
 
+        cancelDelete.setOnAction(event -> {
+            removeConfirm.setVisible(false);
+            containerPane.setEffect(null);
+        });
+
+        submitDelete.setOnAction(event -> {
+            for (User x : selectedUser) {
+                DBInfo.DeleteUser(x.getUsername());
+                userList.remove(x);
+            }
+            sendNotification(1000, 1000, "Xóa thành công");
+            update();
+            removeConfirm.setVisible(false);
+            containerPane.setEffect(null);
+        });
     }
 
     private void displayUser() {
@@ -378,8 +402,8 @@ public class UserController extends BaseController {
         newUser.setName("Account 000");
         newUser.setUsername(username);
         newUser.setPassword("1");
-        newUser.setUserType("user");
-        DBInfo.Register(0, "Account 000", username, "1", "user", null);
+        newUser.setUserType(String.valueOf(roleChoice.getValue()));
+        DBInfo.Register(0, "Account 000", username, "1", String.valueOf(roleChoice.getValue()), null);
         userList.add(newUser);
         update();
 

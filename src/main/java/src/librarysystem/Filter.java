@@ -252,7 +252,7 @@ public class Filter {
     }
 
     try (Connection conn = DBInfo.conn();
-        PreparedStatement stmt = conn.prepareStatement(sql)) {
+         PreparedStatement stmt = conn.prepareStatement(sql)) {
       if (!tmp.equals("ALL")) {
         stmt.setString(1, tmp);
       }
@@ -273,7 +273,7 @@ public class Filter {
         int reputation = rs.getInt("Reputation");
 
         User user = new User(id, name, username, password, userType, isBanned, avatarLink, MSV,
-            university, phone, coverPhotoLink, reputation);
+                university, phone, coverPhotoLink, reputation);
         userList.add(user);
       }
     } catch (SQLException e) {

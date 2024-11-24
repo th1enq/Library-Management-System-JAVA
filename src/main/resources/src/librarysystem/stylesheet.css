@@ -344,4 +344,7 @@
     -fx-text-fill: #0066cc; /* Màu chữ khi hover */
 }
 
-
+.tab-pane .tab-header-area {
+    -fx-tab-min-height: 0;
+    -fx-tab-max-height: 0;
+}
