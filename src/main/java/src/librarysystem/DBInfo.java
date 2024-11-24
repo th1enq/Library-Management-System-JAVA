@@ -524,60 +524,66 @@ public class DBInfo {
   public static void returnBook(String itemName, int id) {
     Connection con = DBInfo.conn();
     try {
-      // Delete the borrowing record from the borrow_slip table
-      String sql = "DELETE FROM borrow_slip WHERE book_name = ? AND user_id = ?";
-      PreparedStatement preparedStatement = con.prepareStatement(sql);
-      preparedStatement.setString(1, itemName);
-      preparedStatement.setInt(2, id);
-      System.out.println(id);
-      int rowsAffected = preparedStatement.executeUpdate();
+      String selectBorrowDateSql = "SELECT borrow_date FROM borrow_slip WHERE book_name = ? AND user_id = ?";
+      PreparedStatement selectBorrowDateStatement = con.prepareStatement(selectBorrowDateSql);
+      selectBorrowDateStatement.setString(1, itemName);
+      selectBorrowDateStatement.setInt(2, id);
+      ResultSet borrowDateResult = selectBorrowDateStatement.executeQuery();
 
-      if (rowsAffected > 0) {
-        System.out.println("Xóa khỏi borrow_slip thành công!");
-        preparedStatement.close();
+      if (borrowDateResult.next()) {
+        java.sql.Timestamp borrowDate = borrowDateResult.getTimestamp("borrow_date");
+        String deleteSql = "DELETE FROM borrow_slip WHERE book_name = ? AND user_id = ?";
+        PreparedStatement deleteStatement = con.prepareStatement(deleteSql);
+        deleteStatement.setString(1, itemName);
+        deleteStatement.setInt(2, id);
+        int rowsAffected = deleteStatement.executeUpdate();
 
-        // Connect to the database again to update availability
-        String sql2 = "SELECT avail FROM book WHERE title = ?";
-        PreparedStatement checkStatement = con.prepareStatement(sql2);
-        checkStatement.setString(1, itemName);
-        ResultSet resultSet = checkStatement.executeQuery();
+        if (rowsAffected > 0) {
+          System.out.println("Xóa khỏi borrow_slip thành công!");
+          String insertHistorySql = "INSERT INTO borrow_history (user_id, book_name, borrow_date, return_date) VALUES (?, ?, ?, NOW())";
+          PreparedStatement historyStatement = con.prepareStatement(insertHistorySql);
+          historyStatement.setInt(1, id);
+          historyStatement.setString(2, itemName);
+          historyStatement.setTimestamp(3, borrowDate);
+          int historyRows = historyStatement.executeUpdate();
 
-        if (resultSet.next()) {
-          int currentAvail = resultSet.getInt("avail");
-
-          // Increment the avail count by 1
-          String updateSql = "UPDATE book SET avail = ? WHERE title = ?";
+          if (historyRows > 0) {
+            System.out.println("Thêm vào borrow_history thành công!");
+          } else {
+            System.out.println("Không thể thêm vào borrow_history.");
+          }
+          historyStatement.close();
+          String updateSql = "UPDATE book SET avail = avail + 1 WHERE title = ?";
           PreparedStatement updateStatement = con.prepareStatement(updateSql);
-          updateStatement.setInt(1, currentAvail + 1);
-          updateStatement.setString(2, itemName);
-
+          updateStatement.setString(1, itemName);
           int rowsUpdated = updateStatement.executeUpdate();
+
           if (rowsUpdated > 0) {
             System.out.println("Thay đổi trạng thái thành công, dòng bị ảnh hưởng: " + rowsUpdated);
             sendNotification(1000, id, "Trả sách thành công");
           } else {
-            System.out.println("Thay đổi trạng thái không thành công");
+            System.out.println("Thay đổi trạng thái không thành công.");
           }
 
           updateStatement.close();
         } else {
-          System.out.println("Không tìm thấy cuốn sách: " + itemName);
+          System.out.println("Không tìm thấy người dùng trong borrow_slip với cuốn: " + itemName);
         }
 
-        // Close resultSet and the checkStatement
-        resultSet.close();
-        checkStatement.close();
+        deleteStatement.close();
       } else {
-        System.out.println("Không tìm thấy người dùng trong borrow_slip với cuốn: " + itemName);
+        System.out.println("Không tìm thấy borrow_date trong borrow_slip cho sách: " + itemName);
       }
 
-      // Close the initial connection
+      borrowDateResult.close();
+      selectBorrowDateStatement.close();
       con.close();
-    } catch (SQLException EE) {
-      EE.printStackTrace();
-      System.out.println("Lỗi khi xóa người dùng hoặc cập nhật sách");
+    } catch (SQLException e) {
+      e.printStackTrace();
+      System.out.println("Lỗi khi trả sách.");
     }
   }
+
 
 
 
@@ -2107,12 +2113,60 @@ public class DBInfo {
       }
     }
   }
-  public static void main(String[] args)  {
+  public static String getAuthor(String bookTitle) {
+    Connection con = null;
+    PreparedStatement preparedStatement = null;
+    ResultSet resultSet = null;
+    String authorName = null;
 
-    ArrayList<Book> tmp= getBookListByNumView();
-    for(Book i:tmp){
-      System.out.println(i);
+    try {
+      con = DBInfo.conn();
+      String sql = "SELECT authors FROM book WHERE title = ?";
+      preparedStatement = con.prepareStatement(sql);
+      preparedStatement.setString(1, bookTitle);
+
+      // Execute the query
+      resultSet = preparedStatement.executeQuery();
+
+      if (resultSet.next()) {
+        authorName = resultSet.getString("authors");
+      } else {
+        System.out.println("No book found with the title: " + bookTitle);
+      }
+
+    } catch (SQLException e) {
+      System.out.println("Error while fetching author name");
+      e.printStackTrace();
+    } finally {
+      // Ensure resources are closed
+      try {
+        if (resultSet != null) {
+          resultSet.close();
+        }
+        if (preparedStatement != null) {
+          preparedStatement.close();
+        }
+        if (con != null) {
+          con.close();
+        }
+      } catch (SQLException e) {
+        e.printStackTrace();
+      }
     }
+
+    return authorName;
+  }
+  public static void main(String[] args) throws Exception {
+
+    User X= getUser("nguyenvana");
+    X.traSach(DBInfo.getBook("Naruto"));
+    X.traSach(DBInfo.getBook("Dracula"));
+    User Y = getUser("levanc");
+
+      ArrayList<BookIssue> tmp = BookIssueDB.getTotalList();
+      for(BookIssue i:tmp){
+        i.displayIssueInfo();
+      }
 
   }
 }
