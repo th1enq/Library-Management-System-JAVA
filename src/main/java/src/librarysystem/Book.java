@@ -19,6 +19,7 @@ public class Book {
     private String buyLink;
     private int avail;
     private int rating;
+    private  int numView;
 
     public Book() {
     }
@@ -183,6 +184,13 @@ public class Book {
         this.rating = rating;
     }
 
+    public void setNumView(int numView){
+        this.numView = numView;
+    }
+
+    public int getNumView() {
+        return numView;
+    }
 
     @Override
     public String toString() {

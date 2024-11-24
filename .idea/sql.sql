@@ -18,7 +18,8 @@ CREATE TABLE `book` (
     language VARCHAR(50),
     buyLink VARCHAR(255),
     avail INT DEFAULT 1,
-    rating INT NOT NULL DEFAULT 0
+    rating INT NOT NULL DEFAULT 0,
+    numView INT DEFAULT 0
 );
 INSERT INTO book (title, authors, publisher, publishedDate, thumbnail, ISBN, description, numPage, category, price, language, buyLink, rating) VALUES
 -- Science (2 books)

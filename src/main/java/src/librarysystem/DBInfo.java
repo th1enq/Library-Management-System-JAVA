@@ -1822,6 +1822,7 @@ public class DBInfo {
     return bookList;
   }
 
+
   public static String getString(String author, String category, String publisher) {
     int prev = 0;
     String sql = "SELECT title, ISBN, authors, publisher, publishedDate, description,thumbnail, numPage, category, price, language, buyLink,avail,rating FROM book";
@@ -2019,8 +2020,99 @@ public class DBInfo {
     return isUnique;
   }
 
-  public static void main(String[] args) throws Exception {
-   User X= getUser("nguyenvana");
-   X.traSach(DBInfo.getBook("Dracula"));
+  public static ArrayList<Book> getBookListByNumView() {
+    ArrayList<Book> bookList = new ArrayList<>();
+    Connection con = null;
+    PreparedStatement preparedStatement = null;
+    ResultSet resultSet = null;
+    try {
+      con = DBInfo.conn();
+      final String sql = "SELECT * FROM book ORDER BY numView DESC";
+      //  System.out.println(sql);
+      preparedStatement = con.prepareStatement(sql);
+      resultSet = preparedStatement.executeQuery();
+      while (resultSet.next()) {
+        String title = resultSet.getString("title");
+        String ISBN = resultSet.getString("ISBN");
+        String Author = resultSet.getString("authors");
+        String Publisher = resultSet.getString("publisher");
+        String publishedDate = resultSet.getString("publishedDate");
+        String description = resultSet.getString("description");
+        String thumbnail = resultSet.getString("thumbnail");
+        String numPage = resultSet.getString("numPage");
+        String Category = resultSet.getString("category");
+        String price = resultSet.getString("price");
+        String language = resultSet.getString("language");
+        String buyLink = resultSet.getString("buyLink");
+        int avail = resultSet.getInt("avail");
+        int rating = resultSet.getInt("rating");
+        int numView = resultSet.getInt("numView");
+        Book book = new Book(title, ISBN, Author, Publisher, publishedDate,
+            description, thumbnail, numPage, Category, price,
+            language, buyLink, avail, rating);
+        book.setNumView(numView);
+        bookList.add(book);
+      }
+    } catch (SQLException e) {
+      e.printStackTrace();
+    } finally {
+      try {
+        if (resultSet != null) {
+          resultSet.close();
+        }
+        if (preparedStatement != null) {
+          preparedStatement.close();
+        }
+        if (con != null) {
+          con.close();
+        }
+      } catch (SQLException e) {
+        e.printStackTrace();
+      }
+    }
+    return bookList;
+  }
+
+  public static void updView(Book book) {
+    Connection con = null;
+    PreparedStatement preparedStatement = null;
+    String name = book.getTitle();
+    try {
+      con = DBInfo.conn();
+      String sql = "UPDATE book SET numView = numView + 1 WHERE title = ?";
+      preparedStatement = con.prepareStatement(sql);
+      preparedStatement.setString(1, name);
+
+      int rowsAffected = preparedStatement.executeUpdate();
+
+      if (rowsAffected > 0) {
+        System.out.println("View count updated successfully for: " + name);
+      } else {
+        System.out.println("No book found with the title: " + name);
+      }
+    } catch (SQLException e) {
+      System.out.println("Error updating view count for book: " + name);
+      e.printStackTrace();
+    } finally {
+      // Ensure resources are closed
+      try {
+        if (preparedStatement != null) {
+          preparedStatement.close();
+        }
+        if (con != null) {
+          con.close();
+        }
+      } catch (SQLException e) {
+        e.printStackTrace();
+      }
+    }
+  }
+  public static void main(String[] args)  {
+
+    ArrayList<Book> tmp= getBookListByNumView();
+    for(Book i:tmp){
+      System.out.println(i);
+    }
+
   }
 }
