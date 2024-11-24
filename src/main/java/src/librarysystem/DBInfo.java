@@ -219,6 +219,7 @@ public class DBInfo {
 
     return password;
   }
+
   public static User getUserById(int userId) {
     String sql = "SELECT * FROM registration WHERE id = ?";
     User user = null;
@@ -457,8 +458,8 @@ public class DBInfo {
           con.close();
           return;
         }
-          addBorrowRequest(itemName, id);
-        }
+        addBorrowRequest(itemName, id);
+      }
 
       // Close the check statement and result set
       resultSet.close();
@@ -616,8 +617,6 @@ public class DBInfo {
       System.out.println("Lỗi khi trả sách.");
     }
   }
-
-
 
 
   public static void editBook(Book a, String newTitle, String newAuthor, String newPublisher,
@@ -831,13 +830,14 @@ public class DBInfo {
       preparedStatement.setString(3, message);
 
       int rowsAffected = preparedStatement.executeUpdate();
-      if(rowsAffected>0)  {
+      if (rowsAffected > 0) {
         System.out.println("Xoa thong bao thanh cong");
       }
     } catch (Exception e) {
       e.printStackTrace();
     }
   }
+
   public static ArrayList<Pair<String, Integer>> getCategoryData() {
     ArrayList<Pair<String, Integer>> categoryList = new ArrayList<>();
     String sql = "SELECT name, cnt FROM category";
@@ -925,11 +925,14 @@ public class DBInfo {
       if (resultSet.next()) {
         // If the book exists, increment the avail count
         int currentAvail = resultSet.getInt("avail");
-        System.out.println("A book with the same title already exists. Updating the existing book...");
+        System.out.println(
+            "A book with the same title already exists. Updating the existing book...");
 
         String updateSql =
-            "UPDATE book SET authors = ?, publisher = ?, publishedDate = ?, thumbnail = ?, ISBN = ?, " +
-                "description = ?, numPage = ?, category = ?, price = ?, language = ?, buyLink = ?, avail = ?, rating = ? " +
+            "UPDATE book SET authors = ?, publisher = ?, publishedDate = ?, thumbnail = ?, ISBN = ?, "
+                +
+                "description = ?, numPage = ?, category = ?, price = ?, language = ?, buyLink = ?, avail = ?, rating = ? "
+                +
                 "WHERE title = ?";
         PreparedStatement updateStatement = con.prepareStatement(updateSql);
         updateStatement.setString(1, A.getAuthors());
@@ -953,7 +956,8 @@ public class DBInfo {
       } else {
         // If the book doesn't exist, insert a new record
         String sql =
-            "INSERT INTO book (title, authors, publisher, publishedDate, thumbnail, ISBN, description, numPage, category, price, language, buyLink, avail, rating) " +
+            "INSERT INTO book (title, authors, publisher, publishedDate, thumbnail, ISBN, description, numPage, category, price, language, buyLink, avail, rating) "
+                +
                 "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         PreparedStatement preparedStatement = con.prepareStatement(sql);
         preparedStatement.setString(1, A.getTitle());
@@ -2146,6 +2150,7 @@ public class DBInfo {
       }
     }
   }
+
   public static String getAuthor(String bookTitle) {
     Connection con = null;
     PreparedStatement preparedStatement = null;
@@ -2189,16 +2194,17 @@ public class DBInfo {
 
     return authorName;
   }
+
   public static void main(String[] args) throws Exception {
 
-    User X= getUser("nguyenvana");
+    User X = getUser("nguyenvana");
 
     User Y = getUser("levanc");
 
-      ArrayList<BookIssue> tmp = BookIssueDB.getLateList();
-      for(BookIssue i:tmp){
-        i.displayIssueInfo();
-      }
+    ArrayList<BookIssue> tmp = BookIssueDB.getBorrowedList();
+    for (BookIssue i : tmp) {
+      i.displayIssueInfo();
+    }
 
   }
 }

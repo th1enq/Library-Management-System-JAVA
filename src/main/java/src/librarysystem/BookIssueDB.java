@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class BookIssueDB {
+
   public static ArrayList<BookIssue> getProcessingList() {
     ArrayList<BookIssue> ret = new ArrayList<>();
     Connection con = null;
@@ -41,9 +42,15 @@ public class BookIssueDB {
       e.printStackTrace();
     } finally {
       try {
-        if (rs != null) rs.close();
-        if (pstmt != null) pstmt.close();
-        if (con != null) con.close();
+        if (rs != null) {
+          rs.close();
+        }
+        if (pstmt != null) {
+          pstmt.close();
+        }
+        if (con != null) {
+          con.close();
+        }
       } catch (SQLException e) {
         e.printStackTrace();
       }
@@ -85,9 +92,15 @@ public class BookIssueDB {
       e.printStackTrace();
     } finally {
       try {
-        if (rs != null) rs.close();
-        if (pstmt != null) pstmt.close();
-        if (con != null) con.close();
+        if (rs != null) {
+          rs.close();
+        }
+        if (pstmt != null) {
+          pstmt.close();
+        }
+        if (con != null) {
+          con.close();
+        }
       } catch (SQLException e) {
         e.printStackTrace();
       }
@@ -128,9 +141,15 @@ public class BookIssueDB {
       e.printStackTrace();
     } finally {
       try {
-        if (rs != null) rs.close();
-        if (pstmt != null) pstmt.close();
-        if (con != null) con.close();
+        if (rs != null) {
+          rs.close();
+        }
+        if (pstmt != null) {
+          pstmt.close();
+        }
+        if (con != null) {
+          con.close();
+        }
       } catch (SQLException e) {
         e.printStackTrace();
       }
@@ -138,18 +157,7 @@ public class BookIssueDB {
 
     return ret;
   }
-  public static ArrayList<BookIssue>getTotalList(){
-    ArrayList<BookIssue> ret= new ArrayList<>();
-    ArrayList<BookIssue> ret1= getProcessingList();
-    ret.addAll(ret1);
-    ArrayList<BookIssue> ret2= getDelayList();
-    ret.addAll(ret2);
-    ArrayList<BookIssue> ret3= getReturnedList();
-    ret.addAll(ret3);
-    ArrayList<BookIssue> ret4= getLateList();
-    ret.addAll(ret4);
-    return ret;
-  }
+
   public static ArrayList<BookIssue> getLateList() {
     ArrayList<BookIssue> ret = new ArrayList<>();
     Connection con = null;
@@ -175,7 +183,9 @@ public class BookIssueDB {
         bookIssue.setReturnDate(returnDate);
         bookIssue.setBookAuthor(DBInfo.getAuthor(bookTitle));
         bookIssue.setUsername(DBInfo.getUserById(userId).getUsername());
-        long daysLate = java.time.Duration.between(issueDate.toLocalDateTime(), returnDate.toLocalDateTime()).toDays() - 10;
+        long daysLate =
+            java.time.Duration.between(issueDate.toLocalDateTime(), returnDate.toLocalDateTime())
+                .toDays() - 10;
         if (daysLate > 1) {
           bookIssue.setStatus("LATE " + daysLate + " DAYS");
         } else {
@@ -188,14 +198,84 @@ public class BookIssueDB {
       e.printStackTrace();
     } finally {
       try {
-        if (rs != null) rs.close();
-        if (pstmt != null) pstmt.close();
-        if (con != null) con.close();
+        if (rs != null) {
+          rs.close();
+        }
+        if (pstmt != null) {
+          pstmt.close();
+        }
+        if (con != null) {
+          con.close();
+        }
+      } catch (SQLException e) {
+        e.printStackTrace();
+      }
+    }
+    return ret;
+  }
+
+
+  public static ArrayList<BookIssue> getBorrowedList() {
+    ArrayList<BookIssue> ret = new ArrayList<>();
+    Connection con = null;
+    PreparedStatement pstmt = null;
+    ResultSet rs = null;
+
+    try {
+      con = DBInfo.conn();
+      String sql = "SELECT user_id, book_name, borrow_date, return_date FROM borrow_slip WHERE return_date > NOW()";
+      pstmt = con.prepareStatement(sql);
+      rs = pstmt.executeQuery();
+
+      while (rs.next()) {
+        int userId = rs.getInt("user_id");
+        String bookTitle = rs.getString("book_name");
+        MyDateTime issueDate = new MyDateTime(rs.getTimestamp("borrow_date").toLocalDateTime());
+        MyDateTime returnDate = new MyDateTime(rs.getTimestamp("return_date").toLocalDateTime());
+        BookIssue bookIssue = new BookIssue();
+        bookIssue.setUserId(userId);
+        bookIssue.setBookTitle(bookTitle);
+        bookIssue.setIssueDate(issueDate);
+        bookIssue.setReturnDate(returnDate);
+        bookIssue.setBookAuthor(DBInfo.getAuthor(bookTitle));
+        bookIssue.setUsername(DBInfo.getUserById(userId).getUsername());
+        bookIssue.setStatus("BORROWED");
+        ret.add(bookIssue);
+      }
+    } catch (SQLException e) {
+      System.out.println("Lỗi khi lấy danh sách dang muon:");
+      e.printStackTrace();
+    } finally {
+      try {
+        if (rs != null) {
+          rs.close();
+        }
+        if (pstmt != null) {
+          pstmt.close();
+        }
+        if (con != null) {
+          con.close();
+        }
       } catch (SQLException e) {
         e.printStackTrace();
       }
     }
 
+    return ret;
+  }
+
+  public static ArrayList<BookIssue> getTotalList() {
+    ArrayList<BookIssue> ret = new ArrayList<>();
+    ArrayList<BookIssue> ret1 = getProcessingList();
+    ret.addAll(ret1);
+    ArrayList<BookIssue> ret2 = getDelayList();
+    ret.addAll(ret2);
+    ArrayList<BookIssue> ret3 = getReturnedList();
+    ret.addAll(ret3);
+    ArrayList<BookIssue> ret4 = getLateList();
+    ret.addAll(ret4);
+    ArrayList<BookIssue> ret5 = getBorrowedList();
+    ret.addAll(ret5);
     return ret;
   }
 
