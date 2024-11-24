@@ -52,6 +52,9 @@ public class SignInController implements Initializable {
     @FXML
     private PasswordField userPassword;
 
+    @FXML
+    private Button forgetPasswordButton;
+
     private boolean isPasswordVisible = false;
 
     private User currentUser = new User();
@@ -111,6 +114,25 @@ public class SignInController implements Initializable {
         }
     }
 
+    public void forgetPassword(ActionEvent actionEvent){
+        if (userEmail.getText().isEmpty()) {
+            showAlert("Bạn chưa nhập email !!!");
+            return;
+        }
+        String email = userEmail.getText();
+        if (!DBInfo.isUsernameExists(email)) {
+            showAlert("Tài khoản không tồn tại trong hệ thống!");
+            return;
+        }
+        String content = "Mật khẩu của bạn là: " + DBInfo.getPassword(email);
+        boolean isSent = EmailSender.sendEmail(email,"Email khôi phục mật khẩu",content);
+        if (isSent) {
+            showAlert("Email khôi phục mật khẩu đã được gửi!");
+        } else {
+            showAlert("Gửi email không thành công. Vui lòng thử lại.");
+        }
+
+    }
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         userEmail.requestFocus();

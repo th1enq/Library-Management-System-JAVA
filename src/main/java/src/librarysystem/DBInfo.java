@@ -186,6 +186,39 @@ public class DBInfo {
     }
   }
 
+  public static String getPassword(String username) {
+    Connection con = DBInfo.conn();
+    String password = null;
+
+    try {
+      String sql = "SELECT password FROM registration WHERE username = ?";
+      PreparedStatement preparedStatement = con.prepareStatement(sql);
+      preparedStatement.setString(1, username); // Gán giá trị cho tham số ?
+
+      ResultSet resultSet = preparedStatement.executeQuery();
+
+      if (resultSet.next()) {
+        password = resultSet.getString("password"); // Lấy mật khẩu
+      } else {
+        System.out.println("Không tìm thấy username: " + username);
+      }
+
+      resultSet.close();
+      preparedStatement.close();
+    } catch (SQLException e) {
+      e.printStackTrace();
+    } finally {
+      try {
+        if (con != null) {
+          con.close();
+        }
+      } catch (SQLException e) {
+        e.printStackTrace();
+      }
+    }
+
+    return password;
+  }
   public static User getUserById(int userId) {
     String sql = "SELECT * FROM registration WHERE id = ?";
     User user = null;
