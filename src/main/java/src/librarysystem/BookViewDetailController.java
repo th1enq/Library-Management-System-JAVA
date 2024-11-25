@@ -2,12 +2,11 @@ package src.librarysystem;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
+import javafx.scene.effect.GaussianBlur;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.Pane;
 
 public class BookViewDetailController extends BaseController {
     @FXML
@@ -32,6 +31,24 @@ public class BookViewDetailController extends BaseController {
     public Button addBookButton;
     @FXML
     public Button rentBookButton;
+    @FXML
+    public CheckBox confirmBorrowed;
+    @FXML
+    public Button submitBorrow;
+    @FXML
+    public Button cancelBorrow;
+    @FXML
+    public Pane borrowPane;
+    @FXML
+    public Button submitDelete;
+    @FXML
+    public Button cancelDelete;
+    @FXML
+    public Pane deletePane;
+    @FXML
+    public Pane tempPane;
+    @FXML
+    public Pane containerPane;
     @FXML
     private Label detailTitle;
     @FXML
@@ -127,6 +144,37 @@ public class BookViewDetailController extends BaseController {
 
         rentBookButton.setVisible(!apiMode);
         addBookButton.setVisible(apiMode);
+
+        submitBorrow.setOnAction(event -> {
+            boolean confirm = confirmBorrowed.isSelected();
+            if(confirm) {;
+                MainGUI.currentUser.muonSach(currentBook);
+                sendNotification(1000, MainGUI.currentUser.getId(), "Yêu cầu mượn sách đã được gửi. Vui lòng chờ xác nhận từ admin");
+                containerPane.setEffect(null);
+                borrowPane.setVisible(false);
+                tempPane.setVisible(false);
+            }
+        });
+
+        cancelBorrow.setOnAction(event -> {
+            containerPane.setEffect(null);
+            borrowPane.setVisible(false);
+            tempPane.setVisible(false);
+        });
+
+        submitDelete.setOnAction(event -> {
+            DBInfo.deleteBook(currentBook);
+            sendNotification(1000, MainGUI.currentUser.getId(), "Xóa sách thành công !!!");
+            containerPane.setEffect(null);
+            deletePane.setVisible(false);
+            tempPane.setVisible(false);
+        });
+
+        cancelDelete.setOnAction(event -> {
+            containerPane.setEffect(null);
+            deletePane.setVisible(false);
+            tempPane.setVisible(false);
+        });
     }
 
     public Button getReturnSearchBook() {
@@ -135,7 +183,10 @@ public class BookViewDetailController extends BaseController {
 
     @FXML
     public void rentBook(ActionEvent actionEvent) {
-        MainGUI.currentUser.muonSach(currentBook);
+        GaussianBlur blurEffect = new GaussianBlur(10);
+        containerPane.setEffect(blurEffect); // Làm mờ phần nội dung chính
+        tempPane.setVisible(true);
+        borrowPane.setVisible(true);
     }
 
     @FXML
@@ -154,8 +205,10 @@ public class BookViewDetailController extends BaseController {
             sendNotification(1000, MainGUI.currentUser.getId(), "Không thể xóa sách từ thư viện online !!!");
             return;
         }
-        sendNotification(1000, MainGUI.currentUser.getId(), "Xóa sách thành công !!!");
-        DBInfo.deleteBook(currentBook);
+        GaussianBlur blurEffect = new GaussianBlur(10);
+        containerPane.setEffect(blurEffect); // Làm mờ phần nội dung chính
+        tempPane.setVisible(true);
+        deletePane.setVisible(true);
     }
 
     public void saveEditBook(ActionEvent actionEvent) {

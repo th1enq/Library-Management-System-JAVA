@@ -13,6 +13,15 @@ import javafx.scene.shape.Line;
 import javafx.scene.text.Font;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.ContextMenu;
+import javafx.scene.control.MenuItem;
+import javafx.scene.layout.Pane;
+import javafx.scene.shape.Line;
+import javafx.scene.text.Font;
+import javafx.geometry.Pos;
+
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -21,6 +30,8 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Comparator;
 
 public class BookIssueController extends BaseController {
 
@@ -40,6 +51,26 @@ public class BookIssueController extends BaseController {
     public Button viewAll;
     @FXML
     public Button viewLate;
+    @FXML
+    public Button sortID;
+    @FXML
+    public Button sortUserName;
+    @FXML
+    public Button sortTitle;
+    @FXML
+    public Button sortAuthor;
+    @FXML
+    public Button sortIssueDate;
+    @FXML
+    public Button sortReturnDate;
+
+    // Track sorting states for each category
+    private boolean isIDAscending = true;
+    private boolean isUserNameAscending = true;
+    private boolean isTitleAscending = true;
+    private boolean isAuthorAscending = true;
+    private boolean isIssueDateAscending = true;
+    private boolean isReturnDateAscending = true;
 
     private int currentMode = 0;
 
@@ -60,6 +91,98 @@ public class BookIssueController extends BaseController {
         viewDelay.setOnAction(event -> handleCategorySelection(BookIssueDB.getDelayList(), viewDelay, 3));
         viewPending.setOnAction(event -> handleCategorySelection(BookIssueDB.getPendingList(), viewPending, 4));
         viewLate.setOnAction(event -> handleCategorySelection(BookIssueDB.getLateList(), viewLate, 5));
+
+        sortID.setOnAction(event -> {
+            resetSortOrderExcept("ID");
+            if (isIDAscending) {
+                bookIssueList.sort(Comparator.comparingInt(BookIssue::getUserId));
+            } else {
+                bookIssueList.sort(Comparator.comparingInt(BookIssue::getUserId).reversed());
+            }
+            isIDAscending = !isIDAscending;
+            paginatedBookIssueList = paginateBookIssueList(bookIssueList);
+            currentPage = 0;
+            displayPage(currentPage);
+        });
+
+// Sort by UserName
+        sortUserName.setOnAction(event -> {
+            resetSortOrderExcept("UserName");
+            if (isUserNameAscending) {
+                bookIssueList.sort(Comparator.comparing(BookIssue::getUsername, String.CASE_INSENSITIVE_ORDER));
+            } else {
+                bookIssueList.sort(Comparator.comparing(BookIssue::getUsername, String.CASE_INSENSITIVE_ORDER).reversed());
+            }
+            isUserNameAscending = !isUserNameAscending;
+            paginatedBookIssueList = paginateBookIssueList(bookIssueList);
+            currentPage = 0;
+            displayPage(currentPage);
+        });
+
+// Sort by Title
+        sortTitle.setOnAction(event -> {
+            resetSortOrderExcept("Title");
+            if (isTitleAscending) {
+                bookIssueList.sort(Comparator.comparing(BookIssue::getBookTitle, String.CASE_INSENSITIVE_ORDER));
+            } else {
+                bookIssueList.sort(Comparator.comparing(BookIssue::getBookTitle, String.CASE_INSENSITIVE_ORDER).reversed());
+            }
+            isTitleAscending = !isTitleAscending;
+            paginatedBookIssueList = paginateBookIssueList(bookIssueList);
+            currentPage = 0;
+            displayPage(currentPage);
+        });
+
+// Sort by Author
+        sortAuthor.setOnAction(event -> {
+            resetSortOrderExcept("Author");
+            if (isAuthorAscending) {
+                bookIssueList.sort(Comparator.comparing(BookIssue::getBookAuthor, String.CASE_INSENSITIVE_ORDER));
+            } else {
+                bookIssueList.sort(Comparator.comparing(BookIssue::getBookAuthor, String.CASE_INSENSITIVE_ORDER).reversed());
+            }
+            isAuthorAscending = !isAuthorAscending;
+            paginatedBookIssueList = paginateBookIssueList(bookIssueList);
+            currentPage = 0;
+            displayPage(currentPage);
+        });
+
+// Sort by Issue Date
+        sortIssueDate.setOnAction(event -> {
+            resetSortOrderExcept("IssueDate");
+            if (isIssueDateAscending) {
+                bookIssueList.sort(Comparator.comparing(BookIssue::getIssueDate));
+            } else {
+                bookIssueList.sort(Comparator.comparing(BookIssue::getIssueDate).reversed());
+            }
+            isIssueDateAscending = !isIssueDateAscending;
+            paginatedBookIssueList = paginateBookIssueList(bookIssueList);
+            currentPage = 0;
+            displayPage(currentPage);
+        });
+
+        // Sort by Return Date
+        sortReturnDate.setOnAction(event -> {
+            resetSortOrderExcept("ReturnDate");
+            if (isReturnDateAscending) {
+                bookIssueList.sort(Comparator.comparing(BookIssue::getReturnDate));
+            } else {
+                bookIssueList.sort(Comparator.comparing(BookIssue::getReturnDate).reversed());
+            }
+            isReturnDateAscending = !isReturnDateAscending;
+            paginatedBookIssueList = paginateBookIssueList(bookIssueList);
+            currentPage = 0;
+            displayPage(currentPage);
+        });
+    }
+
+    private void resetSortOrderExcept(String field) {
+        if (!field.equals("ID")) isIDAscending = true;
+        if (!field.equals("UserName")) isUserNameAscending = true;
+        if (!field.equals("Title")) isTitleAscending = true;
+        if (!field.equals("Author")) isAuthorAscending = true;
+        if (!field.equals("IssueDate")) isIssueDateAscending = true;
+        if (!field.equals("ReturnDate")) isReturnDateAscending = true;
     }
 
     private void update() {
@@ -187,6 +310,21 @@ public class BookIssueController extends BaseController {
         Label bookAuthorLabel = createLabel(book.getBookAuthor(), 460, 25, 150, 30);
         Label issueDateLabel = createLabel(book.getIssueDate().toString(), 642, 25, 150, 30);
         Label returnDateLabel = createLabel(book.getReturnDate().toString(), 845, 25, 150, 30);
+
+        if (book.getStatus().equalsIgnoreCase("Returned")) {
+            ContextMenu contextMenu = new ContextMenu();
+            MenuItem deleteItem = new MenuItem("Delete");
+
+            deleteItem.setOnAction(event -> {
+                System.out.println("remove");
+            });
+
+            contextMenu.getItems().add(deleteItem);
+
+            pane.setOnContextMenuRequested(event -> {
+                contextMenu.show(pane, event.getScreenX(), event.getScreenY());
+            });
+        }
 
         if (book.getStatus().equalsIgnoreCase("Pending")) {
             Button checkButton = new Button();
