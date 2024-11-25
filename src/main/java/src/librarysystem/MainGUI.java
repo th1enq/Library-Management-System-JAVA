@@ -22,6 +22,7 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
 import java.io.IOException;
+import java.lang.reflect.Method;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
@@ -299,112 +300,32 @@ public class MainGUI implements Initializable {
     @FXML
     private void returnHome() {
         currentStage = 0;
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("DashBoard.fxml"));
-            fxml = loader.load();
-            DashBoardController dashBoardController = loader.getController();
-
-            mainVbox.getChildren().clear();
-            mainVbox.getChildren().setAll(fxml);
-
-            fadeAnimation();
-
-        } catch (IOException ex) {
-            Logger.getLogger(LoginController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        update();
+        Loading("DashBoard.fxml");
     }
 
     @FXML
     private void bookView() {
         currentStage = 1;
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("BookView.fxml"));
-
-            fxml = loader.load();
-
-            SearchBookController searchBookController = loader.getController();
-            searchBookController.setMainGUIController(this);
-
-            mainVbox.getChildren().removeAll();
-            mainVbox.getChildren().setAll(fxml);
-
-
-        } catch (IOException ex) {
-            Logger.getLogger(LoginController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        update();
+        Loading("BookView.fxml");
     }
 
     @FXML
     private void userView() {
         currentStage = 2;
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("UserView.fxml"));
-
-            fxml = loader.load();
-
-            UserController userController = loader.getController();
-            userController.setMainGUIController(this);
-
-            mainVbox.getChildren().removeAll();
-            mainVbox.getChildren().setAll(fxml);
-
-            fadeAnimation();
-        } catch (IOException ex) {
-            Logger.getLogger(LoginController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        update();
+        Loading("UserView.fxml");
     }
 
     @FXML
     public void returnSetting(ActionEvent actionEvent) {
         currentStage = 4;
-        try {
-            // Tải Setting.fxml
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("Setting.fxml"));
-            fxml = loader.load();
-
-            // Lấy controller từ Setting.fxml
-            SettingController settingController = loader.getController();
-
-            // Gọi phương thức setMainGUIController để truyền MainGUIController cho SettingController
-            settingController.setMainGUIController(this);
-
-            // Thay thế giao diện cũ bằng giao diện mới (Setting)
-            mainVbox.getChildren().removeAll();
-            mainVbox.getChildren().setAll(fxml);
-
-            // Áp dụng hiệu ứng fade (nếu cần)
-            fadeAnimation();
-        } catch (IOException ex) {
-            Logger.getLogger(LoginController.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        Loading("Setting.fxml");
         update();
     }
 
 
     public void returnNontifications(ActionEvent actionEvent) {
         currentStage = 3;
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("Nontifications.fxml"));
-            fxml = loader.load();
-
-            // Lấy controller từ Setting.fxml
-            NotificationController notificationController = loader.getController();
-
-            // Gọi phương thức setMainGUIController để truyền MainGUIController cho SettingController
-            notificationController.setMainGUIController(this);
-
-            // Thay thế giao diện cũ bằng giao diện mới (Setting)
-            mainVbox.getChildren().removeAll();
-            mainVbox.getChildren().setAll(fxml);
-
-            fadeAnimation();
-        } catch (IOException ex) {
-            Logger.getLogger(LoginController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        update();
+        Loading("Notifications.fxml");
     }
 
     @FXML
@@ -486,6 +407,10 @@ public class MainGUI implements Initializable {
     public void returnBookIssue(ActionEvent actionEvent) {
         currentStage = 5;
 
+        Loading("BookIssue.fxml");
+    }
+
+    public void Loading(String fxmlName) {
         // Lấy Pane từ singleton của ProcessIndicator
         ProcessIndicator processIndicator = ProcessIndicator.getInstance();
         Pane loadingScreen = processIndicator.loadLoadingScreen();
@@ -500,11 +425,24 @@ public class MainGUI implements Initializable {
             protected Void call() throws Exception {
                 try {
                     // Mô phỏng thao tác lâu dài (ví dụ, tải FXML và thực hiện thao tác)
-                    FXMLLoader loader = new FXMLLoader(getClass().getResource("BookIssue.fxml"));
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlName));
                     fxml = loader.load();
 
-                    BookIssueController bookIssueController = loader.getController();
-                    bookIssueController.setMainGUIController(MainGUI.this);
+                    // Lấy đối tượng controller của FXML đã tải
+                    Object controller = loader.getController();
+
+
+                    // Dùng reflection để gọi phương thức setMainGUIController nếu nó tồn tại
+                    Method method = null;
+                    try {
+                        method = controller.getClass().getMethod("setMainGUIController", MainGUI.class);
+                        if (method != null) {
+                            method.invoke(controller, MainGUI.this);  // Gọi phương thức setMainGUIController
+                        }
+                    } catch (NoSuchMethodException e) {
+                        // Nếu không có phương thức setMainGUIController, ta sẽ không làm gì
+                        // Hoặc bạn có thể xử lý tùy theo yêu cầu, ví dụ: log một cảnh báo
+                    }
 
                     // Thao tác với mainVbox
                     Platform.runLater(() -> {

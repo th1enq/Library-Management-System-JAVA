@@ -7,8 +7,11 @@ import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.scene.text.Font;
 import javafx.stage.FileChooser;
@@ -63,6 +66,10 @@ public class BookIssueController extends BaseController {
     public Button sortIssueDate;
     @FXML
     public Button sortReturnDate;
+    @FXML
+    public Pane mainPane;
+    @FXML
+    public Button nextTopList;
 
     // Track sorting states for each category
     private boolean isIDAscending = true;
@@ -78,6 +85,9 @@ public class BookIssueController extends BaseController {
     private static final int ITEMS_PER_PAGE = 4; // Max items per page
     private ArrayList<ArrayList<BookIssue>> paginatedBookIssueList; // Paginated book issues
     private ArrayList<BookIssue> bookIssueList = BookIssueDB.getTotalList(); // Default book issue list
+
+    private Pane topListPane1;
+    private Pane topListPane2;
 
     public void initialize() {
         // Initial display
@@ -174,6 +184,204 @@ public class BookIssueController extends BaseController {
             currentPage = 0;
             displayPage(currentPage);
         });
+
+        nextTopList.setOnAction(event -> {
+            currentTopList = (currentTopList + 1) % topList.size();
+            mainPane.getChildren().remove(topListPane1);
+            mainPane.getChildren().remove(topListPane2);
+            displayTopChoice();
+        });
+
+        displayTopChoice();
+    }
+
+    private String getRatingStars(int rating, int maxRating) {
+        StringBuilder stars = new StringBuilder();
+
+        // Add filled stars
+        for (int i = 0; i < rating; i++) {
+            stars.append("\uf005"); // Unicode for filled star
+        }
+
+        // Add empty stars
+        for (int i = rating; i < maxRating; i++) {
+            stars.append("\uf006"); // Unicode for empty star
+        }
+
+        return stars.toString();
+    }
+
+    private Pane createBookPane1() {
+        Book firstBook = topList.get(currentTopList);
+
+        // Create first Pane with layout and styling
+        Pane pane1 = new Pane();
+        pane1.setLayoutX(214.0);
+        pane1.setLayoutY(27.0);
+        pane1.setPrefHeight(259.0);
+        pane1.setPrefWidth(478.0);
+        pane1.setStyle("-fx-border-color: #000; -fx-border-radius: 20; -fx-background-radius: 20;");
+
+        // Create ImageView for the book cover
+        ImageView imageView = new ImageView(firstBook.getThumbnail());
+        imageView.setFitHeight(289.0);
+        imageView.setFitWidth(211.0);
+        imageView.setLayoutY(-17.0);
+
+        // Create labels for title and author with bold font
+        Label titleLabel = new Label(firstBook.getTitle());
+        titleLabel.setLayoutX(238.0);
+        titleLabel.setLayoutY(27.0);
+        titleLabel.setFont(new Font("System Bold Italic", 16)); // Bold font using "System Bold"
+
+        Label authorLabel = new Label(firstBook.getAuthors());
+        authorLabel.setLayoutX(238.0);
+        authorLabel.setLayoutY(55.0);
+        authorLabel.setTextFill(Color.web("#656161"));
+        authorLabel.setFont(new Font("System Bold Italic", 12)); // Bold font using "System Bold"
+
+        // Create Button for details
+        Button detailsButton = new Button("Xem chi tiết");
+        detailsButton.setLayoutX(266.0);
+        detailsButton.setLayoutY(209.0);
+        detailsButton.setPrefHeight(36.0);
+        detailsButton.setPrefWidth(105.0);
+        detailsButton.setStyle("-fx-background-color: #000; -fx-background-radius: 20px; -fx-cursor: hand;");
+        detailsButton.setTextFill(Color.web("#fefefe"));
+
+        detailsButton.setOnAction(event -> {
+            returnDetailBook(firstBook, false);
+        });
+
+        // Create views count and category labels
+        Label viewsLabel = new Label(String.valueOf(firstBook.getNumView()) + " views");
+        viewsLabel.setLayoutX(280.0);
+        viewsLabel.setLayoutY(130.0);
+        viewsLabel.setTextFill(Color.web("#a5a5a5"));
+        viewsLabel.setFont(new Font("System Bold", 13)); // Bold font using "System Bold"
+
+        Label ratingLabel = new Label(String.valueOf(firstBook.getRating()) + "/5");
+        ratingLabel.setLayoutX(365.0);
+        ratingLabel.setLayoutY(98.0);
+        ratingLabel.setFont(new Font("System Bold", 13)); // Bold font using "System Bold"
+
+        // Category label with bold font
+        Label categoryLabel = new Label(firstBook.getCategory());
+        categoryLabel.setAlignment(javafx.geometry.Pos.CENTER);
+        categoryLabel.setLayoutX(238.0);
+        categoryLabel.setLayoutY(169.0);
+        categoryLabel.setPrefHeight(32.0);
+        categoryLabel.setPrefWidth(60.0);
+        categoryLabel.setStyle("-fx-background-color: A8D8FF; -fx-background-radius: 10px;");
+        categoryLabel.setTextFill(Color.web("#080000"));
+        categoryLabel.setFont(new Font("System Bold", 12)); // Bold font using "System Bold"
+
+        // Rating stars
+        String ratingStars = getRatingStars(firstBook.getRating(), 5); // Pass rating and max stars (5)
+
+        // Create a Label to display the stars as text (using FontAwesome)
+        Label starLabel = new Label(ratingStars);
+        starLabel.setLayoutX(238); // Adjust positioning
+        starLabel.setLayoutY(93);  // Adjust positioning
+        starLabel.setStyle("-fx-font-family: 'FontAwesome'; -fx-text-fill: #FFD700; -fx-font-size: 20px;");
+
+        FontAwesomeIcon eyeIcon = new FontAwesomeIcon();
+        eyeIcon.setGlyphName("EYE");
+        eyeIcon.setSize("1.2em");
+        eyeIcon.setLayoutX(238);
+        eyeIcon.setLayoutY(142);
+
+        // Add all elements to the pane
+        pane1.getChildren().addAll(imageView, titleLabel, authorLabel, detailsButton, viewsLabel, ratingLabel, categoryLabel, starLabel, eyeIcon);
+
+        return pane1;
+    }
+
+
+    private Pane createBookPane2() {
+        // Xác định sách thứ currentTopList + 1 (vòng lặp khi vượt quá danh sách)
+        int nextIndex = (currentTopList + 1) % topList.size();
+        Book secondBook = topList.get(nextIndex);
+
+        // Tạo Pane thứ hai với bố cục và kiểu dáng nhỏ hơn
+        Pane pane2 = new Pane();
+        pane2.setLayoutX(761.0); // Vị trí ngang của pane
+        pane2.setLayoutY(65.0); // Vị trí dọc của pane
+        pane2.setPrefHeight(200.0); // Chiều cao của pane
+        pane2.setPrefWidth(376.0);  // Chiều rộng của pane
+        pane2.setStyle("-fx-border-color: #000; -fx-border-radius: 20; -fx-background-radius: 20;");
+
+        // ImageView cho bìa sách
+        ImageView imageView = new ImageView(secondBook.getThumbnail());
+        imageView.setFitHeight(220.0);
+        imageView.setFitWidth(130.0);
+        imageView.setLayoutX(-2.0);
+        imageView.setLayoutY(-5.0);
+
+        // Label cho tiêu đề
+        Label titleLabel = new Label(secondBook.getTitle());
+        titleLabel.setLayoutX(150.0);
+        titleLabel.setLayoutY(10.0);
+        titleLabel.setFont(new Font("System Bold Italic", 14));
+
+        // Label cho tác giả
+        Label authorLabel = new Label(secondBook.getAuthors());
+        authorLabel.setLayoutX(150.0);
+        authorLabel.setLayoutY(35.0);
+        authorLabel.setTextFill(Color.web("#656161"));
+        authorLabel.setFont(new Font("System Italic", 12));
+
+        // Label cho số lượt xem
+        Label viewsLabel = new Label(String.valueOf(secondBook.getNumView()) + " views");
+        viewsLabel.setLayoutX(175.0);
+        viewsLabel.setLayoutY(100.0);
+        viewsLabel.setFont(new Font("System Bold Italic", 12));
+        viewsLabel.setTextFill(Color.web("#a5a5a5"));
+
+        // Label cho đánh giá
+        Label ratingLabel = new Label(String.valueOf(secondBook.getRating()) + "/5");
+        ratingLabel.setLayoutX(250);
+        ratingLabel.setLayoutY(70);
+        ratingLabel.setFont(new Font("System Bold Italic", 12));
+
+        // Icon đánh giá sao
+        String ratingStars = getRatingStars(secondBook.getRating(), 5);
+        Label starLabel = new Label(ratingStars);
+        starLabel.setLayoutX(150.0);
+        starLabel.setLayoutY(70);
+        starLabel.setStyle("-fx-font-family: 'FontAwesome'; -fx-text-fill: #FFD700; -fx-font-size: 14px;");
+
+        FontAwesomeIcon eyeIcon = new FontAwesomeIcon();
+        eyeIcon.setGlyphName("EYE");
+        eyeIcon.setSize("1em");
+        eyeIcon.setLayoutX(150);
+        eyeIcon.setLayoutY(113);
+
+        Label categoryLabel = new Label(secondBook.getCategory());
+        categoryLabel.setAlignment(javafx.geometry.Pos.CENTER);
+        categoryLabel.setLayoutX(200);
+        categoryLabel.setLayoutY(150);
+        categoryLabel.setPrefHeight(20.0);
+        categoryLabel.setPrefWidth(55.0);
+        categoryLabel.setStyle("-fx-background-color: A8D8FF; -fx-background-radius: 10px;");
+        categoryLabel.setTextFill(Color.web("#080000"));
+        categoryLabel.setFont(new Font("System Bold", 11)); // Bold font using "System Bold"
+
+        // Thêm tất cả các phần tử vào pane2
+        pane2.getChildren().addAll(imageView, titleLabel, authorLabel, viewsLabel, ratingLabel, starLabel, eyeIcon, categoryLabel);
+
+        return pane2;
+    }
+
+
+
+    private int currentTopList = 0;
+    private ArrayList<Book> topList = DBInfo.getBookListByNumView();
+
+    private void displayTopChoice() {
+        topListPane1 = createBookPane1();
+        topListPane2 = createBookPane2();
+        mainPane.getChildren().addAll(topListPane1, topListPane2);
     }
 
     private void resetSortOrderExcept(String field) {
