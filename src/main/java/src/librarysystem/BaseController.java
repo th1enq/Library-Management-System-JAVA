@@ -9,7 +9,6 @@ public class BaseController {
 
     protected void sendNotification(int senderId, int receiverId, String content) {
         mainGUIController.sendNotification(senderId, receiverId, content);
-        mainGUIController.updateNotifications();
     }
 
     protected void returnDetailBook(Book currentBook, boolean apiMode) {

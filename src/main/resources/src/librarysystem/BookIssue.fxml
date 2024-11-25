@@ -29,7 +29,7 @@
                   <Font size="15.0" />
                </font>
             </Button>
-            <Pane layoutX="27.0" layoutY="318.0" prefHeight="41.0" prefWidth="478.0" style="-fx-background-color: #f6f6f6; -fx-background-radius: 5px;">
+            <Pane fx:id="adminFilterPane" layoutX="27.0" layoutY="318.0" prefHeight="41.0" prefWidth="478.0" style="-fx-background-color: #f6f6f6; -fx-background-radius: 5px;" visible="false">
                <children>
                   <Button fx:id="viewAll" layoutX="8.0" layoutY="6.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="79.0" style="-fx-background-color: #fff; -fx-background-radius: 5px; -fx-cursor: hand;" text="All">
                      <font>
@@ -59,14 +59,14 @@
                   </Button>
                </children>
             </Pane>
-            <StackPane fx:id="stackPane" layoutX="27.0" layoutY="416.0" prefHeight="311.0" prefWidth="1136.0">
+            <StackPane fx:id="stackPane" layoutX="27.0" layoutY="416.0" prefHeight="311.0" prefWidth="1136.0" visible="false">
                <children>
                   <Pane fx:id="containerPane" minHeight="0.0" minWidth="0.0" prefHeight="390.0" prefWidth="1136.0" style="-fx-background-color: #fff; -fx-background-radius: 0 0 20 20; -fx-border-color: #000; -fx-border-radius: 0 0 20 20; -fx-border-width: 0 1 1 1;">
 
                   </Pane>
                </children>
             </StackPane>
-            <Pane layoutX="27.0" layoutY="375.0" prefHeight="41.0" prefWidth="1136.0" style="-fx-background-radius: 20 20 0 0; -fx-background-color: #fff; -fx-border-radius: 20 20 0 0; -fx-border-color: #000;">
+            <Pane fx:id="adminTable" layoutX="27.0" layoutY="375.0" prefHeight="41.0" prefWidth="1136.0" style="-fx-background-radius: 20 20 0 0; -fx-background-color: #fff; -fx-border-radius: 20 20 0 0; -fx-border-color: #000;" visible="false">
                <children>
                   <Label layoutX="37.0" layoutY="10.0" text="User ID" textFill="#727070">
                      <font>
@@ -144,6 +144,84 @@
             </Label>
             <Button fx:id="nextTopList" layoutX="73.0" layoutY="140.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="50.0" style="-fx-background-radius: 10; -fx-background-color: #fff; -fx-border-color: #000; -fx-border-radius: 10; -fx-cursor: hand;" textFill="#fefefe" />
             <FontAwesomeIcon glyphName="ANGLE_LEFT" layoutX="93.0" layoutY="175.0" size="2.5em" />
+            <Pane fx:id="userFilterPane" layoutX="27.0" layoutY="318.0" prefHeight="41.0" prefWidth="326.0" style="-fx-background-color: #f6f6f6; -fx-background-radius: 5px;">
+               <children>
+                  <Button fx:id="viewAllUser" layoutX="8.0" layoutY="6.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="79.0" style="-fx-background-color: #fff; -fx-background-radius: 5px; -fx-cursor: hand;" text="All">
+                     <font>
+                        <Font size="13.0" />
+                     </font>
+                  </Button>
+                  <Button fx:id="viewPendingUser" layoutX="87.0" layoutY="6.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="79.0" style="-fx-background-color: transparent; -fx-background-radius: 5px; -fx-cursor: hand;" text="Pending">
+                     <font>
+                        <Font size="13.0" />
+                     </font>
+                  </Button>
+                  <Button fx:id="viewBorrowedUser" layoutX="166.0" layoutY="6.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="79.0" style="-fx-background-color: transparent; -fx-background-radius: 5px; -fx-cursor: hand;" text="Borrowed">
+                     <font>
+                        <Font size="13.0" />
+                     </font>
+                  </Button>
+                  <Button fx:id="viewReturnedUser" layoutX="245.0" layoutY="6.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="79.0" style="-fx-background-color: transparent; -fx-background-radius: 5px; -fx-cursor: hand;" text="Returned">
+                     <font>
+                        <Font size="13.0" />
+                     </font>
+                  </Button>
+               </children>
+            </Pane>
+            <Pane fx:id="userTabel" layoutX="141.0" layoutY="375.0" prefHeight="41.0" prefWidth="795.0" style="-fx-background-radius: 20 20 0 0; -fx-background-color: #fff; -fx-border-radius: 20 20 0 0; -fx-border-color: #000;">
+               <children>
+                  <Label layoutX="45.0" layoutY="10.0" text="Book Title" textFill="#727070">
+                     <font>
+                        <Font name="System Bold" size="14.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="188.0" layoutY="10.0" text="Book Author" textFill="#727070">
+                     <font>
+                        <Font name="System Bold" size="14.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="699.0" layoutY="11.0" text="Status" textFill="#727070">
+                     <font>
+                        <Font name="System Bold" size="14.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="364.0" layoutY="9.0" text="Issue Date" textFill="#727070">
+                     <font>
+                        <Font name="System Bold" size="14.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="525.0" layoutY="11.0" text="Return Date" textFill="#727070">
+                     <font>
+                        <Font name="System Bold" size="14.0" />
+                     </font>
+                  </Label>
+                  <Button fx:id="sortTitleUser" layoutX="22.0" layoutY="8.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="22.0" style="-fx-background-color: transparent; -fx-cursor: hand;">
+                     <graphic>
+                        <FontAwesomeIcon glyphName="SORT" />
+                     </graphic>
+                  </Button>
+                  <Button fx:id="sortAuthorUser" layoutX="165.0" layoutY="7.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="22.0" style="-fx-background-color: transparent; -fx-cursor: hand;">
+                     <graphic>
+                        <FontAwesomeIcon glyphName="SORT" />
+                     </graphic>
+                  </Button>
+                  <Button fx:id="sortIssueDateUser" layoutX="341.0" layoutY="7.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="22.0" style="-fx-background-color: transparent; -fx-cursor: hand;">
+                     <graphic>
+                        <FontAwesomeIcon glyphName="SORT" />
+                     </graphic>
+                  </Button>
+                  <Button fx:id="sortReturnDateUser" layoutX="502.0" layoutY="8.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="22.0" style="-fx-background-color: transparent; -fx-cursor: hand;">
+                     <graphic>
+                        <FontAwesomeIcon glyphName="SORT" />
+                     </graphic>
+                  </Button>
+               </children>
+            </Pane>
+            <StackPane fx:id="userStackPane" layoutX="141.0" layoutY="416.0" prefHeight="311.0" prefWidth="795.0" style="-fx-background-color: #fff; -fx-background-radius: 0 0 20 20; -fx-border-color: #000; -fx-border-radius: 0 0 20 20; -fx-border-width: 0 1 1 1;">
+               <children>
+                  <Pane fx:id="containerPaneUser" prefHeight="200.0" prefWidth="200.0" />
+               </children>
+            </StackPane>
          </children>
         </Pane>
     </children>

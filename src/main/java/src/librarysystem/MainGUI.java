@@ -306,7 +306,23 @@ public class MainGUI implements Initializable {
     @FXML
     private void bookView() {
         currentStage = 1;
-        Loading("BookView.fxml");
+        currentStage = 1;
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("BookView.fxml"));
+
+            fxml = loader.load();
+
+            SearchBookController searchBookController = loader.getController();
+            searchBookController.setMainGUIController(this);
+
+            mainVbox.getChildren().removeAll();
+            mainVbox.getChildren().setAll(fxml);
+
+
+        } catch (IOException ex) {
+            Logger.getLogger(LoginController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        update();
     }
 
     @FXML
@@ -349,6 +365,8 @@ public class MainGUI implements Initializable {
     public void sendNotification(int senderId, int receiverId, String content) {
         Notification newNotification = new Notification(senderId, receiverId, content);
         DBInfo.sendNotification(senderId, receiverId, content);
+
+        if(currentUser.getId() != receiverId) return;
 
         // Make the popUpPane visible and set initial opacity to 0
         popUpPane.setVisible(true);
@@ -402,6 +420,8 @@ public class MainGUI implements Initializable {
         // Update the notification content
         labelNoti.setText("Thông báo từ " + newNotification.getReceiver());
         contentNoti.setText(content);
+
+        updateNotifications();
     }
 
     public void returnBookIssue(ActionEvent actionEvent) {

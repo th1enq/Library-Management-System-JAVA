@@ -281,17 +281,17 @@ public class User {
   public void acceptBorrowRequest(BookIssue a) {
     if (this.userType.equals("admin")) {
       DBInfo.acceptBorrowRequest(a.getUserId(), a.getBookTitle());
-    }// else {
+    } //else {
     // DBInfo.sendNotification(1000, this.getId(), "Chỉ admin có quyền làm việc này");
-    // }
+    //}
   }
 
   public void denyBorrowRequest(BookIssue a) {
     if (this.userType.equals("admin")) {
       DBInfo.denyBorrowRequest(a.getUserId(), a.getBookTitle());
-    } //else {
+    }// else {
     // DBInfo.sendNotification(1000, this.getId(), "Chỉ admin có quyền làm việc này");
-    // }
+    //}
   }
 
   public void deleteNotifications() {
