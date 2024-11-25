@@ -78,7 +78,7 @@
                         <Font name="System Bold" size="14.0" />
                      </font>
                   </Label>
-                  <Label layoutX="319.0" layoutY="11.0" text="Book Title" textFill="#727070">
+                  <Label layoutX="337.0" layoutY="11.0" text="Book Title" textFill="#727070">
                      <font>
                         <Font name="System Bold" size="14.0" />
                      </font>
@@ -103,6 +103,37 @@
                         <Font name="System Bold" size="14.0" />
                      </font>
                   </Label>
+                  <Button fx:id="sortID" layoutX="11.0" layoutY="8.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="22.0" style="-fx-background-color: transparent; -fx-cursor: hand;">
+                     <graphic>
+                        <FontAwesomeIcon glyphName="SORT" />
+                     </graphic>
+                  </Button>
+                  <Button fx:id="sortUserName" layoutX="121.0" layoutY="8.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="22.0" style="-fx-background-color: transparent; -fx-cursor: hand;">
+                     <graphic>
+                        <FontAwesomeIcon glyphName="SORT" />
+                     </graphic>
+                  </Button>
+                  <Button fx:id="sortTitle" layoutX="314.0" layoutY="9.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="22.0" style="-fx-background-color: transparent; -fx-cursor: hand;">
+                     <graphic>
+                        <FontAwesomeIcon glyphName="SORT" />
+                     </graphic>
+                  </Button>
+                  <Button fx:id="sortAuthor" layoutX="457.0" layoutY="8.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="22.0" style="-fx-background-color: transparent; -fx-cursor: hand;">
+                     <graphic>
+                        <FontAwesomeIcon glyphName="SORT" />
+                     </graphic>
+                  </Button>
+                  <Button fx:id="sortIssueDate" layoutX="633.0" layoutY="9.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="22.0" style="-fx-background-color: transparent; -fx-cursor: hand;">
+                     <graphic>
+                        <FontAwesomeIcon glyphName="SORT" />
+                     </graphic>
+                  </Button>
+                  <Button fx:id="sortReturnDate" layoutX="828.0" layoutY="9.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="22.0" style="-fx-background-color: transparent; -fx-cursor: hand;">
+                     <graphic>
+                        <FontAwesomeIcon glyphName="SORT" />
+                     </graphic>
+                  </Button>
+                  <Button layoutX="1022.0" layoutY="9.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="22.0" style="-fx-background-color: transparent; -fx-cursor: hand;" />
                </children>
             </Pane>
             <Button layoutX="305.0" layoutY="150.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="30.0" style="-fx-background-color: transparent;" />
