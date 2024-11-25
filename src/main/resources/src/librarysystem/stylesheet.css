@@ -213,18 +213,21 @@
     -fx-font-weight: bold; /* Chữ đậm */
 }
 
-.progress-indicator {
-    -fx-progress-color: #4caf50; /* Màu sắc cho ProgressIndicator */
+/* Style cho ProgressIndicator */
+.progress-indicator .circle {
+    -fx-stroke: lightgray; /* Màu nền */
+    -fx-stroke-width: 8px;
 }
 
-.progress-indicator:indeterminate {
-    -fx-background-color: transparent; /* Nền trong suốt khi đang load */
+.progress-indicator .progress {
+    -fx-stroke: blue; /* Màu của thanh progress */
+    -fx-stroke-width: 8px;
+    -fx-stroke-line-cap: round; /* Làm cho đầu của stroke bo tròn */
+    -fx-transition: stroke-dash-offset 300ms ease-in-out;
+    -fx-rotate: -90deg; /* Xoay để thanh progress bắt đầu từ trên cùng */
+    -fx-transform-origin: 50% 50%;
 }
 
-/* Khi loading xong */
-.progress-indicator:determinate {
-    -fx-progress-color: #4caf50; /* Màu sắc cho progress đã hoàn thành */
-}
 
 .sidebar-hidden {
     -fx-border-width: 0;

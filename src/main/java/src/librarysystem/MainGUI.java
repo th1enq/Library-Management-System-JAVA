@@ -2,6 +2,7 @@ package src.librarysystem;
 
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import javafx.animation.*;
+import javafx.application.Platform;
 import javafx.scene.Cursor;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
@@ -482,24 +483,58 @@ public class MainGUI implements Initializable {
         contentNoti.setText(content);
     }
 
-
     public void returnBookIssue(ActionEvent actionEvent) {
         currentStage = 5;
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("BookIssue.fxml"));
 
-            fxml = loader.load();
+        // Lấy Pane từ singleton của ProcessIndicator
+        ProcessIndicator processIndicator = ProcessIndicator.getInstance();
+        Pane loadingScreen = processIndicator.loadLoadingScreen();
 
-            BookIssueController bookIssueController = loader.getController();
-            bookIssueController.setMainGUIController(this);
+        // Hiển thị progress pane trong mainVbox
+        mainVbox.getChildren().clear();  // Xóa tất cả các thành phần hiện có trong VBox
+        mainVbox.getChildren().add(loadingScreen);  // Thêm Pane loading vào mainVbox
 
-            mainVbox.getChildren().removeAll();
-            mainVbox.getChildren().setAll(fxml);
+        // Tạo và thực thi task trong một luồng riêng
+        Task<Void> task = new Task<Void>() {
+            @Override
+            protected Void call() throws Exception {
+                try {
+                    // Mô phỏng thao tác lâu dài (ví dụ, tải FXML và thực hiện thao tác)
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("BookIssue.fxml"));
+                    fxml = loader.load();
 
+                    BookIssueController bookIssueController = loader.getController();
+                    bookIssueController.setMainGUIController(MainGUI.this);
 
-        } catch (IOException ex) {
-            Logger.getLogger(LoginController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        update();
+                    // Thao tác với mainVbox
+                    Platform.runLater(() -> {
+                        mainVbox.getChildren().remove(loadingScreen);  // Ẩn progress pane
+                        mainVbox.getChildren().setAll(fxml);  // Thêm giao diện mới vào
+                    });
+
+                } catch (IOException ex) {
+                    Logger.getLogger(LoginController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                return null;
+            }
+        };
+
+        // Khi task hoàn thành, ẩn progress pane
+        task.setOnSucceeded(event -> {
+            mainVbox.getChildren().remove(loadingScreen);  // Ẩn progress pane khi hoàn thành
+            update();
+        });
+
+        // Khi có lỗi trong task, ẩn progress pane
+        task.setOnFailed(event -> {
+            mainVbox.getChildren().remove(loadingScreen);  // Ẩn progress pane khi có lỗi
+            Logger.getLogger(LoginController.class.getName()).log(Level.SEVERE, "Error occurred in task.", task.getException());
+        });
+
+        // Chạy task trong một luồng riêng
+        Thread taskThread = new Thread(task);
+        taskThread.setDaemon(true);  // Đảm bảo thread kết thúc khi ứng dụng đóng
+        taskThread.start();
     }
+
 }
