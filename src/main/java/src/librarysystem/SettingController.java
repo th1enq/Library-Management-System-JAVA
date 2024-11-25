@@ -440,7 +440,6 @@ public class SettingController extends BaseController implements Initializable {
     }
   }
 
-
   @FXML
   public void updateProfile(ActionEvent actionEvent) {
     if(currentMode == 0) {
