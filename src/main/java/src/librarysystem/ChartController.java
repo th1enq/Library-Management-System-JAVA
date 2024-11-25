@@ -16,7 +16,7 @@ public class ChartController {
     String sql = "UPDATE daily_logins SET login_count = login_count + 1 WHERE day_of_week = ?";
 
     try (Connection conn = DBInfo.conn();
-        PreparedStatement stmt = conn.prepareStatement(sql)) {
+         PreparedStatement stmt = conn.prepareStatement(sql)) {
 
       stmt.setString(1, dayOfWeek);
 
@@ -50,8 +50,8 @@ public class ChartController {
     int tot = DBInfo.getBookCount();
     int sum = 0;
     try (Connection conn = DBInfo.conn();
-        PreparedStatement stmt = conn.prepareStatement(sql);
-        ResultSet rs = stmt.executeQuery()) {
+         PreparedStatement stmt = conn.prepareStatement(sql);
+         ResultSet rs = stmt.executeQuery()) {
 
       while (rs.next()) {
         String name = rs.getString("name");

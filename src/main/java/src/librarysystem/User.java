@@ -282,7 +282,7 @@ public class User {
     if (this.userType.equals("admin")) {
       DBInfo.acceptBorrowRequest(a.getUserId(), a.getBookTitle());
     } //else {
-   // DBInfo.sendNotification(1000, this.getId(), "Chỉ admin có quyền làm việc này");
+    // DBInfo.sendNotification(1000, this.getId(), "Chỉ admin có quyền làm việc này");
     //}
   }
 

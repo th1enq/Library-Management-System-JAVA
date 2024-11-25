@@ -70,6 +70,20 @@ public class BookIssueController extends BaseController {
     public Pane mainPane;
     @FXML
     public Button nextTopList;
+    public StackPane userStackPane;
+    public Button sortReturnDateUser;
+    public Button sortIssueDateUser;
+    public Button sortAuthorUser;
+    public Button sortTitleUser;
+    public Button viewReturnedUser;
+    public Button viewBorrowedUser;
+    public Button viewPendingUser;
+    public Button viewAllUser;
+    public Pane userFilterPane;
+    public Pane userTabel;
+    public Pane adminFilterPane;
+    public Pane adminTable;
+    public Pane containerPaneUser;
 
     // Track sorting states for each category
     private boolean isIDAscending = true;
@@ -84,12 +98,127 @@ public class BookIssueController extends BaseController {
     private int currentPage = 0; // Current page
     private static final int ITEMS_PER_PAGE = 4; // Max items per page
     private ArrayList<ArrayList<BookIssue>> paginatedBookIssueList; // Paginated book issues
-    private ArrayList<BookIssue> bookIssueList = BookIssueDB.getTotalList(); // Default book issue list
+    private ArrayList<BookIssue> bookIssueList = new ArrayList<>(); // Default book issue list
 
     private Pane topListPane1;
     private Pane topListPane2;
 
     public void initialize() {
+        if(MainGUI.currentUser.getUserType().equals("admin")) {
+            initForAdmin();
+        }
+        else {
+            initForUser();
+        }
+        nextTopList.setOnAction(event -> {
+            currentTopList = (currentTopList + 1) % topList.size();
+            mainPane.getChildren().remove(topListPane1);
+            mainPane.getChildren().remove(topListPane2);
+            displayTopChoice();
+        });
+        displayTopChoice();
+    }
+
+    private void handleCategorySelectionUser(ArrayList<BookIssue> list, Button selectedButton, int mode) {
+        resetCategoryButtonStylesUser();
+        selectedButton.setStyle("-fx-background-color: #fff; -fx-background-radius: 5px; -fx-cursor: hand;");
+        bookIssueList = list;
+        paginatedBookIssueList = paginateBookIssueList(bookIssueList);
+        currentPage = 0; // Reset to the first page
+        displayPage(currentPage);
+        currentMode = mode;
+    }
+
+    private void resetCategoryButtonStylesUser() {
+        viewAllUser.setStyle("-fx-background-color: transparent; -fx-background-radius: 5px; -fx-cursor: hand;");
+        viewBorrowedUser.setStyle("-fx-background-color: transparent; -fx-background-radius: 5px; -fx-cursor: hand;");
+        viewPendingUser.setStyle("-fx-background-color: transparent; -fx-background-radius: 5px; -fx-cursor: hand;");
+        viewReturnedUser.setStyle("-fx-background-color: transparent; -fx-background-radius: 5px; -fx-cursor: hand;");
+    }
+
+    private void initForUser() {
+        userFilterPane.setVisible(true);
+        userTabel.setVisible(true);
+        userStackPane.setVisible(true);
+
+        adminFilterPane.setVisible(false);
+        stackPane.setVisible(false);
+        adminTable.setVisible(false);
+
+        bookIssueList = BookIssueDB.getTotalListByUserId(MainGUI.currentUser.getId());
+        // Initial display
+        paginatedBookIssueList = paginateBookIssueList(bookIssueList);
+        displayPage(currentPage);
+
+        // Set button actions
+        viewAllUser.setOnAction(event -> handleCategorySelectionUser(BookIssueDB.getTotalListByUserId(MainGUI.currentUser.getId()), viewAllUser, 0));
+        viewBorrowedUser.setOnAction(event -> handleCategorySelectionUser(BookIssueDB.getBorrowedListByUserId(MainGUI.currentUser.getId()), viewBorrowedUser, 1));
+        viewReturnedUser.setOnAction(event -> handleCategorySelectionUser(BookIssueDB.getReturnedListByUserId(MainGUI.currentUser.getId()), viewReturnedUser, 2));
+        viewPendingUser.setOnAction(event -> handleCategorySelectionUser(BookIssueDB.getPendingListByUserId(MainGUI.currentUser.getId()), viewPendingUser, 4));
+
+        sortTitleUser.setOnAction(event -> {
+            resetSortOrderExcept("Title");
+            if (isTitleAscending) {
+                bookIssueList.sort(Comparator.comparing(BookIssue::getBookTitle, String.CASE_INSENSITIVE_ORDER));
+            } else {
+                bookIssueList.sort(Comparator.comparing(BookIssue::getBookTitle, String.CASE_INSENSITIVE_ORDER).reversed());
+            }
+            isTitleAscending = !isTitleAscending;
+            paginatedBookIssueList = paginateBookIssueList(bookIssueList);
+            currentPage = 0;
+            displayPage(currentPage);
+        });
+
+        sortAuthorUser.setOnAction(event -> {
+            resetSortOrderExcept("Author");
+            if (isAuthorAscending) {
+                bookIssueList.sort(Comparator.comparing(BookIssue::getBookAuthor, String.CASE_INSENSITIVE_ORDER));
+            } else {
+                bookIssueList.sort(Comparator.comparing(BookIssue::getBookAuthor, String.CASE_INSENSITIVE_ORDER).reversed());
+            }
+            isAuthorAscending = !isAuthorAscending;
+            paginatedBookIssueList = paginateBookIssueList(bookIssueList);
+            currentPage = 0;
+            displayPage(currentPage);
+        });
+
+        sortIssueDateUser.setOnAction(event -> {
+            resetSortOrderExcept("IssueDate");
+            if (isIssueDateAscending) {
+                bookIssueList.sort(Comparator.comparing(BookIssue::getIssueDate));
+            } else {
+                bookIssueList.sort(Comparator.comparing(BookIssue::getIssueDate).reversed());
+            }
+            isIssueDateAscending = !isIssueDateAscending;
+            paginatedBookIssueList = paginateBookIssueList(bookIssueList);
+            currentPage = 0;
+            displayPage(currentPage);
+        });
+
+        // Sort by Return Date
+        sortReturnDateUser.setOnAction(event -> {
+            resetSortOrderExcept("ReturnDate");
+            if (isReturnDateAscending) {
+                bookIssueList.sort(Comparator.comparing(BookIssue::getReturnDate));
+            } else {
+                bookIssueList.sort(Comparator.comparing(BookIssue::getReturnDate).reversed());
+            }
+            isReturnDateAscending = !isReturnDateAscending;
+            paginatedBookIssueList = paginateBookIssueList(bookIssueList);
+            currentPage = 0;
+            displayPage(currentPage);
+        });
+    }
+
+    private void initForAdmin() {
+        userFilterPane.setVisible(false);
+        userTabel.setVisible(false);
+        userStackPane.setVisible(false);
+
+        adminFilterPane.setVisible(true);
+        stackPane.setVisible(true);
+        adminTable.setVisible(true);
+        bookIssueList = BookIssueDB.getTotalList();
         // Initial display
         paginatedBookIssueList = paginateBookIssueList(bookIssueList);
         displayPage(currentPage);
@@ -184,15 +313,6 @@ public class BookIssueController extends BaseController {
             currentPage = 0;
             displayPage(currentPage);
         });
-
-        nextTopList.setOnAction(event -> {
-            currentTopList = (currentTopList + 1) % topList.size();
-            mainPane.getChildren().remove(topListPane1);
-            mainPane.getChildren().remove(topListPane2);
-            displayTopChoice();
-        });
-
-        displayTopChoice();
     }
 
     private String getRatingStars(int rating, int maxRating) {
@@ -393,6 +513,26 @@ public class BookIssueController extends BaseController {
         if (!field.equals("ReturnDate")) isReturnDateAscending = true;
     }
 
+    private void updateForUser() {
+        switch (currentMode) {
+            case 0:
+                bookIssueList = BookIssueDB.getTotalListByUserId(MainGUI.currentUser.getId());
+                break;
+            case 1:
+                bookIssueList = BookIssueDB.getBorrowedListByUserId(MainGUI.currentUser.getId());
+                break;
+            case 2:
+                bookIssueList = BookIssueDB.getReturnedListByUserId(MainGUI.currentUser.getId());
+                break;
+            case 4:
+                bookIssueList = BookIssueDB.getPendingListByUserId(MainGUI.currentUser.getId());
+                break;
+        }
+        paginatedBookIssueList = paginateBookIssueList(bookIssueList);
+        currentPage = Math.min(currentPage, paginatedBookIssueList.size() - 1);
+        displayPage(currentPage);
+    }
+
     private void update() {
         switch (currentMode) {
             case 0:
@@ -447,6 +587,7 @@ public class BookIssueController extends BaseController {
     }
 
     private void displayPage(int pageIndex) {
+        containerPaneUser.getChildren().clear();
         containerPane.getChildren().clear();
 
         if (pageIndex < 0 || pageIndex >= paginatedBookIssueList.size()) return;
@@ -455,16 +596,61 @@ public class BookIssueController extends BaseController {
         double layoutY = 0;
 
         for (BookIssue book : currentBooks) {
-            Pane bookPane = createBookIssuePane(book);
+            Pane bookPane = MainGUI.currentUser.getUserType().equals("admin") ? createBookIssuePane(book) : createBookIssuePaneUser(book);
             bookPane.setLayoutY(layoutY);
             layoutY += 70; // Spacing between panes
-            containerPane.getChildren().add(bookPane);
+            if(MainGUI.currentUser.getUserType().equals("admin")) {
+                containerPane.getChildren().add(bookPane);
+            }
+            else {
+                containerPaneUser.getChildren().add(bookPane);
+            }
         }
-
-        addNavigationButtons();
+        if(MainGUI.currentUser.getUserType().equals("admin")) {
+            addNavigationButtonsForAdmin();
+        }
+        else {
+            addNavigationButtonsForUser();
+        }
     }
 
-    private void addNavigationButtons() {
+    private void addNavigationButtonsForUser() {
+        // Left navigation button
+        if (currentPage > 0) {
+            Button leftButton = new Button();
+            leftButton.setLayoutX(670);
+            leftButton.setLayoutY(275);
+            leftButton.setPrefSize(30, 30);
+            leftButton.setStyle("-fx-background-color: transparent; -fx-cursor: hand;");
+
+            FontAwesomeIcon leftIcon = new FontAwesomeIcon();
+            leftIcon.setGlyphName("ANGLE_LEFT");
+            leftIcon.setSize("2em");
+
+            leftButton.setGraphic(leftIcon);
+            leftButton.setOnAction(event -> navigatePage(-1));
+            containerPaneUser.getChildren().add(leftButton);
+        }
+
+        // Right navigation button
+        if (currentPage < paginatedBookIssueList.size() - 1) {
+            Button rightButton = new Button();
+            rightButton.setLayoutX(733);
+            rightButton.setLayoutY(275);
+            rightButton.setPrefSize(30, 30);
+            rightButton.setStyle("-fx-background-color: transparent; -fx-cursor: hand;");
+
+            FontAwesomeIcon rightIcon = new FontAwesomeIcon();
+            rightIcon.setGlyphName("ANGLE_RIGHT");
+            rightIcon.setSize("2em");
+
+            rightButton.setGraphic(rightIcon);
+            rightButton.setOnAction(event -> navigatePage(1));
+            containerPaneUser.getChildren().add(rightButton);
+        }
+    }
+
+    private void addNavigationButtonsForAdmin() {
         // Left navigation button
         if (currentPage > 0) {
             Button leftButton = new Button();
@@ -507,6 +693,59 @@ public class BookIssueController extends BaseController {
             displayPage(currentPage);
         }
     }
+
+    public Pane createBookIssuePaneUser(BookIssue book) {
+        Pane pane = new Pane();
+        pane.setPrefSize(795, 65);
+
+        Label bookTitleLabel = createLabel(book.getBookTitle(), 39, 14, 100, 30);
+        Label authorTileLabel = createLabel(book.getBookAuthor(), 167, 14, 150, 30);
+        Label issueDateLabel = createLabel(book.getIssueDate().toString(), 337, 14, 150, 30);
+        Label returnDateLabel = createLabel(book.getReturnDate().toString(), 510, 14, 150, 30);
+        Label statusLabel = new Label(book.getStatus());
+
+        if (book.getStatus().equalsIgnoreCase("Borrowed")) {
+            Button returnButton = new Button("Return");
+            returnButton.setLayoutX(700); // Đặt vị trí gần trạng thái
+            returnButton.setLayoutY(14);
+            returnButton.setPrefSize(80, 30);
+            returnButton.setStyle("-fx-background-color: #ff4d4d; -fx-background-radius: 15px; -fx-text-fill: white; -fx-cursor: hand;");
+            returnButton.setFont(new Font("System Bold", 13));
+            returnButton.setOnAction(event -> {
+                Book currentBook = DBInfo.getBook(book.getBookTitle());
+                try {
+                    MainGUI.currentUser.traSach(currentBook);
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+                updateForUser();
+                sendNotification(1000, MainGUI.currentUser.getId(), "Trả sách " + currentBook.getTitle() + " thành công !");
+                sendNotification(MainGUI.currentUser.getId(), 999, "User " + MainGUI.currentUser.getId() + " trả sách " + currentBook.getTitle());
+            });
+
+            pane.getChildren().add(returnButton);
+        }
+        else {
+            // Định dạng label trạng thái
+            statusLabel.setLayoutX(697);
+            statusLabel.setLayoutY(14);
+            statusLabel.setPrefSize(80, 30);
+            statusLabel.setAlignment(Pos.CENTER);
+            statusLabel.setStyle("-fx-background-color: " +
+                    (book.getStatus().equalsIgnoreCase("Pending") ? "#ffcc00" : "#62f270") +
+                    "; -fx-background-radius: 15px;");
+            statusLabel.setFont(new Font("System Bold", 13));
+            pane.getChildren().add(statusLabel);
+        }
+        // Thêm đường kẻ ngang
+        Line line = new Line(0, 65, 795, 65);
+
+        // Thêm các thành phần vào Pane
+        pane.getChildren().addAll(bookTitleLabel, authorTileLabel, issueDateLabel, returnDateLabel, line);
+
+        return pane;
+    }
+
 
     public Pane createBookIssuePane(BookIssue book) {
         Pane pane = new Pane();
