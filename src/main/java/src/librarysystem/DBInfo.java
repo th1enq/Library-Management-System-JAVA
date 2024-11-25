@@ -1917,6 +1917,24 @@ public class DBInfo {
       e.printStackTrace();
     }
   }
+  public static void deleteComment(String book_title, String content) {
+    try {
+      Connection conn = DBInfo.conn();
+      String sql = "DELETE FROM comment (book_title, username, time, content) VALUES (?, ?, ?,?)";
+      PreparedStatement stmt = conn.prepareStatement(sql);
+      stmt.setString(1, book_title);
+      stmt.setString(2, curUsername);
+      java.sql.Date currentDate = java.sql.Date.valueOf(LocalDate.now());
+      stmt.setDate(3, currentDate);
+      stmt.setString(4, content);
+      int rowsInserted = stmt.executeUpdate();
+      if (rowsInserted > 0) {
+        System.out.println("Xóa bình luận thành công!");
+      }
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+  }
 
   public static ArrayList<CustomData> getCommentList(String book_title) {
     ArrayList<CustomData> ret = new ArrayList<>();
