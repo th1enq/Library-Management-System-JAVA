@@ -2206,18 +2206,22 @@ public class DBInfo {
 
     User Y = getUser("levanc");
 
-    ArrayList<BookIssue> tmp = BookIssueDB.getPendingList();
-    for (BookIssue i : tmp) {
+    ArrayList<BookIssue> tmp = BookIssueDB.getReturnedList();
+    for(BookIssue i:tmp){
       i.displayIssueInfo();
     }
-    tmp = BookIssueDB.getPendingList();
-    for (BookIssue i : tmp) {
-      Y.denyBorrowRequest(i);
+    for(BookIssue i:tmp){
+      BookIssueDB.deleteReturned(i);
     }
-    tmp = BookIssueDB.getPendingList();
-    for (BookIssue i : tmp) {
+    System.out.println("______________________-");
+    tmp = BookIssueDB.getReturnedList();
+    for(BookIssue i:tmp){
       i.displayIssueInfo();
     }
+
+
+
+
 
 
   }

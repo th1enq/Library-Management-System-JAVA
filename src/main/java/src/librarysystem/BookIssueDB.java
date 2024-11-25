@@ -313,4 +313,137 @@ public class BookIssueDB {
     return ret;
   }
 
+  public static ArrayList<BookIssue> getBorrowedListByUserId(int userId) {
+    ArrayList<BookIssue> ret = new ArrayList<>();
+    Connection con = null;
+    PreparedStatement pstmt = null;
+    ResultSet rs = null;
+
+    try {
+
+      con = DBInfo.conn();
+      String sql =
+          "SELECT user_id, book_name, borrow_date, return_date FROM borrow_slip WHERE return_date > NOW() AND user_id = "
+              + userId;
+      pstmt = con.prepareStatement(sql);
+      rs = pstmt.executeQuery();
+
+      while (rs.next()) {
+        boolean okToAdd = false;
+        String bookTitle = rs.getString("book_name");
+        MyDateTime issueDate = new MyDateTime(rs.getTimestamp("borrow_date").toLocalDateTime());
+        MyDateTime returnDate = new MyDateTime(rs.getTimestamp("return_date").toLocalDateTime());
+        BookIssue bookIssue = new BookIssue();
+        bookIssue.setUserId(userId);
+        bookIssue.setBookTitle(bookTitle);
+        bookIssue.setIssueDate(issueDate);
+        bookIssue.setReturnDate(returnDate);
+        bookIssue.setBookAuthor(DBInfo.getAuthor(bookTitle));
+        if (DBInfo.getUserById(userId) != null) {
+          bookIssue.setUsername(DBInfo.getUserById(userId).getUsername());
+          okToAdd = true;
+        }
+        bookIssue.setStatus("Borrowed");
+        if (okToAdd) {
+          ret.add(bookIssue);
+        }
+      }
+    } catch (SQLException e) {
+      System.out.println("Lỗi khi lấy danh sách dang muon:");
+      e.printStackTrace();
+    } finally {
+      try {
+        if (rs != null) {
+          rs.close();
+        }
+        if (pstmt != null) {
+          pstmt.close();
+        }
+        if (con != null) {
+          con.close();
+        }
+      } catch (SQLException e) {
+        e.printStackTrace();
+      }
+    }
+
+    return ret;
+  }
+
+  public static ArrayList<BookIssue> getPendingListByUserId(int userId) {
+    ArrayList<BookIssue> ret = new ArrayList<>();
+    Connection con = null;
+    PreparedStatement pstmt = null;
+    ResultSet rs = null;
+
+    try {
+      con = DBInfo.conn();
+      String sql =
+          "SELECT user_id, book_name, borrow_date, return_date FROM borrow_request WHERE accepted = 0 AND user_id ="
+              + userId;
+      pstmt = con.prepareStatement(sql);
+      rs = pstmt.executeQuery();
+
+      while (rs.next()) {
+        boolean okToAdd = false;
+        String bookTitle = rs.getString("book_name");
+        MyDateTime issueDate = new MyDateTime(rs.getTimestamp("borrow_date").toLocalDateTime());
+        MyDateTime returnDate = new MyDateTime(rs.getTimestamp("return_date").toLocalDateTime());
+
+        BookIssue bookIssue = new BookIssue();
+        bookIssue.setUserId(userId);
+        bookIssue.setBookTitle(bookTitle);
+        bookIssue.setIssueDate(issueDate);
+        bookIssue.setReturnDate(returnDate);
+        bookIssue.setBookAuthor(DBInfo.getAuthor(bookTitle));
+        if (DBInfo.getUserById(userId) != null) {
+          bookIssue.setUsername(DBInfo.getUserById(userId).getUsername());
+          okToAdd = true;
+        }
+        bookIssue.setStatus(BookIssue.STATUS_PENDING);
+
+        if (okToAdd) {
+          ret.add(bookIssue);
+        }
+      }
+    } catch (SQLException e) {
+      System.out.println("Lỗi khi lấy danh sách processing:");
+      e.printStackTrace();
+    } finally {
+      try {
+        if (rs != null) {
+          rs.close();
+        }
+        if (pstmt != null) {
+          pstmt.close();
+        }
+        if (con != null) {
+          con.close();
+        }
+      } catch (SQLException e) {
+        e.printStackTrace();
+      }
+    }
+    return ret;
+  }
+
+  public static void deleteReturned(BookIssue book)  {
+    String sql = "DELETE FROM borrow_history WHERE user_id = ? AND book_name = ?";
+
+    try (Connection conn = DBInfo.conn();
+        PreparedStatement pstmt = conn.prepareStatement(sql)) {
+      pstmt.setInt(1, book.getUserId());
+      pstmt.setString(2, book.getBookTitle());
+      int rowsAffected = pstmt.executeUpdate();
+
+      if (rowsAffected > 0) {
+        System.out.println(
+            "Successfully deleted " + rowsAffected + " record(s) from borrow_history.");
+      } else {
+        System.out.println("No matching records found in borrow_history.");
+      }
+    }catch(Exception e){
+      e.printStackTrace();
+    }
+  }
 }
