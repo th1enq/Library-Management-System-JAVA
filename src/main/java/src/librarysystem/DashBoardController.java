@@ -15,7 +15,7 @@ import javafx.scene.control.Label;
 import javafx.util.Duration;
 import javafx.scene.control.Tooltip;
 
-public class DashBoardController {
+public class DashBoardController extends BaseController {
     @FXML
     public Label currentTime;
     @FXML

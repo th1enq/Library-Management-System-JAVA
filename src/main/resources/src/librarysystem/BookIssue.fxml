@@ -11,7 +11,7 @@
 
 <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="736.0" prefWidth="1180.0" styleClass="sidebar" stylesheets="@stylesheet.css" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="src.librarysystem.BookIssueController">
     <children>
-        <Pane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="736.0" prefWidth="1180.0">
+        <Pane fx:id="mainPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="736.0" prefWidth="1180.0">
             <VBox.margin>
                 <Insets />
             </VBox.margin>
@@ -137,6 +137,13 @@
                </children>
             </Pane>
             <Button layoutX="305.0" layoutY="150.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="30.0" style="-fx-background-color: transparent;" />
+            <Label layoutX="27.0" layoutY="47.0" text="Top Choices">
+               <font>
+                  <Font name="System Bold" size="25.0" />
+               </font>
+            </Label>
+            <Button fx:id="nextTopList" layoutX="73.0" layoutY="140.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="50.0" style="-fx-background-radius: 10; -fx-background-color: #fff; -fx-border-color: #000; -fx-border-radius: 10; -fx-cursor: hand;" textFill="#fefefe" />
+            <FontAwesomeIcon glyphName="ANGLE_LEFT" layoutX="93.0" layoutY="175.0" size="2.5em" />
          </children>
         </Pane>
     </children>

@@ -101,48 +101,75 @@ public class SearchBookController extends BaseController {
     }
 
     private void searchQuery(String query) {
-        if(query.isEmpty() || query == null) {
-            if(apiMode) {
+        if (query.isEmpty() || query == null) {
+            if (apiMode) {
                 return;
-            }
-            else {
+            } else {
                 currentLibraryBook = DBInfo.getBookList("ALL", "ALL", "ALL");
             }
         }
-        if(apiMode) {
-            switch (filterMode) {
-                case 0:
-                    currentApiBook = BookServices.getInstance().searchBooksByTitle(query);
-                    break;
-                case 1:
-                    currentApiBook = BookServices.getInstance().searchBooksByAuthor(query);
-                    break;
-                case 2:
-                    currentApiBook = BookServices.getInstance().searchBooksByCategory(query);
-                    break;
+
+        // Hiển thị SearchingProgressing
+        VBox progressBox = SearchingProgressing.getInstance().createProgressingVBox();
+        flowPane.getChildren().clear();
+        flowPane.getChildren().add(progressBox);
+
+        // Tạo Task để chạy tìm kiếm trong nền
+        Task<Void> searchTask = new Task<Void>() {
+            @Override
+            protected Void call() throws Exception {
+                if (apiMode) {
+                    switch (filterMode) {
+                        case 0:
+                            currentApiBook = BookServices.getInstance().searchBooksByTitle(query);
+                            break;
+                        case 1:
+                            currentApiBook = BookServices.getInstance().searchBooksByAuthor(query);
+                            break;
+                        case 2:
+                            currentApiBook = BookServices.getInstance().searchBooksByCategory(query);
+                            break;
+                    }
+                } else {
+                    switch (filterMode) {
+                        case 0:
+                            currentLibraryBook = Filter.getInstance().getBookByTitleSubstr(query);
+                            break;
+                        case 1:
+                            currentLibraryBook = Filter.getInstance().getBookByAuthorSubstr(query);
+                            break;
+                        case 2:
+                            currentLibraryBook = Filter.getInstance().getBookByCategorySubstr(query);
+                            break;
+                    }
+                }
+                return null;
             }
-        }
-        else {
-            switch (filterMode) {
-                case 0:
-                    currentLibraryBook = Filter.getInstance().getBookByTitleSubstr(query);
-                    break;
-                case 1:
-                    currentLibraryBook = Filter.getInstance().getBookByAuthorSubstr(query);
-                    break;
-                case 2:
-                    currentLibraryBook = Filter.getInstance().getBookByCategorySubstr(query);
-                    break;
+
+            @Override
+            protected void succeeded() {
+                // Ẩn SearchingProgressing khi tìm kiếm hoàn tất
+                flowPane.getChildren().clear();
+                if (apiMode) {
+                    displayBooks(currentApiBook);
+                } else {
+                    displayBooks(currentLibraryBook);
+                }
+                MainGUI.setPreviousStage(apiMode, query);
             }
-        }
-        if(apiMode) {
-            displayBooks(currentApiBook);
-        }
-        else {
-            displayBooks(currentLibraryBook);
-        }
-        MainGUI.setPreviousStage(apiMode, query);
+
+            @Override
+            protected void failed() {
+                // Ẩn SearchingProgressing khi tìm kiếm thất bại
+                flowPane.getChildren().clear();
+                System.out.println("Tìm kiếm thất bại");
+            }
+        };
+
+        // Chạy Task trong luồng nền
+        new Thread(searchTask).start();
     }
+
 
     @FXML
     public void searchBook(ActionEvent actionEvent) {
