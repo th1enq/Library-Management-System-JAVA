@@ -122,7 +122,7 @@ public class DBInfo {
     Connection con = null;
     try {
       con = DriverManager.getConnection("jdbc:mysql://localhost:3306/TESTT", "root", "");
-      System.out.println("Ket noi thanh cong");
+      //  System.out.println("Ket noi thanh cong");
     } catch (SQLException e) {
       e.printStackTrace();
     }
@@ -481,14 +481,15 @@ public class DBInfo {
       con = DBInfo.conn();
 
       // Kiểm tra xem yêu cầu đã tồn tại chưa
-      String checkSql = "SELECT COUNT(*) FROM borrow_request WHERE user_id = ? AND book_name = ?";
+      String checkSql = "SELECT COUNT(*) FROM borrow_request WHERE user_id = ? AND book_name = ? AND accepted = 0";
       checkStmt = con.prepareStatement(checkSql);
       checkStmt.setInt(1, id);
       checkStmt.setString(2, itemName);
 
       ResultSet rs = checkStmt.executeQuery();
       if (rs.next() && rs.getInt(1) > 0) {
-        System.out.println("Yêu cầu mượn sách đã tồn tại cho user_id = " + id + " và sách '" + itemName + "'.");
+        System.out.println(
+            "Yêu cầu mượn sách đã tồn tại cho user_id = " + id + " và sách '" + itemName + "'.");
         return;
       }
       String insertSql = "INSERT INTO borrow_request (user_id, book_name, borrow_date, return_date) VALUES (?, ?, ?, ?)";
@@ -502,16 +503,23 @@ public class DBInfo {
       insertStmt.setTimestamp(4, Timestamp.valueOf(dateTimeAfter10Days));
 
       int rowsAffected = insertStmt.executeUpdate();
-      System.out.println("Yêu cầu mượn sách đã được thêm thành công! Rows affected: " + rowsAffected);
+      System.out.println(
+          "Yêu cầu mượn sách đã được thêm thành công! Rows affected: " + rowsAffected);
 
     } catch (SQLException e) {
       System.out.println("Lỗi khi thêm yêu cầu mượn sách.");
       e.printStackTrace();
     } finally {
       try {
-        if (checkStmt != null) checkStmt.close();
-        if (insertStmt != null) insertStmt.close();
-        if (con != null) con.close();
+        if (checkStmt != null) {
+          checkStmt.close();
+        }
+        if (insertStmt != null) {
+          insertStmt.close();
+        }
+        if (con != null) {
+          con.close();
+        }
       } catch (SQLException e) {
         e.printStackTrace();
       }
@@ -528,16 +536,22 @@ public class DBInfo {
       int rowsUpdated = stmt.executeUpdate();
 
       if (rowsUpdated > 0) {
-        System.out.println("Yêu cầu mượn sách của user_id = " + userId + " cho sách '" + bookName + "' đã được chấp nhận.");
-        addSlip(bookName,userId);
-        sendNotification(1000,userId,"Yêu cầu mượn sách của bạn đối với cuốn \"" + bookName +"\" đã được phê duyệt");   ;
+        System.out.println("Yêu cầu mượn sách của user_id = " + userId + " cho sách '" + bookName
+            + "' đã được chấp nhận.");
+        addSlip(bookName, userId);
+        sendNotification(1000, userId,
+            "Yêu cầu mượn sách của bạn đối với cuốn \"" + bookName + "\" đã được phê duyệt");
+        ;
       } else {
-        System.out.println("Không tìm thấy yêu cầu mượn sách cho user_id = " + userId + " và sách '" + bookName + "'.");
+        System.out.println(
+            "Không tìm thấy yêu cầu mượn sách cho user_id = " + userId + " và sách '" + bookName
+                + "'.");
       }
     } catch (SQLException e) {
       System.err.println("Lỗi khi cập nhật yêu cầu mượn sách: " + e.getMessage());
     }
   }
+
   public static void denyBorrowRequest(int userId, String bookName) {
     String sql = "UPDATE borrow_request SET accepted = 1 WHERE user_id = ? AND book_name = ?";
     try (Connection conn = DBInfo.conn(); PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -547,16 +561,22 @@ public class DBInfo {
       int rowsUpdated = stmt.executeUpdate();
 
       if (rowsUpdated > 0) {
-        sendNotification(1000,userId,"Yêu cầu mượn sách của bạn đối với cuốn \"" + bookName +"\" đã bị từ chối");   ;
+        sendNotification(1000, userId,
+            "Yêu cầu mượn sách của bạn đối với cuốn \"" + bookName + "\" đã bị từ chối");
+        ;
 
-        System.out.println("Yêu cầu mượn sách của user_id = " + userId + " cho sách '" + bookName + "' đã bị từ chối.");
+        System.out.println("Yêu cầu mượn sách của user_id = " + userId + " cho sách '" + bookName
+            + "' đã bị từ chối.");
       } else {
-        System.out.println("Không tìm thấy yêu cầu mượn sách cho user_id = " + userId + " và sách '" + bookName + "'.");
+        System.out.println(
+            "Không tìm thấy yêu cầu mượn sách cho user_id = " + userId + " và sách '" + bookName
+                + "'.");
       }
     } catch (SQLException e) {
       System.err.println("Lỗi khi cập nhật yêu cầu mượn sách: " + e.getMessage());
     }
   }
+
   /**
    * tra sach
    */
@@ -1115,10 +1135,11 @@ public class DBInfo {
       PreparedStatement preparedStatement = con.prepareStatement(sql);
       int x = getUserCount() + 1;
       System.out.println(x);
+      String hashedPassword = PasswordUtils.hashPassword(password);
       preparedStatement.setInt(1, x);
       preparedStatement.setString(2, name);
       preparedStatement.setString(3, username);
-      preparedStatement.setString(4, password);
+      preparedStatement.setString(4, hashedPassword);
       preparedStatement.setString(5, usertype);
       preparedStatement.setString(6, MSV);
       int rowsAffected = preparedStatement.executeUpdate();
@@ -1134,38 +1155,42 @@ public class DBInfo {
    * kiem tra mat khau
    *
    * @param username us
-   * @param password pas
+   * @param plainPassword pas
    * @return true/false
    */
-  public static boolean checkPass(String username, String password) {
-    String sql = "SELECT usertype FROM registration WHERE username = ? AND password = ? AND is_banned = 0";
-
+  public static boolean checkPass(String username, String plainPassword) {
+    String sql = "SELECT password, usertype FROM registration WHERE username = ? AND is_banned = 0";
     try {
       Connection con = DBInfo.conn();
       if (con == null) {
-        System.out.println("KO kết nối đc với db");
+        System.out.println("Không kết nối được với cơ sở dữ liệu!");
         return false;
       }
       PreparedStatement preparedStatement = con.prepareStatement(sql);
       preparedStatement.setString(1, username);
-      preparedStatement.setString(2, password);
       ResultSet resultSet = preparedStatement.executeQuery();
       if (resultSet.next()) {
+        String hashedPassword = resultSet.getString("password");
         String userType = resultSet.getString("usertype");
-        System.out.println("Đúng! Loại người dùng: " + userType);
-        return true;
-      } else {
-        System.out.println("Tên đăng nhập hoặc mật khẩu không đúng!");
 
+        if (PasswordUtils.verifyPassword(plainPassword, hashedPassword)) {
+          System.out.println("Đăng nhập thành công! Loại người dùng: " + userType);
+          return true;
+        } else {
+          System.out.println("Mật khẩu không chính xác!");
+        }
+      } else {
+        System.out.println("Không tìm thấy người dùng hoặc tài khoản bị khóa!");
       }
       preparedStatement.close();
       con.close();
-      return false;
-    } catch (SQLException A) {
-      A.printStackTrace();
-      return false;
+    } catch (SQLException e) {
+      e.printStackTrace();
     }
+
+    return false;
   }
+
 
   /**
    * hamf dang nhap.
@@ -1899,16 +1924,23 @@ public class DBInfo {
     return sql;
   }
 
-  public static void addComment(String book_title, String content) {
+  public static void addComment(Comment comment) {
     try {
       Connection conn = DBInfo.conn();
-      String sql = "INSERT INTO comment (book_title, username, time, content) VALUES (?, ?, ?,?)";
+      String bookTitle = comment.getBookTitle();
+      String username = comment.getUsername();
+      MyDateTime time = comment.getTime();
+      String content = comment.getContent();
+      int rate = comment.getRate();
+      String sql = "INSERT INTO comment (book_title, username, time, content,rate) VALUES (?, ?, ?, ?,?)";
       PreparedStatement stmt = conn.prepareStatement(sql);
-      stmt.setString(1, book_title);
-      stmt.setString(2, curUsername);
-      java.sql.Date currentDate = java.sql.Date.valueOf(LocalDate.now());
-      stmt.setDate(3, currentDate);
+      stmt.setString(1, bookTitle);
+      stmt.setString(2, username);
+      stmt.setTimestamp(3,
+          Timestamp.valueOf(time.toLocalDateTime()));
       stmt.setString(4, content);
+      stmt.setInt(5, rate);
+      rateBook(bookTitle, rate);
       int rowsInserted = stmt.executeUpdate();
       if (rowsInserted > 0) {
         System.out.println("Thêm bình luận thành công!");
@@ -1917,51 +1949,39 @@ public class DBInfo {
       e.printStackTrace();
     }
   }
-  public static void deleteComment(String book_title, String content) {
-    try {
-      Connection conn = DBInfo.conn();
-      String sql = "DELETE FROM comment (book_title, username, time, content) VALUES (?, ?, ?,?)";
-      PreparedStatement stmt = conn.prepareStatement(sql);
-      stmt.setString(1, book_title);
-      stmt.setString(2, curUsername);
-      java.sql.Date currentDate = java.sql.Date.valueOf(LocalDate.now());
-      stmt.setDate(3, currentDate);
-      stmt.setString(4, content);
-      int rowsInserted = stmt.executeUpdate();
-      if (rowsInserted > 0) {
-        System.out.println("Xóa bình luận thành công!");
-      }
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
-  }
 
-  public static ArrayList<CustomData> getCommentList(String book_title) {
-    ArrayList<CustomData> ret = new ArrayList<>();
+
+  public static ArrayList<Comment> getCommentList(Book book) {
+    ArrayList<Comment> ret = new ArrayList<>();
     try {
+      String bookTitle = book.getTitle();
       Connection conn = DBInfo.conn();
-      // Sử dụng câu SQL với PreparedStatement
-      String sql = "SELECT * from comment WHERE book_title = ?";
+      String sql = "SELECT * FROM comment WHERE book_title = ?";
       PreparedStatement statement = conn.prepareStatement(sql);
-
-      // Sử dụng phương thức setString để thiết lập giá trị cho tham số
-      statement.setString(1, book_title);
-
-      // Thực hiện câu lệnh truy vấn
+      statement.setString(1, bookTitle);
       ResultSet resultSet = statement.executeQuery();
       while (resultSet.next()) {
-        ret.add(new CustomData(
-            resultSet.getString("username"),
-            resultSet.getDate("time").toString(),
-            resultSet.getString("content"),
-            "dummy"
-        ));
+        String username = resultSet.getString("username");
+        LocalDateTime time = resultSet.getTimestamp("time")
+            .toLocalDateTime();
+        String content = resultSet.getString("content");
+        int rate = resultSet.getInt("rate");
+        Comment comment = new Comment(
+            bookTitle,
+            username,
+            new MyDateTime(time),
+            content,
+            rate
+        );
+
+        ret.add(comment);
       }
     } catch (Exception e) {
       e.printStackTrace();
     }
     return ret;
   }
+
 
   public static void ban(User X) {
     String username = X.getUsername();
@@ -2218,28 +2238,24 @@ public class DBInfo {
     return authorName;
   }
 
+  public static boolean validUsername(String username) {
+    if (username == null || username.isEmpty()) {
+      return false;
+    }
+    String emailRegex = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$";
+    return username.matches(emailRegex);
+  }
+
+  public static boolean validPassword(String password) {
+    return password.length() >= 8;
+  }
+
   public static void main(String[] args) throws Exception {
-
-    User X = getUser("tranthib");
-
-    User Y = getUser("levanc");
-
-    ArrayList<BookIssue> tmp = BookIssueDB.getReturnedList();
-    for(BookIssue i:tmp){
-      i.displayIssueInfo();
-    }
-    for(BookIssue i:tmp){
-      BookIssueDB.deleteReturned(i);
-    }
-    System.out.println("______________________-");
-    tmp = BookIssueDB.getReturnedList();
-    for(BookIssue i:tmp){
-      i.displayIssueInfo();
-    }
-
-
-
-
+       Register(1,"nguyenvana","nguyenvana@gmail.com","password123","user","1");
+       Register(1,"tranthib","tranthib@gmail.com","password234","user","1");
+       Register(1,"abc","23020158@vnu.edu.vn","password345","user","1");
+       Register(1,"bcd","23020161@vnu.edu.vn","password111","user","1");
+       Register(1,"admin","levanc","password789","admin","1");
 
 
   }

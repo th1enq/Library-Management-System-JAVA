@@ -76,28 +76,37 @@ CREATE TABLE `borrow_request` (
     accepted TINYINT(1) DEFAULT 0
     -- accepted = 1 => đã xử lý (có thể chấp thuận hoặc không) --
 );
-
-
-
-
+--      Register(1,"nguyenvana","nguyenvana@gmail.com","password123","user","1"); --
+--        Register(1,"tranthib","tranthib@gmail.com","password234","user","1"); --
+--        Register(1,"abc","23020158@vnu.edu.vn","password345","user","1");  --
+--        Register(1,"bcd","23020161@vnu.edu.vn","password111","user","1"); --
+--        Register(1,"admin","levanc","password789","admin","1");   --
 DROP TABLE IF EXISTS `registration`;
-SET @saved_cs_client     = @@character_set_client;
-SET character_set_client = utf8;
 CREATE TABLE `registration` (
-  `id` INT AUTO_INCREMENT NOT NULL,
-  `name` VARCHAR(100) DEFAULT NULL,
-  `username` VARCHAR(200) NOT NULL UNIQUE,
-  `password` VARCHAR(100) NOT NULL,
-  `usertype` ENUM('admin', 'user') DEFAULT 'user',
-  `is_banned` TINYINT(1) DEFAULT 0,
-  `avatar_link` VARCHAR(500),
-  `MSV`   VARCHAR(100),
-  `University` VARCHAR(100),
-  `Phone`    VARCHAR(100),
-  `Cover_photo_link`  VARCHAR(500),
-  `Reputation`  INT DEFAULT 5,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  `id` int(11) NOT NULL PRIMARY KEY,
+  `name` varchar(100) DEFAULT NULL,
+  `username` varchar(200) NOT NULL,
+  `password` varchar(100) NOT NULL,
+  `usertype` enum('admin','user') DEFAULT 'user',
+  `is_banned` tinyint(1) DEFAULT 0,
+  `avatar_link` varchar(500) DEFAULT NULL,
+  `MSV` varchar(100) DEFAULT NULL,
+  `University` varchar(100) DEFAULT NULL,
+  `Phone` varchar(100) DEFAULT NULL,
+  `Cover_photo_link` varchar(500) DEFAULT NULL,
+  `Reputation` int(11) DEFAULT 5
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Đang đổ dữ liệu cho bảng `registration`
+--
+
+INSERT INTO `registration` (`id`, `name`, `username`, `password`, `usertype`, `is_banned`, `avatar_link`, `MSV`, `University`, `Phone`, `Cover_photo_link`, `Reputation`) VALUES
+(1, 'nguyenvana', 'nguyenvana@gmail.com', '$2a$10$SRJEZs8MjJVS0XCV0Ib4a.XuLCTEt47MzPy4hbx4zE1uRRpseyCcy', 'user', 0, NULL, '1', NULL, NULL, NULL, 5),
+(2, 'tranthib', 'tranthib@gmail.com', '$2a$10$sXFpTi4pPIXSmeX5Wwa/tu20HuR/5xQXgxBqi41afURa.pvhjjGV6', 'user', 0, NULL, '1', NULL, NULL, NULL, 5),
+(3, 'abc', '23020158@vnu.edu.vn', '$2a$10$37Axlx35fjBeZs9mtywWbuS/DinC62nGoJEcy8u.gLlXS4FppUVFu', 'user', 0, 'file:/C:/Users/PC/IdeaProjects/Library-Management-System-JAVA/target/classes/images/wibu.jpg', '1', 'UET', NULL, 'file:/C:/Users/PC/IdeaProjects/Library-Management-System-JAVA/target/classes/images/bg_img.jpg', 5),
+(4, 'bcd', '23020161@vnu.edu.vn', '$2a$10$RwDTRjHzsrFeHbIoA2Ep4./l4RBJ3JJSYYMUf1NAQi7IMvpskoE/C', 'user', 0, NULL, '1', NULL, NULL, NULL, 5),
+(5, 'admin', 'levanc', '$2a$10$PqasxhM1PCwf5fEEWnruKOO29tI6A4ZAaxSRQ/KC/9uYteNnVhlJG', 'admin', 0, NULL, '1', NULL, NULL, NULL, 5);
 
 
   DROP TABLE IF EXISTS `comment`;
@@ -107,20 +116,28 @@ CREATE TABLE `registration` (
      `stt` INT AUTO_INCREMENT NOT NULL,
      `book_title`  VARCHAR(500),
      `username` VARCHAR(200),
-     `time`  DATE,
+     `time`  DATETIME,
      `content`  TEXT,
+     `rate`  INT,
      PRIMARY KEY (`stt`)
   ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-INSERT INTO `comment` (book_title, username, time, content)
+INSERT INTO `comment` (book_title, username, time, content,rate)
 VALUES
-('Attack on Titan', 'nguyenvana', '2024-11-15', 'Cuốn sách này rất thú vị, cốt truyện hấp dẫn!'),
-('Attack on Titan', 'tranthib', '2024-11-14', 'Nhân vật được xây dựng rất tốt, rất thích câu chuyện này.');
+('Attack on Titan', 'nguyenvana', '2024-11-15 10:00:00', 'Cuốn sách này rất thú vị, cốt truyện hấp dẫn!',5),
+('Attack on Titan', 'tranthib', '2024-11-14 10:00:00', 'Nhân vật được xây dựng rất tốt, rất thích câu chuyện này.',5);
 
-INSERT INTO `comment` (book_title, username, time, content)
+INSERT INTO `comment` (book_title, username, time, content,rate)
 VALUES
-('Atomic Habits', 'nguyenvana', '2024-11-13', 'Cuốn sách hữu ích cho việc thay đổi thói quen.'),
-('Atomic Habits', 'tranthib', '2024-11-12', 'Những nguyên tắc trong sách dễ áp dụng vào cuộc sống.');
+('Atomic Habits', 'nguyenvana', '2024-11-13 10:00:00', 'Cuốn sách hữu ích cho việc thay đổi thói quen.',5),
+('Atomic Habits', 'tranthib', '2024-11-12 10:00:00', 'Những nguyên tắc trong sách dễ áp dụng vào cuộc sống.',3);
 
+INSERT INTO `comment` (book_title, username, time, content, rate)
+VALUES
+('Naruto', 'nguyenvana', '2024-11-25 10:00:00', 'Một câu chuyện cảm động và đầy cảm hứng về tình bạn.', 5),
+('Naruto', 'tranthib', '2024-11-26 08:30:00', 'Tôi đã học được rất nhiều từ tinh thần không bỏ cuộc của Naruto.', 4),
+
+('Dracula', 'nguyenvana', '2024-11-25 15:20:00', 'Một tác phẩm kinh điển với bầu không khí ma mị và cuốn hút.', 5),
+('Dracula', 'tranthib', '2024-11-26 09:45:00', 'Tôi rất thích cách tác giả xây dựng hình ảnh Dracula đầy bí ẩn.', 4);
 CREATE TABLE daily_logins (
     id INT AUTO_INCREMENT NOT NULL,
     date DATE NOT NULL,
@@ -141,25 +158,7 @@ VALUES
 ('2024-11-26', 'Tuesday', 15);
 
 
-CREATE TABLE Messages (
-    message_id INT AUTO_INCREMENT PRIMARY KEY,
-    sender_id INT NOT NULL,
-    receiver_id INT NOT NULL,
-    content TEXT NOT NULL,
-    sent_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (sender_id) REFERENCES registration(id),
-    FOREIGN KEY (receiver_id) REFERENCES registration(id)
-);
 
-
-LOCK TABLES `registration` WRITE;
-/*!40000 ALTER TABLE `registration` DISABLE KEYS */;
-INSERT INTO registration (id, name, username, password, usertype) VALUES
-('1', 'Nguyen Van A', 'nguyenvana', 'password123', 'user'),
-('2', 'Tran Thi B', 'tranthib', 'password456', 'user'),
-('3', 'Pham Thi D', 'phamthid', 'password101', 'user'),
-('4', 'Vu Van E', 'vuvane', 'password112', 'user'),
-('999999', 'Le Van C', 'levanc',  'password789', 'admin');
 
 /*!40000 ALTER TABLE `registration` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -248,14 +247,7 @@ INSERT INTO `borrow_history` (`id`, `user_id`, `book_name`, `borrow_date`, `retu
 (8, 2, 'Forbes', '2024-11-24 23:10:30', '2024-11-24 23:30:30'),
 (9, 3, 'Naruto', '2024-11-24 23:40:00', '2024-11-24 23:55:00'),
 (10, 1, 'Dracula', '2024-11-25 00:00:00', '2024-11-25 00:30:00');
-INSERT INTO `borrow_history` (`id`, `user_id`, `book_name`, `borrow_date`, `return_date`) VALUES
-(11, 2, 'Time', '2024-11-25 01:00:00', '2024-11-25 01:20:00'),
-(12, 3, 'Forbes', '2024-11-25 01:10:30', '2024-11-25 01:30:30'),
-(13, 1, 'Dracula', '2024-11-25 01:15:00', '2024-11-25 01:35:00'),
-(14, 2, 'Naruto', '2024-11-25 01:40:00', '2024-11-25 01:55:00'),
-(15, 3, 'Time', '2024-11-25 02:00:00', '2024-11-25 02:20:00'),
-(16, 1, 'Forbes', '2024-11-25 02:15:30', '2024-11-25 02:35:30'),
-(17, 2, 'Dracula', '2024-11-25 02:30:00', '2024-11-25 02:50:00');
+
 
 INSERT INTO `borrow_request` (`id`, `user_id`, `book_name`, `borrow_date`, `return_date`, `accepted`) VALUES
 (1, 1, 'Naruto', '2024-11-24 20:26:02', '2024-12-04 20:26:02', 1),
@@ -268,14 +260,7 @@ INSERT INTO `borrow_request` (`id`, `user_id`, `book_name`, `borrow_date`, `retu
 (8, 2, 'Naruto', '2024-11-24 23:00:00', '2024-12-04 23:00:00', 0),
 (9, 3, 'Naruto', '2024-11-24 23:30:00', '2024-12-04 23:30:00', 1),
 (10, 1, 'Forbes', '2024-11-25 00:00:00', '2024-12-05 00:00:00', 0);
-INSERT INTO `borrow_request` (`id`, `user_id`, `book_name`, `borrow_date`, `return_date`, `accepted`) VALUES
-(11, 3, 'Naruto', '2024-11-25 01:00:00', '2024-12-05 01:00:00', 1),
-(12, 1, 'Time', '2024-11-25 01:15:00', '2024-12-05 01:15:00', 0),
-(13, 2, 'Forbes', '2024-11-25 01:30:30', '2024-12-05 01:30:30', 1),
-(14, 3, 'Dracula', '2024-11-25 01:40:00', '2024-12-05 01:40:00', 0),
-(15, 1, 'Naruto', '2024-11-25 02:00:00', '2024-12-05 02:00:00', 1),
-(16, 2, 'Time', '2024-11-25 02:15:30', '2024-12-05 02:15:30', 1),
-(17, 3, 'Forbes', '2024-11-25 02:30:00', '2024-12-05 02:30:00', 0);
+
 
 INSERT INTO `borrow_slip` (`id`, `user_id`, `book_name`, `borrow_date`, `return_date`) VALUES
 (1, 1, 'Naruto', '2024-11-24 20:26:02', '2024-12-04 20:26:02'),
@@ -288,12 +273,5 @@ INSERT INTO `borrow_slip` (`id`, `user_id`, `book_name`, `borrow_date`, `return_
 (8, 2, 'Time', '2024-11-24 23:15:00', '2024-12-04 23:15:00'),
 (9, 3, 'Forbes', '2024-11-24 23:40:00', '2024-12-04 23:40:00'),
 (10, 1, 'Dracula', '2024-11-25 00:10:00', '2024-12-05 00:10:00');
-INSERT INTO `borrow_slip` (`id`, `user_id`, `book_name`, `borrow_date`, `return_date`) VALUES
-(11, 3, 'Naruto', '2024-11-25 01:00:00', '2024-12-05 01:00:00'),
-(12, 1, 'Time', '2024-11-25 01:15:00', '2024-12-05 01:15:00'),
-(13, 2, 'Forbes', '2024-11-25 01:30:30', '2024-12-05 01:30:30'),
-(14, 3, 'Dracula', '2024-11-25 01:40:00', '2024-12-05 01:40:00'),
-(15, 1, 'Naruto', '2024-11-25 02:00:00', '2024-12-05 02:00:00'),
-(16, 2, 'Time', '2024-11-25 02:15:30', '2024-12-05 02:15:30'),
-(17, 3, 'Forbes', '2024-11-25 02:30:00', '2024-12-05 02:30:00');
+
 

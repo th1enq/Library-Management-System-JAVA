@@ -1,5 +1,6 @@
 package src.librarysystem;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import javafx.beans.value.ObservableValue;
 import org.apache.poi.hssf.record.UseSelFSRecord;
@@ -330,4 +331,7 @@ public class User {
     }
   }
 
+  public void addComment(Book book,String content,int rate){
+    DBInfo.addComment(new Comment(book.getTitle(),getUsername(),new MyDateTime(LocalDateTime.now()),content,rate));
+  }
 }

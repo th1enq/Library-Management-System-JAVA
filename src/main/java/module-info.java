@@ -11,7 +11,8 @@ module src.librarysystem {
   requires jakarta.mail;
   requires java.desktop;
     requires fontawesomefx;
+  requires jbcrypt;
 
-    opens src.librarysystem to javafx.fxml;
+  opens src.librarysystem to javafx.fxml;
     exports src.librarysystem;
 }
