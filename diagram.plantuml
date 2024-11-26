@@ -1,0 +1,501 @@
+@startuml
+
+!theme plain
+top to bottom direction
+skinparam linetype ortho
+
+class AddBookController {
+  + AddBookController(): 
+  + saveBook(ActionEvent): void
+  + handleUploadImage(ActionEvent): void
+}
+class BaseController {
+  + BaseController(): 
+  - mainGUIController: MainGUI
+  # sendNotification(int, int, String): void
+  # returnDetailBook(Book, boolean): void
+  # updateNotifications(): void
+   mainGUIController: MainGUI
+}
+class Book {
+  + Book(String, String, String, String, String, String, String, String, String, String, String, String): 
+  + Book(): 
+  + Book(String, String, String, String, String, String, String, String, String, String, String, String, int, int): 
+  - title: String
+  - category: String
+  - authors: String
+  - rating: int
+  - numView: int
+  - numPage: String
+  - price: String
+  - description: String
+  - buyLink: String
+  - publishedDate: String
+  - ISBN: String
+  - type: String
+  - language: String
+  - publisher: String
+  - thumbnail: String
+  - avail: int
+  + toString(): String
+   description: String
+   numView: int
+   type: String
+   language: String
+   publishedDate: String
+   authors: String
+   buyLink: String
+   avail: int
+   thumbnail: String
+   title: String
+   numPage: String
+   price: String
+   rating: int
+   category: String
+   publisher: String
+   ISBN: String
+}
+class BookIssue {
+  + BookIssue(): 
+  + BookIssue(int, String, String, String, MyDateTime, MyDateTime, String): 
+  - bookTitle: String
+  - userId: int
+  - bookAuthor: String
+  - issueDate: MyDateTime
+  - username: String
+  - returnDate: MyDateTime
+  - status: String
+  + displayIssueInfo(): void
+   returnDate: MyDateTime
+   userId: int
+   bookTitle: String
+   bookAuthor: String
+   issueDate: MyDateTime
+   status: String
+   username: String
+}
+class BookIssueController {
+  + BookIssueController(): 
+  - displayPage(int): void
+  - getRatingStars(int, int): String
+  - update(): void
+  + createBookIssuePaneUser(BookIssue): Pane
+  - resetCategoryButtonStyles(): void
+  - resetCategoryButtonStylesUser(): void
+  - handleCategorySelectionUser(ArrayList<BookIssue>, Button, int): void
+  - initForUser(): void
+  - displayTopChoice(): void
+  - paginateBookIssueList(ArrayList<BookIssue>): ArrayList<ArrayList<BookIssue>>
+  - initForAdmin(): void
+  - resetSortOrderExcept(String): void
+  - addNavigationButtonsForUser(): void
+  + createBookIssuePane(BookIssue): Pane
+  - addNavigationButtonsForAdmin(): void
+  - navigatePage(int): void
+  + initialize(): void
+  - createBookPane1(): Pane
+  - createBookPane2(): Pane
+  + exportCSV(ActionEvent): void
+  - handleCategorySelection(ArrayList<BookIssue>, Button, int): void
+  - updateForUser(): void
+  - createLabel(String, double, double, double, double): Label
+}
+class BookIssueDB {
+  + BookIssueDB(): 
+  + deleteReturned(BookIssue): void
+  + getPendingListByUserId(int): ArrayList<BookIssue>
+  + getBorrowedListByUserId(int): ArrayList<BookIssue>
+  + getTotalListByUserId(int): ArrayList<BookIssue>
+  + getDelayListByUserId(int): ArrayList<BookIssue>
+  + getReturnedListByUserId(int): ArrayList<BookIssue>
+  + getLateListByUserId(int): ArrayList<BookIssue>
+   delayList: ArrayList<BookIssue>
+   borrowedList: ArrayList<BookIssue>
+   pendingList: ArrayList<BookIssue>
+   totalList: ArrayList<BookIssue>
+   lateList: ArrayList<BookIssue>
+   returnedList: ArrayList<BookIssue>
+}
+class BookServices {
+  - BookServices(): 
+  - instance: BookServices
+  + searchBooksByTitle(String): ArrayList<Book>
+  + generateQRCode(String): Image
+  + loadBook(JsonObject): ArrayList<Book>
+  + searchBooksByCategory(String): ArrayList<Book>
+  + searchBooksByAuthor(String): ArrayList<Book>
+   instance: BookServices
+}
+class BookViewDetailController {
+  + BookViewDetailController(): 
+  + apiMode: boolean
+  - returnSearchBook: Button
+  + editBook(ActionEvent): void
+  + initialize(Book): void
+  + rentBook(ActionEvent): void
+  + saveEditBook(ActionEvent): void
+  ~ update(): void
+  + addBook(ActionEvent): void
+  + removeBook(ActionEvent): void
+   apiMode: boolean
+   returnSearchBook: Button
+}
+class BorrowRequest {
+  + BorrowRequest(): 
+  + BorrowRequest(int, int, String, String, String, MyDateTime, MyDateTime, int): 
+  - accepted: int
+  - id: int
+  + isAccepted(): int
+  + toString(): String
+   accepted: int
+   id: int
+}
+class ChartController {
+  + ChartController(): 
+  + updateLoginCount(String): void
+   pieChartData: ObservableList<Data>
+   loginData: ObservableList<Data<String, Number>>
+}
+class CustomData {
+  + CustomData(String, String, String, String): 
+  - fourth: String
+  - second: String
+  - third: String
+  - first: String
+  + setthird(String): void
+  + print(): void
+   fourth: String
+   second: String
+   first: String
+   third: String
+}
+class DBInfo {
+  + DBInfo(): 
+  + addAuthor(String): void
+  + updView(Book): void
+  + addPublisher(String): void
+  + getCommentList(String): ArrayList<CustomData>
+  + addCategory(String): void
+  + updateEmail(int, String): void
+  + findName(int): String
+  + unBan(User): void
+  + deleteAuthor(String): void
+  + getDistinctValues(String, String): ArrayList<String>
+  + deleteComment(String, String): void
+  + deleteOneNotification(Notification): void
+  + getBook(String): Book?
+  + updateUser(int, String, String, String, String, String, String, String, String, Integer): void
+  + getOverdueAndUpcoming(int): Pair<Integer, Integer>
+  + getBorrowedBookList(int): ArrayList<Pair<Book, MyDateTime>>
+  + countOverdue(): int
+  + addComment(String, String): void
+  + rateBook(String, int): void
+  + deleteCategory(String): void
+  + findUserId(String, String): int
+  + conn(): Connection
+  + deleteBook(Book): void
+  + deleteNotificationsByUserId(int): void
+  + checkPass(String, String): boolean
+  + findUserType(String, String): String
+  + login(String, String): void
+  + borrowBook(String, int): void
+  + checkUnique(String): boolean
+  + getNotificationsByUserId(int): ArrayList<Notification>
+  + sendNotification(int, int, String): void
+  + getBookList(String, String, String): ArrayList<Book>
+  + countUser(): int
+  + main(String[]): void
+  + addBook(Book): void
+  + acceptBorrowRequest(int, String): void
+  + returnBook(String, int): void
+  + deletePublisher(String): void
+  + inDb(String): boolean
+  + getString(String, String, String): String
+  + isUsernameExists(String): boolean
+  + getValue(String): Vector<String>
+  + NotificationFromSystem(): void
+  + addBorrowRequest(String, int): void
+  + getAuthor(String): String
+  + updateUser(int, String, String, String, String): void
+  + countBorrowed(): int
+  + getPassword(String): String
+  + allBooks(): void
+  + DeleteUser(String): void
+  + addSlip(String, int): void
+  + denyBorrowRequest(int, String): void
+  + getUser(String): User
+  + editBook(Book, String, String, String, String, String, String, String): void
+  + Register(int, String, String, String, String, String): void
+  + getUserById(int): User
+  + ban(User): void
+   userList: ArrayList<User>
+   categoryData: ArrayList<Pair<String, Integer>>
+   bookListByNumView: ArrayList<Book>
+   bookCount: int
+   userCount: int
+}
+class DashBoardController {
+  + DashBoardController(): 
+  - addBookButton: Button
+  - seeAllBook: Button
+  - getPercentage(Data): String
+  + updateCurrentTime(): void
+  + initialize(): void
+  - startClock(): void
+   seeAllBook: Button
+   addBookButton: Button
+}
+class EmailSender {
+  + EmailSender(): 
+  + sendEmail(String, String, String): void
+  + main(String[]): void
+}
+class Filter {
+  - Filter(): 
+  - instance: Filter
+  + getBookByCategorySubstr(String): ArrayList<Book>
+  + getBookByTitleSubstr(String): ArrayList<Book>
+  + getUserList(String): ArrayList<User>
+  + getBookByAuthorSubstr(String): ArrayList<Book>
+  + getUserBySubstr(String, String): ArrayList<User>
+   instance: Filter
+}
+class ForgetPassword {
+  + ForgetPassword(): 
+  - randomPassword(): String
+  + SendEmail(): void
+  + initialize(): void
+}
+class LibraryManagementSystem {
+  + LibraryManagementSystem(): 
+  + start(Stage): void
+  + main(String[]): void
+}
+class LoadingController {
+  + LoadingController(): 
+  + loadingLabel: Label
+  + initialize(): void
+   loadingLabel: Label
+}
+class LoginController {
+  + LoginController(): 
+  + loginParent: AnchorPane
+  + initialize(URL, ResourceBundle): void
+  + login(): void
+  - openSignIn(ActionEvent): void
+  - openSignUp(ActionEvent): void
+   loginParent: AnchorPane
+}
+class MainGUI {
+  + MainGUI(): 
+  + currentUser: User
+  - update(): void
+  ~ updateNotifications(): void
+  - returnHome(): void
+  + returnBookIssue(ActionEvent): void
+  - fadeAnimation(): void
+  - minimze(): void
+  + closePopUp(ActionEvent): void
+  + sendNotification(int, int, String): void
+  + Loading(String): void
+  + initialize(URL, ResourceBundle): void
+  - reset(): void
+  + logout(ActionEvent): void
+  + returnDetailBook(Book, boolean): void
+  + returnNontifications(ActionEvent): void
+  + returnSetting(ActionEvent): void
+  - bookView(): void
+  - userView(): void
+  - updateProgressLabel(Task<ArrayList<Book>>): void
+  - turnOnLoading(): void
+  + setPreviousStage(boolean, String): void
+  - close(): void
+   currentUser: User
+}
+class MyDateTime {
+  + MyDateTime(LocalDateTime): 
+  - dateTime: LocalDateTime
+  + toString(): String
+  + main(String[]): void
+  + toLocalDateTime(): LocalDateTime
+  + compareTo(MyDateTime): int
+   dateTime: LocalDateTime
+}
+class Notification {
+  + Notification(int, int, String): 
+  + Notification(int, int, int, String, MyDateTime): 
+  - id: int
+  - receiverId: int
+  - message: String
+  - createdAt: MyDateTime
+  - senderId: int
+  + toString(): String
+   senderId: int
+   receiver: String
+   receiverId: int
+   createdAt: MyDateTime
+   message: String
+   id: int
+}
+class NotificationController {
+  + NotificationController(): 
+  + clearAllNoti(ActionEvent): void
+  + initialize(): void
+  + displayNotifications(): void
+  - createNotificationPane(Notification): Pane
+}
+class Pair<K, V> {
+  + Pair(K, V): 
+  - value: V
+  - key: K
+  + toString(): String
+   value: V
+   key: K
+}
+class ProcessIndicator {
+  + ProcessIndicator(): 
+  - instance: ProcessIndicator
+  + loadLoadingScreen(): Pane
+   instance: ProcessIndicator
+}
+class SearchBookController {
+  + SearchBookController(): 
+  + apiMode(ActionEvent): void
+  + displayBooks(ArrayList<Book>): void
+  - searchQuery(String): void
+  + searchBook(ActionEvent): void
+  + libraryMode(ActionEvent): void
+  - update(): void
+  + initialize(): void
+}
+class SearchingProgressing {
+  - SearchingProgressing(): 
+  - instance: SearchingProgressing
+  + createProgressingVBox(): VBox
+   instance: SearchingProgressing
+}
+class SettingController {
+  + SettingController(): 
+  + seeNewPassword(ActionEvent): void
+  + editCoverImage(ActionEvent): void
+  + changePassword(ActionEvent): void
+  + seeConfirnPassword(ActionEvent): void
+  - update(): void
+  + uiSetting(ActionEvent): void
+  + editAvatar(ActionEvent): void
+  + initialize(URL, ResourceBundle): void
+  + updateProfile(ActionEvent): void
+  + accountSetting(ActionEvent): void
+  + seeOldPasswod(ActionEvent): void
+}
+class SignInController {
+  + SignInController(): 
+  + initialize(URL, ResourceBundle): void
+  - returnHome(): void
+  - showAlert(String): void
+  + togglePasswordVisibility(ActionEvent): void
+  + login(): void
+}
+class SignUpController {
+  + SignUpController(): 
+  + togglePasswordVisibility(ActionEvent): void
+  - returnHome(): void
+  + initialize(URL, ResourceBundle): void
+  - showAlert(String): void
+  + createNewAccount(ActionEvent): void
+  + login(): void
+}
+class ToggleSwitch {
+  + ToggleSwitch(): 
+  + switchedOnProperty(): BooleanProperty
+}
+class UISetting {
+  - UISetting(): 
+  - instance: UISetting
+  - time24formatMode: boolean
+  - darkMode: boolean
+  - vietnameseMode: boolean
+   vietnameseMode: boolean
+   time24formatMode: boolean
+   vietNameseMode: boolean
+   darkMode: boolean
+   instance: UISetting
+}
+class User {
+  + User(): 
+  + User(int, String, String, String, String): 
+  + User(int, String, String, String, String, boolean, String): 
+  + User(int, String, String, String, String, boolean, String, String, String, String, String, int): 
+  - avatarLink: String
+  - password: String
+  - isBanned: boolean
+  - name: String
+  - coverPhotoLink: String
+  - rentBook: ArrayList<Pair<Book, MyDateTime>>
+  - username: String
+  - MSV: String
+  - reputation: int
+  - id: int
+  - phone: String
+  - university: String
+  - userType: String
+  + denyBorrowRequest(BookIssue): void
+  + unBan(User): void
+  + deleteOneNotification(Notification): void
+  + traSach(Book): void
+  + reply(Notification, String): void
+  + sendNotification(User, String): void
+  + toString(): String
+  + acceptBorrowRequest(BookIssue): void
+  + update(String, String, String, String): void
+  + checkSach(Book): boolean
+  + sendNotification(int, String): void
+  + muonSach(Book): void
+  + deleteNotifications(): void
+  + ban(User): void
+  + update(String, String, String, String, String, String, String, String, Integer): void
+   phone: String
+   upcoming: int
+   avatarLink: String
+   isBanned: boolean
+   university: String
+   coverPhotoLink: String
+   overdue: int
+   status: ObservableValue<String>
+   rentBook: ArrayList<Pair<Book, MyDateTime>>
+   name: String
+   password: String
+   userType: String
+   notifications: ArrayList<Notification>
+   id: int
+   username: String
+   reputation: int
+   MSV: String
+}
+class UserController {
+  + UserController(): 
+  - displayUser(): void
+  + cancelAdd(ActionEvent): void
+  - update(): void
+  + initialize(): void
+  + addNewUser(ActionEvent): void
+  - createUserPane(User, int): Pane
+  + viewAll(ActionEvent): void
+  - removeSelectedUser(): void
+  + submitAdd(ActionEvent): void
+  + searchUser(ActionEvent): void
+  + viewUser(ActionEvent): void
+  + viewAdmin(ActionEvent): void
+  + exportCSV(ActionEvent): void
+}
+
+BookIssueController       -[#000082,plain]-^  BaseController           
+BookViewDetailController  -[#000082,plain]-^  BaseController           
+BorrowRequest             -[#000082,plain]-^  BookIssue                
+DashBoardController       -[#000082,plain]-^  BaseController           
+NotificationController    -[#000082,plain]-^  BaseController           
+SearchBookController      -[#000082,plain]-^  BaseController           
+SettingController         -[#000082,plain]-^  BaseController           
+ToggleSwitch              +-[#820000,plain]-  SettingController        
+UserController            -[#000082,plain]-^  BaseController           
+@enduml
