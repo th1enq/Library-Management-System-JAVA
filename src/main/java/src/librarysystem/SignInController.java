@@ -38,6 +38,9 @@ public class SignInController implements Initializable {
     public javafx.scene.control.TextField userEmail;
 
     @FXML
+    public Button forgetPassword;
+
+    @FXML
     public Button passwordSeeing;
     @FXML
     public javafx.scene.control.TextField passwordVisible;
@@ -141,6 +144,33 @@ public class SignInController implements Initializable {
             if (event.getCode() == KeyCode.ENTER) {
                 login();
             }
+        });
+
+        forgetPassword.setOnAction(actionEvent -> {
+
+                try {
+                    // Tải file ForgetPassword.fxml
+                    Parent forgetPasswordRoot = FXMLLoader.load(getClass().getResource("ForgetPassword.fxml"));
+
+                    // Tạo một scene mới từ layout ForgetPassword.fxml
+                    Scene forgetPasswordScene = new Scene(forgetPasswordRoot);
+
+                    // Lấy stage hiện tại và thay đổi scene
+                    Stage currentStage = (Stage) forgetPassword.getScene().getWindow();
+                    currentStage.setScene(forgetPasswordScene);
+
+                    // Điều chỉnh vị trí của stage (nếu cần)
+                    double x = (Screen.getPrimary().getVisualBounds().getWidth() - currentStage.getWidth()) / 2;
+                    double y = (Screen.getPrimary().getVisualBounds().getHeight() - currentStage.getHeight()) / 2;
+                    currentStage.setX(x);
+                    currentStage.setY(y);
+
+                    // Hiển thị stage mới
+                    currentStage.show();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
         });
     }
 
