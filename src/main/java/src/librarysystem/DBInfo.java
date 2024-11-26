@@ -94,7 +94,7 @@ class Pair<K, V> {
   @Override
   public String toString() {
     return
-        key + " " + value;
+            key + " " + value;
   }
 }
 
@@ -134,14 +134,14 @@ public class DBInfo {
     for (int id = 1; id <= DBInfo.getUserCount(); id++) {
       deleteNotificationsByUserId(id);
       String sqlUpcoming = "SELECT book_name, return_date FROM borrow_slip " +
-          "WHERE return_date BETWEEN NOW() AND DATE_ADD(NOW(), INTERVAL 3 DAY) " +
-          "AND user_id = ? ORDER BY return_date";
+              "WHERE return_date BETWEEN NOW() AND DATE_ADD(NOW(), INTERVAL 3 DAY) " +
+              "AND user_id = ? ORDER BY return_date";
 
       String sqlOverdue = "SELECT book_name, return_date FROM borrow_slip WHERE return_date < NOW() AND user_id = ?";
 
       try (Connection conn = DBInfo.conn();
-          PreparedStatement preparedStatement = conn.prepareStatement(sqlUpcoming);
-          PreparedStatement statement2 = conn.prepareStatement(sqlOverdue)) {
+           PreparedStatement preparedStatement = conn.prepareStatement(sqlUpcoming);
+           PreparedStatement statement2 = conn.prepareStatement(sqlOverdue)) {
 
         preparedStatement.setInt(1, id);
         try (ResultSet resultSet = preparedStatement.executeQuery()) {
@@ -155,7 +155,7 @@ public class DBInfo {
             hoursBetween %= 24;
             minutesBetween %= 60;
             String mess = "Còn " + daysBetween + " ngày " + hoursBetween + " giờ " + minutesBetween
-                + " phút nữa là đến hạn trả cuốn: " + bookName;
+                    + " phút nữa là đến hạn trả cuốn: " + bookName;
             sendNotification(1000, id, mess);
           }
         }
@@ -172,8 +172,8 @@ public class DBInfo {
             hoursOverdue %= 24;
             minutesOverdue %= 60;
             String mess =
-                "Đã quá hạn " + daysOverdue + " ngày " + hoursOverdue + " giờ " + minutesOverdue
-                    + " phút để trả cuốn: " + bookName;
+                    "Đã quá hạn " + daysOverdue + " ngày " + hoursOverdue + " giờ " + minutesOverdue
+                            + " phút để trả cuốn: " + bookName;
             sendNotification(1000, id, mess);
 
           }
@@ -186,45 +186,12 @@ public class DBInfo {
     }
   }
 
-  public static String getPassword(String username) {
-    Connection con = DBInfo.conn();
-    String password = null;
-
-    try {
-      String sql = "SELECT password FROM registration WHERE username = ?";
-      PreparedStatement preparedStatement = con.prepareStatement(sql);
-      preparedStatement.setString(1, username); // Gán giá trị cho tham số ?
-
-      ResultSet resultSet = preparedStatement.executeQuery();
-
-      if (resultSet.next()) {
-        password = resultSet.getString("password"); // Lấy mật khẩu
-      } else {
-        System.out.println("Không tìm thấy username: " + username);
-      }
-
-      resultSet.close();
-      preparedStatement.close();
-    } catch (SQLException e) {
-      e.printStackTrace();
-    } finally {
-      try {
-        if (con != null) {
-          con.close();
-        }
-      } catch (SQLException e) {
-        e.printStackTrace();
-      }
-    }
-
-    return password;
-  }
 
   public static User getUserById(int userId) {
     String sql = "SELECT * FROM registration WHERE id = ?";
     User user = null;
     try (Connection conn = DBInfo.conn();
-        PreparedStatement stmt = conn.prepareStatement(sql)) {
+         PreparedStatement stmt = conn.prepareStatement(sql)) {
       stmt.setInt(1, userId);
       ResultSet rs = stmt.executeQuery();
       if (rs.next()) {
@@ -241,7 +208,7 @@ public class DBInfo {
         String coverPhotoLink = rs.getString("Cover_photo_link");
         int reputation = rs.getInt("Reputation");
         user = new User(id, name, username, password, userType, isBanned, avatarLink, MSV,
-            university, phone, coverPhotoLink, reputation);
+                university, phone, coverPhotoLink, reputation);
       }
 
     } catch (SQLException e) {
@@ -255,7 +222,7 @@ public class DBInfo {
     String sql = "SELECT * FROM notifications WHERE sender_id = ? OR receiver_id = ?";
 
     try (Connection conn = DBInfo.conn();
-        PreparedStatement stmt = conn.prepareStatement(sql)) {
+         PreparedStatement stmt = conn.prepareStatement(sql)) {
 
       stmt.setInt(1, userId);
       stmt.setInt(2, userId);
@@ -285,7 +252,7 @@ public class DBInfo {
     String sql = "DELETE FROM notifications WHERE sender_id = ? OR receiver_id = ?";
 
     try (Connection conn = DBInfo.conn();
-        PreparedStatement stmt = conn.prepareStatement(sql)) {
+         PreparedStatement stmt = conn.prepareStatement(sql)) {
       stmt.setInt(1, userId);
       stmt.setInt(2, userId);
       int rowsAffected = stmt.executeUpdate();
@@ -300,7 +267,7 @@ public class DBInfo {
   public static void sendNotification(int senderId, int receiverId, String message) {
     String sql = "INSERT INTO notifications (sender_id, receiver_id, message) VALUES (?, ?, ?)";
     try (Connection conn = DBInfo.conn();
-        PreparedStatement stmt = conn.prepareStatement(sql)) {
+         PreparedStatement stmt = conn.prepareStatement(sql)) {
 
       stmt.setInt(1, senderId);
       stmt.setInt(2, receiverId);
@@ -489,7 +456,7 @@ public class DBInfo {
       ResultSet rs = checkStmt.executeQuery();
       if (rs.next() && rs.getInt(1) > 0) {
         System.out.println(
-            "Yêu cầu mượn sách đã tồn tại cho user_id = " + id + " và sách '" + itemName + "'.");
+                "Yêu cầu mượn sách đã tồn tại cho user_id = " + id + " và sách '" + itemName + "'.");
         return;
       }
       String insertSql = "INSERT INTO borrow_request (user_id, book_name, borrow_date, return_date) VALUES (?, ?, ?, ?)";
@@ -504,7 +471,7 @@ public class DBInfo {
 
       int rowsAffected = insertStmt.executeUpdate();
       System.out.println(
-          "Yêu cầu mượn sách đã được thêm thành công! Rows affected: " + rowsAffected);
+              "Yêu cầu mượn sách đã được thêm thành công! Rows affected: " + rowsAffected);
 
     } catch (SQLException e) {
       System.out.println("Lỗi khi thêm yêu cầu mượn sách.");
@@ -537,15 +504,15 @@ public class DBInfo {
 
       if (rowsUpdated > 0) {
         System.out.println("Yêu cầu mượn sách của user_id = " + userId + " cho sách '" + bookName
-            + "' đã được chấp nhận.");
+                + "' đã được chấp nhận.");
         addSlip(bookName, userId);
         sendNotification(1000, userId,
-            "Yêu cầu mượn sách của bạn đối với cuốn \"" + bookName + "\" đã được phê duyệt");
+                "Yêu cầu mượn sách của bạn đối với cuốn \"" + bookName + "\" đã được phê duyệt");
         ;
       } else {
         System.out.println(
-            "Không tìm thấy yêu cầu mượn sách cho user_id = " + userId + " và sách '" + bookName
-                + "'.");
+                "Không tìm thấy yêu cầu mượn sách cho user_id = " + userId + " và sách '" + bookName
+                        + "'.");
       }
     } catch (SQLException e) {
       System.err.println("Lỗi khi cập nhật yêu cầu mượn sách: " + e.getMessage());
@@ -562,15 +529,15 @@ public class DBInfo {
 
       if (rowsUpdated > 0) {
         sendNotification(1000, userId,
-            "Yêu cầu mượn sách của bạn đối với cuốn \"" + bookName + "\" đã bị từ chối");
+                "Yêu cầu mượn sách của bạn đối với cuốn \"" + bookName + "\" đã bị từ chối");
         ;
 
         System.out.println("Yêu cầu mượn sách của user_id = " + userId + " cho sách '" + bookName
-            + "' đã bị từ chối.");
+                + "' đã bị từ chối.");
       } else {
         System.out.println(
-            "Không tìm thấy yêu cầu mượn sách cho user_id = " + userId + " và sách '" + bookName
-                + "'.");
+                "Không tìm thấy yêu cầu mượn sách cho user_id = " + userId + " và sách '" + bookName
+                        + "'.");
       }
     } catch (SQLException e) {
       System.err.println("Lỗi khi cập nhật yêu cầu mượn sách: " + e.getMessage());
@@ -645,7 +612,7 @@ public class DBInfo {
 
 
   public static void editBook(Book a, String newTitle, String newAuthor, String newPublisher,
-      String newThumbnail, String newDescription, String newPageNum, String newLanguage) {
+                              String newThumbnail, String newDescription, String newPageNum, String newLanguage) {
     String oldTitle = a.getTitle();
 
     // Create a StringBuilder to dynamically build the SQL query
@@ -848,7 +815,7 @@ public class DBInfo {
     String sql = "DELETE FROM notifications WHERE sender_id = ? AND receiver_id = ? AND message = ? LIMIT 1";
 
     try (Connection connection = DBInfo.conn();
-        PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+         PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
 
       preparedStatement.setInt(1, senderId);
       preparedStatement.setInt(2, receiverId);
@@ -868,8 +835,8 @@ public class DBInfo {
     String sql = "SELECT name, cnt FROM category";
 
     try (Connection con = DBInfo.conn();
-        PreparedStatement stmt = con.prepareStatement(sql);
-        ResultSet rs = stmt.executeQuery()) {
+         PreparedStatement stmt = con.prepareStatement(sql);
+         ResultSet rs = stmt.executeQuery()) {
 
       while (rs.next()) {
         String name = rs.getString("name");
@@ -951,14 +918,14 @@ public class DBInfo {
         // If the book exists, increment the avail count
         int currentAvail = resultSet.getInt("avail");
         System.out.println(
-            "A book with the same title already exists. Updating the existing book...");
+                "A book with the same title already exists. Updating the existing book...");
 
         String updateSql =
-            "UPDATE book SET authors = ?, publisher = ?, publishedDate = ?, thumbnail = ?, ISBN = ?, "
-                +
-                "description = ?, numPage = ?, category = ?, price = ?, language = ?, buyLink = ?, avail = ?, rating = ? "
-                +
-                "WHERE title = ?";
+                "UPDATE book SET authors = ?, publisher = ?, publishedDate = ?, thumbnail = ?, ISBN = ?, "
+                        +
+                        "description = ?, numPage = ?, category = ?, price = ?, language = ?, buyLink = ?, avail = ?, rating = ? "
+                        +
+                        "WHERE title = ?";
         PreparedStatement updateStatement = con.prepareStatement(updateSql);
         updateStatement.setString(1, A.getAuthors());
         updateStatement.setString(2, A.getPublisher());
@@ -981,9 +948,9 @@ public class DBInfo {
       } else {
         // If the book doesn't exist, insert a new record
         String sql =
-            "INSERT INTO book (title, authors, publisher, publishedDate, thumbnail, ISBN, description, numPage, category, price, language, buyLink, avail, rating) "
-                +
-                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                "INSERT INTO book (title, authors, publisher, publishedDate, thumbnail, ISBN, description, numPage, category, price, language, buyLink, avail, rating) "
+                        +
+                        "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         PreparedStatement preparedStatement = con.prepareStatement(sql);
         preparedStatement.setString(1, A.getTitle());
         preparedStatement.setString(2, A.getAuthors());
@@ -1074,8 +1041,8 @@ public class DBInfo {
     String query = "SELECT COUNT(*) FROM registration WHERE usertype = 'user'";
 
     try (Connection connection = DBInfo.conn();
-        PreparedStatement preparedStatement = connection.prepareStatement(query);
-        ResultSet resultSet = preparedStatement.executeQuery()) {
+         PreparedStatement preparedStatement = connection.prepareStatement(query);
+         ResultSet resultSet = preparedStatement.executeQuery()) {
 
       if (resultSet.next()) {
         count = resultSet.getInt(1);
@@ -1128,7 +1095,7 @@ public class DBInfo {
    * @param usertype admin hay ngdung binh thuong
    */
   public static void Register(int id, String name, String username, String password,
-      String usertype, String MSV) {
+                              String usertype, String MSV) {
     try {
       Connection con = DBInfo.conn();
       String sql = "INSERT INTO registration(id,name, username, password, usertype, MSV) VALUE (?,?,?,?,?,?)";
@@ -1191,28 +1158,11 @@ public class DBInfo {
     return false;
   }
 
-
-  /**
-   * hamf dang nhap.
-   *
-   * @param Username U
-   * @param Password P
-   */
-  public static void login(String Username, String Password) {
-    if (checkPass(Username, Password)) {
-      curPass = Password;
-      curUsername = Username;
-      curId = findUserId(Username, Password);
-      userType = findUserType(Username, Password);
-      curName = findName(curId);
-    }
-  }
-
   public static String findName(int id) {
     String name = null;
     String query = "SELECT name FROM registration WHERE id = ?";
     try (Connection conn = DBInfo.conn();
-        PreparedStatement stmt = conn.prepareStatement(query)) {
+         PreparedStatement stmt = conn.prepareStatement(query)) {
       stmt.setInt(1, id);
       ResultSet rs = stmt.executeQuery();
       if (rs.next()) {
@@ -1222,32 +1172,6 @@ public class DBInfo {
       e.printStackTrace();
     }
     return name;
-  }
-
-  public static String findUserType(String username, String password) {
-    try {
-      Connection con = DBInfo.conn();
-      String sql = "SELECT usertype FROM registration WHERE username = ? AND password = ?";
-      PreparedStatement preparedStatement = con.prepareStatement(sql);
-      preparedStatement.setString(1, username);
-      preparedStatement.setString(2, password);
-      ResultSet resultSet = preparedStatement.executeQuery();
-      if (resultSet.next()) {
-        String type = resultSet.getString("usertype");
-        System.out.println("type của người dùng là: " + type);
-        return type;
-      } else {
-        System.out.println("Không tìm thấy người dùng với username và password đã cho.");
-
-      }
-      preparedStatement.close();
-      con.close();
-      return "KO TIM THAY";
-    } catch (SQLException e) {
-      e.printStackTrace();
-      System.out.println("Loi ham tim type biet user va pass");
-      return "KO TIM THAY";
-    }
   }
 
   public static int findUserId(String username, String password) {
@@ -1277,7 +1201,7 @@ public class DBInfo {
   }
 
   public static void updateUser(int id, String newName, String newUsername, String newPassword,
-      String newAvatarLink) {
+                                String newAvatarLink) {
     Connection con = DBInfo.conn();
     if (con == null) {
       System.out.println("Không thể kết nối đến cơ sở dữ liệu.");
@@ -1325,7 +1249,8 @@ public class DBInfo {
         preparedStatement.setString(paramIndex++, newUsername);
       }
       if (newPassword != null) {
-        preparedStatement.setString(paramIndex++, newPassword);
+        String password = PasswordUtils.hashPassword(newPassword);
+        preparedStatement.setString(paramIndex++, password);
       }
       if (newAvatarLink != null) {
         preparedStatement.setString(paramIndex++, newAvatarLink);
@@ -1361,14 +1286,14 @@ public class DBInfo {
     int overdue = 0;
 
     String sqlUpcoming = "SELECT book_name, return_date FROM borrow_slip " +
-        "WHERE return_date BETWEEN NOW() AND DATE_ADD(NOW(), INTERVAL 11 DAY) " +
-        "AND user_id = ? ORDER BY return_date";
+            "WHERE return_date BETWEEN NOW() AND DATE_ADD(NOW(), INTERVAL 11 DAY) " +
+            "AND user_id = ? ORDER BY return_date";
 
     String sqlOverdue = "SELECT book_name, return_date FROM borrow_slip WHERE return_date < NOW() AND user_id = ?";
 
     try (Connection conn = DBInfo.conn();
-        PreparedStatement preparedStatement = conn.prepareStatement(sqlUpcoming);
-        PreparedStatement statement2 = conn.prepareStatement(sqlOverdue)) {
+         PreparedStatement preparedStatement = conn.prepareStatement(sqlUpcoming);
+         PreparedStatement statement2 = conn.prepareStatement(sqlOverdue)) {
 
       preparedStatement.setInt(1, id);
       try (ResultSet resultSet = preparedStatement.executeQuery()) {
@@ -1395,10 +1320,10 @@ public class DBInfo {
     int upcoming = 0;
 
     String sqlUpcoming = "SELECT book_name, return_date FROM borrow_slip " +
-        "WHERE return_date BETWEEN NOW() AND DATE_ADD(NOW(), INTERVAL 11 DAY)";
+            "WHERE return_date BETWEEN NOW() AND DATE_ADD(NOW(), INTERVAL 11 DAY)";
 
     try (Connection conn = DBInfo.conn();
-        PreparedStatement preparedStatement = conn.prepareStatement(sqlUpcoming)) {
+         PreparedStatement preparedStatement = conn.prepareStatement(sqlUpcoming)) {
 
       ResultSet resultSet = preparedStatement.executeQuery();
 
@@ -1420,7 +1345,7 @@ public class DBInfo {
     String sql = "SELECT book_name, return_date FROM borrow_slip WHERE return_date < NOW()";
 
     try (Connection conn = DBInfo.conn();
-        PreparedStatement preparedStatement = conn.prepareStatement(sql)) {
+         PreparedStatement preparedStatement = conn.prepareStatement(sql)) {
 
       ResultSet resultSet = preparedStatement.executeQuery();
 
@@ -1446,9 +1371,9 @@ public class DBInfo {
    * @param newPassword pass moi
    */
   public static void updateUser(int id, String newName, String newUsername, String newPassword,
-      String newAvatarLink,
-      String newMSV, String newUniversity, String newPhone,
-      String newCoverPhotoLink, Integer newReputation) {
+                                String newAvatarLink,
+                                String newMSV, String newUniversity, String newPhone,
+                                String newCoverPhotoLink, Integer newReputation) {
 
     Connection con = DBInfo.conn();
     if (con == null) {
@@ -1535,7 +1460,8 @@ public class DBInfo {
         preparedStatement.setString(paramIndex++, newUsername);
       }
       if (newPassword != null) {
-        preparedStatement.setString(paramIndex++, newPassword);
+        String password = PasswordUtils.hashPassword(newPassword);
+        preparedStatement.setString(paramIndex++, password);
       }
       if (newAvatarLink != null) {
         preparedStatement.setString(paramIndex++, newAvatarLink);
@@ -1696,13 +1622,13 @@ public class DBInfo {
       ResultSet res = ps.executeQuery();
       while (res.next()) {
         User user = new User(
-            res.getInt("id"),
-            res.getString("name"),
-            res.getString("username"),
-            res.getString("password"),
-            res.getString("usertype"),
-            res.getBoolean("is_banned"),
-            res.getString("avatar_link")
+                res.getInt("id"),
+                res.getString("name"),
+                res.getString("username"),
+                res.getString("password"),
+                res.getString("usertype"),
+                res.getBoolean("is_banned"),
+                res.getString("avatar_link")
         );
         ret.add(user);
       }
@@ -1776,7 +1702,7 @@ public class DBInfo {
     String query = "SELECT * FROM borrow_slip WHERE user_id = ?";
 
     try (Connection con = DBInfo.conn();
-        PreparedStatement ps = con.prepareStatement(query)) {
+         PreparedStatement ps = con.prepareStatement(query)) {
 
       ps.setInt(1, id);
       try (ResultSet res = ps.executeQuery()) {
@@ -1871,8 +1797,8 @@ public class DBInfo {
         int avail = resultSet.getInt("avail");
         int rating = resultSet.getInt("rating");
         Book book = new Book(title, ISBN, Author, Publisher, publishedDate,
-            description, thumbnail, numPage, Category, price,
-            language, buyLink, avail, rating);
+                description, thumbnail, numPage, Category, price,
+                language, buyLink, avail, rating);
         bookList.add(book);
       }
     } catch (SQLException e) {
@@ -1937,7 +1863,7 @@ public class DBInfo {
       stmt.setString(1, bookTitle);
       stmt.setString(2, username);
       stmt.setTimestamp(3,
-          Timestamp.valueOf(time.toLocalDateTime()));
+              Timestamp.valueOf(time.toLocalDateTime()));
       stmt.setString(4, content);
       stmt.setInt(5, rate);
       rateBook(bookTitle, rate);
@@ -1963,15 +1889,15 @@ public class DBInfo {
       while (resultSet.next()) {
         String username = resultSet.getString("username");
         LocalDateTime time = resultSet.getTimestamp("time")
-            .toLocalDateTime();
+                .toLocalDateTime();
         String content = resultSet.getString("content");
         int rate = resultSet.getInt("rate");
         Comment comment = new Comment(
-            bookTitle,
-            username,
-            new MyDateTime(time),
-            content,
-            rate
+                bookTitle,
+                username,
+                new MyDateTime(time),
+                content,
+                rate
         );
 
         ret.add(comment);
@@ -2134,8 +2060,8 @@ public class DBInfo {
         int rating = resultSet.getInt("rating");
         int numView = resultSet.getInt("numView");
         Book book = new Book(title, ISBN, Author, Publisher, publishedDate,
-            description, thumbnail, numPage, Category, price,
-            language, buyLink, avail, rating);
+                description, thumbnail, numPage, Category, price,
+                language, buyLink, avail, rating);
         book.setNumView(numView);
         bookList.add(book);
       }
@@ -2251,12 +2177,13 @@ public class DBInfo {
   }
 
   public static void main(String[] args) throws Exception {
-       Register(1,"nguyenvana","nguyenvana@gmail.com","password123","user","1");
-       Register(1,"tranthib","tranthib@gmail.com","password234","user","1");
-       Register(1,"abc","23020158@vnu.edu.vn","password345","user","1");
-       Register(1,"bcd","23020161@vnu.edu.vn","password111","user","1");
-       Register(1,"admin","levanc","password789","admin","1");
+    //  Register(1,"nguyenvana","nguyenvana@gmail.com","password123","user","1");
+    // Register(1,"tranthib","tranthib@gmail.com","password234","user","1");
+    // Register(1,"abc","23020158@vnu.edu.vn","password345","user","1");
+    // Register(1,"bcd","23020161@vnu.edu.vn","password111","user","1");
+    //Register(1,"admin","levanc","password789","admin","1");
 
-
+    //PasswordRecoveryService.sendToken("23020158@vnu.edu.vn");
+    System.out.println(PasswordRecoveryService.checkToken("23020158@vnu.edu.vn","1441"));
   }
 }

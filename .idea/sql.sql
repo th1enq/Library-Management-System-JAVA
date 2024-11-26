@@ -275,3 +275,9 @@ INSERT INTO `borrow_slip` (`id`, `user_id`, `book_name`, `borrow_date`, `return_
 (10, 1, 'Dracula', '2024-11-25 00:10:00', '2024-12-05 00:10:00');
 
 
+CREATE TABLE password_reset_token (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    token VARCHAR(255) NOT NULL,
+    username VARCHAR(255) NOT NULL,
+    expiry_date TIMESTAMP NOT NULL
+);

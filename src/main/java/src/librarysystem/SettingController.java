@@ -296,10 +296,10 @@ public class SettingController extends BaseController implements Initializable {
     double radius1 = 20;
     double radius2 = height * 0;
     clip = new Path(new MoveTo(0, radius1), new ArcTo(radius1, radius1, 0, radius1, 0, false, true),
-        new HLineTo(width),
-        new VLineTo(height - radius2),
-        new ArcTo(radius2, radius2, 0, width - radius2, height, false, true),
-        new HLineTo(0));
+            new HLineTo(width),
+            new VLineTo(height - radius2),
+            new ArcTo(radius2, radius2, 0, width - radius2, height, false, true),
+            new HLineTo(0));
 
     clip.setFill(Color.ALICEBLUE);
     coverImage.setClip(clip);
@@ -447,8 +447,8 @@ public class SettingController extends BaseController implements Initializable {
       sendNotification(1000, MainGUI.currentUser.getId(), "Cập nhật thông tin thành công !!!");
     }
     else if(currentMode == 2) {
-      if(!MainGUI.currentUser.getPassword().equals(oldPassword.getText())) {
-        System.out.println("Mat khau cu khong chinh xac" + " " + MainGUI.currentUser.getPassword() + " " + oldPassword.getText());
+      if(!PasswordUtils.verifyPassword(oldPassword.getText(),MainGUI.currentUser.getPassword())) {
+        System.out.println("Mat khau cu khong chinh xac" + " " + MainGUI.currentUser.getPassword() + " " + PasswordUtils.hashPassword(oldPassword.getText()) + " " + oldPassword.getText());
       }
       else {
         if(newPassword.getText().isEmpty() || newPassword == null) {

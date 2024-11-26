@@ -41,7 +41,7 @@
                   <Font size="14.0" />
                </font>
             </Button>
-            <VBox fx:id="vbox" layoutX="71.0" layoutY="-40.0" prefHeight="480.0" prefWidth="480.0" styleClass="white-panel" stylesheets="@stylesheet.css" />
+            <VBox fx:id="vbox" layoutX="71.0" layoutY="-40.0" prefHeight="480.0" prefWidth="480.0" style="-fx-background-radius: 15px;" styleClass="white-panel" stylesheets="@stylesheet.css" />
          </children>
       </Pane>
    </children>
