@@ -118,7 +118,10 @@ public class SettingController extends BaseController implements Initializable {
   public FontAwesomeIcon oldPasswordIcon;
   @FXML
   public Label bioName;
-
+  @FXML
+  public Label borrowNum;
+  @FXML
+  public Label overdueNum;
   private int currentMode = 0;
 
   private ArrayList<Parent> uiSettingMode = new ArrayList<>();
@@ -277,6 +280,8 @@ public class SettingController extends BaseController implements Initializable {
 
   @Override
   public void initialize(URL url, ResourceBundle resourceBundle) {
+    overdueNum.setText(Integer.toString(MainGUI.currentUser.getOverdue()));
+    borrowNum.setText(Integer.toString(MainGUI.currentUser.getUpcoming()));
     System.out.println(MainGUI.currentUser.toString());
     bioName.setText(MainGUI.currentUser.getName());
     nameTextField.setText(MainGUI.currentUser.getName());

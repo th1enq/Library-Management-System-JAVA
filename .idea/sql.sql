@@ -5,12 +5,12 @@ USE TESTT;
 
 DROP TABLE IF EXISTS `book`;
 CREATE TABLE `book` (
-    title VARCHAR(255) PRIMARY KEY,
+    title VARCHAR(255) UNIQUE,
     authors VARCHAR(255),
     publisher VARCHAR(255),
     publishedDate VARCHAR(200),
     thumbnail VARCHAR(255),
-    ISBN VARCHAR(130),
+    ISBN VARCHAR(130) PRIMARY KEY,
     description TEXT,
     numPage VARCHAR(30),
     category VARCHAR(100),
@@ -63,17 +63,20 @@ CREATE TABLE `borrow_slip` (
 CREATE TABLE `borrow_history` (
     id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT NOT NULL,
-    book_name VARCHAR(500) NOT NULL,
+    book_name VARCHAR(255) NOT NULL,
     borrow_date DATETIME NOT NULL,
-    return_date DATETIME NOT NULL
+    return_date DATETIME NOT NULL,
+    FOREIGN KEY (book_name) REFERENCES book(title) ON DELETE CASCADE
 );
+
 CREATE TABLE `borrow_request` (
     id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT NOT NULL,
     book_name VARCHAR(500) NOT NULL,
     borrow_date DATETIME NOT NULL,
     return_date DATETIME NOT NULL,
-    accepted TINYINT(1) DEFAULT 0
+    accepted TINYINT(1) DEFAULT 0,
+    FOREIGN KEY (book_name) REFERENCES book(title) ON DELETE CASCADE
     -- accepted = 1 => đã xử lý (có thể chấp thuận hoặc không) --
 );
 --      Register(1,"nguyenvana","nguyenvana@gmail.com","password123","user","1"); --
@@ -84,8 +87,8 @@ CREATE TABLE `borrow_request` (
 DROP TABLE IF EXISTS `registration`;
 CREATE TABLE `registration` (
   `id` int(11) NOT NULL PRIMARY KEY,
-  `name` varchar(100) DEFAULT NULL,
-  `username` varchar(200) NOT NULL,
+  `name` varchar(100) DEFAULT NULL ,
+  `username` varchar(200) NOT NULL UNIQUE,
   `password` varchar(100) NOT NULL,
   `usertype` enum('admin','user') DEFAULT 'user',
   `is_banned` tinyint(1) DEFAULT 0,
@@ -97,6 +100,7 @@ CREATE TABLE `registration` (
   `Reputation` int(11) DEFAULT 5
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+
 --
 -- Đang đổ dữ liệu cho bảng `registration`
 --
@@ -106,46 +110,50 @@ INSERT INTO `registration` (`id`, `name`, `username`, `password`, `usertype`, `i
 (2, 'tranthib', 'tranthib@gmail.com', '$2a$10$sXFpTi4pPIXSmeX5Wwa/tu20HuR/5xQXgxBqi41afURa.pvhjjGV6', 'user', 0, NULL, '1', NULL, NULL, NULL, 5),
 (3, 'abc', '23020158@vnu.edu.vn', '$2a$10$37Axlx35fjBeZs9mtywWbuS/DinC62nGoJEcy8u.gLlXS4FppUVFu', 'user', 0, 'file:/C:/Users/PC/IdeaProjects/Library-Management-System-JAVA/target/classes/images/wibu.jpg', '1', 'UET', NULL, 'file:/C:/Users/PC/IdeaProjects/Library-Management-System-JAVA/target/classes/images/bg_img.jpg', 5),
 (4, 'bcd', '23020161@vnu.edu.vn', '$2a$10$RwDTRjHzsrFeHbIoA2Ep4./l4RBJ3JJSYYMUf1NAQi7IMvpskoE/C', 'user', 0, NULL, '1', NULL, NULL, NULL, 5),
-(5, 'admin', 'levanc', '$2a$10$PqasxhM1PCwf5fEEWnruKOO29tI6A4ZAaxSRQ/KC/9uYteNnVhlJG', 'admin', 0, NULL, '1', NULL, NULL, NULL, 5);
+(999, 'admin', 'levanc', '$2a$10$PqasxhM1PCwf5fEEWnruKOO29tI6A4ZAaxSRQ/KC/9uYteNnVhlJG', 'admin', 0, NULL, '1', NULL, NULL, NULL, 5);
 
 
-  DROP TABLE IF EXISTS `comment`;
-  SET @saved_cs_client     = @@character_set_client;
-  SET character_set_client = utf8;
-  CREATE TABLE `comment` (
+ DROP TABLE IF EXISTS `comment`;
+ SET @saved_cs_client     = @@character_set_client;
+ SET character_set_client = utf8;
+ CREATE TABLE `comment` (
      `stt` INT AUTO_INCREMENT NOT NULL,
      `book_title`  VARCHAR(500),
      `username` VARCHAR(200),
      `time`  DATETIME,
      `content`  TEXT,
      `rate`  INT,
-     PRIMARY KEY (`stt`)
-  ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-INSERT INTO `comment` (book_title, username, time, content,rate)
-VALUES
-('Attack on Titan', 'nguyenvana', '2024-11-15 10:00:00', 'Cuốn sách này rất thú vị, cốt truyện hấp dẫn!',5),
-('Attack on Titan', 'tranthib', '2024-11-14 10:00:00', 'Nhân vật được xây dựng rất tốt, rất thích câu chuyện này.',5);
+     PRIMARY KEY (`stt`),
+     FOREIGN KEY (`book_title`) REFERENCES `book`(`title`) ON DELETE CASCADE,
+     FOREIGN KEY (`username`) REFERENCES `registration`(`username`) ON DELETE CASCADE
+ ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
 
 INSERT INTO `comment` (book_title, username, time, content,rate)
 VALUES
-('Atomic Habits', 'nguyenvana', '2024-11-13 10:00:00', 'Cuốn sách hữu ích cho việc thay đổi thói quen.',5),
-('Atomic Habits', 'tranthib', '2024-11-12 10:00:00', 'Những nguyên tắc trong sách dễ áp dụng vào cuộc sống.',3);
+('Attack on Titan', 'nguyenvana@gmail.com', '2024-11-15 10:00:00', 'Cuốn sách này rất thú vị, cốt truyện hấp dẫn!',5),
+('Attack on Titan', 'tranthib@gmail.com', '2024-11-14 10:00:00', 'Nhân vật được xây dựng rất tốt, rất thích câu chuyện này.',5);
+
+INSERT INTO `comment` (book_title, username, time, content,rate)
+VALUES
+('Atomic Habits', 'nguyenvana@gmail.com', '2024-11-13 10:00:00', 'Cuốn sách hữu ích cho việc thay đổi thói quen.',5),
+('Atomic Habits', 'tranthib@gmail.com', '2024-11-12 10:00:00', 'Những nguyên tắc trong sách dễ áp dụng vào cuộc sống.',3);
 
 INSERT INTO `comment` (book_title, username, time, content, rate)
 VALUES
-('Naruto', 'nguyenvana', '2024-11-25 10:00:00', 'Một câu chuyện cảm động và đầy cảm hứng về tình bạn.', 5),
-('Naruto', 'tranthib', '2024-11-26 08:30:00', 'Tôi đã học được rất nhiều từ tinh thần không bỏ cuộc của Naruto.', 4),
-('Dracula', 'nguyenvana', '2024-11-25 15:20:00', 'Một tác phẩm kinh điển với bầu không khí ma mị và cuốn hút.', 5),
-('Dracula', 'tranthib', '2024-11-26 09:45:00', 'Tôi rất thích cách tác giả xây dựng hình ảnh Dracula đầy bí ẩn.', 4),
-('Dracula', 'nguyenvana', '2024-11-24 15:20:00', 'hay', 3),
-('Dracula', 'tranthib', '2024-09-26 09:45:00', 'd hay', 1),
+('Naruto', 'nguyenvana@gmail.com', '2024-11-25 10:00:00', 'Một câu chuyện cảm động và đầy cảm hứng về tình bạn.', 5),
+('Naruto', 'tranthib@gmail.com', '2024-11-26 08:30:00', 'Tôi đã học được rất nhiều từ tinh thần không bỏ cuộc của Naruto.', 4),
+('Dracula', 'nguyenvana@gmail.com', '2024-11-25 15:20:00', 'Một tác phẩm kinh điển với bầu không khí ma mị và cuốn hút.', 5),
+('Dracula', 'tranthib@gmail.com', '2024-11-26 09:45:00', 'Tôi rất thích cách tác giả xây dựng hình ảnh Dracula đầy bí ẩn.', 4),
+('Dracula', 'nguyenvana@gmail.com', '2024-11-24 15:20:00', 'hay', 3),
+('Dracula', 'tranthib@gmail.com', '2024-09-26 09:45:00', 'd hay', 1),
 ('Dracula', '23020158@vnu.edu.vn', '2023-11-25 15:20:00', 'HAYYYYY', 5),
 ('Dracula', '23020161@vnu.edu.vn', '2021-11-26 09:45:00', 'orz', 4),
-('Dracula', 'nguyenvana', '2024-11-27 08:00:00', 'Một câu chuyện hấp dẫn và đậm chất cổ điển.', 5),
-('Dracula', 'tranthib', '2024-11-20 14:30:00', 'Bầu không khí u ám và ly kỳ khiến tôi không thể rời mắt.', 4),
+('Dracula', 'nguyenvana@gmail.com', '2024-11-27 08:00:00', 'Một câu chuyện hấp dẫn và đậm chất cổ điển.', 5),
+('Dracula', 'tranthib@gmail.com', '2024-11-20 14:30:00', 'Bầu không khí u ám và ly kỳ khiến tôi không thể rời mắt.', 4),
 ('Dracula', '23020158@vnu.edu.vn', '2024-11-15 10:45:00', 'Tác phẩm rất đáng đọc, tuy nhiên hơi dài.', 4),
 ('Dracula', '23020161@vnu.edu.vn', '2024-10-22 09:30:00', 'Hình tượng Dracula được xây dựng rất sinh động.', 5),
-('Dracula', 'nguyenvana', '2024-09-18 16:00:00', 'Phần mở đầu khá chậm nhưng càng đọc càng cuốn hút.', 3);
+('Dracula', 'nguyenvana@gmail.com', '2024-09-18 16:00:00', 'Phần mở đầu khá chậm nhưng càng đọc càng cuốn hút.', 3);
 
 CREATE TABLE daily_logins (
     id INT AUTO_INCREMENT NOT NULL,

@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import javafx.beans.value.ObservableValue;
 import org.apache.poi.hssf.record.UseSelFSRecord;
 
-public class User {
+public class User{
 
   private int id;
   private String name;

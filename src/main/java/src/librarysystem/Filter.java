@@ -33,7 +33,7 @@ public class Filter {
     ArrayList<Book> ret = new ArrayList<>();
     try {
       con = DBInfo.conn();
-      String sql = "SELECT * FROM book WHERE title like '%" + substr + "%'";
+      String sql = "SELECT * FROM book WHERE title like '%" + substr + "%' AND avail > 0";
       preparedStatement = con.prepareStatement(sql);
       resultSet = preparedStatement.executeQuery();
 
@@ -91,7 +91,7 @@ public class Filter {
     ArrayList<Book> ret = new ArrayList<>();
     try {
       con = DBInfo.conn();
-      String sql = "SELECT * FROM book WHERE authors like '%" + substr + "%'";
+      String sql = "SELECT * FROM book WHERE authors like '%" + substr + "%' AND avail > 0";
       preparedStatement = con.prepareStatement(sql);
       resultSet = preparedStatement.executeQuery();
 
@@ -149,7 +149,7 @@ public class Filter {
     ArrayList<Book> ret = new ArrayList<>();
     try {
       con = DBInfo.conn();
-      String sql = "SELECT * FROM book WHERE category like '%" + substr + "%'";
+      String sql = "SELECT * FROM book WHERE category like '%" + substr + "%' AND avail > 0";
       preparedStatement = con.prepareStatement(sql);
       resultSet = preparedStatement.executeQuery();
 

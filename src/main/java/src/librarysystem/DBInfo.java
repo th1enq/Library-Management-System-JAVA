@@ -964,24 +964,17 @@ public class DBInfo {
         preparedStatement.setString(10, A.getPrice());
         preparedStatement.setString(11, A.getLanguage());
         preparedStatement.setString(12, A.getBuyLink());
-        preparedStatement.setInt(13, 1); // Set avail to 1 for new book
+        preparedStatement.setInt(13, 1);
         preparedStatement.setInt(14, A.getRating());
-
         int rowsAffected = preparedStatement.executeUpdate();
         System.out.println("Book added successfully! Rows affected: " + rowsAffected);
         preparedStatement.close();
       }
-
-      // Close the check statement and result set
       checkStatement.close();
       resultSet.close();
-
-      // Additional operations
       addCategory(A.getCategory());
       addPublisher(A.getPublisher());
       addAuthor(A.getAuthors());
-
-      // Close the connection
       con.close();
     } catch (SQLException EE) {
       System.out.println("Error adding or updating book");
@@ -989,21 +982,68 @@ public class DBInfo {
     }
   }
 
+  public static boolean isBorrowed(String title) {
+    String query = "SELECT COUNT(*) FROM borrow_slip WHERE book_name = ?";
+    try (Connection connection = DBInfo.conn();
+        PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+      preparedStatement.setString(1, title);
+      try (ResultSet resultSet = preparedStatement.executeQuery()) {
+        if (resultSet.next()) {
+          int count = resultSet.getInt(1);
+          return count > 0;
+        }
+      }
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+    return false;
+  }
+
+  public static ArrayList<Integer> getUserIdListRequestToBorrow(String book_title) {
+    ArrayList<Integer> userIdList = new ArrayList<>();
+    String query = "SELECT br.user_id " +
+        "FROM borrow_request br WHERE br.book_name = ? AND br.accepted = 0";
+
+    try (Connection conn = DBInfo.conn();
+        PreparedStatement stmt = conn.prepareStatement(query)) {
+      stmt.setString(1, book_title);
+      ResultSet rs = stmt.executeQuery();
+      while (rs.next()) {
+        userIdList.add(rs.getInt("user_id"));
+      }
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
+
+    return userIdList;
+  }
 
   /**
    * xóa sách.
    *
    * @param A tên sách
    */
+
   public static void deleteBook(Book A) {
     try {
       Connection con = DBInfo.conn();
       if (!inDb(A.getTitle())) {
-        System.out.println("Sách đang được cho mượn hoặc không có trên hệ thống");
+        System.out.println("Sách không có trên hệ thống");
         con.close();
         return;
       }
-      String sql = "DELETE FROM book WHERE title = ? LIMIT 1";
+      if (isBorrowed(A.getTitle())) {
+        System.out.println("Sách đang được cho mượn");
+        con.close();
+        return;
+      }
+
+      ArrayList<Integer> userIdList = getUserIdListRequestToBorrow(A.getTitle());
+      System.out.println(userIdList.size() + "QQQQQQQQQQQQQQQQ");
+      for(Integer id: userIdList){
+        sendNotification(1000,id,"Cuốn sách \"" + A.getTitle() + "\" mà bạn yêu cầu mượn đã không còn trên hệ thống. Mong bạn thông cảm!!!");
+      }
+      String sql = "DELETE FROM book WHERE title = ?";
       PreparedStatement preparedStatement = con.prepareStatement(sql);
       preparedStatement.setString(1, A.getTitle());
       int rowsAffected = preparedStatement.executeUpdate();
@@ -1121,7 +1161,7 @@ public class DBInfo {
   /**
    * kiem tra mat khau
    *
-   * @param username us
+   * @param username      us
    * @param plainPassword pas
    * @return true/false
    */
@@ -2177,13 +2217,13 @@ public class DBInfo {
   }
 
   public static void main(String[] args) throws Exception {
-     //  Register(1,"nguyenvana","nguyenvana@gmail.com","password123","user","1");
-      // Register(1,"tranthib","tranthib@gmail.com","password234","user","1");
-      // Register(1,"abc","23020158@vnu.edu.vn","password345","user","1");
-      // Register(1,"bcd","23020161@vnu.edu.vn","password111","user","1");
-       //Register(1,"admin","levanc","password789","admin","1");
+    //  Register(1,"nguyenvana","nguyenvana@gmail.com","password123","user","1");
+    // Register(1,"tranthib","tranthib@gmail.com","password234","user","1");
+    // Register(1,"abc","23020158@vnu.edu.vn","password345","user","1");
+    // Register(1,"bcd","23020161@vnu.edu.vn","password111","user","1");
+    //Register(1,"admin","levanc","password789","admin","1");
 
     //PasswordRecoveryService.sendToken("23020158@vnu.edu.vn");
-    System.out.println(PasswordRecoveryService.checkToken("23020158@vnu.edu.vn","1441"));
+    System.out.println(PasswordRecoveryService.checkToken("23020158@vnu.edu.vn", "1441"));
   }
 }
