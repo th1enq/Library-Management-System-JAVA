@@ -3,6 +3,7 @@ package src.librarysystem;
 import java.awt.*;
 import java.io.IOException;
 import java.net.URL;
+import java.security.SecureRandom;
 import java.time.LocalDate;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
@@ -38,10 +39,30 @@ public class ForgetPassword {
     @FXML
     public Button sendEmail;
 
+    private String randomPassword() {
+        String lowercase = "abcdefghijklmnopqrstuvwxyz";
+        String uppercase = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        String digits = "0123456789";
+
+        // Kết hợp tất cả các ký tự có thể xuất hiện
+        String allCharacters = lowercase + uppercase + digits;
+
+        // Sử dụng SecureRandom để tạo số ngẫu nhiên
+        SecureRandom random = new SecureRandom();
+        StringBuilder stringBuilder = new StringBuilder(7);
+
+        // Tạo xâu ngẫu nhiên
+        for (int i = 0; i < 7; i++) {
+            int index = random.nextInt(allCharacters.length());
+            stringBuilder.append(allCharacters.charAt(index));
+        }
+        return stringBuilder.toString();
+    }
+
     public void SendEmail() {
         String email = userEmail.getText();
         EmailSender emailSend = new EmailSender();
-        emailSend.sendEmail(email,"Mật khẩu khôi phục","Mật khẩu khôi phục của bạn là 12345");
+        emailSend.sendEmail(email,"Mật khẩu khôi phục","Mật khẩu khôi phục của bạn là: " + randomPassword());
         System.out.println("Gui thanh cong");
     }
 
