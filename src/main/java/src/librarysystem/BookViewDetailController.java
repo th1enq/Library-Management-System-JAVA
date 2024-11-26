@@ -1,12 +1,21 @@
 package src.librarysystem;
 
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
+import javafx.beans.binding.Bindings;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.effect.GaussianBlur;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Line;
+import javafx.scene.text.Font;
+
+import java.util.ArrayList;
 
 public class BookViewDetailController extends BaseController {
     @FXML
@@ -49,6 +58,16 @@ public class BookViewDetailController extends BaseController {
     public Pane tempPane;
     @FXML
     public Pane containerPane;
+    public Button seeComments;
+    public Pane commentTempPane;
+    public TextArea commentContent;
+    public Button submitComment;
+    public Label currentWord;
+    @FXML
+    public Button cancelComment;
+    public Pane commentPane;
+    @FXML
+    public FlowPane flowPane;
     @FXML
     private Label detailTitle;
     @FXML
@@ -75,6 +94,10 @@ public class BookViewDetailController extends BaseController {
     public static void setApiMode(boolean apiMode) {
         BookViewDetailController.apiMode = apiMode;
     }
+
+
+    private int currentRate = 5;
+    private Button[] stars = new Button[5];
 
     void update() {
         editTitle.setText(detailTitle.getText());
@@ -175,6 +198,140 @@ public class BookViewDetailController extends BaseController {
             deletePane.setVisible(false);
             tempPane.setVisible(false);
         });
+
+        seeComments.setOnAction(event -> {
+            containerPane.setEffect(new GaussianBlur(10));
+            commentTempPane.setVisible(true);
+        });
+
+        cancelComment.setOnAction(event -> {
+            containerPane.setEffect(null);
+            commentTempPane.setVisible(false);
+        });
+
+        int rootLayoutX = 31;
+        int rootLayoutY = 200;
+
+        // Khởi tạo 5 ngôi sao và thêm vào commentPane
+        for (int i = 0; i < 5; i++) {
+            FontAwesomeIcon starIcon = new FontAwesomeIcon();
+            starIcon.setGlyphName("STAR");
+            starIcon.setSize("1.5em");
+            starIcon.setFill(Color.valueOf("#FFD700"));
+
+            stars[i] = new Button();
+            stars[i].setGraphic(starIcon);
+            stars[i].setTranslateX(rootLayoutX + i * 30); // Khoảng cách giữa các ngôi sao
+            stars[i].setTranslateY(rootLayoutY);
+            stars[i].setStyle("-fx-background-color: transparent; -fx-cursor: hand;");
+
+//            // Gắn sự kiện click vào từng ngôi sao
+            final int index = i;
+            stars[i].setOnMouseClicked(event -> onStarClick(index));
+
+            commentPane.getChildren().add(stars[i]);
+        }
+        int maxLength = 144;
+
+        TextFormatter<String> textFormatter = new TextFormatter<>(change -> {
+            if (change.getControlNewText().length() <= maxLength) {
+                return change;  // Cho phép thay đổi nếu không vượt quá giới hạn
+            } else {
+                return null;  // Nếu quá 144 ký tự, không cho phép thay đổi
+            }
+        });
+
+        commentContent.setTextFormatter(textFormatter);
+        currentWord.textProperty().bind(Bindings.format("%d/144", commentContent.textProperty().length()));
+
+        submitComment.setOnAction(event -> {
+            String commentText = commentContent.getText();
+            if(commentText != null && !commentText.isEmpty()) {
+                MainGUI.currentUser.addComment(currentBook, commentText, currentRate);
+                commentContent.clear();
+            }
+        });
+
+        flowPane.getChildren().clear();
+        ArrayList<Comment> commentList = DBInfo.getCommentList(currentBook);
+        int layoutY = 0;
+        for(Comment comment : commentList) {
+            Pane currentComment = createCommentPane(comment);
+            currentComment.setLayoutY(layoutY);
+            layoutY += 142; // Spacing between panes
+            flowPane.getChildren().add(currentComment);
+        }
+    }
+
+    private Pane createCommentPane(Comment comment) {
+        // Layout chung cho mỗi comment
+        Pane pane = new Pane();
+        pane.setPrefSize(460, 124);  // Cài đặt kích thước của Pane
+        pane.setLayoutX(7);
+        pane.setLayoutY(14);
+
+        // Tạo Label cho tên người dùng
+        Label usernameLabel = new Label(comment.getUsername());
+        usernameLabel.setFont(Font.font("System", 14));
+        usernameLabel.setLayoutY(0);
+
+        // Tạo TextArea cho nội dung bình luận
+        TextArea commentTextArea = new TextArea(comment.getContent());
+        commentTextArea.setLayoutY(33);
+        commentTextArea.setPrefHeight(73);
+        commentTextArea.setPrefWidth(460);
+        commentTextArea.setStyle("-fx-background-color: transparent;");
+        commentTextArea.setWrapText(true);
+
+        // Tạo Label cho thời gian
+        Label dateLabel = new Label(comment.getTime().toString());
+        dateLabel.setLayoutY(102);
+        dateLabel.setTextFill(Color.web("#868686"));
+        dateLabel.setFont(Font.font(14));
+
+        // Tạo đường kẻ (Line)
+        Line line = new Line();
+        line.setStartX(-90.99);
+        line.setStartY(2);
+        line.setEndX(369.0);
+        line.setEndY(2);
+        line.setLayoutX(91);
+        line.setLayoutY(120);
+
+        // Tạo các ngôi sao
+        HBox stars = new HBox(5);  // Dùng HBox để sắp xếp các ngôi sao theo chiều ngang
+        stars.setLayoutX(158);
+        stars.setLayoutY(16);
+
+        for (int i = 0; i < 5; i++) {
+            FontAwesomeIcon star = new FontAwesomeIcon();
+            star.setGlyphName("STAR");
+            star.setSize("1.2em");
+            star.setFill(Color.GOLD);
+            stars.getChildren().add(star);
+        }
+
+        pane.setStyle("fx-background-color: transparent");
+
+        // Thêm các phần tử vào Pane
+        pane.getChildren().addAll(usernameLabel, commentTextArea, dateLabel, line, stars);
+
+        return pane;
+    }
+
+    private void onStarClick(int clickedIndex) {
+        currentRate = clickedIndex + 1;
+        // Cập nhật màu của các ngôi sao dựa trên ngôi sao người dùng click
+        for (int i = 0; i <= clickedIndex; i++) {
+            // Đổi tên biểu tượng thành STAR (ngôi sao vàng)
+            FontAwesomeIcon starIcon = (FontAwesomeIcon) stars[i].getGraphic();
+            starIcon.setGlyphName("STAR");
+        }
+        for (int i = clickedIndex + 1; i < 5; i++) {
+            // Đổi tên biểu tượng thành STAR_ALT (ngôi sao rỗng)
+            FontAwesomeIcon starIcon = (FontAwesomeIcon) stars[i].getGraphic();
+            starIcon.setGlyphName("STAR_ALT");
+        }
     }
 
     public Button getReturnSearchBook() {
