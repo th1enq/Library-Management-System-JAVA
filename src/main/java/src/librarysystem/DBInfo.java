@@ -2182,8 +2182,8 @@ public class DBInfo {
       // Register(1,"abc","23020158@vnu.edu.vn","password345","user","1");
       // Register(1,"bcd","23020161@vnu.edu.vn","password111","user","1");
        //Register(1,"admin","levanc","password789","admin","1");
-    System.out.println(PasswordUtils.hashPassword("password345"));
 
-
+    //PasswordRecoveryService.sendToken("23020158@vnu.edu.vn");
+    System.out.println(PasswordRecoveryService.checkToken("23020158@vnu.edu.vn","1441"));
   }
 }
