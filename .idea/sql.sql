@@ -135,9 +135,18 @@ INSERT INTO `comment` (book_title, username, time, content, rate)
 VALUES
 ('Naruto', 'nguyenvana', '2024-11-25 10:00:00', 'Một câu chuyện cảm động và đầy cảm hứng về tình bạn.', 5),
 ('Naruto', 'tranthib', '2024-11-26 08:30:00', 'Tôi đã học được rất nhiều từ tinh thần không bỏ cuộc của Naruto.', 4),
-
 ('Dracula', 'nguyenvana', '2024-11-25 15:20:00', 'Một tác phẩm kinh điển với bầu không khí ma mị và cuốn hút.', 5),
-('Dracula', 'tranthib', '2024-11-26 09:45:00', 'Tôi rất thích cách tác giả xây dựng hình ảnh Dracula đầy bí ẩn.', 4);
+('Dracula', 'tranthib', '2024-11-26 09:45:00', 'Tôi rất thích cách tác giả xây dựng hình ảnh Dracula đầy bí ẩn.', 4),
+('Dracula', 'nguyenvana', '2024-11-24 15:20:00', 'hay', 3),
+('Dracula', 'tranthib', '2024-09-26 09:45:00', 'd hay', 1),
+('Dracula', '23020158@vnu.edu.vn', '2023-11-25 15:20:00', 'HAYYYYY', 5),
+('Dracula', '23020161@vnu.edu.vn', '2021-11-26 09:45:00', 'orz', 4),
+('Dracula', 'nguyenvana', '2024-11-27 08:00:00', 'Một câu chuyện hấp dẫn và đậm chất cổ điển.', 5),
+('Dracula', 'tranthib', '2024-11-20 14:30:00', 'Bầu không khí u ám và ly kỳ khiến tôi không thể rời mắt.', 4),
+('Dracula', '23020158@vnu.edu.vn', '2024-11-15 10:45:00', 'Tác phẩm rất đáng đọc, tuy nhiên hơi dài.', 4),
+('Dracula', '23020161@vnu.edu.vn', '2024-10-22 09:30:00', 'Hình tượng Dracula được xây dựng rất sinh động.', 5),
+('Dracula', 'nguyenvana', '2024-09-18 16:00:00', 'Phần mở đầu khá chậm nhưng càng đọc càng cuốn hút.', 3);
+
 CREATE TABLE daily_logins (
     id INT AUTO_INCREMENT NOT NULL,
     date DATE NOT NULL,
