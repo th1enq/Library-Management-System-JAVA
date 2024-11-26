@@ -1,0 +1,353 @@
+
+
+.parent {
+    -fx-background-color: transparent;
+}
+
+.parent_gui {
+    -fx-background-color: #E9E9EA;
+}
+
+.bg_white {
+    -fx-background-color: #ffffff;
+}
+
+.panel {
+    -fx-background-color: #333333;
+}
+
+.trans-btn-white-border {
+    -fx-background-color: transparent;
+    -fx-border-color: #cccccc;
+    -fx-border-width: 1px;
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px; /* Match the border radius */
+    -fx-text-fill: whitesmoke;
+}
+
+.white-panel {
+    -fx-background-color: #FFFFFF;
+}
+
+.tf-box {
+    -fx-background-color: transparent;
+    -fx-border-color: #dedee4;
+    -fx-border-width: 0px 0px 1px 0px;
+}
+
+.tf {
+    -fx-background-color: transparent;
+}
+
+.pink-btn {
+    -fx-background-color: #f78c7b;
+    -fx-background-radius: 5px;
+    -fx-text-fill: #ffffff;
+}
+
+.sidebar {
+    -fx-background-color: #f9f9f9;
+    -fx-background-radius: 20px 0 0 0;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 10, 0.0, 2, 0);
+}
+
+.green-btn {
+    -fx-background-color: #C1CEBD;
+    -fx-background-radius: 20px;
+}
+
+.search-btn:hover{
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 8, 0.2, 2, 2);
+}
+
+.scroll-pane > .viewport {
+    -fx-background-color: transparent;
+}
+
+.user-image {
+    -fx-background-radius: 100%;
+}
+
+.tran-btn {
+    -fx-background-color: transparent;
+}
+
+.title-bar:hover {
+    -fx-background-color: #f8f8f8;
+    -fx-cursor: hand;
+}
+
+.close-bar:hover {
+    -fx-background-color: #F65867;
+    -fx-cursor: hand;
+}
+
+.menu-btn-active {
+    -fx-background-color: #F65867;
+    -fx-background-radius: 15px;
+}
+
+.menu-btn {
+    -fx-background-color: #F65867;
+    -fx-background-radius: 15px;
+}
+
+.icon-color {
+    -fx-fill: #797979;
+}
+
+.icon-active-color {
+    -fx-fill: #000000;
+}
+
+.circle-btn {
+    -fx-background-color: #F65867;
+    -fx-background-radius: 100%
+}
+
+.slider {
+    -fx-background-color: #FFFFFF;
+    -fx-background-radius: 15px;
+}
+
+.add-btn {
+    -fx-background-color: transparent;
+    -fx-border-color: grey;
+    -fx-border-width: 1px;
+    -fx-border-radius: 7px;
+}
+
+.frame-image {
+    -fx-border-width: 1px;
+    -fx-border-color: #000;
+    -fx-background-radius: 8px;
+}
+
+.slider-book-detail {
+    -fx-background-color: #FDFCF7;
+    -fx-background-radius: 20px 20px 0 0;
+}
+
+.frame-shadow {
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.8), 50, 0.2, 3, 2);
+}
+
+.input-text {
+    -fx-background-radius: 30px;
+    -fx-border-radius: 30px;
+    -fx-border-width: 1px;
+    -fx-border-color: #000;
+    -fx-padding: 0 0 0 10px;
+}
+
+.text-area-input {
+    -fx-border-width: 1px;
+    -fx-border-color: #000;
+}
+
+.slider-with-border {
+    -fx-border-width: 1px;
+    -fx-border-color: #000;
+    -fx-border-radius: 15px;
+}
+
+/*!* Row styling *!*/
+/*.table-view .table-row-cell {*/
+/*    -fx-background-color: #FFFFFF;  !* White background for rows *!*/
+/*    -fx-border-color: #E0E0E0;*/
+/*    -fx-alignment: CENTER_LEFT;*/
+/*}*/
+
+/*!* Alternating row colors *!*/
+/*.table-row-cell:odd {*/
+/*    -fx-background-color: #E3F2FD;  !* Light blue for alternate rows *!*/
+/*}*/
+
+/*.table-row-cell:selected {*/
+/*    -fx-background-color: #1976D2;  !* Dark blue for selected row *!*/
+/*}*/
+
+/*!* Cell hover effect *!*/
+/*.table-row-cell:hover {*/
+/*    -fx-background-color: #BBDEFB;  !* Lighter blue for hover effect *!*/
+/*}*/
+
+/*!* Table column customization *!*/
+/*.table-column {*/
+/*    -fx-alignment: CENTER_LEFT;  !* Align the text to the left *!*/
+/*}*/
+
+/* Scroll bar styling */
+.scroll-bar {
+    -fx-background-color: #E0E0E0;
+}
+
+.scroll-bar:vertical .increment-button, .scroll-bar:vertical .decrement-button {
+    -fx-background-color: #90CAF9;  /* Light blue for scrollbar buttons */
+}
+
+.scroll-bar:vertical .thumb {
+    -fx-background-color: #2196F3;  /* Blue for scrollbar thumb */
+}
+
+
+.rounded-btn {
+    -fx-background-radius: 30px;
+    -fx-background-color: transparent;
+}
+
+.password_see:hover {
+    -fx-background-color: #F2F2F2;
+}
+
+
+.sidebar_loading {
+    -fx-background-color: #f0f0f0; /* Màu nền cho sidebar */
+}
+
+.loading-label {
+    -fx-font-size: 24px; /* Kích thước chữ */
+    -fx-text-fill: #333333; /* Màu chữ */
+    -fx-layout-x: 0;
+    -fx-layout-y: 0;
+    -fx-font-weight: bold; /* Chữ đậm */
+}
+
+/* Style cho ProgressIndicator */
+.progress-indicator .circle {
+    -fx-stroke: lightgray; /* Màu nền */
+    -fx-stroke-width: 8px;
+}
+
+.progress-indicator .progress {
+    -fx-stroke: blue; /* Màu của thanh progress */
+    -fx-stroke-width: 8px;
+    -fx-stroke-line-cap: round; /* Làm cho đầu của stroke bo tròn */
+    -fx-transition: stroke-dash-offset 300ms ease-in-out;
+    -fx-rotate: -90deg; /* Xoay để thanh progress bắt đầu từ trên cùng */
+    -fx-transform-origin: 50% 50%;
+}
+
+
+.sidebar-hidden {
+    -fx-border-width: 0;
+    -fx-effect: null;
+}
+
+.pink-btn:hover {
+    -fx-opacity: 0.8;
+}
+
+.custom-pie-chart {
+    -fx-background-color: #FFFFFF; /* Background color of the LineChart */
+    -fx-background-radius: 15px; /* Optional, for rounded corners */
+}
+
+.custom-line-chart {
+    -fx-background-color: #FFFFFF; /* Background color of the LineChart */
+    -fx-stroke: #002f7f; /* Customize line color */
+    -fx-legend-visible: true;
+    -fx-background-radius: 15px; /* Optional, for rounded corners */
+}
+
+.custom-line-chart .chart-series-line {
+    -fx-stroke-width: 2px;
+    -fx-stroke-line-cap: round;
+}
+
+.custom-line-chart .chart-legend-item-symbol {
+    -fx-background-color: #002f7f; /* Color for legend symbol */
+}
+
+.custom-x-axis {
+    -fx-tick-mark-visible: false; /* Ẩn các nét đứt trên trục x */
+    -fx-tick-label-fill: #666666; /* Màu sắc cho nhãn trục */
+    -fx-tick-label-font-size: 12px; /* Kích thước font cho nhãn trục */
+}
+
+.custom-y-axis {
+    -fx-tick-mark-visible: false; /* Ẩn các nét đứt trên trục y */
+    -fx-tick-label-fill: #666666; /* Màu sắc cho nhãn trục */
+    -fx-tick-label-font-size: 12px; /* Kích thước font cho nhãn trục */
+}
+
+
+/* Optional: Set the background of the chart area specifically */
+.custom-line-chart .chart-plot-background {
+    -fx-background-color: #FFFFFF; /* Background color for the chart area */
+}
+
+.gold-star {
+    -fx-fill: gold;
+}
+
+.table-view .column-header,
+.table-view .column-header .filler,
+.table-view .column-header-background .filler {
+    -fx-background-color: #ADD8E6; /* Light Blue */
+    -fx-stroke: transparent;
+    -fx-size:50;
+    -fx-alignment: CENTER ;
+    -fx-text-alignment: center;
+
+}
+.table-row-cell:filled:hover {
+    -fx-size:50;
+    -fx-alignment: CENTER;
+    -fx-text-alignment: center;
+}
+.table-view:row-selection {
+    -fx-text-fill: #fff;
+    -fx-fixed-cell-size: 50;
+    -fx-alignment: CENTER;
+    -fx-text-alignment: center;
+
+}
+
+.table-view .table-column{
+    -fx-text-alignment: center;
+    -fx-alignment: CENTER
+}
+
+/* Căn chỉnh văn bản vào giữa ChoiceBox */
+.choice-box {
+    -fx-alignment: center; /* Căn giữa cả ngang và dọc */
+    -fx-padding: 5px; /* Khoảng cách giữa văn bản và cạnh */
+    -fx-font-size: 14px; /* Kích thước chữ */
+    -fx-font-family: 'Arial'; /* Font chữ */
+    -fx-text-fill: #333333; /* Màu chữ */
+}
+
+/* Tùy chỉnh hộp lựa chọn */
+.choice-box .arrow {
+    -fx-background-color: #0066cc; /* Màu nền của mũi tên */
+    -fx-padding: 5px;
+}
+
+.choice-box .arrow:hover {
+    -fx-background-color: #004d99; /* Màu nền khi hover */
+}
+
+/* Tùy chỉnh danh sách thả xuống */
+.choice-box-popup {
+    -fx-background-color: #f9f9f9; /* Màu nền */
+    -fx-border-color: #cccccc; /* Đường viền */
+    -fx-border-radius: 5px; /* Góc bo tròn */
+}
+
+.choice-box-popup .list-cell {
+    -fx-padding: 5px;
+    -fx-font-size: 14px;
+    -fx-font-family: 'Arial';
+    -fx-text-fill: #333333;
+}
+
+.choice-box-popup .list-cell:hover {
+    -fx-background-color: #e6f7ff; /* Màu nền khi hover */
+    -fx-text-fill: #0066cc; /* Màu chữ khi hover */
+}
+
+.tab-pane .tab-header-area {
+    -fx-tab-min-height: 0;
+    -fx-tab-max-height: 0;
+}
