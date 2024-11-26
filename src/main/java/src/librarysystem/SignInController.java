@@ -124,7 +124,7 @@ public class SignInController implements Initializable {
             showAlert("Tài khoản không tồn tại trong hệ thống!");
             return;
         }
-        String content = "Mật khẩu của bạn là: " + DBInfo.getPassword(email);
+        String content = "Mật khẩu của bạn là: ";
         boolean isSent = EmailSender.sendEmail(email,"Email khôi phục mật khẩu",content);
         if (isSent) {
             showAlert("Email khôi phục mật khẩu đã được gửi!");

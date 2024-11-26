@@ -186,39 +186,6 @@ public class DBInfo {
     }
   }
 
-  public static String getPassword(String username) {
-    Connection con = DBInfo.conn();
-    String password = null;
-
-    try {
-      String sql = "SELECT password FROM registration WHERE username = ?";
-      PreparedStatement preparedStatement = con.prepareStatement(sql);
-      preparedStatement.setString(1, username); // Gán giá trị cho tham số ?
-
-      ResultSet resultSet = preparedStatement.executeQuery();
-
-      if (resultSet.next()) {
-        password = resultSet.getString("password"); // Lấy mật khẩu
-      } else {
-        System.out.println("Không tìm thấy username: " + username);
-      }
-
-      resultSet.close();
-      preparedStatement.close();
-    } catch (SQLException e) {
-      e.printStackTrace();
-    } finally {
-      try {
-        if (con != null) {
-          con.close();
-        }
-      } catch (SQLException e) {
-        e.printStackTrace();
-      }
-    }
-
-    return password;
-  }
 
   public static User getUserById(int userId) {
     String sql = "SELECT * FROM registration WHERE id = ?";
@@ -1191,23 +1158,6 @@ public class DBInfo {
     return false;
   }
 
-
-  /**
-   * hamf dang nhap.
-   *
-   * @param Username U
-   * @param Password P
-   */
-  public static void login(String Username, String Password) {
-    if (checkPass(Username, Password)) {
-      curPass = Password;
-      curUsername = Username;
-      curId = findUserId(Username, Password);
-      userType = findUserType(Username, Password);
-      curName = findName(curId);
-    }
-  }
-
   public static String findName(int id) {
     String name = null;
     String query = "SELECT name FROM registration WHERE id = ?";
@@ -1222,32 +1172,6 @@ public class DBInfo {
       e.printStackTrace();
     }
     return name;
-  }
-
-  public static String findUserType(String username, String password) {
-    try {
-      Connection con = DBInfo.conn();
-      String sql = "SELECT usertype FROM registration WHERE username = ? AND password = ?";
-      PreparedStatement preparedStatement = con.prepareStatement(sql);
-      preparedStatement.setString(1, username);
-      preparedStatement.setString(2, password);
-      ResultSet resultSet = preparedStatement.executeQuery();
-      if (resultSet.next()) {
-        String type = resultSet.getString("usertype");
-        System.out.println("type của người dùng là: " + type);
-        return type;
-      } else {
-        System.out.println("Không tìm thấy người dùng với username và password đã cho.");
-
-      }
-      preparedStatement.close();
-      con.close();
-      return "KO TIM THAY";
-    } catch (SQLException e) {
-      e.printStackTrace();
-      System.out.println("Loi ham tim type biet user va pass");
-      return "KO TIM THAY";
-    }
   }
 
   public static int findUserId(String username, String password) {
@@ -1325,7 +1249,8 @@ public class DBInfo {
         preparedStatement.setString(paramIndex++, newUsername);
       }
       if (newPassword != null) {
-        preparedStatement.setString(paramIndex++, newPassword);
+        String password = PasswordUtils.hashPassword(newPassword);
+        preparedStatement.setString(paramIndex++, password);
       }
       if (newAvatarLink != null) {
         preparedStatement.setString(paramIndex++, newAvatarLink);
@@ -1535,7 +1460,8 @@ public class DBInfo {
         preparedStatement.setString(paramIndex++, newUsername);
       }
       if (newPassword != null) {
-        preparedStatement.setString(paramIndex++, newPassword);
+        String password = PasswordUtils.hashPassword(newPassword);
+        preparedStatement.setString(paramIndex++, password);
       }
       if (newAvatarLink != null) {
         preparedStatement.setString(paramIndex++, newAvatarLink);
@@ -2251,11 +2177,12 @@ public class DBInfo {
   }
 
   public static void main(String[] args) throws Exception {
-       Register(1,"nguyenvana","nguyenvana@gmail.com","password123","user","1");
-       Register(1,"tranthib","tranthib@gmail.com","password234","user","1");
-       Register(1,"abc","23020158@vnu.edu.vn","password345","user","1");
-       Register(1,"bcd","23020161@vnu.edu.vn","password111","user","1");
-       Register(1,"admin","levanc","password789","admin","1");
+     //  Register(1,"nguyenvana","nguyenvana@gmail.com","password123","user","1");
+      // Register(1,"tranthib","tranthib@gmail.com","password234","user","1");
+      // Register(1,"abc","23020158@vnu.edu.vn","password345","user","1");
+      // Register(1,"bcd","23020161@vnu.edu.vn","password111","user","1");
+       //Register(1,"admin","levanc","password789","admin","1");
+    System.out.println(PasswordUtils.hashPassword("password345"));
 
 
   }

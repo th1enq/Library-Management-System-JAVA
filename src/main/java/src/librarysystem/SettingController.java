@@ -447,8 +447,8 @@ public class SettingController extends BaseController implements Initializable {
       sendNotification(1000, MainGUI.currentUser.getId(), "Cập nhật thông tin thành công !!!");
     }
     else if(currentMode == 2) {
-      if(!MainGUI.currentUser.getPassword().equals(oldPassword.getText())) {
-        System.out.println("Mat khau cu khong chinh xac" + " " + MainGUI.currentUser.getPassword() + " " + oldPassword.getText());
+      if(!PasswordUtils.verifyPassword(oldPassword.getText(),MainGUI.currentUser.getPassword())) {
+        System.out.println("Mat khau cu khong chinh xac" + " " + MainGUI.currentUser.getPassword() + " " + PasswordUtils.hashPassword(oldPassword.getText()) + " " + oldPassword.getText());
       }
       else {
         if(newPassword.getText().isEmpty() || newPassword == null) {
