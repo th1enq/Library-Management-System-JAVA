@@ -10,9 +10,10 @@ module src.librarysystem {
     requires org.apache.poi.ooxml;
   requires jakarta.mail;
   requires java.desktop;
-    requires fontawesomefx;
   requires jbcrypt;
+    requires fontawesomefx;
+    requires org.apache.logging.log4j;
 
-  opens src.librarysystem to javafx.fxml;
+    opens src.librarysystem to javafx.fxml;
     exports src.librarysystem;
 }

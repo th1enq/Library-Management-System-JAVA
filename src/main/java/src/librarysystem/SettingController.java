@@ -296,10 +296,10 @@ public class SettingController extends BaseController implements Initializable {
     double radius1 = 20;
     double radius2 = height * 0;
     clip = new Path(new MoveTo(0, radius1), new ArcTo(radius1, radius1, 0, radius1, 0, false, true),
-        new HLineTo(width),
-        new VLineTo(height - radius2),
-        new ArcTo(radius2, radius2, 0, width - radius2, height, false, true),
-        new HLineTo(0));
+            new HLineTo(width),
+            new VLineTo(height - radius2),
+            new ArcTo(radius2, radius2, 0, width - radius2, height, false, true),
+            new HLineTo(0));
 
     clip.setFill(Color.ALICEBLUE);
     coverImage.setClip(clip);
