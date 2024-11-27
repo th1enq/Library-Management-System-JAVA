@@ -8,8 +8,9 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 
 /**
- * Lớp này cung cấp các phương thức để tìm kiếm và lọc sách và người dùng từ cơ sở dữ liệu.
- * Các phương thức này sử dụng các tham số đầu vào để tìm kiếm sách hoặc người dùng theo các thuộc tính như tiêu đề, tác giả, thể loại, v.v.
+ * Lớp này cung cấp các phương thức để tìm kiếm và lọc sách và người dùng từ cơ sở dữ liệu. Các
+ * phương thức này sử dụng các tham số đầu vào để tìm kiếm sách hoặc người dùng theo các thuộc tính
+ * như tiêu đề, tác giả, thể loại, v.v.
  */
 public class Filter {
 
@@ -224,13 +225,13 @@ public class Filter {
   }
 
   /**
-   * Tìm kiếm người dùng trong cơ sở dữ liệu theo một phần chuỗi trong tên người dùng hoặc tên đầy đủ,
-   * và có thể lọc theo loại người dùng (ví dụ: "ALL", "ADMIN", "USER").
+   * Tìm kiếm người dùng trong cơ sở dữ liệu theo một phần chuỗi trong tên người dùng hoặc tên đầy
+   * đủ, và có thể lọc theo loại người dùng (ví dụ: "ALL", "ADMIN", "USER").
    *
-   * @param tmp Chuỗi con để tìm kiếm trong tên người dùng hoặc tên đầy đủ.
+   * @param tmp  Chuỗi con để tìm kiếm trong tên người dùng hoặc tên đầy đủ.
    * @param type Loại người dùng cần lọc (ví dụ: "ALL", "ADMIN", "USER").
-   * @return Danh sách các người dùng có tên hoặc tên người dùng chứa chuỗi con đã cho,
-   *         và phù hợp với loại người dùng nếu có.
+   * @return Danh sách các người dùng có tên hoặc tên người dùng chứa chuỗi con đã cho, và phù hợp
+   * với loại người dùng nếu có.
    */
   public ArrayList<User> getUserBySubstr(String tmp, String type) {
     ArrayList<User> userList = new ArrayList<>();
@@ -241,7 +242,7 @@ public class Filter {
     }
 
     try (Connection conn = DBInfo.conn();
-         PreparedStatement stmt = conn.prepareStatement(sql.toString())) {
+        PreparedStatement stmt = conn.prepareStatement(sql.toString())) {
 
       stmt.setString(1, "%" + tmp + "%");
 
@@ -266,7 +267,7 @@ public class Filter {
         int reputation = rs.getInt("Reputation");
 
         User user = new User(id, name, username, password, userType, isBanned, avatarLink, MSV,
-                university, phone, coverPhotoLink, reputation);
+            university, phone, coverPhotoLink, reputation);
         userList.add(user);
       }
     } catch (SQLException e) {
@@ -291,7 +292,7 @@ public class Filter {
     }
 
     try (Connection conn = DBInfo.conn();
-         PreparedStatement stmt = conn.prepareStatement(sql)) {
+        PreparedStatement stmt = conn.prepareStatement(sql)) {
       if (!tmp.equals("ALL")) {
         stmt.setString(1, tmp);
       }
@@ -312,7 +313,7 @@ public class Filter {
         int reputation = rs.getInt("Reputation");
 
         User user = new User(id, name, username, password, userType, isBanned, avatarLink, MSV,
-                university, phone, coverPhotoLink, reputation);
+            university, phone, coverPhotoLink, reputation);
         userList.add(user);
       }
     } catch (SQLException e) {

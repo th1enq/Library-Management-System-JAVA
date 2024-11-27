@@ -564,8 +564,8 @@ public class User {
    * @param receiver Người nhận thông báo.
    * @param tmp      Nội dung thông báo.
    */
-  public void sendNotification(User receiver, String tmp,int type) {
-    DBInfo.sendNotification(this.id, receiver.getId(), tmp,type);
+  public void sendNotification(User receiver, String tmp, int type) {
+    DBInfo.sendNotification(this.id, receiver.getId(), tmp, type);
   }
 
   /**

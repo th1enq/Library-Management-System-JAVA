@@ -167,9 +167,9 @@ public class Book {
    * @param buyLink       Liên kết mua sách.
    */
   public Book(String title, String ISBN, String authors, String publisher,
-              String publishedDate, String description, String thumbnail,
-              String numPage, String category, String price, String language,
-              String buyLink) {
+      String publishedDate, String description, String thumbnail,
+      String numPage, String category, String price, String language,
+      String buyLink) {
     this.title = title;
     this.ISBN = ISBN;
     this.authors = authors;
@@ -205,9 +205,9 @@ public class Book {
    * @param rating        Đánh giá sách (từ 0 đến 5).
    */
   public Book(String title, String ISBN, String authors, String publisher,
-              String publishedDate, String description, String thumbnail,
-              String numPage, String category, String price, String language,
-              String buyLink, int avail, int rating) {
+      String publishedDate, String description, String thumbnail,
+      String numPage, String category, String price, String language,
+      String buyLink, int avail, int rating) {
     this.title = title;
     this.ISBN = ISBN;
     this.authors = authors;
@@ -261,21 +261,21 @@ public class Book {
   @Override
   public String toString() {
     return "Book ( " +
-            "Type='" + type + '\'' +
-            ", Title='" + title + '\'' +
-            ", Authors='" + authors + '\'' +
-            ", Publisher='" + publisher + '\'' +
-            ", Published Date='" + publishedDate + '\'' +
-            ", ISBN='" + ISBN + '\'' +
-            ", Description='" + description + '\'' +
-            ", Thumbnail='" + thumbnail + '\'' +
-            ", Number of Pages='" + numPage + '\'' +
-            ", Category='" + category + '\'' +
-            ", Price='" + price + '\'' +
-            ", Language='" + language + '\'' +
-            ", Buy Link='" + buyLink + '\'' +
-            ", Availability='" + avail + '\'' +
-            ", Rating=" + rating +
-            ") ";
+        "Type='" + type + '\'' +
+        ", Title='" + title + '\'' +
+        ", Authors='" + authors + '\'' +
+        ", Publisher='" + publisher + '\'' +
+        ", Published Date='" + publishedDate + '\'' +
+        ", ISBN='" + ISBN + '\'' +
+        ", Description='" + description + '\'' +
+        ", Thumbnail='" + thumbnail + '\'' +
+        ", Number of Pages='" + numPage + '\'' +
+        ", Category='" + category + '\'' +
+        ", Price='" + price + '\'' +
+        ", Language='" + language + '\'' +
+        ", Buy Link='" + buyLink + '\'' +
+        ", Availability='" + avail + '\'' +
+        ", Rating=" + rating +
+        ") ";
   }
 }
