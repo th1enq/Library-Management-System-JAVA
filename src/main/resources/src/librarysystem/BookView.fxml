@@ -70,6 +70,10 @@
                </content>
             </ScrollPane>
             <ComboBox fx:id="filterModeButton" layoutX="972.0" layoutY="128.0" prefHeight="30.0" prefWidth="99.0" style="-fx-background-radius: 50px; -fx-background-color: transparent; -fx-border-color: #000; -fx-border-radius: 50;" />
+            <Button fx:id="addNewBook" layoutX="153.0" layoutY="128.0" mnemonicParsing="false" prefHeight="38.0" prefWidth="99.0" style="-fx-background-color: transparent; -fx-border-radius: 20px; -fx-border-color: grey; -fx-background-radius: 10px; -fx-cursor: hand;" text="Add book">
+               <font>
+                  <Font size="14.0" />
+               </font></Button>
          </children>
          <VBox.margin>
             <Insets />

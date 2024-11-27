@@ -47,5 +47,13 @@ public class BaseController {
     protected void updateNotifications() {
         mainGUIController.updateNotifications();
     }
+
+    protected void returnAddBook() {
+        mainGUIController.returnAddBook();
+    }
+
+    protected void returnBookView() {
+        mainGUIController.bookView();
+    }
 }
 

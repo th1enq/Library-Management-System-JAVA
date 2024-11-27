@@ -36,6 +36,8 @@ public class SearchBookController extends BaseController {
     public FlowPane flowPane;
     @FXML
     public ComboBox filterModeButton;
+    @FXML
+    public Button addNewBook;
 
     private boolean apiMode = false;
     private String query = "";
@@ -100,6 +102,10 @@ public class SearchBookController extends BaseController {
         else {
             displayBooks(currentLibraryBook);
         }
+
+        addNewBook.setOnAction(event -> {
+            returnAddBook();
+        });
     }
 
     private void searchQuery(String query) {

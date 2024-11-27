@@ -234,6 +234,22 @@ public class MainGUI implements Initializable {
         }
     }
 
+    public void returnAddBook() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("AddBook.fxml"));
+            fxml = loader.load();
+
+            AddBookController addBookController = loader.getController();
+
+            addBookController.setMainGUIController(this);
+            mainVbox.getChildren().clear();
+            mainVbox.getChildren().setAll(fxml);
+
+        } catch (IOException ex) {
+            Logger.getLogger(LoginController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
     private void update() {
         language = UISetting.getInstance().getVietNameseMode();
         reset();
@@ -316,7 +332,7 @@ public class MainGUI implements Initializable {
     }
 
     @FXML
-    private void bookView() {
+    public void bookView() {
         currentStage = 1;
         currentStage = 1;
         try {
