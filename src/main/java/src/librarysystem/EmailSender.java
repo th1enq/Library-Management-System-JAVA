@@ -46,11 +46,4 @@ public class EmailSender {
     }
   }
 
-  public static void main(String[] args) {
-    // Test gửi email
-
-    //(mail nguoi nhan, chu de mail, noi dung mail)
-    //sendEmail("23020158@vnu.edu.vn", "Ma xac nhan 2",
-     //   "Ma xac nhan la 177013.");
-  }
 }
