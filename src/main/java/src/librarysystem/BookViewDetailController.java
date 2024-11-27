@@ -384,6 +384,10 @@ public class BookViewDetailController extends BaseController {
           "Bạn không thể chỉnh sửa sách từ thư viện online !!!");
       return;
     }
+    if (MainGUI.currentUser.getUserType().equals("user")) {
+      sendNotification(1000, MainGUI.currentUser.getId(), "Chức năng chỉ dành cho admin!!!!");
+      return;
+    }
     editMode = true;
     update();
   }
@@ -393,6 +397,14 @@ public class BookViewDetailController extends BaseController {
     if (apiMode == true) {
       sendNotification(1000, MainGUI.currentUser.getId(),
           "Không thể xóa sách từ thư viện online !!!");
+      return;
+    }
+    if (MainGUI.currentUser.getUserType().equals("user")) {
+      sendNotification(1000, MainGUI.currentUser.getId(), "Chức năng chỉ dành cho admin!!!!");
+      return;
+    }
+    if (DBInfo.isBorrowed(currentBook.getTitle())) {
+      sendNotification(1000, MainGUI.currentUser.getId(), "Không thể xóa sách đang được nguời dùng mượn");
       return;
     }
     GaussianBlur blurEffect = new GaussianBlur(10);
@@ -421,6 +433,10 @@ public class BookViewDetailController extends BaseController {
 
   @FXML
   public void addBook(ActionEvent actionEvent) {
+    if (MainGUI.currentUser.getUserType().equals("user")) {
+      sendNotification(1000, MainGUI.currentUser.getId(), "Chức năng chỉ dành cho admin!!!!");
+      return;
+    }
     sendNotification(1000, MainGUI.currentUser.getId(), "Thêm thành công vào thư viện !!!");
     DBInfo.addBook(currentBook);
   }

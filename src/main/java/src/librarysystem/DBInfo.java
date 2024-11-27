@@ -40,6 +40,9 @@ public class DBInfo {
     return con;
   }
 
+  /**
+   *.
+   */
   public static void NotificationFromSystem() {
 
     for (int id = 1; id <= DBInfo.getUserCount(); id++) {
@@ -97,7 +100,9 @@ public class DBInfo {
     }
   }
 
-
+  /**
+   * .
+   */
   public static User getUserById(int userId) {
     String sql = "SELECT * FROM registration WHERE id = ?";
     User user = null;
@@ -128,6 +133,9 @@ public class DBInfo {
     return user;
   }
 
+  /**
+   * .
+   */
   public static ArrayList<Notification> getNotificationsByUserId(int userId) {
     ArrayList<Notification> notifications = new ArrayList<>();
     String sql = "SELECT * FROM notifications WHERE receiver_id = ?";
@@ -158,6 +166,9 @@ public class DBInfo {
     return notifications;
   }
 
+  /**
+   * .
+   */
   public static void deleteNotificationsByUserId(int userId) {
     String sql = "DELETE FROM notifications WHERE sender_id = ? OR receiver_id = ?";
 
@@ -174,6 +185,9 @@ public class DBInfo {
     }
   }
 
+  /**
+   * .
+   */
   public static void sendNotification(int senderId, int receiverId, String message) {
     String sql = "INSERT INTO notifications (sender_id, receiver_id, message) VALUES (?, ?, ?)";
     try (Connection conn = DBInfo.conn();
@@ -221,6 +235,9 @@ public class DBInfo {
     return false;
   }
 
+  /**
+   * create comment pane.
+   */
   public static void addSlip(String itemName, int id) {
     Connection con = null;
     PreparedStatement preparedStatement = null;
@@ -326,6 +343,9 @@ public class DBInfo {
     }
   }
 
+  /**
+   * create comment pane.
+   */
   public static void addBorrowRequest(String itemName, int id) {
     Connection con = null;
     PreparedStatement checkStmt = null;
@@ -380,7 +400,9 @@ public class DBInfo {
     }
   }
 
-
+  /**
+   * create comment pane.
+   */
   public static void acceptBorrowRequest(int userId, String bookName) {
     String sql = "UPDATE borrow_request SET accepted = 1 WHERE user_id = ? AND book_name = ?";
     try (Connection conn = DBInfo.conn(); PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -406,6 +428,9 @@ public class DBInfo {
     }
   }
 
+  /**
+   * create comment pane.
+   */
   public static void denyBorrowRequest(int userId, String bookName) {
     String sql = "UPDATE borrow_request SET accepted = 1 WHERE user_id = ? AND book_name = ?";
     try (Connection conn = DBInfo.conn(); PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -497,7 +522,9 @@ public class DBInfo {
     }
   }
 
-
+  /**
+   * create comment pane.
+   */
   public static void editBook(Book book, String newTitle, String newAuthor, String newPublisher,
       String newThumbnail, String newDescription, String newPageNum, String newLanguage) {
     String oldTitle = book.getTitle();
@@ -592,7 +619,9 @@ public class DBInfo {
     }
   }
 
-
+  /**
+   * .
+   */
   public static void addPublisher(String name) {
     try {
       Connection con = DBInfo.conn();
@@ -609,6 +638,9 @@ public class DBInfo {
     }
   }
 
+  /**
+   * .
+   */
   public static void deletePublisher(String a) {
     try {
       Connection con = DBInfo.conn();
@@ -625,6 +657,9 @@ public class DBInfo {
     }
   }
 
+  /**
+   * .
+   */
   public static void deleteAuthor(String a) {
     try {
       Connection con = DBInfo.conn();
@@ -641,6 +676,9 @@ public class DBInfo {
     }
   }
 
+  /**
+   * .
+   */
   public static void addAuthor(String a) {
     try {
       Connection con = DBInfo.conn();
@@ -657,6 +695,9 @@ public class DBInfo {
     }
   }
 
+  /**
+   * .
+   */
   public static void addCategory(String categoryName) {
     String checkSql = "SELECT cnt FROM category WHERE name = ?";
     String updateCntSql = "UPDATE category SET cnt = cnt + 1 WHERE name = ?";
@@ -695,6 +736,9 @@ public class DBInfo {
     }
   }
 
+  /**
+   * .
+   */
   public static void deleteOneNotification(Notification notification) {
     int senderId = notification.getSenderId();
     int receiverId = notification.getReceiverId();
@@ -717,7 +761,9 @@ public class DBInfo {
     }
   }
 
-
+  /**
+   * .
+   */
   public static void deleteCategory(String categoryName) {
     String checkSql = "SELECT cnt FROM category WHERE name = ?";
     String updateCntSql = "UPDATE category SET cnt = cnt - 1 WHERE name = ?";
@@ -942,7 +988,9 @@ public class DBInfo {
     }
   }
 
-
+  /**
+   * .
+   */
   public static int getUserCount() {
     int count = 0;
     String query = "SELECT MAX(id) FROM registration WHERE usertype = 'user' ";
@@ -960,7 +1008,9 @@ public class DBInfo {
     return count;
   }
 
-
+  /**
+   * .
+   */
   public static int getBookCount() {
     int count = 0;
     String query = "SELECT COUNT(*) FROM book";
@@ -978,6 +1028,9 @@ public class DBInfo {
     return count;
   }
 
+  /**
+   * .
+   */
   public static boolean isUsernameExists(String username) {
     boolean exists = false;
     String query = "SELECT 1 FROM registration WHERE username = ? LIMIT 1";
@@ -1081,7 +1134,9 @@ public class DBInfo {
     return name;
   }
 
-
+  /**
+   * .
+   */
   public static void updateUser(int id, String newName, String newUsername, String newPassword,
       String newAvatarLink) {
     Connection con = DBInfo.conn();
@@ -1162,6 +1217,9 @@ public class DBInfo {
     }
   }
 
+  /**
+   * .
+   */
   public static Pair<Integer, Integer> getOverdueAndUpcoming(int id) {
 
     int upcoming = 0;
@@ -1198,6 +1256,9 @@ public class DBInfo {
     return new Pair<Integer, Integer>(upcoming, overdue);
   }
 
+  /**
+   * .
+   */
   public static int countBorrowed() {
     int upcoming = 0;
 
@@ -1221,6 +1282,9 @@ public class DBInfo {
     return upcoming;
   }
 
+  /**
+   * .
+   */
   public static int countOverdue() {
     int ret = 0;
 
@@ -1389,6 +1453,9 @@ public class DBInfo {
     }
   }
 
+  /**
+   * .
+   */
 
   public static void DeleteUser(String name) {
     Connection con = DBInfo.conn();
@@ -1415,6 +1482,9 @@ public class DBInfo {
     }
   }
 
+  /**
+   * .
+   */
   public static void rateBook(String itemName, int score) {
     try {
       Connection con = DBInfo.conn();
@@ -1489,6 +1559,9 @@ public class DBInfo {
     return ret;
   }
 
+  /**
+   * .
+   */
   public static Book getBook(String name) {
     Connection con = null;
     PreparedStatement preparedStatement = null;
@@ -1548,6 +1621,9 @@ public class DBInfo {
     return null;
   }
 
+  /**
+   * .
+   */
   public static ArrayList<Pair<Book, MyDateTime>> getBorrowedBookList(int id) {
     ArrayList<Pair<Book, MyDateTime>> ret = new ArrayList<>();
     String query = "SELECT * FROM borrow_slip WHERE user_id = ?";
@@ -1672,7 +1748,9 @@ public class DBInfo {
     return bookList;
   }
 
-
+  /**
+   * .
+   */
   public static String getString(String author, String category, String publisher) {
     int prev = 0;
     String sql = "SELECT title, ISBN, authors, publisher, publishedDate, description,thumbnail, numPage, category, price, language, buyLink,avail,rating FROM book";
@@ -1701,6 +1779,9 @@ public class DBInfo {
     return sql;
   }
 
+  /**
+   * .
+   */
   public static void addComment(Comment comment) {
     try {
       Connection conn = DBInfo.conn();
@@ -1759,7 +1840,9 @@ public class DBInfo {
     return ret;
   }
 
-
+  /**
+   * .
+   */
   public static void ban(User X) {
     String username = X.getUsername();
     try {
@@ -1780,6 +1863,9 @@ public class DBInfo {
     }
   }
 
+  /**
+   * .
+   */
   public static void unBan(User X) {
     String username = X.getUsername();
     try {
@@ -1800,6 +1886,9 @@ public class DBInfo {
     }
   }
 
+  /**
+   * .
+   */
   public static User getUser(String username) {
     User user = null;
     Connection conn = null;
@@ -1846,6 +1935,9 @@ public class DBInfo {
     return user;
   }
 
+  /**
+   * .
+   */
   public static boolean checkUnique(String X) {
     Connection conn = null;
     PreparedStatement stmt = null;
@@ -1883,6 +1975,9 @@ public class DBInfo {
     return isUnique;
   }
 
+  /**
+   * .
+   */
   public static ArrayList<Book> getBookListByNumView() {
     ArrayList<Book> bookList = new ArrayList<>();
     Connection con = null;
@@ -1936,6 +2031,9 @@ public class DBInfo {
     return bookList;
   }
 
+  /**
+   * .
+   */
   public static void updView(Book book) {
     Connection con = null;
     PreparedStatement preparedStatement = null;
@@ -1971,6 +2069,9 @@ public class DBInfo {
     }
   }
 
+  /**
+   * .
+   */
   public static String getAuthor(String bookTitle) {
     Connection con = null;
     PreparedStatement preparedStatement = null;
@@ -2023,6 +2124,9 @@ public class DBInfo {
     return username.matches(emailRegex);
   }
 
+  /**
+   * .
+   */
   public static boolean validPassword(String password) {
     return password.length() >= 8;
   }

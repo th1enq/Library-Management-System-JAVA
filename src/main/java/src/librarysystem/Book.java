@@ -1,8 +1,10 @@
 package src.librarysystem;
 
 import java.util.ArrayList;
-import java.util.Optional;
 
+/**
+ * Lớp đại diện cho một cuốn sách trong hệ thống thư viện.
+ */
 public class Book {
 
   private String type = "ebooks";
@@ -22,63 +24,12 @@ public class Book {
   private int rating;
   private int numView;
 
-  public Book() {
-  }
-
-  public Book(String title, String ISBN, String authors, String publisher,
-      String publishedDate,
-      String description, String thumbnail, String numPage, String category, String price,
-      String language, String buyLink) {
-    this.title = title;
-    this.ISBN = ISBN;
-    this.authors = authors;
-    this.publishedDate = publishedDate;
-    this.thumbnail = thumbnail;
-    this.publisher = publisher;
-    this.description = description;
-    this.numPage = numPage;
-    this.category = category;
-    this.price = price;
-    this.language = language;
-    this.buyLink = buyLink;
-    this.avail = 1;
-    this.rating = 0;
-  }
-
-  public Book(String title, String ISBN, String authors, String publisher,
-      String publishedDate,
-      String description, String thumbnail, String numPage, String category, String price,
-      String language, String buyLink, int avail, int rating) {
-    this.title = title;
-    this.ISBN = ISBN;
-    this.authors = authors;
-    this.publishedDate = publishedDate;
-    this.thumbnail = thumbnail;
-    this.publisher = publisher;
-    this.description = description;
-    this.numPage = numPage;
-    this.category = category;
-    this.price = price;
-    this.language = language;
-    this.buyLink = buyLink;
-    this.avail = avail;
-    this.rating = rating;
-  }
-
   public String getType() {
     return type;
   }
 
   public void setType(String type) {
     this.type = type;
-  }
-
-  public String getTitle() {
-    return title;
-  }
-
-  public void setTitle(String title) {
-    this.title = title;
   }
 
   public String getAuthors() {
@@ -193,6 +144,120 @@ public class Book {
     return numView;
   }
 
+  /**
+   * Phương thức khởi tạo không tham số, tạo một đối tượng sách mặc định.
+   */
+  public Book() {
+  }
+
+  /**
+   * Phương thức khởi tạo với các thông tin cơ bản của sách.
+   *
+   * @param title         Tên sách.
+   * @param ISBN          Mã ISBN của sách.
+   * @param authors       Tên tác giả.
+   * @param publisher     Nhà xuất bản.
+   * @param publishedDate Ngày xuất bản.
+   * @param description   Mô tả sách.
+   * @param thumbnail     Hình ảnh bìa sách.
+   * @param numPage       Số trang sách.
+   * @param category      Thể loại sách.
+   * @param price         Giá sách.
+   * @param language      Ngôn ngữ của sách.
+   * @param buyLink       Liên kết mua sách.
+   */
+  public Book(String title, String ISBN, String authors, String publisher,
+      String publishedDate, String description, String thumbnail,
+      String numPage, String category, String price, String language,
+      String buyLink) {
+    this.title = title;
+    this.ISBN = ISBN;
+    this.authors = authors;
+    this.publishedDate = publishedDate;
+    this.thumbnail = thumbnail;
+    this.publisher = publisher;
+    this.description = description;
+    this.numPage = numPage;
+    this.category = category;
+    this.price = price;
+    this.language = language;
+    this.buyLink = buyLink;
+    this.avail = 1;
+    this.rating = 0;
+  }
+
+  /**
+   * Phương thức khởi tạo với đầy đủ thông tin của sách.
+   *
+   * @param title         Tên sách.
+   * @param ISBN          Mã ISBN của sách.
+   * @param authors       Tên tác giả.
+   * @param publisher     Nhà xuất bản.
+   * @param publishedDate Ngày xuất bản.
+   * @param description   Mô tả sách.
+   * @param thumbnail     Hình ảnh bìa sách.
+   * @param numPage       Số trang sách.
+   * @param category      Thể loại sách.
+   * @param price         Giá sách.
+   * @param language      Ngôn ngữ của sách.
+   * @param buyLink       Liên kết mua sách.
+   * @param avail         Số lượng sách có sẵn.
+   * @param rating        Đánh giá sách (từ 0 đến 5).
+   */
+  public Book(String title, String ISBN, String authors, String publisher,
+      String publishedDate, String description, String thumbnail,
+      String numPage, String category, String price, String language,
+      String buyLink, int avail, int rating) {
+    this.title = title;
+    this.ISBN = ISBN;
+    this.authors = authors;
+    this.publishedDate = publishedDate;
+    this.thumbnail = thumbnail;
+    this.publisher = publisher;
+    this.description = description;
+    this.numPage = numPage;
+    this.category = category;
+    this.price = price;
+    this.language = language;
+    this.buyLink = buyLink;
+    this.avail = avail;
+    this.rating = rating;
+  }
+
+  // Ví dụ cho các getter và setter:
+
+  /**
+   * Lấy tiêu đề của sách.
+   *
+   * @return Tiêu đề sách.
+   */
+  public String getTitle() {
+    return title;
+  }
+
+  /**
+   * Đặt tiêu đề cho sách.
+   *
+   * @param title Tiêu đề cần đặt.
+   */
+  public void setTitle(String title) {
+    this.title = title;
+  }
+
+  /**
+   * Lấy danh sách các bình luận về sách.
+   *
+   * @return Danh sách các bình luận.
+   */
+  public ArrayList<Comment> getCommentList() {
+    return DBInfo.getCommentList(this);
+  }
+
+  /**
+   * Trả về chuỗi biểu diễn thông tin sách.
+   *
+   * @return Chuỗi chứa thông tin của sách.
+   */
   @Override
   public String toString() {
     return "Book ( " +
@@ -212,9 +277,5 @@ public class Book {
         ", Availability='" + avail + '\'' +
         ", Rating=" + rating +
         ") ";
-  }
-
-  public ArrayList<Comment> getCommentList() {
-    return DBInfo.getCommentList(this);
   }
 }

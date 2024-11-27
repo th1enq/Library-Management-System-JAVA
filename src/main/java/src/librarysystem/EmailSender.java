@@ -6,11 +6,23 @@ import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+/**
+ * Lớp này cung cấp chức năng gửi email sử dụng giao thức SMTP của Gmail.
+ * Phương thức `sendEmail` gửi email đến người nhận với chủ đề và nội dung được chỉ định.
+ */
 public class EmailSender {
 
-  //(mail nguoi nhan, chu de mail, noi dung mail)
+  /**
+   * Gửi email đến người nhận với chủ đề và nội dung đã cho.
+   *
+   * @param recipient Địa chỉ email của người nhận.
+   * @param subject Chủ đề của email.
+   * @param content Nội dung của email.
+   * @return Trả về `true` nếu gửi email thành công, `false` nếu thất bại.
+   */
   public static boolean sendEmail(String recipient, String subject, String content) {
     boolean ok = true;
+
     // Cấu hình các thuộc tính SMTP
     Properties properties = new Properties();
     properties.put("mail.smtp.host", "smtp.gmail.com"); // Máy chủ SMTP
@@ -50,11 +62,14 @@ public class EmailSender {
     return ok;
   }
 
+  /**
+   * Phương thức chính dùng để kiểm tra việc gửi email.
+   * Gửi một email mẫu đến một địa chỉ email cụ thể với chủ đề và nội dung định trước.
+   *
+   * @param args Tham số dòng lệnh (không sử dụng trong phương thức này).
+   */
   public static void main(String[] args) {
     // Test gửi email
-
-    //(mail nguoi nhan, chu de mail, noi dung mail)
-    sendEmail("23020135@vnu.edu.vn", "Email 7",
-        "Khong nen vuot muc pickleball");
+    sendEmail("23020135@vnu.edu.vn", "Email 7", "Khong nen vuot muc pickleball");
   }
 }
