@@ -139,32 +139,40 @@
                      <children>
                         <Pane prefHeight="41.0" prefWidth="1075.0" style="-fx-background-color: #f6f6f6; -fx-border-color: #b9b3b3; -fx-border-width: 1 1 0 1;">
                            <children>
-                              <CheckBox fx:id="markAll" layoutX="14.0" layoutY="12.0" mnemonicParsing="false" text="  Name">
+                              <CheckBox fx:id="markAll" layoutX="14.0" layoutY="12.0" mnemonicParsing="false">
                                  <font>
                                     <Font size="14.0" />
                                  </font>
                               </CheckBox>
                               <Label layoutX="290.0" layoutY="12.0" text="Role">
                                  <font>
-                                    <Font size="14.0" />
+                                    <Font name="System Bold" size="14.0" />
                                  </font>
                               </Label>
                               <Label layoutX="410.0" layoutY="11.0" text="Borrowed Books">
                                  <font>
-                                    <Font size="14.0" />
+                                    <Font name="System Bold" size="14.0" />
                                  </font>
                               </Label>
                               <Label layoutX="591.0" layoutY="11.0" text="Overdue Books">
                                  <font>
-                                    <Font size="14.0" />
+                                    <Font name="System Bold" size="14.0" />
                                  </font>
                               </Label>
-                              <Label layoutX="783.0" layoutY="12.0" text="Last visited">
+                              <Label layoutX="783.0" layoutY="12.0" text="Status">
                                  <font>
-                                    <Font size="14.0" />
+                                    <Font name="System Bold" size="14.0" />
                                  </font>
                               </Label>
-                              <Label layoutX="973.0" layoutY="12.0" text="Action" />
+                              <Label layoutX="973.0" layoutY="12.0" text="Action">
+                                 <font>
+                                    <Font name="System Bold" size="14.0" />
+                                 </font></Label>
+                              <Label layoutX="103.0" layoutY="12.0" text="Name">
+                                 <font>
+                                    <Font name="System Bold" size="14.0" />
+                                 </font>
+                              </Label>
                            </children>
                         </Pane>
                         <AnchorPane layoutY="41.0" prefHeight="299.0" prefWidth="1075.0">
@@ -269,6 +277,62 @@
                                  </font>
                               </Label>
                               <Label layoutX="14.0" layoutY="43.0" prefHeight="17.0" prefWidth="359.0" text="By delete this user all borrowed books will also" textFill="#b73504">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </Label>
+                              <Label layoutX="14.0" layoutY="69.0" text="be return to library" textFill="#b73504">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </Pane>
+                     </children>
+                  </Pane>
+               </children>
+            </Pane>
+            <Pane fx:id="banConfirm" layoutX="10.0" layoutY="10.0" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: transparent;" visible="false">
+               <children>
+                  <Pane layoutX="383.0" layoutY="250.0" prefHeight="323.0" prefWidth="521.0" style="-fx-background-color: #fff; -fx-background-radius: 20px; -fx-border-color: #b9b3b3; -fx-border-radius: 20px; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.5), 10, 0.5, 5, 5);">
+                     <children>
+                        <Label layoutX="178.0" layoutY="22.0" text="Global Ban User ?">
+                           <font>
+                              <Font name="System Bold" size="20.0" />
+                           </font>
+                        </Label>
+                        <Button fx:id="cancelBan" layoutX="158.0" layoutY="258.0" mnemonicParsing="false" prefHeight="41.0" prefWidth="94.0" style="-fx-background-color: #fff; -fx-border-color: #676767; -fx-border-radius: 10px; -fx-cursor: hand;" text="Cancel">
+                           <font>
+                              <Font name="System Bold" size="14.0" />
+                           </font>
+                        </Button>
+                        <Button fx:id="submitBan" layoutX="293.0" layoutY="258.0" mnemonicParsing="false" prefHeight="41.0" prefWidth="101.0" style="-fx-background-color: #C81E1E; -fx-background-radius: 10px; -fx-cursor: hand;" text="  Ban" textFill="WHITE">
+                           <font>
+                              <Font name="System Bold" size="14.0" />
+                           </font>
+                           <graphic>
+                              <FontAwesomeIcon fill="WHITE" glyphName="TRASH" size="1.2em" text="" />
+                           </graphic>
+                        </Button>
+                        <Label layoutX="111.0" layoutY="63.0" text="Are you sure you want to global ban this user" textFill="#7d7c7c">
+                           <font>
+                              <Font name="System Bold" size="14.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="205.0" layoutY="83.0" text="from Library Platform ?" textFill="#7d7c7c">
+                           <font>
+                              <Font name="System Bold" size="14.0" />
+                           </font>
+                        </Label>
+                        <Pane layoutX="23.0" layoutY="123.0" prefHeight="107.0" prefWidth="474.0" style="-fx-background-color: #FEEDDD; -fx-background-radius: 10px;">
+                           <children>
+                              <FontAwesomeIcon fill="#b73504" glyphName="WARNING" layoutX="14.0" layoutY="30.0" selectionFill="#b73504" size="1.3em" />
+                              <Label layoutX="38.0" layoutY="14.0" text="Warning" textFill="#b73504">
+                                 <font>
+                                    <Font name="System Bold" size="15.0" />
+                                 </font>
+                              </Label>
+                              <Label layoutX="14.0" layoutY="43.0" prefHeight="17.0" prefWidth="359.0" text="By ban this user all borrowed books will also" textFill="#b73504">
                                  <font>
                                     <Font size="14.0" />
                                  </font>

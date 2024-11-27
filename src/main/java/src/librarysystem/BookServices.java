@@ -154,6 +154,33 @@ public class BookServices {
         return books;
     }
 
+    public ArrayList<Book> searchBooksByISBN(String query) {
+        ArrayList<Book> books = new ArrayList<>();
+        try {
+            String API_KEY = "AIzaSyCI2U6tHVrTcuYbsFilyfbUy4hwkYftIYw";
+            String formattedQuery = "isbn:" + query;
+            String apiUrl = "https://www.googleapis.com/books/v1/volumes?q=" + formattedQuery + "&key=" + API_KEY;
+
+            URL url = new URL(apiUrl);
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod("GET");
+            connection.connect();
+
+            int responseCode = connection.getResponseCode();
+            if (responseCode == 200) {
+                InputStreamReader reader = new InputStreamReader(connection.getInputStream());
+                JsonObject jsonResponse = JsonParser.parseReader(reader).getAsJsonObject();
+                books = loadBook(jsonResponse);
+            } else {
+                System.out.println("Error: Could not fetch data from API. Response code: " + responseCode);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return books;
+    }
+
 
     public ArrayList<Book> searchBooksByCategory(String query) {
         ArrayList<Book> books = new ArrayList<>();

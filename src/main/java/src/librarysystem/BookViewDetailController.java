@@ -368,8 +368,7 @@ public class BookViewDetailController extends BaseController {
     public void rentBook(ActionEvent actionEvent) {
         if (!DBInfo.inDb(currentBook.getTitle())) {
             sendNotification(1000, MainGUI.currentUser.getId(),
-                    "Books have been borrowed by users!! Please come back later!!",1);
-            return;
+                    "Books have been borrowed by users!! Please come back later!!",1);            return;
         }
         GaussianBlur blurEffect = new GaussianBlur(10);
         containerPane.setEffect(blurEffect); // Làm mờ phần nội dung chính
@@ -385,8 +384,7 @@ public class BookViewDetailController extends BaseController {
             return;
         }
         if (MainGUI.currentUser.getUserType().equals("user")) {
-            sendNotification(1000, MainGUI.currentUser.getId(), "Functionality for admins only\n!!!!",1);
-            return;
+            sendNotification(1000, MainGUI.currentUser.getId(), "Functionality for admins only\n!!!!",1);            return;
         }
         editMode = true;
         update();
@@ -426,7 +424,6 @@ public class BookViewDetailController extends BaseController {
                 detailPaperback.getText(), detailLanguage.getText());
 
         sendNotification(1000, MainGUI.currentUser.getId(), "Successful Book Editing !!!",0);
-
         editMode = false;
         update();
     }

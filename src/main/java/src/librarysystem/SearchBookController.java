@@ -46,6 +46,7 @@ public class SearchBookController extends BaseController {
     // 0 : title
     // 1 : author
     // 2 : category
+    // 3 : ISBN
     @FXML
     private int filterMode = 0;
 
@@ -87,6 +88,7 @@ public class SearchBookController extends BaseController {
                     filterMode = 2;
                     break;
                 default:
+                    filterMode = 3;
                     throw new IllegalArgumentException("Unexpected value: " + selectedValue);
             }
         });
@@ -128,6 +130,9 @@ public class SearchBookController extends BaseController {
                             break;
                         case 2:
                             currentApiBook = BookServices.getInstance().searchBooksByCategory(query);
+                            break;
+                        case 3:
+                            currentApiBook = BookServices.getInstance().searchBooksByISBN(query);
                             break;
                     }
                 } else {
@@ -297,6 +302,9 @@ public class SearchBookController extends BaseController {
 
     @FXML
     public void apiMode(ActionEvent actionEvent) {
+        filterModeButton.getItems().clear();
+        filterModeButton.getItems().addAll("Title", "Author", "Category", "ISBN");
+        filterModeButton.setValue("Title");
         System.out.println("api mode");
         if (!apiMode) {
             apiMode = true;
@@ -310,7 +318,9 @@ public class SearchBookController extends BaseController {
 
     @FXML
     public void libraryMode(ActionEvent actionEvent) {
-        System.out.println("library mode");
+        filterModeButton.getItems().clear();
+        filterModeButton.getItems().addAll("Title", "Author", "Category");
+        filterModeButton.setValue("Title");
         if (apiMode) {
             apiMode = false;
         }

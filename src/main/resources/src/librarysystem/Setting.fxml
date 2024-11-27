@@ -18,7 +18,7 @@
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="736.0" prefWidth="1180.0" styleClass="sidebar" stylesheets="@stylesheet.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="src.librarysystem.SettingController">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="736.0" prefWidth="1180.0" styleClass="sidebar" stylesheets="@stylesheet.css" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="src.librarysystem.SettingController">
     <children>
         <AnchorPane prefHeight="743.0" prefWidth="1180.0" styleClass="sidebar" stylesheets="@stylesheet.css">
             <children>
@@ -73,7 +73,7 @@
                               <Font name="System Bold" size="14.0" />
                            </font>
                         </Label>
-                        <Label fx:id="borrowNum" layoutX="250.0" layoutY="26.0" prefHeight="17.0" prefWidth="41.0" text="20" textFill="#24e81e">
+                        <Label fx:id="numBorrowedBooks" layoutX="250.0" layoutY="26.0" prefHeight="17.0" prefWidth="41.0" text="20" textFill="#24e81e">
                            <font>
                               <Font name="System Bold" size="14.0" />
                            </font>
@@ -87,7 +87,7 @@
                               <Font name="System Bold" size="14.0" />
                            </font>
                         </Label>
-                        <Label layoutX="250.0" layoutY="26.0" prefHeight="17.0" prefWidth="41.0" text="5" textFill="RED">
+                        <Label fx:id="numOverdueBooks" layoutX="250.0" layoutY="26.0" prefHeight="17.0" prefWidth="41.0" text="5" textFill="RED">
                            <font>
                               <Font name="System Bold" size="14.0" />
                            </font>
@@ -151,7 +151,7 @@
                                     <Font name="System Bold" size="13.0" />
                                  </font>
                               </Label>
-                              <TextField fx:id="userTextField" layoutX="382.0" layoutY="62.0" prefHeight="52.0" prefWidth="257.0" style="-fx-border-color: #E8EAEC; -fx-border-radius: 5px; -fx-background-radius: 5px; -fx-text-fill: #767B90; -fx-padding: 0 0 0 15;" text="Student">
+                              <TextField fx:id="userTextField" editable="false" layoutX="382.0" layoutY="62.0" prefHeight="52.0" prefWidth="257.0" style="-fx-border-color: #E8EAEC; -fx-border-radius: 5px; -fx-background-radius: 5px; -fx-text-fill: #767B90; -fx-padding: 0 0 0 15;" text="Student">
                                  <opaqueInsets>
                                     <Insets />
                                  </opaqueInsets>
