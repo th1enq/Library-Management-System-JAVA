@@ -17,11 +17,15 @@ public class SearchingProgressing {
   // Biến static để lưu đối tượng singleton
   private static SearchingProgressing instance;
 
-  // Constructor private để ngăn việc khởi tạo trực tiếp
+  /**
+   *   Constructor private để ngăn việc khởi tạo trực tiếp
+    */
   private SearchingProgressing() {
   }
 
-  // Phương thức getInstance để trả về đối tượng duy nhất của SearchingProgressing
+  /**
+   * Phương thức getInstance để trả về đối tượng duy nhất của SearchingProgressing
+   */
   public static SearchingProgressing getInstance() {
     if (instance == null) {
       instance = new SearchingProgressing();
@@ -29,6 +33,9 @@ public class SearchingProgressing {
     return instance;
   }
 
+  /**
+   * gui email.
+   */
   public VBox createEmailSendingVbox() {
     // Tạo VBox chứa các phần tử
     VBox vbox = new VBox(20);
@@ -97,7 +104,9 @@ public class SearchingProgressing {
     return vbox;
   }
 
-  // Phương thức tạo VBox chứa tất cả các phần tử
+  /**
+   *   Phương thức tạo VBox hứa tất cả các phần tử.
+    */
   public VBox createProgressingVBox() {
     // Tạo VBox chứa các phần tử
     VBox vbox = new VBox(20);

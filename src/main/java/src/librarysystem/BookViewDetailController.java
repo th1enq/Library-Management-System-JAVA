@@ -105,6 +105,9 @@ public class BookViewDetailController extends BaseController {
     BookViewDetailController.apiMode = apiMode;
   }
 
+  /**
+   * update.
+   */
   void update() {
     editTitle.setText(detailTitle.getText());
     editAuthor.setText(detailAuthor.getText());
@@ -131,6 +134,10 @@ public class BookViewDetailController extends BaseController {
     editButton.setVisible(!editMode);
   }
 
+  /**
+   * khoi tao.
+   * @param book sach.
+   */
   public void initialize(Book book) {
     if (book != null) {
       currentBook = book;
@@ -345,6 +352,9 @@ public class BookViewDetailController extends BaseController {
     return pane;
   }
 
+  /**
+   * rate sao.
+   */
   private void onStarClick(int clickedIndex) {
     currentRate = clickedIndex + 1;
     // Cập nhật màu của các ngôi sao dựa trên ngôi sao người dùng click
@@ -360,10 +370,17 @@ public class BookViewDetailController extends BaseController {
     }
   }
 
+  /**
+   * getReturnSearchBook.
+   */
   public Button getReturnSearchBook() {
     return returnSearchBook;
   }
 
+  /**
+   * thue sach.
+   * @param actionEvent envent
+   */
   @FXML
   public void rentBook(ActionEvent actionEvent) {
     if (!DBInfo.inDb(currentBook.getTitle())) {
@@ -376,7 +393,9 @@ public class BookViewDetailController extends BaseController {
     tempPane.setVisible(true);
     borrowPane.setVisible(true);
   }
-
+  /**
+   * sua sach.
+   */
   @FXML
   public void editBook(ActionEvent actionEvent) {
     if (MainGUI.currentUser.getUserType().equals("user")) {
@@ -396,6 +415,9 @@ public class BookViewDetailController extends BaseController {
     update();
   }
 
+  /**
+   * xoa sach.
+   */
   @FXML
   public void removeBook(ActionEvent actionEvent) {
     if (MainGUI.currentUser.getUserType().equals("user")) {
@@ -422,6 +444,9 @@ public class BookViewDetailController extends BaseController {
     deletePane.setVisible(true);
   }
 
+  /**
+   * sua sach.
+   */
   public void saveEditBook(ActionEvent actionEvent) {
     if (MainGUI.currentUser.getUserType().equals("user")) {
       sendNotification(1000, MainGUI.currentUser.getId(), "Functionality for admins only!!!!", 1);
@@ -443,6 +468,9 @@ public class BookViewDetailController extends BaseController {
     update();
   }
 
+  /**
+   * them sach.
+   */
   @FXML
   public void addBook(ActionEvent actionEvent) {
     if (MainGUI.currentUser.getUserType().equals("user")) {

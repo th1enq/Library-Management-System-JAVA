@@ -19,6 +19,9 @@ public class NotificationController extends BaseController {
   @FXML
   public Pane nonNotiPane;
 
+  /**
+   * hien ra.
+   */
   public void displayNotifications() {
     if (MainGUI.currentUser.getNotifications().isEmpty()) {
       nonNotiPane.setVisible(true);
@@ -35,12 +38,18 @@ public class NotificationController extends BaseController {
     }
   }
 
+  /**
+   * khoi tao.
+   */
   @FXML
   public void initialize() {
     displayNotifications();
   }
 
-  // Tạo một Pane cho mỗi thông báo
+  /**
+   * Tạo một Pane cho mỗi thông báo.
+
+   */
   private Pane createNotificationPane(Notification notification) {
     Pane pane = new Pane();
     pane.setStyle(
@@ -95,6 +104,9 @@ public class NotificationController extends BaseController {
     return pane;
   }
 
+  /**
+   * xoa thong bao.
+   */
   @FXML
   public void clearAllNoti(ActionEvent actionEvent) {
     MainGUI.currentUser.deleteNotifications();

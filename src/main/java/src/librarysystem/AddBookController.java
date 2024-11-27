@@ -27,6 +27,11 @@ public class AddBookController extends BaseController {
   public TextField title;
   public TextField author;
 
+
+  /**
+   * handle event
+   * @param actionEvent event
+   */
   @FXML
   public void handleUploadImage(ActionEvent actionEvent) {
     FileChooser fileChooser = new FileChooser();
@@ -48,6 +53,10 @@ public class AddBookController extends BaseController {
     }
   }
 
+  /**
+   * save book.
+   * @param actionEvent event
+   */
   @FXML
   public void saveBook(ActionEvent actionEvent) {
     String titleName = title.getText();

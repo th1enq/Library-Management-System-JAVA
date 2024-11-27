@@ -79,6 +79,9 @@ public class SettingController extends BaseController implements Initializable {
   private ArrayList<Parent> profileSettingMode = new ArrayList<>();
   private ArrayList<Parent> changePasswordMode = new ArrayList<>();
 
+  /**
+   * update.
+   */
   private void update() {
     // Update visibility of UI and profile settings based on currentMode
     for (Parent element : profileSettingMode) {
@@ -133,7 +136,9 @@ public class SettingController extends BaseController implements Initializable {
     translateTransition.play();
   }
 
-
+  /**
+   * mo setting.
+   */
   @FXML
   public void accountSetting(ActionEvent actionEvent) {
     if (currentMode == 0) {
@@ -143,6 +148,9 @@ public class SettingController extends BaseController implements Initializable {
     update();
   }
 
+  /**
+   * mo UI setting.
+   */
   @FXML
   public void uiSetting(ActionEvent actionEvent) {
     if (currentMode == 1) {
@@ -152,6 +160,9 @@ public class SettingController extends BaseController implements Initializable {
     update();
   }
 
+  /**
+   * doi mat khau.
+   */
   @FXML
   public void changePassword(ActionEvent actionEvent) {
     if (currentMode == 2) {

@@ -56,6 +56,9 @@ public class SearchBookController extends BaseController {
   // HashMap để lưu cache ảnh
   private HashMap<String, Image> imageCache = new HashMap<>();
 
+  /**
+   * update.
+   */
   private void update() {
     bookQuery.clear();
     String activeMode = "-fx-background-color: #fff; -fx-cursor: hand;";
@@ -64,6 +67,9 @@ public class SearchBookController extends BaseController {
     libraryModeButton.setStyle(!apiMode ? activeMode : inActiveMode);
   }
 
+  /**
+   * khoi tao.
+   */
   public void initialize() {
     apiMode = MainGUI.apiSearchMode;
     query = MainGUI.previousQuery;
@@ -109,6 +115,9 @@ public class SearchBookController extends BaseController {
     });
   }
 
+  /**
+   * khoi tao.
+   */
   private void searchQuery(String query) {
     if (query.isEmpty() || query == null) {
       if (apiMode) {
@@ -158,6 +167,7 @@ public class SearchBookController extends BaseController {
         return null;
       }
 
+
       @Override
       protected void succeeded() {
         // Ẩn SearchingProgressing khi tìm kiếm hoàn tất
@@ -182,12 +192,17 @@ public class SearchBookController extends BaseController {
     new Thread(searchTask).start();
   }
 
-
+  /**
+   * tim sach.
+   */
   @FXML
   public void searchBook(ActionEvent actionEvent) {
     searchQuery(bookQuery.getText());
   }
 
+  /**
+   * hien sach.
+   */
   public void displayBooks(ArrayList<Book> result) {
     flowPane.getChildren().clear(); // Xóa các phần tử cũ
       if (result == null) {
@@ -314,6 +329,10 @@ public class SearchBookController extends BaseController {
     }
   }
 
+
+  /**
+   * chuyen mode.
+   */
   @FXML
   public void apiMode(ActionEvent actionEvent) {
     filterModeButton.getItems().clear();
@@ -330,6 +349,9 @@ public class SearchBookController extends BaseController {
     MainGUI.setPreviousStage(apiMode, query);
   }
 
+  /**
+   * mode thu vien.
+   */
   @FXML
   public void libraryMode(ActionEvent actionEvent) {
     filterModeButton.getItems().clear();

@@ -10,10 +10,14 @@ import javafx.util.Duration;
 
 public class ProcessIndicator {
 
-  // Biến tĩnh duy nhất để lưu trữ thể hiện của Singleton
+  /**
+   * Biến tĩnh duy nhất để lưu trữ thể hiện của Singleton
+   */
   private static ProcessIndicator instance;
 
-  // Phương thức getInstance() để lấy thể hiện duy nhất của ProcessIndicator
+  /**
+   * Phương thức getInstance() để lấy thể hiện duy nhất của ProcessIndicator
+   */
   public static ProcessIndicator getInstance() {
     if (instance == null) {
       instance = new ProcessIndicator();
@@ -21,7 +25,9 @@ public class ProcessIndicator {
     return instance;
   }
 
-  // Phương thức trả về một Pane chứa màn hình loading
+  /**
+   *   Phương thức trả về một Pane chứa màn hình loading
+    */
   public Pane loadLoadingScreen() {
     Pane root = new Pane();
 

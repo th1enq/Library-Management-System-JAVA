@@ -19,10 +19,15 @@ public class EmailSendCodeController extends BaseController {
   public Button resendCode;
   public Label timeOutTryAgain;
 
+  /**
+   * set email.
+   */
   public void setEmail(String email) {
     userEmail.setText(email);
   }
-
+  /**
+   * khoi tao.
+   */
   public void initialize() {
     // Xử lý nút quay lại màn hình đăng nhập
     backtoLogin.setOnAction(event -> returnSignIn());
@@ -81,7 +86,9 @@ public class EmailSendCodeController extends BaseController {
       }
     });
   }
-
+  /**
+   * setup moi thu.
+   */
   private void setupCodeInput(TextField currentField, TextField prevField, TextField nextField) {
     currentField.setStyle(
         "-fx-focus-color: transparent; -fx-faint-focus-color: transparent; -fx-border-color: #E6E7EB; -fx-background-radius: 10; -fx-border-radius: 10; -fx-border-width: 2;");

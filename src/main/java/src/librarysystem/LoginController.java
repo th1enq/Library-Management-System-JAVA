@@ -28,16 +28,23 @@ public class LoginController implements Initializable {
   private VBox vbox;
 
   private Parent fxml;
-
+  /**
+   * khoi tao.
+   */
   @Override
   public void initialize(URL url, ResourceBundle resourceBundle) {
     openSignIn(new ActionEvent());
   }
-
+  /**
+   * khoi tao.
+   */
   public VBox getMainVbox() {
     return vbox;
   }
 
+  /**
+   * mo man hinh dang nhap.
+   */
   @FXML
   public void openSignIn(ActionEvent event) {
     TranslateTransition t = new TranslateTransition(Duration.seconds(1), vbox);
@@ -57,6 +64,9 @@ public class LoginController implements Initializable {
     });
   }
 
+  /**
+   * mo man hinh dang nhap.
+   */
   @FXML
   public void openSignInNoEffect(ActionEvent event) {
     try {
@@ -71,6 +81,9 @@ public class LoginController implements Initializable {
     }
   }
 
+  /**
+   * mo man hinh lay lai mat khau.
+   */
   @FXML
   public void openPasswordReset(String email) {
     try {
@@ -85,7 +98,9 @@ public class LoginController implements Initializable {
       Logger.getLogger(LoginController.class.getName()).log(Level.SEVERE, null, ex);
     }
   }
-
+  /**
+   * mo man hinh lay lai mat khau.
+   */
   @FXML
   public void openForgotPassword() {
     try {
@@ -99,7 +114,9 @@ public class LoginController implements Initializable {
       Logger.getLogger(LoginController.class.getName()).log(Level.SEVERE, null, ex);
     }
   }
-
+  /**
+   * mo man hinh gui email.
+   */
   @FXML
   public void openEmailSendCode(String email) {
     try {
@@ -115,6 +132,9 @@ public class LoginController implements Initializable {
     }
   }
 
+  /**
+   * mo man hinh dang ki.
+   */
   @FXML
   private void openSignUp(ActionEvent event) {
     TranslateTransition t = new TranslateTransition(Duration.seconds(1), vbox);

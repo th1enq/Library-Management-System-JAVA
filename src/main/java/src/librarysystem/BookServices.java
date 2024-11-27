@@ -199,7 +199,12 @@ public class BookServices {
     return books;
   }
 
-
+  /**
+   *
+   * search book
+   * @param query truy van
+   * @return arraylist sach
+   */
   public ArrayList<Book> searchBooksByCategory(String query) {
     ArrayList<Book> books = new ArrayList<>();
     try {
@@ -230,6 +235,11 @@ public class BookServices {
   }
 
 
+  /**
+   * tim sach.
+   * @param query query
+   * @return arraylist
+   */
   public ArrayList<Book> searchBooksByTitle(String query) {
     ArrayList<Book> books = new ArrayList<>();
     try {

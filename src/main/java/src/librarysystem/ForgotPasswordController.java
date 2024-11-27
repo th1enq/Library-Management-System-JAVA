@@ -15,6 +15,9 @@ public class ForgotPasswordController extends BaseController {
   @FXML
   public Button resetPassword;
 
+  /**
+   * khoi tao.
+   */
   @FXML
   public void initialize() {
     backtoLogin.setOnAction(event -> {

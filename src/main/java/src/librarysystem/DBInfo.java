@@ -41,7 +41,7 @@ public class DBInfo {
   }
 
   /**
-   * .
+   * lay thong bao.
    */
   public static void NotificationFromSystem() {
 
@@ -100,7 +100,7 @@ public class DBInfo {
   }
 
   /**
-   * .
+   * lay user.
    */
   public static User getUserById(int userId) {
     String sql = "SELECT * FROM registration WHERE id = ?";
@@ -132,7 +132,7 @@ public class DBInfo {
   }
 
   /**
-   * .
+   * lay thong bao bang id.
    */
   public static ArrayList<Notification> getNotificationsByUserId(int userId) {
     ArrayList<Notification> notifications = new ArrayList<>();
@@ -166,7 +166,7 @@ public class DBInfo {
   }
 
   /**
-   * .
+   * xoa thong bao .
    */
   public static void deleteNotificationsByUserId(int userId) {
     String sql = "DELETE FROM notifications WHERE sender_id = ? OR receiver_id = ?";
@@ -184,7 +184,7 @@ public class DBInfo {
   }
 
   /**
-   * .
+   * gui thong bao.
    */
   public static void sendNotification(int senderId, int receiverId, String message, int type) {
     String sql = "INSERT INTO notifications (sender_id, receiver_id, message,type) VALUES (?, ?, ?,?)";
@@ -234,7 +234,7 @@ public class DBInfo {
   }
 
   /**
-   * create comment pane.
+   * luu thong tin muon sach.
    */
   public static void addSlip(String itemName, int id) {
     Connection con = null;
@@ -342,7 +342,7 @@ public class DBInfo {
   }
 
   /**
-   * create comment pane.
+   * them yeu cau muon sach.
    */
   public static void addBorrowRequest(String itemName, int id) {
     Connection con = null;
@@ -399,7 +399,7 @@ public class DBInfo {
   }
 
   /**
-   * create comment pane.
+   * chap nhan cho muon sach.
    */
   public static void acceptBorrowRequest(int userId, String bookName) {
     String sql = "UPDATE borrow_request SET accepted = 1 WHERE user_id = ? AND book_name = ?";
@@ -427,7 +427,7 @@ public class DBInfo {
   }
 
   /**
-   * create comment pane.
+   * tu choi yeu cau muon sach.
    */
   public static void denyBorrowRequest(int userId, String bookName) {
     String sql = "UPDATE borrow_request SET accepted = 1 WHERE user_id = ? AND book_name = ?";
@@ -455,7 +455,7 @@ public class DBInfo {
   }
 
   /**
-   * tra sach
+   * tra sach.
    */
   public static void returnBook(String itemName, int id) {
     Connection con = DBInfo.conn();
@@ -521,7 +521,7 @@ public class DBInfo {
   }
 
   /**
-   * create comment pane.
+   * sua sach.
    */
   public static void editBook(Book book, String newTitle, String newAuthor, String newPublisher,
       String newThumbnail, String newDescription, String newPageNum, String newLanguage) {
@@ -618,7 +618,7 @@ public class DBInfo {
   }
 
   /**
-   * .
+   * them publisher .
    */
   public static void addPublisher(String name) {
     try {
@@ -637,7 +637,7 @@ public class DBInfo {
   }
 
   /**
-   * .
+   * xoa publisher.
    */
   public static void deletePublisher(String a) {
     try {
@@ -656,7 +656,7 @@ public class DBInfo {
   }
 
   /**
-   * .
+   * xoa tac gia.
    */
   public static void deleteAuthor(String a) {
     try {
@@ -675,7 +675,7 @@ public class DBInfo {
   }
 
   /**
-   * .
+   * them tac gia .
    */
   public static void addAuthor(String a) {
     try {
@@ -694,7 +694,7 @@ public class DBInfo {
   }
 
   /**
-   * .
+   * them danh muc.
    */
   public static void addCategory(String categoryName) {
     String checkSql = "SELECT cnt FROM category WHERE name = ?";
@@ -735,7 +735,7 @@ public class DBInfo {
   }
 
   /**
-   * .
+   * xoa 1 thong bao.
    */
   public static void deleteOneNotification(Notification notification) {
     int senderId = notification.getSenderId();
@@ -760,7 +760,7 @@ public class DBInfo {
   }
 
   /**
-   * .
+   * xoa 1 muc .
    */
   public static void deleteCategory(String categoryName) {
     String checkSql = "SELECT cnt FROM category WHERE name = ?";
@@ -892,6 +892,12 @@ public class DBInfo {
     }
   }
 
+  /**
+   * check xem sach co dc muon hay khong.
+   *
+   * @param title
+   * @return true/false
+   */
   public static boolean isBorrowed(String title) {
     String query = "SELECT COUNT(*) FROM borrow_slip WHERE book_name = ?";
     try (Connection connection = DBInfo.conn(); PreparedStatement preparedStatement = connection.prepareStatement(
@@ -909,6 +915,9 @@ public class DBInfo {
     return false;
   }
 
+  /**
+   * getUserIdListRequestToBorrow.
+   */
   public static ArrayList<Integer> getUserIdListRequestToBorrow(String book_title) {
     ArrayList<Integer> userIdList = new ArrayList<>();
     String query =
@@ -983,7 +992,7 @@ public class DBInfo {
   }
 
   /**
-   * .
+   * dem so nguoi dung.
    */
   public static int getUserCount() {
     int count = 0;
@@ -1003,7 +1012,7 @@ public class DBInfo {
   }
 
   /**
-   * .
+   * dem sach.
    */
   public static int getBookCount() {
     int count = 0;
@@ -1023,7 +1032,7 @@ public class DBInfo {
   }
 
   /**
-   * .
+   * check username ton tai  .
    */
   public static boolean isUsernameExists(String username) {
     boolean exists = false;
@@ -1211,7 +1220,7 @@ public class DBInfo {
   }
 
   /**
-   * .
+   * lay so sach thoa man.
    */
   public static Pair<Integer, Integer> getOverdueAndUpcoming(int id) {
 
@@ -1249,7 +1258,7 @@ public class DBInfo {
   }
 
   /**
-   * .
+   * dem so sach muon.
    */
   public static int countBorrowed() {
     int upcoming = 0;
@@ -1275,7 +1284,7 @@ public class DBInfo {
   }
 
   /**
-   * .
+   * dem so sach qua han .
    */
   public static int countOverdue() {
     int ret = 0;
@@ -1445,7 +1454,7 @@ public class DBInfo {
   }
 
   /**
-   * .
+   * xoa ng dung.
    */
 
   public static void DeleteUser(String name) {
@@ -1474,7 +1483,7 @@ public class DBInfo {
   }
 
   /**
-   * .
+   * danh gia sach.
    */
   public static void rateBook(String itemName, int score) {
     try {
@@ -1607,7 +1616,7 @@ public class DBInfo {
   }
 
   /**
-   * .
+   * lay sanh sach sach muon.
    */
   public static ArrayList<Pair<Book, MyDateTime>> getBorrowedBookList(int id) {
     ArrayList<Pair<Book, MyDateTime>> ret = new ArrayList<>();
@@ -1732,7 +1741,7 @@ public class DBInfo {
   }
 
   /**
-   * .
+   * ham phu tro de tao ra cau lenh sql.
    */
   public static String getString(String author, String category, String publisher) {
     int prev = 0;
@@ -1763,7 +1772,7 @@ public class DBInfo {
   }
 
   /**
-   * .
+   * them comment.
    */
   public static void addComment(Comment comment) {
     try {
@@ -1790,7 +1799,9 @@ public class DBInfo {
     }
   }
 
-
+  /**
+   * lay danh sach comment.
+   */
   public static ArrayList<Comment> getCommentList(Book book) {
     ArrayList<Comment> ret = new ArrayList<>();
     try {
@@ -1816,7 +1827,7 @@ public class DBInfo {
   }
 
   /**
-   * .
+   * ban.
    */
   public static void ban(User X) {
     String username = X.getUsername();
@@ -1839,7 +1850,7 @@ public class DBInfo {
   }
 
   /**
-   * .
+   * unBan.
    */
   public static void unBan(User X) {
     String username = X.getUsername();
@@ -1862,7 +1873,7 @@ public class DBInfo {
   }
 
   /**
-   * .
+   * lay user.
    */
   public static User getUser(String username) {
     User user = null;
@@ -1911,7 +1922,7 @@ public class DBInfo {
   }
 
   /**
-   * .
+   * kiem tra tinh duy nhat.
    */
   public static boolean checkUnique(String X) {
     Connection conn = null;
@@ -1951,7 +1962,7 @@ public class DBInfo {
   }
 
   /**
-   * .
+   * loc sach theo so ng xem .
    */
   public static ArrayList<Book> getBookListByNumView() {
     ArrayList<Book> bookList = new ArrayList<>();
@@ -2006,7 +2017,7 @@ public class DBInfo {
   }
 
   /**
-   * .
+   * update so nguoi xem.
    */
   public static void updView(Book book) {
     Connection con = null;
@@ -2044,7 +2055,7 @@ public class DBInfo {
   }
 
   /**
-   * .
+   * lay ten tac gia.
    */
   public static String getAuthor(String bookTitle) {
     Connection con = null;
@@ -2090,6 +2101,9 @@ public class DBInfo {
     return authorName;
   }
 
+  /**
+   * check username.
+   */
   public static boolean validUsername(String username) {
     if (username == null || username.isEmpty()) {
       return false;
@@ -2099,7 +2113,7 @@ public class DBInfo {
   }
 
   /**
-   * .
+   * ktra mat khau.
    */
   public static boolean validPassword(String password) {
     return password.length() >= 8;

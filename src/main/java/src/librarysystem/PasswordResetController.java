@@ -25,6 +25,9 @@ public class PasswordResetController extends BaseController {
     this.userName = userName;
   }
 
+  /**
+   * khoi tao.
+   */
   public void initialize() {
     newPasswordVisible.textProperty().bindBidirectional(newPassword.textProperty());
     confirmPasswordVisible.textProperty().bindBidirectional(confirmPassword.textProperty());

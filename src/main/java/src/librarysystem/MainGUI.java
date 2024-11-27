@@ -113,6 +113,9 @@ public class MainGUI implements Initializable {
     MainGUI.previousQuery = previousQuery;
   }
 
+  /**
+   * thoat.
+   */
   @FXML
   public void logout(ActionEvent event) {
     try {
@@ -184,7 +187,9 @@ public class MainGUI implements Initializable {
       profileImage.setImage(defaultImage);
     }
   }
-
+  /**
+   * upd thong bao.
+   */
   void updateNotifications() {
     numberNontifications.setText(String.valueOf(currentUser.getNotifications().size()));
   }
@@ -193,6 +198,9 @@ public class MainGUI implements Initializable {
   private String query;
   private ArrayList<Book> result;
 
+  /**
+   * loading.
+   */
   private void turnOnLoading() {
     try {
       FXMLLoader loader = new FXMLLoader(getClass().getResource("LoadingIndicator.fxml"));
@@ -216,6 +224,9 @@ public class MainGUI implements Initializable {
     });
   }
 
+  /**
+   * hien chi tiet sach.
+   */
   public void returnDetailBook(Book currentBook, boolean apiMode) {
     try {
       FXMLLoader loader = new FXMLLoader(getClass().getResource("BookViewDetail.fxml"));
@@ -237,6 +248,9 @@ public class MainGUI implements Initializable {
     }
   }
 
+  /**
+   * them sach.
+   */
   public void returnAddBook() {
     try {
       FXMLLoader loader = new FXMLLoader(getClass().getResource("AddBook.fxml"));
@@ -253,6 +267,9 @@ public class MainGUI implements Initializable {
     }
   }
 
+  /**
+   * upd.
+   */
   private void update() {
     language = UISetting.getInstance().getVietNameseMode();
     reset();
@@ -285,6 +302,9 @@ public class MainGUI implements Initializable {
     }
   }
 
+  /**
+   * reset.
+   */
   private void reset() {
     // Clear the styles for all buttons and icons before applying new styles
     homeIcon.getStyleClass().removeAll("icon-active-color", "icon-color");
@@ -327,12 +347,18 @@ public class MainGUI implements Initializable {
     fadeIn.play();
   }
 
+  /**
+   * ve man hinh chinh.
+   */
   @FXML
   private void returnHome() {
     currentStage = 0;
     Loading("DashBoard.fxml");
   }
 
+  /**
+   * xem sach.
+   */
   @FXML
   public void bookView() {
     currentStage = 1;
@@ -355,6 +381,9 @@ public class MainGUI implements Initializable {
     update();
   }
 
+  /**
+   * xem ng dung.
+   */
   @FXML
   private void userView() {
     if (MainGUI.currentUser.getUserType().equals("user")) {
@@ -365,6 +394,9 @@ public class MainGUI implements Initializable {
     Loading("UserView.fxml");
   }
 
+  /**
+   * mo setting.
+   */
   @FXML
   public void returnSetting(ActionEvent actionEvent) {
     currentStage = 4;
