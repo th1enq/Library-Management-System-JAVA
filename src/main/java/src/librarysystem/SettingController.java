@@ -474,7 +474,7 @@ public class SettingController extends BaseController implements Initializable {
           avatar.getImage().getUrl(), idTextField.getText(),
           String.valueOf(universityChoose.getValue()), phoneTextField.getText(),
           coverImage.getImage().getUrl(), null);
-      sendNotification(1000, MainGUI.currentUser.getId(), "Cập nhật thông tin thành công !!!");
+      sendNotification(1000, MainGUI.currentUser.getId(), "Successfully update information!!!",0);
     } else if (currentMode == 2) {
       if (!PasswordUtils.verifyPassword(oldPassword.getText(), MainGUI.currentUser.getPassword())) {
         System.out.println(
@@ -493,7 +493,7 @@ public class SettingController extends BaseController implements Initializable {
           System.out.println("Mat khau nhap khong khop");
           return;
         }
-        sendNotification(1000, MainGUI.currentUser.getId(), "Đổi mật khẩu thành công !!!");
+        sendNotification(1000, MainGUI.currentUser.getId(), "Password change successfully !!!",0);
         MainGUI.currentUser.update(null, null, newPassword.getText(), null);
       }
     }

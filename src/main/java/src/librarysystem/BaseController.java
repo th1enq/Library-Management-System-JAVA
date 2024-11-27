@@ -36,8 +36,8 @@ public class BaseController {
         this.mainGUIController = mainGUIController;
     }
 
-    protected void sendNotification(int senderId, int receiverId, String content) {
-        mainGUIController.sendNotification(senderId, receiverId, content);
+    protected void sendNotification(int senderId, int receiverId, String content,int type) {
+        mainGUIController.sendNotification(senderId, receiverId, content,type);
     }
 
     protected void returnDetailBook(Book currentBook, boolean apiMode) {

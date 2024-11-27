@@ -153,7 +153,7 @@ public class UserController extends BaseController {
     warningButton.setOnAction(event -> {
       if (MainGUI.currentUser.getUserType().equals("user")) {
         sendNotification(1000, MainGUI.currentUser.getId(),
-            "Chỉ admin mới có quyền thực hiện việc này!!!");
+            "Chỉ admin mới có quyền thực hiện việc này!!!",1);
       } else {
         if (!selectedUser.contains(user)) {
           selectedUser.add(user);
@@ -243,13 +243,13 @@ public class UserController extends BaseController {
     submitDelete.setOnAction(event -> {
       if (MainGUI.currentUser.getUserType().equals("user")) {
         sendNotification(1000, MainGUI.currentUser.getId(),
-            "Chỉ admin mới có quyền thực hiện việc này!!!");
+            "Chỉ admin mới có quyền thực hiện việc này!!!",1);
       } else {
         for (User x : selectedUser) {
           DBInfo.DeleteUser(x.getUsername());
           userList.remove(x);
         }
-        sendNotification(1000, MainGUI.currentUser.getId(), "Xóa thành công");
+        sendNotification(1000, MainGUI.currentUser.getId(), "Xóa thành công",0);
         update();
       }
       removeConfirm.setVisible(false);
@@ -362,7 +362,7 @@ public class UserController extends BaseController {
         workbook.write(fileOut);
         workbook.close();
         System.out.println("File Excel đã được xuất thành công!");
-        sendNotification(1000, 1000, "Xuất file Excel thành viên thành công");
+        sendNotification(1000, 1000, "Xuất file Excel thành viên thành công",0);
       } catch (IOException e) {
         e.printStackTrace();
         System.out.println("Lỗi khi xuất file Excel!");
@@ -417,17 +417,17 @@ public class UserController extends BaseController {
   @FXML
   public void submitAdd(ActionEvent actionEvent) {
     if (MainGUI.currentUser.getUserType().equals("user")) {
-      sendNotification(1000, MainGUI.currentUser.getId(), "Chức năng chỉ dành cho admin!!!!");
+      sendNotification(1000, MainGUI.currentUser.getId(), "Chức năng chỉ dành cho admin!!!!",1);
 
     } else {
       String username = userNameAdd.getText();
       if (username == null || username.isEmpty()) {
-        sendNotification(1000, 999, "Vui lòng nhập username!!!");
+        sendNotification(1000, 999, "Vui lòng nhập username!!!",1);
         System.out.println("Vui long nhap ten tai khoan");
         return;
       }
       if (!DBInfo.checkUnique(username)) {
-        sendNotification(1000, 999, "Username đã tồn tại !!!");
+        sendNotification(1000, 999, "Username đã tồn tại !!!",1);
         System.out.println("Tai khoan da ton tai");
         return;
       }
@@ -440,7 +440,7 @@ public class UserController extends BaseController {
           null);
       userList.add(newUser);
       update();
-      sendNotification(1000, 999, "Tạo thành công tài khoản !!!");
+      sendNotification(1000, 999, "Tạo thành công tài khoản !!!",0);
     }
 
     tempPane.setVisible(false);

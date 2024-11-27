@@ -98,7 +98,7 @@ public class NotificationController extends BaseController {
   @FXML
   public void clearAllNoti(ActionEvent actionEvent) {
     MainGUI.currentUser.deleteNotifications();
-    sendNotification(1000, 1000, "Đã xóa toàn bộ thông báo !!!");
+    sendNotification(1000, 1000, "Deleted all notifications !!!",0);
     displayNotifications();
   }
 }

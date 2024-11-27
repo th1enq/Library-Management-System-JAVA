@@ -161,7 +161,7 @@ public class MainGUI implements Initializable {
       Logger.getLogger(LoginController.class.getName()).log(Level.SEVERE, null, ex);
     }
     update();
-    sendNotification(1000, currentUser.getId(), "Đăng nhập thành công !!!");
+    sendNotification(1000, currentUser.getId(), "Login Successfully!!!",0);
     updateNotifications();
 
     double radius = 30; // Bán kính hình tròn (150 / 2)
@@ -365,9 +365,9 @@ public class MainGUI implements Initializable {
   }
 
 
-  public void sendNotification(int senderId, int receiverId, String content) {
-    Notification newNotification = new Notification(senderId, receiverId, content);
-    DBInfo.sendNotification(senderId, receiverId, content);
+  public void sendNotification(int senderId, int receiverId, String content,int type) {
+    Notification newNotification = new Notification(senderId, receiverId, content,type);
+    DBInfo.sendNotification(senderId, receiverId, content,type);
 
       if (currentUser.getId() != receiverId) {
           return;

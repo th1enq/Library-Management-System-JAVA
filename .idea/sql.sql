@@ -250,6 +250,7 @@ CREATE TABLE `notifications` (
   `receiver_id` INT DEFAULT NULL,
   `message` TEXT NOT NULL,
   `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP,
+  `type` INT DEFAULT 0,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 

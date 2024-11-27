@@ -8,20 +8,24 @@ class Notification {
   private int receiverId;
   private String message;
   private MyDateTime createdAt;
+  private int type;
 
-  public Notification(int senderId, int receiverId, String message) {
+  public Notification(int senderId, int receiverId, String message, int type) {
     this.senderId = senderId;
     this.receiverId = receiverId;
     this.message = message;
     this.createdAt = new MyDateTime(java.time.LocalDateTime.now());
+    this.type = type;
   }
 
-  public Notification(int id, int senderId, int receiverId, String message, MyDateTime createdAt) {
+  public Notification(int id, int senderId, int receiverId, String message, MyDateTime createdAt,
+      int type) {
     this.id = id;
     this.senderId = senderId;
     this.receiverId = receiverId;
     this.message = message;
     this.createdAt = createdAt;
+    this.type = type;
   }
 
   // Getters and Setters
@@ -73,6 +77,14 @@ class Notification {
       return "admin";
     }
     return "Hệ thống";
+  }
+
+  public int getType() {
+    return type;
+  }
+
+  public void setType(int type) {
+    this.type = type;
   }
 
   @Override

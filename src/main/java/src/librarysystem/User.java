@@ -6,8 +6,9 @@ import javafx.beans.value.ObservableValue;
 
 /**
  * Lớp đại diện cho người dùng trong hệ thống. Lớp này chứa thông tin chi tiết của người dùng như
- * tên, username, mật khẩu, avatar, các thông tin cá nhân, thông báo, và các chức năng cho phép người
- * dùng tương tác với sách trong hệ thống, bao gồm mượn sách, trả sách, nhận và gửi thông báo.
+ * tên, username, mật khẩu, avatar, các thông tin cá nhân, thông báo, và các chức năng cho phép
+ * người dùng tương tác với sách trong hệ thống, bao gồm mượn sách, trả sách, nhận và gửi thông
+ * báo.
  */
 public class User {
 
@@ -35,16 +36,16 @@ public class User {
   /**
    * Khởi tạo người dùng với thông tin cơ bản và danh sách sách đã mượn.
    *
-   * @param id ID của người dùng.
-   * @param name Tên của người dùng.
-   * @param username Tên đăng nhập của người dùng.
-   * @param password Mật khẩu của người dùng.
-   * @param userType Loại người dùng (ví dụ: admin, user).
-   * @param isBanned Trạng thái cấm tài khoản (true nếu bị cấm, false nếu không).
+   * @param id         ID của người dùng.
+   * @param name       Tên của người dùng.
+   * @param username   Tên đăng nhập của người dùng.
+   * @param password   Mật khẩu của người dùng.
+   * @param userType   Loại người dùng (ví dụ: admin, user).
+   * @param isBanned   Trạng thái cấm tài khoản (true nếu bị cấm, false nếu không).
    * @param avatarLink Đường dẫn đến ảnh đại diện của người dùng.
    */
   public User(int id, String name, String username, String password, String userType,
-              boolean isBanned, String avatarLink) {
+      boolean isBanned, String avatarLink) {
     this.id = id;
     this.name = name;
     this.username = username;
@@ -58,8 +59,8 @@ public class User {
   /**
    * Khởi tạo người dùng với thông tin cơ bản và danh sách sách đã mượn.
    *
-   * @param id ID của người dùng.
-   * @param name Tên của người dùng.
+   * @param id       ID của người dùng.
+   * @param name     Tên của người dùng.
    * @param username Tên đăng nhập của người dùng.
    * @param password Mật khẩu của người dùng.
    * @param userType Loại người dùng (ví dụ: admin, user).
@@ -78,22 +79,22 @@ public class User {
   /**
    * Khởi tạo người dùng với thông tin đầy đủ và danh sách sách đã mượn.
    *
-   * @param id ID của người dùng.
-   * @param name Tên của người dùng.
-   * @param username Tên đăng nhập của người dùng.
-   * @param password Mật khẩu của người dùng.
-   * @param userType Loại người dùng (ví dụ: admin, user).
-   * @param isBanned Trạng thái cấm tài khoản (true nếu bị cấm, false nếu không).
-   * @param avatarLink Đường dẫn đến ảnh đại diện của người dùng.
-   * @param MSV Mã số sinh viên của người dùng (nếu có).
-   * @param university Tên trường đại học của người dùng (nếu có).
-   * @param phone Số điện thoại của người dùng.
+   * @param id             ID của người dùng.
+   * @param name           Tên của người dùng.
+   * @param username       Tên đăng nhập của người dùng.
+   * @param password       Mật khẩu của người dùng.
+   * @param userType       Loại người dùng (ví dụ: admin, user).
+   * @param isBanned       Trạng thái cấm tài khoản (true nếu bị cấm, false nếu không).
+   * @param avatarLink     Đường dẫn đến ảnh đại diện của người dùng.
+   * @param MSV            Mã số sinh viên của người dùng (nếu có).
+   * @param university     Tên trường đại học của người dùng (nếu có).
+   * @param phone          Số điện thoại của người dùng.
    * @param coverPhotoLink Đường dẫn đến ảnh bìa của người dùng (nếu có).
-   * @param reputation Điểm uy tín của người dùng.
+   * @param reputation     Điểm uy tín của người dùng.
    */
   public User(int id, String name, String username, String password, String userType,
-              boolean isBanned, String avatarLink, String MSV, String university,
-              String phone, String coverPhotoLink, int reputation) {
+      boolean isBanned, String avatarLink, String MSV, String university,
+      String phone, String coverPhotoLink, int reputation) {
     this.id = id;
     this.name = name;
     this.username = username;
@@ -379,23 +380,24 @@ public class User {
   @Override
   public String toString() {
     return "Registration{" +
-            "id=" + id +
-            ", name='" + name + '\'' +
-            ", username='" + username + '\'' +
-            ", password='" + password + '\'' +
-            ", userType='" + userType + '\'' +
-            ", isBanned=" + isBanned +
-            ", avatarLink='" + avatarLink + '\'' +
-            ", MSV='" + MSV + '\'' +
-            ", university='" + university + '\'' +
-            ", phone='" + phone + '\'' +
-            ", coverPhotoLink='" + coverPhotoLink + '\'' +
-            ", reputation=" + reputation +
-            '}';
+        "id=" + id +
+        ", name='" + name + '\'' +
+        ", username='" + username + '\'' +
+        ", password='" + password + '\'' +
+        ", userType='" + userType + '\'' +
+        ", isBanned=" + isBanned +
+        ", avatarLink='" + avatarLink + '\'' +
+        ", MSV='" + MSV + '\'' +
+        ", university='" + university + '\'' +
+        ", phone='" + phone + '\'' +
+        ", coverPhotoLink='" + coverPhotoLink + '\'' +
+        ", reputation=" + reputation +
+        '}';
   }
 
   /**
-   * Trả về trạng thái của người dùng dưới dạng một giá trị Observable (dành cho giao diện người dùng).
+   * Trả về trạng thái của người dùng dưới dạng một giá trị Observable (dành cho giao diện người
+   * dùng).
    *
    * @return Trạng thái của người dùng.
    */
@@ -437,13 +439,13 @@ public class User {
   /**
    * Cập nhật thông tin cá nhân của người dùng.
    *
-   * @param newName Tên mới.
-   * @param newUsername Tên đăng nhập mới.
-   * @param newPassword Mật khẩu mới.
+   * @param newName        Tên mới.
+   * @param newUsername    Tên đăng nhập mới.
+   * @param newPassword    Mật khẩu mới.
    * @param newAvatar_link Đường dẫn ảnh đại diện mới.
    */
   public void update(String newName, String newUsername, String newPassword,
-                     String newAvatar_link) {
+      String newAvatar_link) {
     DBInfo.updateUser(id, newName, newUsername, newPassword, newAvatar_link);
     if (newName != null) {
       setName(newName);
@@ -462,22 +464,22 @@ public class User {
   /**
    * Cập nhật thông tin chi tiết của người dùng.
    *
-   * @param newName Tên mới.
-   * @param newUsername Tên đăng nhập mới.
-   * @param newPassword Mật khẩu mới.
-   * @param newAvatarLink Đường dẫn ảnh đại diện mới.
-   * @param newMSV Mã số sinh viên mới.
-   * @param newUniversity Tên trường đại học mới.
-   * @param newPhone Số điện thoại mới.
+   * @param newName           Tên mới.
+   * @param newUsername       Tên đăng nhập mới.
+   * @param newPassword       Mật khẩu mới.
+   * @param newAvatarLink     Đường dẫn ảnh đại diện mới.
+   * @param newMSV            Mã số sinh viên mới.
+   * @param newUniversity     Tên trường đại học mới.
+   * @param newPhone          Số điện thoại mới.
    * @param newCoverPhotoLink Đường dẫn ảnh bìa mới.
-   * @param newReputation Điểm uy tín mới.
+   * @param newReputation     Điểm uy tín mới.
    */
   public void update(String newName, String newUsername, String newPassword,
-                     String newAvatarLink, String newMSV, String newUniversity,
-                     String newPhone, String newCoverPhotoLink, Integer newReputation) {
+      String newAvatarLink, String newMSV, String newUniversity,
+      String newPhone, String newCoverPhotoLink, Integer newReputation) {
 
     DBInfo.updateUser(id, newName, newUsername, newPassword, newAvatarLink,
-            newMSV, newUniversity, newPhone, newCoverPhotoLink, newReputation);
+        newMSV, newUniversity, newPhone, newCoverPhotoLink, newReputation);
 
     if (newName != null) {
       setName(newName);
@@ -550,30 +552,20 @@ public class User {
    * Gửi thông báo đến người dùng khác.
    *
    * @param receiver_id ID của người nhận.
-   * @param tmp Nội dung thông báo.
+   * @param tmp         Nội dung thông báo.
    */
-  public void sendNotification(int receiver_id, String tmp) {
-    DBInfo.sendNotification(this.id, receiver_id, tmp);
+  public void sendNotification(int receiver_id, String tmp, int type) {
+    DBInfo.sendNotification(this.id, receiver_id, tmp, type);
   }
 
   /**
    * Gửi thông báo cho người dùng khác.
    *
    * @param receiver Người nhận thông báo.
-   * @param tmp Nội dung thông báo.
+   * @param tmp      Nội dung thông báo.
    */
-  public void sendNotification(User receiver, String tmp) {
-    DBInfo.sendNotification(this.id, receiver.getId(), tmp);
-  }
-
-  /**
-   * Trả lời thông báo từ người dùng khác.
-   *
-   * @param A Thông báo cần trả lời.
-   * @param tmp Nội dung trả lời.
-   */
-  public void reply(Notification A, String tmp) {
-    DBInfo.sendNotification(this.id, A.getSenderId(), tmp);
+  public void sendNotification(User receiver, String tmp,int type) {
+    DBInfo.sendNotification(this.id, receiver.getId(), tmp,type);
   }
 
   /**
@@ -603,13 +595,13 @@ public class User {
   /**
    * Thêm bình luận về một cuốn sách.
    *
-   * @param book Cuốn sách cần bình luận.
+   * @param book    Cuốn sách cần bình luận.
    * @param content Nội dung bình luận.
-   * @param rate Điểm đánh giá.
+   * @param rate    Điểm đánh giá.
    */
   public void addComment(Book book, String content, int rate) {
     DBInfo.addComment(
-            new Comment(book.getTitle(), getUsername(), new MyDateTime(LocalDateTime.now()), content,
-                    rate));
+        new Comment(book.getTitle(), getUsername(), new MyDateTime(LocalDateTime.now()), content,
+            rate));
   }
 }
