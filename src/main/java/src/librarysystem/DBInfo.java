@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.Vector;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
+import org.apache.commons.compress.archivers.ar.ArArchiveEntry;
 
 public class DBInfo {
 
@@ -46,7 +47,14 @@ public class DBInfo {
   public static void NotificationFromSystem() {
 
     for (int id = 1; id <= DBInfo.getUserCount(); id++) {
-      deleteNotificationsByUserId(id);
+      ArrayList<Notification> notifications = getNotificationsByUserId(id);
+      notifications.removeIf(notification -> {
+        if (notification.getSenderId() == 1000) {
+          deleteOneNotification(notification);
+          return true;
+        }
+        return false;
+      });
       String sqlUpcoming = "SELECT book_name, return_date FROM borrow_slip "
           + "WHERE return_date BETWEEN NOW() AND DATE_ADD(NOW(), INTERVAL 3 DAY) "
           + "AND user_id = ? ORDER BY return_date";
@@ -267,7 +275,7 @@ public class DBInfo {
 
         // Send a notification if the availability update was successful
         if (updateRowsAffected > 0) {
-          sendNotification(1000, id, "Successfully borrowed books\n", 0);
+          System.out.println("add slip ok");
         } else {
           System.out.println("Error: The book is no longer available.");
         }
@@ -413,7 +421,7 @@ public class DBInfo {
         System.out.println("Yêu cầu mượn sách của user_id = " + userId + " cho sách '" + bookName
             + "' đã được chấp nhận.");
         addSlip(bookName, userId);
-        sendNotification(1000, userId,
+        sendNotification(999, userId,
             "Admin has approved your request to borrow the book: " + bookName, 0);
         ;
       } else {

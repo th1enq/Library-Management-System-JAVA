@@ -10,7 +10,7 @@ import javafx.scene.Parent;
 
 import java.io.IOException;
 
-public class LibraryManagementSystem extends Application {
+public class  LibraryManagementSystem extends Application {
 
   public static Parent root;
 

@@ -13,7 +13,8 @@ module src.librarysystem {
   requires jbcrypt;
     requires fontawesomefx;
     requires org.apache.logging.log4j;
+  requires org.apache.commons.compress;
 
-    opens src.librarysystem to javafx.fxml;
+  opens src.librarysystem to javafx.fxml;
     exports src.librarysystem;
 }

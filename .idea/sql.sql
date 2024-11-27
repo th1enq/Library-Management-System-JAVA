@@ -38,7 +38,6 @@ INSERT INTO book (title, authors, publisher, publishedDate, thumbnail, ISBN, des
 ('Forbes', 'Various', 'Forbes Media', '2023-03-01', 'http://books.google.com/books/content?id=E047cuo415YC&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api', '9781618932649', 'Leading source for reliable business news', '90', 'Magazine', '6.99', 'English', 'https://play.google.com/store/books/details?id=E047cuo415YC&source=gbs_api',  5),
 ('The Economist', 'Various', 'The Economist Group', '2023-04-01', 'http://books.google.com/books/content?id=TDVRAQAAMAAJ&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api', '9781618932650', 'Delivers current affairs and international business news', '120', 'Magazine', '7.99', 'English', 'https://play.google.com/store/books/details?id=TDVRAQAAMAAJ&source=gbs_api',  5),
 ('Scientific American', 'Various', 'Springer Nature', '2023-05-01', 'http://books.google.com/books/content?id=rGiAErFjXJsC&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api', '9781618932651', 'Popular science magazine', '110', 'Magazine', '7.99', 'English', 'play.google.com/store/books/details?id=rGiAErFjXJsC&source=gbs_api',  4),
-('People', 'Various', 'Meredith Corporation', '2023-06-01', 'http://books.google.com/books/content?id=2Z6voNKabXYC&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api', '9781618932652', 'Celebrity and human-interest stories', '95', 'Magazine', '5.99', 'English', 'link12.com', 3),
 ('Vogue', 'Various', 'Condé Nast', '2023-07-01', 'http://books.google.com/books/content?id=VAjhEAAAQBAJ&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api', '9781618932653', 'Fashion, beauty, and lifestyle magazine', '100', 'Magazine', '6.99', 'English', 'https://play.google.com/store/books/details?id=VAjhEAAAQBAJ&rdid=book-VAjhEAAAQBAJ&rdot=1&source=gbs_vpt_read&pcampaignid=books_booksearch_viewport',  5),
 ('New Scientist', 'Various', 'New Scientist Ltd.', '2023-08-01', 'http://books.google.com/books/content?id=-M4-AQAAIAAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api', '9781618932654', 'Science and technology news', '110', 'Magazine', '8.99', 'English', 'https://play.google.com/store/books/details/New_Scientist_New_Scientist_The_Origin_of_almost_E?id=W6ZnCwAAQBAJ',  4),
 -- Horror (4 books)
@@ -268,7 +267,6 @@ INSERT INTO `borrow_request` (`id`, `user_id`, `book_name`, `borrow_date`, `retu
 (1, 1, 'Naruto', '2024-11-01 08:00:00', '2024-11-11 08:00:00', 1),
 (2, 2, 'Forbes', '2024-11-02 08:00:00', '2024-11-12 08:00:00', 1),
 (3, 3, 'Time', '2024-11-03 08:00:00', '2024-11-13 08:00:00', 1),
-(4, 1, 'Forbes', '2024-11-04 08:00:00', '2024-11-14 08:00:00', 0),
 (5, 2, 'Time', '2024-11-05 08:00:00', '2024-11-15 08:00:00', 0),
 (6, 3, 'Dracula', '2024-11-06 08:00:00', '2024-11-16 08:00:00', 1),
 (7, 1, 'Dracula', '2024-11-07 08:00:00', '2024-11-17 08:00:00', 1),
@@ -285,7 +283,6 @@ INSERT INTO `borrow_slip` (`id`, `user_id`, `book_name`, `borrow_date`, `return_
 (4, 1, 'Time', '2024-11-04 08:00:00', '2024-11-14 08:00:00'),
 (5, 2, 'Naruto', '2024-11-05 08:00:00', '2024-11-15 08:00:00'),
 (6, 3, 'Forbes', '2024-11-06 08:00:00', '2024-11-16 08:00:00'),
-(7, 1, 'Dracula', '2024-11-07 08:00:00', '2024-11-17 08:00:00'),
 (8, 2, 'Time', '2024-11-08 08:00:00', '2024-11-18 08:00:00'),
 (9, 3, 'Forbes', '2024-11-09 08:00:00', '2024-11-19 08:00:00'),
 (10, 1, 'Dracula', '2024-11-10 08:00:00', '2024-11-20 08:00:00');

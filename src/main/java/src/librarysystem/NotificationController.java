@@ -47,7 +47,7 @@ public class NotificationController extends BaseController {
   }
 
   /**
-   * Tạo một Pane cho mỗi thông báo.
+   * Tạo một Pane cho thông báo.
 
    */
   private Pane createNotificationPane(Notification notification) {
