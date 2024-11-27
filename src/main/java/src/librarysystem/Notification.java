@@ -19,7 +19,7 @@ class Notification {
   }
 
   public Notification(int id, int senderId, int receiverId, String message, MyDateTime createdAt,
-                      int type) {
+      int type) {
     this.id = id;
     this.senderId = senderId;
     this.receiverId = receiverId;
@@ -90,11 +90,11 @@ class Notification {
   @Override
   public String toString() {
     return "Notification{" +
-            " từ " + getReceiver() +
-            ", senderId=" + senderId +
-            ", receiverId=" + receiverId +
-            ", message='" + message + '\'' +
-            ", createdAt=" + createdAt +
-            '}';
+        " từ " + getReceiver() +
+        ", senderId=" + senderId +
+        ", receiverId=" + receiverId +
+        ", message='" + message + '\'' +
+        ", createdAt=" + createdAt +
+        '}';
   }
 }

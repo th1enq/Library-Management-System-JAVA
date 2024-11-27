@@ -18,7 +18,7 @@ public class PasswordUtils {
   /**
    * Phương thức kiểm tra mật khẩu khi đăng nhập.
    *
-   * @param plainPassword Mật khẩu gốc do người dùng nhập.
+   * @param plainPassword  Mật khẩu gốc do người dùng nhập.
    * @param hashedPassword Mật khẩu đã mã hóa lưu trong cơ sở dữ liệu.
    * @return true nếu mật khẩu hợp lệ, ngược lại false.
    */

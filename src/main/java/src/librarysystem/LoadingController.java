@@ -14,14 +14,14 @@ import java.util.ArrayList;
 
 public class LoadingController {
 
-    @FXML
-    public Label loadingLabel;
+  @FXML
+  public Label loadingLabel;
 
-    public void initialize() {
+  public void initialize() {
 
-    }
+  }
 
-    public Label getLoadingLabel() {
-        return loadingLabel;
-    }
+  public Label getLoadingLabel() {
+    return loadingLabel;
+  }
 }

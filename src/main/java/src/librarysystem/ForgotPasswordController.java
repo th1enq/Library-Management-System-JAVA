@@ -7,53 +7,54 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 
 public class ForgotPasswordController extends BaseController {
-    @FXML
-    public TextField emailUser;
-    @FXML
-    public Button backtoLogin;
-    @FXML
-    public Button resetPassword;
 
-    @FXML
-    public void initialize() {
-        backtoLogin.setOnAction(event -> {
-            returnSignIn();
-        });
+  @FXML
+  public TextField emailUser;
+  @FXML
+  public Button backtoLogin;
+  @FXML
+  public Button resetPassword;
 
-        resetPassword.setOnAction(event -> {
-            VBox mainVBox = getVbox();
-            // Tạo giao diện loading
-            VBox loadingVBox = SearchingProgressing.getInstance().createEmailSendingVbox();
+  @FXML
+  public void initialize() {
+    backtoLogin.setOnAction(event -> {
+      returnSignIn();
+    });
 
-            // Hiển thị giao diện loading vào mainVBox
-            mainVBox.getChildren().clear(); // Xóa nội dung cũ
-            mainVBox.getChildren().add(loadingVBox);
+    resetPassword.setOnAction(event -> {
+      VBox mainVBox = getVbox();
+      // Tạo giao diện loading
+      VBox loadingVBox = SearchingProgressing.getInstance().createEmailSendingVbox();
 
-            // Tạo Task để gửi token
-            Task<Boolean> sendTokenTask = new Task<>() {
-                @Override
-                protected Boolean call() {
-                    // Gửi email trong background thread
-                    return PasswordRecoveryService.sendToken(emailUser.getText());
-                }
-            };
+      // Hiển thị giao diện loading vào mainVBox
+      mainVBox.getChildren().clear(); // Xóa nội dung cũ
+      mainVBox.getChildren().add(loadingVBox);
 
-            // Xử lý khi Task hoàn thành (gửi email xong)
-            sendTokenTask.setOnSucceeded(workerStateEvent -> {
-                boolean successSender = sendTokenTask.getValue(); // Kết quả từ sendToken
+      // Tạo Task để gửi token
+      Task<Boolean> sendTokenTask = new Task<>() {
+        @Override
+        protected Boolean call() {
+          // Gửi email trong background thread
+          return PasswordRecoveryService.sendToken(emailUser.getText());
+        }
+      };
 
-                // Cập nhật mainVBox sau khi hoàn thành
-                mainVBox.getChildren().clear(); // Xóa giao diện loading
+      // Xử lý khi Task hoàn thành (gửi email xong)
+      sendTokenTask.setOnSucceeded(workerStateEvent -> {
+        boolean successSender = sendTokenTask.getValue(); // Kết quả từ sendToken
 
-                if (successSender) {
-                    // Hiển thị giao diện thành công
-                    returnEmailSendCode(emailUser.getText());
-                }
-            });
+        // Cập nhật mainVBox sau khi hoàn thành
+        mainVBox.getChildren().clear(); // Xóa giao diện loading
 
-            // Bắt đầu chạy Task trong một Thread
-            new Thread(sendTokenTask).start();
-        });
+        if (successSender) {
+          // Hiển thị giao diện thành công
+          returnEmailSendCode(emailUser.getText());
+        }
+      });
 
-    }
+      // Bắt đầu chạy Task trong một Thread
+      new Thread(sendTokenTask).start();
+    });
+
+  }
 }

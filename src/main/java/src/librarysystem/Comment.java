@@ -1,8 +1,8 @@
 package src.librarysystem;
 
 /**
- * Lớp này đại diện cho một bình luận về một cuốn sách.
- * Một bình luận bao gồm tiêu đề sách, tên người dùng, thời gian bình luận, nội dung bình luận và đánh giá.
+ * Lớp này đại diện cho một bình luận về một cuốn sách. Một bình luận bao gồm tiêu đề sách, tên
+ * người dùng, thời gian bình luận, nội dung bình luận và đánh giá.
  */
 public class Comment {
 
@@ -13,8 +13,7 @@ public class Comment {
   private int rate;
 
   /**
-   * Khởi tạo một đối tượng Comment mà không có tham số.
-   * Phương thức khởi tạo mặc định.
+   * Khởi tạo một đối tượng Comment mà không có tham số. Phương thức khởi tạo mặc định.
    */
   public Comment() {
   }
@@ -23,10 +22,10 @@ public class Comment {
    * Khởi tạo một đối tượng Comment với đầy đủ các tham số.
    *
    * @param bookTitle Tiêu đề của cuốn sách mà bình luận liên quan.
-   * @param username Tên người dùng đã đăng bình luận.
-   * @param time Thời gian đăng bình luận.
-   * @param content Nội dung của bình luận.
-   * @param rate Đánh giá của người dùng về cuốn sách (thường là một số từ 1 đến 5).
+   * @param username  Tên người dùng đã đăng bình luận.
+   * @param time      Thời gian đăng bình luận.
+   * @param content   Nội dung của bình luận.
+   * @param rate      Đánh giá của người dùng về cuốn sách (thường là một số từ 1 đến 5).
    */
   public Comment(String bookTitle, String username, MyDateTime time, String content, int rate) {
     this.bookTitle = bookTitle;
@@ -134,10 +133,10 @@ public class Comment {
   @Override
   public String toString() {
     return "Comment{" +
-            " bookTitle='" + bookTitle + '\'' +
-            ", username='" + username + '\'' +
-            ", time=" + time +
-            ", content='" + content + '\'' + ", rate= " + rate + '\'' +
-            '}';
+        " bookTitle='" + bookTitle + '\'' +
+        ", username='" + username + '\'' +
+        ", time=" + time +
+        ", content='" + content + '\'' + ", rate= " + rate + '\'' +
+        '}';
   }
 }

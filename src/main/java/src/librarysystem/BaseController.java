@@ -6,54 +6,111 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 public class BaseController {
-    private static final Logger log = LogManager.getLogger(BaseController.class);
-    private LoginController loginController;
-    private MainGUI mainGUIController;
 
-    public void setLoginController(LoginController loginController) {
-        this.loginController = loginController;
-    }
+  private static final Logger log = LogManager.getLogger(BaseController.class);
+  private LoginController loginController;
+  private MainGUI mainGUIController;
 
-    protected void returnSignIn() {
-        loginController.openSignInNoEffect(new ActionEvent());
-    }
+  /**
+   * set controller
+   *
+   * @param loginController login controller
+   */
+  public void setLoginController(LoginController loginController) {
+    this.loginController = loginController;
+  }
 
-    protected void returnForgotPassword() {
-        loginController.openForgotPassword();
-    }
+  /**
+   * sign in
+   */
+  protected void returnSignIn() {
+    loginController.openSignInNoEffect(new ActionEvent());
+  }
 
-    protected void returnEmailSendCode(String email) {
-        loginController.openEmailSendCode(email);
-    }
+  /**
+   * forgot password
+   */
+  protected void returnForgotPassword() {
+    loginController.openForgotPassword();
+  }
 
-    protected void returnPasswordReset(String email) {
-        loginController.openPasswordReset(email);
-    }
+  /**
+   * email send
+   *
+   * @param email email
+   */
+  protected void returnEmailSendCode(String email) {
+    loginController.openEmailSendCode(email);
+  }
 
-    protected VBox getVbox() { return loginController.getMainVbox(); }
+  /**
+   * password reset
+   *
+   * @param email userEmail
+   */
+  protected void returnPasswordReset(String email) {
+    loginController.openPasswordReset(email);
+  }
 
-    public void setMainGUIController(MainGUI mainGUIController) {
-        this.mainGUIController = mainGUIController;
-    }
+  /**
+   * get the main VBox
+   *
+   * @return main VBox
+   */
+  protected VBox getVbox() {
+    return loginController.getMainVbox();
+  }
 
-    protected void sendNotification(int senderId, int receiverId, String content,int type) {
-        mainGUIController.sendNotification(senderId, receiverId, content,type);
-    }
+  /**
+   * set the main controller
+   *
+   * @param mainGUIController main controller
+   */
+  public void setMainGUIController(MainGUI mainGUIController) {
+    this.mainGUIController = mainGUIController;
+  }
 
-    protected void returnDetailBook(Book currentBook, boolean apiMode) {
-        mainGUIController.returnDetailBook(currentBook, apiMode);
-    }
+  /**
+   * send the notifications
+   *
+   * @param senderId   sender
+   * @param receiverId receiver
+   * @param content    content
+   * @param type       accept / deny
+   */
+  protected void sendNotification(int senderId, int receiverId, String content, int type) {
+    mainGUIController.sendNotification(senderId, receiverId, content, type);
+  }
 
-    protected void updateNotifications() {
-        mainGUIController.updateNotifications();
-    }
+  /**
+   * view detail book
+   *
+   * @param currentBook current book
+   * @param apiMode     current apiMode
+   */
+  protected void returnDetailBook(Book currentBook, boolean apiMode) {
+    mainGUIController.returnDetailBook(currentBook, apiMode);
+  }
 
-    protected void returnAddBook() {
-        mainGUIController.returnAddBook();
-    }
+  /**
+   * update the notifications
+   */
+  protected void updateNotifications() {
+    mainGUIController.updateNotifications();
+  }
 
-    protected void returnBookView() {
-        mainGUIController.bookView();
-    }
+  /**
+   * add book dashboard
+   */
+  protected void returnAddBook() {
+    mainGUIController.returnAddBook();
+  }
+
+  /**
+   * view book dashboard
+   */
+  protected void returnBookView() {
+    mainGUIController.bookView();
+  }
 }
 
