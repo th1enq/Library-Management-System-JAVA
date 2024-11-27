@@ -9,7 +9,8 @@ import java.util.logging.Logger;
 public class EmailSender {
 
   //(mail nguoi nhan, chu de mail, noi dung mail)
-  public static void sendEmail(String recipient, String subject, String content) {
+  public static boolean sendEmail(String recipient, String subject, String content) {
+    boolean ok = true;
     // Cấu hình các thuộc tính SMTP
     Properties properties = new Properties();
     properties.put("mail.smtp.host", "smtp.gmail.com"); // Máy chủ SMTP
@@ -40,10 +41,20 @@ public class EmailSender {
       // Gửi email
       Transport.send(message);
       System.out.println("Email sent successfully to " + recipient);
+      ok = true;
     } catch (MessagingException e) {
       e.printStackTrace();
       System.err.println("Failed to send email: " + e.getMessage());
+      ok = false;
     }
+    return ok;
   }
 
+  public static void main(String[] args) {
+    // Test gửi email
+
+    //(mail nguoi nhan, chu de mail, noi dung mail)
+    sendEmail("23020135@vnu.edu.vn", "Email 7",
+        "Khong nen vuot muc pickleball");
+  }
 }

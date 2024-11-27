@@ -4,6 +4,7 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
@@ -95,6 +96,11 @@
                               <Font name="System Bold" size="15.0" />
                            </font>
                         </Button>
+                        <Button fx:id="seeComments" layoutX="820.0" layoutY="390.0" mnemonicParsing="false" prefHeight="39.0" prefWidth="135.0" style="-fx-cursor: hand;" styleClass="green-btn" stylesheets="@stylesheet.css" text="Comment">
+                           <font>
+                              <Font name="System Bold" size="15.0" />
+                           </font>
+                        </Button>
                      </children>
                   </Pane>
                   <AnchorPane layoutX="200.0" layoutY="101.0" prefHeight="313.0" prefWidth="192.0" styleClass="frame-shadow" stylesheets="@stylesheet.css">
@@ -126,6 +132,36 @@
                         <Font name="System Bold" size="12.0" />
                      </font>
                   </TextField>
+               </children>
+            </Pane>
+            <Pane fx:id="commentTempPane" prefHeight="200.0" prefWidth="200.0" visible="false">
+               <children>
+                  <Pane fx:id="commentPane" layoutX="330.0" layoutY="107.0" prefHeight="556.0" prefWidth="521.0" style="-fx-background-color: #fff; -fx-background-radius: 20px; -fx-border-color: #b9b3b3; -fx-border-radius: 20px; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.5), 10, 0.5, 5, 5); -fx-border-width: 0; -fx-border-color: transparent;">
+                     <children>
+                        <Label layoutX="28.0" layoutY="23.0" text="Comments">
+                           <font>
+                              <Font size="20.0" />
+                           </font>
+                        </Label>
+                        <TextArea fx:id="commentContent" layoutX="28.0" layoutY="77.0" prefHeight="107.0" prefWidth="453.0" style="-fx-background-radius: 10px; -fx-border-radius: 10px; -fx-border-color: #000; -fx-padding: 5; -fx-focus-color: transparent; -fx-faint-focus-color: transparent; -fx-background-color: transparent;" wrapText="true">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </TextArea>
+                        <Button fx:id="submitComment" layoutX="408.0" layoutY="200.0" mnemonicParsing="false" prefHeight="41.0" prefWidth="73.0" style="-fx-background-color: #000; -fx-background-radius: 8px; -fx-cursor: hand;" text="Send" textFill="WHITE">
+                           <font>
+                              <Font name="System Bold" size="14.0" />
+                           </font>
+                        </Button>
+                        <Label fx:id="currentWord" layoutX="426.0" layoutY="158.0" text="12/144" />
+                        <Button fx:id="cancelComment" layoutX="317.0" layoutY="200.0" mnemonicParsing="false" prefHeight="41.0" prefWidth="73.0" style="-fx-background-color: #fff; -fx-border-color: #000; -fx-border-radius: 8px; -fx-background-radius: 8px; -fx-cursor: hand;" text="Cancel" textFill="#868686">
+                           <font>
+                              <Font name="System Bold" size="14.0" />
+                           </font>
+                        </Button>
+                        <ScrollPane fx:id="commentPaneUser" layoutX="38.0" layoutY="263.0" prefHeight="275.0" prefWidth="453.0" style="-fx-background-color: transparent;" />
+                     </children>
+                  </Pane>
                </children>
             </Pane>
             <Pane fx:id="tempPane" prefHeight="736.0" prefWidth="1180.0" style="-fx-background-color: transparent;" visible="false">

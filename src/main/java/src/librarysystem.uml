@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement>C:/Users/Admin/Desktop/project/Library-Management-System-JAVA/src/main/java/src/librarysystem</OriginalElement>
+  <nodes>
+    <node x="-696.274473518506" y="4252.089156628862">src.librarysystem.SearchBookController</node>
+    <node x="3332.1502580373517" y="4314.169119511036">src.librarysystem.PasswordResetController</node>
+    <node x="2201.5" y="2802.5">src.librarysystem.BookIssueDB</node>
+    <node x="1176.715630603735" y="3039.4296943044887">src.librarysystem.EmailSender</node>
+    <node x="3730.6371480339562" y="4314.169119511036">src.librarysystem.NotificationController</node>
+    <node x="1283.8428955681904" y="1354.163689053012">src.librarysystem.Comment</node>
+    <node x="2905.5652965161294" y="4314.169119511036">src.librarysystem.AddBookController</node>
+    <node x="1743.0" y="961.1105554471987">src.librarysystem.SearchingProgressing</node>
+    <node x="1887.0" y="1306.5">src.librarysystem.DBInfo</node>
+    <node x="1844.0" y="2778.0">src.librarysystem.LoginController</node>
+    <node x="1724.0" y="482.5">src.librarysystem.PasswordUtils</node>
+    <node x="4110.124038030561" y="4314.169119511036">src.librarysystem.ForgotPasswordController</node>
+    <node x="1743.0" y="641.3701851490663">src.librarysystem.LoadingController</node>
+    <node x="1176.715630603735" y="2797.2353209589137">src.librarysystem.PasswordRecoveryService</node>
+    <node x="1405.0" y="-160.31372747843807">src.librarysystem.BookIssue</node>
+    <node x="1743.0" y="801.2403702981326">src.librarysystem.ProcessIndicator</node>
+    <node x="879.3202698050936" y="-190.0">src.librarysystem.MainGUI</node>
+    <node x="279.1756924579422" y="2703.911117952652">src.librarysystem.UISetting</node>
+    <node x="718.4456615308386" y="2936.9219825711384">src.librarysystem.BaseController</node>
+    <node x="1176.715630603735" y="2477.2059121765697">src.librarysystem.Filter</node>
+    <node x="-333.637236759253" y="4252.089156628862">src.librarysystem.UserController</node>
+    <node x="279.1756924579422" y="2393.067856075408">src.librarysystem.MyDateTime</node>
+    <node x="2001.771132642444" y="1146.2713607932085">src.librarysystem.ChartController</node>
+    <node x="2537.4982661867575" y="4314.169119511036">src.librarysystem.BookViewDetailController</node>
+    <node x="1447.5" y="737.0098958777584">src.librarysystem.BorrowRequest</node>
+    <node x="800.0" y="1378.0">src.librarysystem.Book</node>
+    <node x="279.1756924579422" y="2104.8721058192727">src.librarysystem.BookServices</node>
+    <node x="275.14053961018703" y="-190.0">src.librarysystem.User</node>
+    <node x="823.0" y="3730.0">src.librarysystem.SettingController</node>
+    <node x="379.5" y="4354.0">src.librarysystem.EmailSendCodeController</node>
+    <node x="1202.715630603735" y="1998.735346308998">src.librarysystem.SignUpController</node>
+    <node x="279.1756924579422" y="1503.6763555631373">src.librarysystem.Notification</node>
+    <node x="1374.5" y="3682.0">src.librarysystem.BookIssueController</node>
+    <node x="2168.5685740169783" y="4314.169119511036">src.librarysystem.DashBoardController</node>
+    <node x="11.0" y="4318.0">src.librarysystem.SignInController</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="src.librarysystem.PasswordResetController" target="src.librarysystem.BaseController" relationship="GENERALIZATION">
+      <point x="0.0" y="-176.0" />
+      <point x="3495.6502580373517" y="3658.0" />
+      <point x="868.4456615308386" y="3658.0" />
+      <point x="0.0" y="200.0" />
+    </edge>
+    <edge source="src.librarysystem.DashBoardController" target="src.librarysystem.BaseController" relationship="GENERALIZATION">
+      <point x="0.0" y="-188.0" />
+      <point x="2283.0685740169783" y="3658.0" />
+      <point x="868.4456615308386" y="3658.0" />
+      <point x="0.0" y="200.0" />
+    </edge>
+    <edge source="src.librarysystem.SettingController" target="src.librarysystem.BaseController" relationship="GENERALIZATION">
+      <point x="0.0" y="-788.0" />
+      <point x="989.0" y="3336.9219825711384" />
+      <point x="0.0" y="200.0" />
+    </edge>
+    <edge source="src.librarysystem.NotificationController" target="src.librarysystem.BaseController" relationship="GENERALIZATION">
+      <point x="0.0" y="-92.0" />
+      <point x="3884.6371480339562" y="3658.0" />
+      <point x="868.4456615308386" y="3658.0" />
+      <point x="0.0" y="200.0" />
+    </edge>
+    <edge source="src.librarysystem.BookViewDetailController" target="src.librarysystem.BaseController" relationship="GENERALIZATION">
+      <point x="0.0" y="-680.0" />
+      <point x="2679.4982661867575" y="3658.0" />
+      <point x="868.4456615308386" y="3658.0" />
+      <point x="0.0" y="200.0" />
+    </edge>
+    <edge source="src.librarysystem.ForgotPasswordController" target="src.librarysystem.BaseController" relationship="GENERALIZATION">
+      <point x="0.0" y="-68.0" />
+      <point x="4238.624038030561" y="3658.0" />
+      <point x="868.4456615308386" y="3658.0" />
+      <point x="0.0" y="200.0" />
+    </edge>
+    <edge source="src.librarysystem.BookIssueController" target="src.librarysystem.BaseController" relationship="GENERALIZATION">
+      <point x="0.0" y="-836.0" />
+      <point x="1649.0" y="3658.0" />
+      <point x="868.4456615308386" y="3658.0" />
+      <point x="0.0" y="200.0" />
+    </edge>
+    <edge source="src.librarysystem.UserController" target="src.librarysystem.BaseController" relationship="GENERALIZATION">
+      <point x="0.0" y="-476.0" />
+      <point x="-199.13723675925303" y="3658.0" />
+      <point x="868.4456615308386" y="3658.0" />
+      <point x="0.0" y="200.0" />
+    </edge>
+    <edge source="src.librarysystem.AddBookController" target="src.librarysystem.BaseController" relationship="GENERALIZATION">
+      <point x="0.0" y="-176.0" />
+      <point x="3049.0652965161294" y="3658.0" />
+      <point x="868.4456615308386" y="3658.0" />
+      <point x="0.0" y="200.0" />
+    </edge>
+    <edge source="src.librarysystem.BorrowRequest" target="src.librarysystem.BookIssue" relationship="GENERALIZATION">
+      <point x="0.0" y="-104.0" />
+      <point x="1539.5" y="357.158572202377" />
+      <point x="1533.5" y="357.158572202377" />
+      <point x="0.0" y="320.0" />
+    </edge>
+    <edge source="src.librarysystem.SignInController" target="src.librarysystem.BaseController" relationship="GENERALIZATION">
+      <point x="0.0" y="-200.0" />
+      <point x="169.0" y="3658.0" />
+      <point x="868.4456615308386" y="3658.0" />
+      <point x="0.0" y="200.0" />
+    </edge>
+    <edge source="src.librarysystem.SearchBookController" target="src.librarysystem.BaseController" relationship="GENERALIZATION">
+      <point x="0.0" y="-248.0" />
+      <point x="-552.774473518506" y="3658.0" />
+      <point x="868.4456615308386" y="3658.0" />
+      <point x="0.0" y="200.0" />
+    </edge>
+    <edge source="src.librarysystem.EmailSendCodeController" target="src.librarysystem.BaseController" relationship="GENERALIZATION">
+      <point x="0.0" y="-164.0" />
+      <point x="569.0" y="3658.0" />
+      <point x="868.4456615308386" y="3658.0" />
+      <point x="0.0" y="200.0" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic Compact" zoom="0.4042272397548085" showDependencies="false" x="1163.9149624285217" y="838.9198850173166" />
+  <SelectedNodes />
+  <Categories>
+    <Category>Fields</Category>
+    <Category>Methods</Category>
+  </Categories>
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+

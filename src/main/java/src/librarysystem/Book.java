@@ -1,216 +1,281 @@
 package src.librarysystem;
 
-import java.util.Optional;
+import java.util.ArrayList;
 
+/**
+ * Lớp đại diện cho một cuốn sách trong hệ thống thư viện.
+ */
 public class Book {
 
-    private String type = "ebooks";
-    private String title;
-    private String authors;
-    private String publisher;
-    private String publishedDate;
-    private String thumbnail;
-    private String ISBN;
-    private String description;
-    private String numPage;
-    private String category;
-    private String price;
-    private String language;
-    private String buyLink;
-    private int avail;
-    private int rating;
-    private  int numView;
+  private String type = "ebooks";
+  private String title;
+  private String authors;
+  private String publisher;
+  private String publishedDate;
+  private String thumbnail;
+  private String ISBN;
+  private String description;
+  private String numPage;
+  private String category;
+  private String price;
+  private String language;
+  private String buyLink;
+  private int avail;
+  private int rating;
+  private int numView;
 
-    public Book() {
-    }
+  public String getType() {
+    return type;
+  }
 
-    public Book(String title, String ISBN, String authors, String publisher,
-                String publishedDate,
-                String description, String thumbnail, String numPage, String category, String price,
-                String language, String buyLink) {
-        this.title = title;
-        this.ISBN = ISBN;
-        this.authors = authors;
-        this.publishedDate = publishedDate;
-        this.thumbnail = thumbnail;
-        this.publisher = publisher;
-        this.description = description;
-        this.numPage = numPage;
-        this.category = category;
-        this.price = price;
-        this.language = language;
-        this.buyLink = buyLink;
-        this.avail = 1;
-        this.rating = 0;
-    }
+  public void setType(String type) {
+    this.type = type;
+  }
 
-    public Book(String title, String ISBN, String authors, String publisher,
-                String publishedDate,
-                String description, String thumbnail, String numPage, String category, String price,
-                String language, String buyLink, int avail, int rating) {
-        this.title = title;
-        this.ISBN = ISBN;
-        this.authors = authors;
-        this.publishedDate = publishedDate;
-        this.thumbnail = thumbnail;
-        this.publisher = publisher;
-        this.description = description;
-        this.numPage = numPage;
-        this.category = category;
-        this.price = price;
-        this.language = language;
-        this.buyLink = buyLink;
-        this.avail = avail;
-        this.rating = rating;
-    }
+  public String getAuthors() {
+    return authors;
+  }
 
-    public String getType() {
-        return type;
-    }
+  public void setAuthors(String authors) {
+    this.authors = authors;
+  }
 
-    public void setType(String type) {
-        this.type = type;
-    }
+  public String getPublisher() {
+    return publisher;
+  }
 
-    public String getTitle() {
-        return title;
-    }
+  public void setPublisher(String publisher) {
+    this.publisher = publisher;
+  }
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
+  public String getPublishedDate() {
+    return publishedDate;
+  }
 
-    public String getAuthors() {
-        return authors;
-    }
+  public void setPublishedDate(String publishedDate) {
+    this.publishedDate = publishedDate;
+  }
 
-    public void setAuthors(String authors) {
-        this.authors = authors;
-    }
+  public String getThumbnail() {
+    return thumbnail;
+  }
 
-    public String getPublisher() {
-        return publisher;
-    }
+  public void setThumbnail(String thumbnail) {
+    this.thumbnail = thumbnail;
+  }
 
-    public void setPublisher(String publisher) {
-        this.publisher = publisher;
-    }
+  public String getISBN() {
+    return ISBN;
+  }
 
-    public String getPublishedDate() {
-        return publishedDate;
-    }
+  public void setISBN(String ISBN) {
+    this.ISBN = ISBN;
+  }
 
-    public void setPublishedDate(String publishedDate) {
-        this.publishedDate = publishedDate;
-    }
+  public String getDescription() {
+    return description;
+  }
 
-    public String getThumbnail() {
-        return thumbnail;
-    }
+  public void setDescription(String description) {
+    this.description = description;
+  }
 
-    public void setThumbnail(String thumbnail) {
-        this.thumbnail = thumbnail;
-    }
+  public String getNumPage() {
+    return numPage;
+  }
 
-    public String getISBN() {
-        return ISBN;
-    }
+  public void setNumPage(String numPage) {
+    this.numPage = numPage;
+  }
 
-    public void setISBN(String ISBN) {
-        this.ISBN = ISBN;
-    }
+  public String getCategory() {
+    return category;
+  }
 
-    public String getDescription() {
-        return description;
-    }
+  public void setCategory(String category) {
+    this.category = category;
+  }
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
+  public String getPrice() {
+    return price;
+  }
 
-    public String getNumPage() {
-        return numPage;
-    }
+  public void setPrice(String price) {
+    this.price = price;
+  }
 
-    public void setNumPage(String numPage) {
-        this.numPage = numPage;
-    }
+  public String getLanguage() {
+    return language;
+  }
 
-    public String getCategory() {
-        return category;
-    }
+  public void setLanguage(String language) {
+    this.language = language;
+  }
 
-    public void setCategory(String category) {
-        this.category = category;
-    }
+  public String getBuyLink() {
+    return buyLink;
+  }
 
-    public String getPrice() {
-        return price;
-    }
+  public void setBuyLink(String buyLink) {
+    this.buyLink = buyLink;
+  }
 
-    public void setPrice(String price) {
-        this.price = price;
-    }
+  public int getAvail() {
+    return avail;
+  }
 
-    public String getLanguage() {
-        return language;
-    }
+  public void setAvail(int avail) {
+    this.avail = avail;
+  }
 
-    public void setLanguage(String language) {
-        this.language = language;
-    }
+  public int getRating() {
+    return rating;
+  }
 
-    public String getBuyLink() {
-        return buyLink;
-    }
+  public void setRating(int rating) {
+    this.rating = rating;
+  }
 
-    public void setBuyLink(String buyLink) {
-        this.buyLink = buyLink;
-    }
+  public void setNumView(int numView) {
+    this.numView = numView;
+  }
 
-    public int getAvail() {
-        return avail;
-    }
+  public int getNumView() {
+    return numView;
+  }
 
-    public void setAvail(int avail) {
-        this.avail = avail;
-    }
+  /**
+   * Phương thức khởi tạo không tham số, tạo một đối tượng sách mặc định.
+   */
+  public Book() {
+  }
 
-    public int getRating() {
-        return rating;
-    }
+  /**
+   * Phương thức khởi tạo với các thông tin cơ bản của sách.
+   *
+   * @param title         Tên sách.
+   * @param ISBN          Mã ISBN của sách.
+   * @param authors       Tên tác giả.
+   * @param publisher     Nhà xuất bản.
+   * @param publishedDate Ngày xuất bản.
+   * @param description   Mô tả sách.
+   * @param thumbnail     Hình ảnh bìa sách.
+   * @param numPage       Số trang sách.
+   * @param category      Thể loại sách.
+   * @param price         Giá sách.
+   * @param language      Ngôn ngữ của sách.
+   * @param buyLink       Liên kết mua sách.
+   */
+  public Book(String title, String ISBN, String authors, String publisher,
+      String publishedDate, String description, String thumbnail,
+      String numPage, String category, String price, String language,
+      String buyLink) {
+    this.title = title;
+    this.ISBN = ISBN;
+    this.authors = authors;
+    this.publishedDate = publishedDate;
+    this.thumbnail = thumbnail;
+    this.publisher = publisher;
+    this.description = description;
+    this.numPage = numPage;
+    this.category = category;
+    this.price = price;
+    this.language = language;
+    this.buyLink = buyLink;
+    this.avail = 1;
+    this.rating = 0;
+  }
 
-    public void setRating(int rating) {
-        this.rating = rating;
-    }
+  /**
+   * Phương thức khởi tạo với đầy đủ thông tin của sách.
+   *
+   * @param title         Tên sách.
+   * @param ISBN          Mã ISBN của sách.
+   * @param authors       Tên tác giả.
+   * @param publisher     Nhà xuất bản.
+   * @param publishedDate Ngày xuất bản.
+   * @param description   Mô tả sách.
+   * @param thumbnail     Hình ảnh bìa sách.
+   * @param numPage       Số trang sách.
+   * @param category      Thể loại sách.
+   * @param price         Giá sách.
+   * @param language      Ngôn ngữ của sách.
+   * @param buyLink       Liên kết mua sách.
+   * @param avail         Số lượng sách có sẵn.
+   * @param rating        Đánh giá sách (từ 0 đến 5).
+   */
+  public Book(String title, String ISBN, String authors, String publisher,
+      String publishedDate, String description, String thumbnail,
+      String numPage, String category, String price, String language,
+      String buyLink, int avail, int rating) {
+    this.title = title;
+    this.ISBN = ISBN;
+    this.authors = authors;
+    this.publishedDate = publishedDate;
+    this.thumbnail = thumbnail;
+    this.publisher = publisher;
+    this.description = description;
+    this.numPage = numPage;
+    this.category = category;
+    this.price = price;
+    this.language = language;
+    this.buyLink = buyLink;
+    this.avail = avail;
+    this.rating = rating;
+  }
 
-    public void setNumView(int numView){
-        this.numView = numView;
-    }
+  // Ví dụ cho các getter và setter:
 
-    public int getNumView() {
-        return numView;
-    }
+  /**
+   * Lấy tiêu đề của sách.
+   *
+   * @return Tiêu đề sách.
+   */
+  public String getTitle() {
+    return title;
+  }
 
-    @Override
-    public String toString() {
-        return "Book ( " +
-                "Type='" + type + '\'' +
-                ", Title='" + title + '\'' +
-                ", Authors='" + authors + '\'' +
-                ", Publisher='" + publisher + '\'' +
-                ", Published Date='" + publishedDate + '\'' +
-                ", ISBN='" + ISBN + '\'' +
-                ", Description='" + description + '\'' +
-                ", Thumbnail='" + thumbnail + '\'' +
-                ", Number of Pages='" + numPage + '\'' +
-                ", Category='" + category + '\'' +
-                ", Price='" + price + '\'' +
-                ", Language='" + language + '\'' +
-                ", Buy Link='" + buyLink + '\'' +
-                ", Availability='" + avail + '\'' +
-                ", Rating=" + rating +
-                ") ";
-    }
+  /**
+   * Đặt tiêu đề cho sách.
+   *
+   * @param title Tiêu đề cần đặt.
+   */
+  public void setTitle(String title) {
+    this.title = title;
+  }
 
+  /**
+   * Lấy danh sách các bình luận về sách.
+   *
+   * @return Danh sách các bình luận.
+   */
+  public ArrayList<Comment> getCommentList() {
+    return DBInfo.getCommentList(this);
+  }
+
+  /**
+   * Trả về chuỗi biểu diễn thông tin sách.
+   *
+   * @return Chuỗi chứa thông tin của sách.
+   */
+  @Override
+  public String toString() {
+    return "Book ( " +
+        "Type='" + type + '\'' +
+        ", Title='" + title + '\'' +
+        ", Authors='" + authors + '\'' +
+        ", Publisher='" + publisher + '\'' +
+        ", Published Date='" + publishedDate + '\'' +
+        ", ISBN='" + ISBN + '\'' +
+        ", Description='" + description + '\'' +
+        ", Thumbnail='" + thumbnail + '\'' +
+        ", Number of Pages='" + numPage + '\'' +
+        ", Category='" + category + '\'' +
+        ", Price='" + price + '\'' +
+        ", Language='" + language + '\'' +
+        ", Buy Link='" + buyLink + '\'' +
+        ", Availability='" + avail + '\'' +
+        ", Rating=" + rating +
+        ") ";
+  }
 }

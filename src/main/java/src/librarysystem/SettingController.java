@@ -1,10 +1,9 @@
 package src.librarysystem;
+
 import java.io.File;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
-
-import com.sun.tools.javac.Main;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import javafx.animation.FillTransition;
 import javafx.animation.ParallelTransition;
@@ -15,14 +14,10 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
-import javafx.scene.SnapshotParameters;
 import javafx.scene.control.*;
-import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.image.WritableImage;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.*;
 import javafx.stage.FileChooser;
@@ -32,92 +27,51 @@ public class SettingController extends BaseController implements Initializable {
 
   @FXML
   public ImageView coverImage;
-  @FXML
   public ImageView avatar;
-  @FXML
   public Line lineMode;
-  @FXML
   public ChoiceBox universityChoose;
-  @FXML
   public ToggleButton darkModeToogleButton;
-  @FXML
   public Pane paneContainer;
-  @FXML
   public Label textTimeFormat;
-  @FXML
   public Label textEmailNontifications;
-  @FXML
   public Label textDarkMode;
-  @FXML
   public Label textLanguage;
-  @FXML
   public Label languageLabel;
-  @FXML
   public Label timeLabel;
-  @FXML
   public Label emailLabel;
-  @FXML
   public Label labelDarkMode;
-  @FXML
   public Label nameLabel;
-  @FXML
   public TextField nameTextField;
-  @FXML
   public Label userEmailLabel;
-  @FXML
   public TextField emailTextField;
-  @FXML
   public Label idLabel;
-  @FXML
   public TextField idTextField;
-  @FXML
   public Label universityLabel;
-  @FXML
   public Label userLabel;
-  @FXML
   public TextField userTextField;
-  @FXML
   public Label phoneLabel;
-  @FXML
   public TextField phoneTextField;
-  @FXML
   public Button accountSettingLabel;
-  @FXML
   public Button uiSettingLabel;
-  @FXML
   public Button changePasswordLabel;
-  @FXML
   public PasswordField newPassword;
-  @FXML
   public PasswordField confirmNewPassword;
-  @FXML
   public PasswordField oldPassword;
-  @FXML
   public Label confirmNewPasswordLabel;
-  @FXML
   public Label newPasswordLabel;
-  @FXML
   public Label oldPasswordLabel;
-  @FXML
   public Button confirmPasswordSee;
-  @FXML
   public TextField confirmNewPasswordVisiable;
-  @FXML
   public Button newPasswordSee;
-  @FXML
   public TextField newPasswordVisiable;
-  @FXML
   public Button oldPasswordSee;
-  @FXML
   public TextField oldPasswordVisiable;
-  @FXML
   public FontAwesomeIcon confirmNewPasswordIcon;
-  @FXML
   public FontAwesomeIcon newPasswordIcon;
-  @FXML
   public FontAwesomeIcon oldPasswordIcon;
-  @FXML
   public Label bioName;
+  public Label numBorrowedBooks;
+  public Label numOverdueBooks;
 
   private int currentMode = 0;
 
@@ -143,26 +97,36 @@ public class SettingController extends BaseController implements Initializable {
     newPasswordVisiable.setVisible(false);
 
     // Set position for lineMode based on currentMode
-    TranslateTransition translateTransition = new TranslateTransition(Duration.seconds(0.25), lineMode);
+    TranslateTransition translateTransition = new TranslateTransition(Duration.seconds(0.25),
+        lineMode);
 
     if (currentMode == 0) {
       translateTransition.setToX(0);
       // Set text color, transparent background, and hand cursor for mode 0
-      accountSettingLabel.setStyle("-fx-text-fill: #70727a; -fx-background-color: transparent; -fx-cursor: hand;");
-      uiSettingLabel.setStyle("-fx-text-fill: #bfc5cd; -fx-background-color: transparent; -fx-cursor: hand;");
-      changePasswordLabel.setStyle("-fx-text-fill: #bfc5cd; -fx-background-color: transparent; -fx-cursor: hand;");
+      accountSettingLabel.setStyle(
+          "-fx-text-fill: #70727a; -fx-background-color: transparent; -fx-cursor: hand;");
+      uiSettingLabel.setStyle(
+          "-fx-text-fill: #bfc5cd; -fx-background-color: transparent; -fx-cursor: hand;");
+      changePasswordLabel.setStyle(
+          "-fx-text-fill: #bfc5cd; -fx-background-color: transparent; -fx-cursor: hand;");
     } else if (currentMode == 1) {
       translateTransition.setToX(200);
       // Set text color, transparent background, and hand cursor for mode 1
-      accountSettingLabel.setStyle("-fx-text-fill: #bfc5cd; -fx-background-color: transparent; -fx-cursor: hand;");
-      uiSettingLabel.setStyle("-fx-text-fill: #70727a; -fx-background-color: transparent; -fx-cursor: hand;");
-      changePasswordLabel.setStyle("-fx-text-fill: #bfc5cd; -fx-background-color: transparent; -fx-cursor: hand;");
+      accountSettingLabel.setStyle(
+          "-fx-text-fill: #bfc5cd; -fx-background-color: transparent; -fx-cursor: hand;");
+      uiSettingLabel.setStyle(
+          "-fx-text-fill: #70727a; -fx-background-color: transparent; -fx-cursor: hand;");
+      changePasswordLabel.setStyle(
+          "-fx-text-fill: #bfc5cd; -fx-background-color: transparent; -fx-cursor: hand;");
     } else {
       translateTransition.setToX(400);
       // Set text color, transparent background, and hand cursor for mode 2
-      accountSettingLabel.setStyle("-fx-text-fill: #bfc5cd; -fx-background-color: transparent; -fx-cursor: hand;");
-      uiSettingLabel.setStyle("-fx-text-fill: #bfc5cd; -fx-background-color: transparent; -fx-cursor: hand;");
-      changePasswordLabel.setStyle("-fx-text-fill: #70727a; -fx-background-color: transparent; -fx-cursor: hand;");
+      accountSettingLabel.setStyle(
+          "-fx-text-fill: #bfc5cd; -fx-background-color: transparent; -fx-cursor: hand;");
+      uiSettingLabel.setStyle(
+          "-fx-text-fill: #bfc5cd; -fx-background-color: transparent; -fx-cursor: hand;");
+      changePasswordLabel.setStyle(
+          "-fx-text-fill: #70727a; -fx-background-color: transparent; -fx-cursor: hand;");
     }
 
     // Play the transition
@@ -170,31 +134,36 @@ public class SettingController extends BaseController implements Initializable {
   }
 
 
-
   @FXML
   public void accountSetting(ActionEvent actionEvent) {
-    if(currentMode == 0) return;
+    if (currentMode == 0) {
+      return;
+    }
     currentMode = 0;
     update();
   }
 
   @FXML
   public void uiSetting(ActionEvent actionEvent) {
-    if(currentMode == 1) return;
+    if (currentMode == 1) {
+      return;
+    }
     currentMode = 1;
     update();
   }
 
   @FXML
   public void changePassword(ActionEvent actionEvent) {
-    if(currentMode == 2) return;
+    if (currentMode == 2) {
+      return;
+    }
     currentMode = 2;
     update();
   }
 
-  private boolean isOldPasswordVisible= false;
-  private boolean isNewPasswordVisible= false;
-  private boolean isConfirmPasswordVisible= false;
+  private boolean isOldPasswordVisible = false;
+  private boolean isNewPasswordVisible = false;
+  private boolean isConfirmPasswordVisible = false;
 
 
   @FXML
@@ -228,13 +197,16 @@ public class SettingController extends BaseController implements Initializable {
   }
 
   private static class ToggleSwitch extends Parent {
+
     private BooleanProperty switchedOn = new SimpleBooleanProperty(false);
 
-    private TranslateTransition translateAnimation = new TranslateTransition(Duration.seconds(0.25));
+    private TranslateTransition translateAnimation = new TranslateTransition(
+        Duration.seconds(0.25));
 
     private FillTransition fillAnimation = new FillTransition(Duration.seconds(0.25));
 
-    private ParallelTransition animation = new ParallelTransition(translateAnimation, fillAnimation);
+    private ParallelTransition animation = new ParallelTransition(translateAnimation,
+        fillAnimation);
 
     public BooleanProperty switchedOnProperty() {
       return switchedOn;
@@ -285,6 +257,8 @@ public class SettingController extends BaseController implements Initializable {
     userTextField.setText(MainGUI.currentUser.getUserType());
     phoneTextField.setText(MainGUI.currentUser.getPhone());
     universityChoose.setValue(String.valueOf(MainGUI.currentUser.getUniversity()));
+    numBorrowedBooks.setText(String.valueOf(MainGUI.currentUser.getUpcoming()));
+    numOverdueBooks.setText(String.valueOf(MainGUI.currentUser.getOverdue()));
 
     oldPasswordVisiable.textProperty().bindBidirectional(oldPassword.textProperty());
     newPasswordVisiable.textProperty().bindBidirectional(newPassword.textProperty());
@@ -304,9 +278,31 @@ public class SettingController extends BaseController implements Initializable {
     clip.setFill(Color.ALICEBLUE);
     coverImage.setClip(clip);
 
+    try {
+      // Lấy đường dẫn từ user (ví dụ từ currentUser.getAvatarLink())
+      Image userImage = new Image(MainGUI.currentUser.getCoverPhotoLink());
+      coverImage.setImage(userImage); // Nếu tải được ảnh
+    } catch (Exception e) {
+      // Nếu không tải được ảnh, sử dụng ảnh mặc định "user.jpg"
+      // Đảm bảo ảnh "user.jpg" nằm trong thư mục resources/images
+      Image defaultImage = new Image(getClass().getResource("/images/bg_img.jpg").toExternalForm());
+      coverImage.setImage(defaultImage);
+    }
+
     double radius = 75; // Bán kính hình tròn (150 / 2)
     Circle clipAvatar = new Circle(75, 75, radius); // Tâm (75, 75) với bán kính 75
     avatar.setClip(clipAvatar);
+
+    try {
+      // Lấy đường dẫn từ user (ví dụ từ currentUser.getAvatarLink())
+      Image userImage = new Image(MainGUI.currentUser.getAvatarLink());
+      avatar.setImage(userImage); // Nếu tải được ảnh
+    } catch (Exception e) {
+      // Nếu không tải được ảnh, sử dụng ảnh mặc định "user.jpg"
+      // Đảm bảo ảnh "user.jpg" nằm trong thư mục resources/images
+      Image defaultImage = new Image(getClass().getResource("/images/user.jpg").toExternalForm());
+      avatar.setImage(defaultImage);
+    }
 
     // Set the stroke width (độ dày đường)
     lineMode.setStrokeWidth(2);
@@ -358,7 +354,6 @@ public class SettingController extends BaseController implements Initializable {
     });
     paneContainer.getChildren().add(toogleEmailNontifications);
 
-
     uiSettingMode.add(textTimeFormat);
     uiSettingMode.add(textEmailNontifications);
     uiSettingMode.add(textDarkMode);
@@ -405,7 +400,9 @@ public class SettingController extends BaseController implements Initializable {
   public void editAvatar(ActionEvent actionEvent) {
     // Tạo đối tượng FileChooser để chọn tệp ảnh
     FileChooser fileChooser = new FileChooser();
-    fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg", "*.jpeg", "*.bmp", "*.gif"));
+    fileChooser.getExtensionFilters().add(
+        new FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg", "*.jpeg", "*.bmp",
+            "*.gif"));
 
     // Mở hộp thoại để người dùng chọn tệp ảnh
     File selectedFile = fileChooser.showOpenDialog(null);
@@ -425,7 +422,9 @@ public class SettingController extends BaseController implements Initializable {
   public void editCoverImage(ActionEvent actionEvent) {
     // Tạo đối tượng FileChooser để chọn tệp ảnh
     FileChooser fileChooser = new FileChooser();
-    fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg", "*.jpeg", "*.bmp", "*.gif"));
+    fileChooser.getExtensionFilters().add(
+        new FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg", "*.jpeg", "*.bmp",
+            "*.gif"));
 
     // Mở hộp thoại để người dùng chọn tệp ảnh
     File selectedFile = fileChooser.showOpenDialog(null);
@@ -440,31 +439,33 @@ public class SettingController extends BaseController implements Initializable {
     }
   }
 
-
   @FXML
   public void updateProfile(ActionEvent actionEvent) {
-    if(currentMode == 0) {
-      MainGUI.currentUser.update(nameTextField.getText(), emailTextField.getText(), null, avatar.getImage().getUrl(), idTextField.getText(), String.valueOf(universityChoose.getValue()), phoneTextField.getText(), coverImage.getImage().getUrl(), null);
-      sendNotification(1000, MainGUI.currentUser.getId(), "Cập nhật thông tin thành công !!!");
-    }
-    else if(currentMode == 2) {
-      if(!MainGUI.currentUser.getPassword().equals(oldPassword.getText())) {
-        System.out.println("Mat khau cu khong chinh xac" + " " + MainGUI.currentUser.getPassword() + " " + oldPassword.getText());
-      }
-      else {
-        if(newPassword.getText().isEmpty() || newPassword == null) {
+    if (currentMode == 0) {
+      MainGUI.currentUser.update(nameTextField.getText(), emailTextField.getText(), null,
+          avatar.getImage().getUrl(), idTextField.getText(),
+          String.valueOf(universityChoose.getValue()), phoneTextField.getText(),
+          coverImage.getImage().getUrl(), null);
+      sendNotification(1000, MainGUI.currentUser.getId(), "Successfully update information!!!", 0);
+    } else if (currentMode == 2) {
+      if (!PasswordUtils.verifyPassword(oldPassword.getText(), MainGUI.currentUser.getPassword())) {
+        System.out.println(
+            "Mat khau cu khong chinh xac" + " " + MainGUI.currentUser.getPassword() + " "
+                + PasswordUtils.hashPassword(oldPassword.getText()) + " " + oldPassword.getText());
+      } else {
+        if (newPassword.getText().isEmpty() || newPassword == null) {
           System.out.println("Hay nhap mat khau moi");
           return;
         }
-        if(confirmNewPassword.getText().isEmpty() || confirmNewPassword == null) {
+        if (confirmNewPassword.getText().isEmpty() || confirmNewPassword == null) {
           System.out.println("Hay xac nhan lai mat khau");
           return;
         }
-        if(!newPassword.getText().equals(confirmNewPassword.getText())) {
+        if (!newPassword.getText().equals(confirmNewPassword.getText())) {
           System.out.println("Mat khau nhap khong khop");
           return;
         }
-        sendNotification(1000, MainGUI.currentUser.getId(), "Đổi mật khẩu thành công !!!");
+        sendNotification(1000, MainGUI.currentUser.getId(), "Password change successfully !!!", 0);
         MainGUI.currentUser.update(null, null, newPassword.getText(), null);
       }
     }

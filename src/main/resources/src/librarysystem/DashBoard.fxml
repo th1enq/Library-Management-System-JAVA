@@ -81,7 +81,7 @@
                   <Font name="System Bold" size="32.0" />
                </font>
             </Label>
-            <Label fx:id="currentTime" layoutX="34.0" layoutY="90.0" prefHeight="47.0" prefWidth="377.0" styleClass="cus" text="Oct 9, 2024 | Wednesday, 11:00 PM" textFill="#282423">
+            <Label fx:id="currentTime" layoutX="34.0" layoutY="90.0" prefHeight="47.0" prefWidth="424.0" styleClass="cus" text="Oct 9, 2024 | Wednesday, 11:00 PM" textFill="#282423">
                <font>
                   <Font name="System Bold" size="21.0" />
                </font>

@@ -12,14 +12,6 @@
    <children>
       <Pane prefHeight="736.0" prefWidth="1180.0">
          <children>
-             <Button layoutX="753.0" layoutY="31.0" mnemonicParsing="false" prefHeight="47.0" prefWidth="158.0" style="-fx-background-color: transparent; -fx-border-radius: 10px; -fx-border-color: grey; -fx-background-radius: 10px; -fx-cursor: hand;" text=" Tạo yêu cầu">
-               <font>
-                  <Font size="15.0" />
-               </font>
-               <graphic>
-                  <FontAwesomeIcon glyphName="UPLOAD" size="1.2em" />
-               </graphic>
-            </Button>
             <Button layoutX="949.0" layoutY="31.0" mnemonicParsing="false" onAction="#clearAllNoti" prefHeight="47.0" prefWidth="158.0" style="-fx-background-color: #000; -fx-border-radius: 10px; -fx-border-color: grey; -fx-background-radius: 10px; -fx-cursor: hand;" text=" Clear all" textFill="WHITE">
                <font>
                   <Font size="15.0" />
@@ -30,9 +22,9 @@
             </Button>
             <ScrollPane fx:id="scrollPane" layoutX="14.0" layoutY="101.0" prefHeight="623.0" prefWidth="1150.0" style="-fx-background-color: transparent;">
                <content>
-                  <Pane fx:id="nonNotiPane" prefHeight="618.0" prefWidth="1134.0" visible="false">
+                  <Pane fx:id="nonNotiPane" prefHeight="618.0" prefWidth="1134.0">
                      <children>
-                        <Label layoutX="332.0" layoutY="287.0" prefHeight="45.0" prefWidth="471.0" text="Hiện không có thông báo nào !!!" textFill="#888585">
+                        <Label layoutX="294.0" layoutY="286.0" prefHeight="45.0" prefWidth="607.0" text="There are currently no announcements ..." textFill="#888585">
                            <font>
                               <Font name="System Bold" size="30.0" />
                            </font>
@@ -41,6 +33,11 @@
                   </Pane>
                </content>
             </ScrollPane>
+            <Label layoutX="477.0" layoutY="27.0" text="Notifications ">
+               <font>
+                  <Font name="System Bold" size="38.0" />
+               </font>
+            </Label>
          </children>
       </Pane>
    </children>

@@ -8,11 +8,12 @@
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox alignment="CENTER_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="480.0" prefWidth="480.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="src.librarysystem.SignInController">
+<VBox alignment="CENTER_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="480.0" prefWidth="480.0" style="-fx-background-radius: 15px;" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="src.librarysystem.SignInController">
    <children>
        <Label stylesheets="@stylesheet.css" text="Sign In" textFill="#f78c7b">
            <font>
@@ -73,14 +74,14 @@
          </VBox.margin>
       </StackPane>
 
-       <HBox alignment="CENTER_RIGHT" layoutX="25.0" layoutY="296.0" prefHeight="45.0" prefWidth="200.0">
+       <Pane layoutX="25.0" layoutY="296.0" prefHeight="45.0" prefWidth="200.0">
            <children>
-               <Button fx:id="forgetPassword" alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" mnemonicParsing="false" style="-fx-cursor: hand;" styleClass="tf" stylesheets="@stylesheet.css" text="Forget Password ?" textFill="#868686" HBox.hgrow="ALWAYS">
+               <Button fx:id="forgetPasswordButton" alignment="CENTER_RIGHT" layoutX="168.0" layoutY="7.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" style="-fx-cursor: hand;" styleClass="tf" stylesheets="@stylesheet.css" text="Forget Password ?" textFill="#868686" HBox.hgrow="ALWAYS">
                    <font>
                        <Font size="15.0" />
                    </font>
                </Button>
-               <Button mnemonicParsing="false" onAction="#login" prefHeight="39.0" prefWidth="120.0" style="-fx-cursor: hand;" styleClass="pink-btn" stylesheets="@stylesheet.css" text="Sign In">
+               <Button layoutX="330.0" layoutY="3.0" mnemonicParsing="false" onAction="#login" prefHeight="39.0" prefWidth="120.0" style="-fx-cursor: hand;" styleClass="pink-btn" stylesheets="@stylesheet.css" text="Sign In">
                    <font>
                        <Font size="15.0" />
                    </font>
@@ -89,7 +90,7 @@
            <VBox.margin>
                <Insets left="15.0" right="15.0" top="20.0" />
            </VBox.margin>
-       </HBox>
+       </Pane>
       <HBox fx:id="errorAlert" alignment="CENTER_RIGHT" prefHeight="43.0" prefWidth="480.0">
          <children>
             <Label fx:id="signInErrorText" alignment="CENTER_RIGHT" contentDisplay="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="43.0" prefWidth="481.0" textFill="#ff1433">

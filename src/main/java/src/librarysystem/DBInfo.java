@@ -15,96 +15,7 @@ import java.util.Vector;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 
-/**
- * kieu du lieu gom 4 String.
- */
-class CustomData {
-
-  private String first;
-
-  private String second;
-
-  private String third;
-
-  private String fourth;
-
-  public CustomData(String first, String second, String third, String fourth) {
-    this.first = first;
-    this.second = second;
-    this.fourth = fourth;
-    this.third = third;
-  }
-
-  public String getFirst() {
-    return first;
-  }
-
-  public void setFirst(String first) {
-    this.first = first;
-  }
-
-  public String getSecond() {
-    return second;
-  }
-
-  public void setSecond(String second) {
-    this.second = second;
-  }
-
-  public String getFourth() {
-    return fourth;
-  }
-
-  public void setFourth(String fourth) {
-    this.fourth = fourth;
-  }
-
-  public String getThird() {
-    return third;
-  }
-
-  public void setthird(String third) {
-    this.third = third;
-  }
-
-  public void print() {
-    System.out.println(first + " " + second + " " + third + " " + fourth);
-  }
-
-}
-
-class Pair<K, V> {
-
-  private K key;
-  private V value;
-
-  public Pair(K key, V value) {
-    this.key = key;
-    this.value = value;
-  }
-
-  public K getKey() {
-    return key;
-  }
-
-  public V getValue() {
-    return value;
-  }
-
-  @Override
-  public String toString() {
-    return
-            key + " " + value;
-  }
-}
-
 public class DBInfo {
-
-  public static String curUsername = "";
-  public static String curPass = "";
-  public static int curId = 0;
-  public static String userType;
-  public static String curName = "";
 
   static {
     try {
@@ -122,26 +33,28 @@ public class DBInfo {
     Connection con = null;
     try {
       con = DriverManager.getConnection("jdbc:mysql://localhost:3306/TESTT", "root", "");
-      System.out.println("Ket noi thanh cong");
+      //  System.out.println("Ket noi thanh cong");
     } catch (SQLException e) {
       e.printStackTrace();
     }
     return con;
   }
 
+  /**
+   * .
+   */
   public static void NotificationFromSystem() {
 
     for (int id = 1; id <= DBInfo.getUserCount(); id++) {
       deleteNotificationsByUserId(id);
-      String sqlUpcoming = "SELECT book_name, return_date FROM borrow_slip " +
-              "WHERE return_date BETWEEN NOW() AND DATE_ADD(NOW(), INTERVAL 3 DAY) " +
-              "AND user_id = ? ORDER BY return_date";
+      String sqlUpcoming = "SELECT book_name, return_date FROM borrow_slip "
+          + "WHERE return_date BETWEEN NOW() AND DATE_ADD(NOW(), INTERVAL 3 DAY) "
+          + "AND user_id = ? ORDER BY return_date";
 
       String sqlOverdue = "SELECT book_name, return_date FROM borrow_slip WHERE return_date < NOW() AND user_id = ?";
 
-      try (Connection conn = DBInfo.conn();
-           PreparedStatement preparedStatement = conn.prepareStatement(sqlUpcoming);
-           PreparedStatement statement2 = conn.prepareStatement(sqlOverdue)) {
+      try (Connection conn = DBInfo.conn(); PreparedStatement preparedStatement = conn.prepareStatement(
+          sqlUpcoming); PreparedStatement statement2 = conn.prepareStatement(sqlOverdue)) {
 
         preparedStatement.setInt(1, id);
         try (ResultSet resultSet = preparedStatement.executeQuery()) {
@@ -154,9 +67,10 @@ public class DBInfo {
             long daysBetween = hoursBetween / 24;
             hoursBetween %= 24;
             minutesBetween %= 60;
-            String mess = "Còn " + daysBetween + " ngày " + hoursBetween + " giờ " + minutesBetween
-                    + " phút nữa là đến hạn trả cuốn: " + bookName;
-            sendNotification(1000, id, mess);
+            String mess = "There are " + daysBetween + " day(s) " + hoursBetween + " hour(s) and "
+                + minutesBetween + " minutes left until the deadline to return the book: "
+                + bookName;
+            sendNotification(1000, id, mess, 1);
           }
         }
 
@@ -171,10 +85,9 @@ public class DBInfo {
             long daysOverdue = hoursOverdue / 24;
             hoursOverdue %= 24;
             minutesOverdue %= 60;
-            String mess =
-                    "Đã quá hạn " + daysOverdue + " ngày " + hoursOverdue + " giờ " + minutesOverdue
-                            + " phút để trả cuốn: " + bookName;
-            sendNotification(1000, id, mess);
+            String mess = "The book: " + bookName + " is overdue for " + daysOverdue + " day(s) "
+                + hoursOverdue + " hour(s) and " + minutesOverdue + " minutes";
+            sendNotification(1000, id, mess, 1);
 
           }
         }
@@ -186,45 +99,13 @@ public class DBInfo {
     }
   }
 
-  public static String getPassword(String username) {
-    Connection con = DBInfo.conn();
-    String password = null;
-
-    try {
-      String sql = "SELECT password FROM registration WHERE username = ?";
-      PreparedStatement preparedStatement = con.prepareStatement(sql);
-      preparedStatement.setString(1, username); // Gán giá trị cho tham số ?
-
-      ResultSet resultSet = preparedStatement.executeQuery();
-
-      if (resultSet.next()) {
-        password = resultSet.getString("password"); // Lấy mật khẩu
-      } else {
-        System.out.println("Không tìm thấy username: " + username);
-      }
-
-      resultSet.close();
-      preparedStatement.close();
-    } catch (SQLException e) {
-      e.printStackTrace();
-    } finally {
-      try {
-        if (con != null) {
-          con.close();
-        }
-      } catch (SQLException e) {
-        e.printStackTrace();
-      }
-    }
-
-    return password;
-  }
-
+  /**
+   * .
+   */
   public static User getUserById(int userId) {
     String sql = "SELECT * FROM registration WHERE id = ?";
     User user = null;
-    try (Connection conn = DBInfo.conn();
-         PreparedStatement stmt = conn.prepareStatement(sql)) {
+    try (Connection conn = DBInfo.conn(); PreparedStatement stmt = conn.prepareStatement(sql)) {
       stmt.setInt(1, userId);
       ResultSet rs = stmt.executeQuery();
       if (rs.next()) {
@@ -241,7 +122,7 @@ public class DBInfo {
         String coverPhotoLink = rs.getString("Cover_photo_link");
         int reputation = rs.getInt("Reputation");
         user = new User(id, name, username, password, userType, isBanned, avatarLink, MSV,
-                university, phone, coverPhotoLink, reputation);
+            university, phone, coverPhotoLink, reputation);
       }
 
     } catch (SQLException e) {
@@ -250,15 +131,16 @@ public class DBInfo {
     return user;
   }
 
+  /**
+   * .
+   */
   public static ArrayList<Notification> getNotificationsByUserId(int userId) {
     ArrayList<Notification> notifications = new ArrayList<>();
-    String sql = "SELECT * FROM notifications WHERE sender_id = ? OR receiver_id = ?";
+    String sql = "SELECT * FROM notifications WHERE receiver_id = ?";
 
-    try (Connection conn = DBInfo.conn();
-         PreparedStatement stmt = conn.prepareStatement(sql)) {
+    try (Connection conn = DBInfo.conn(); PreparedStatement stmt = conn.prepareStatement(sql)) {
 
       stmt.setInt(1, userId);
-      stmt.setInt(2, userId);
 
       ResultSet rs = stmt.executeQuery();
 
@@ -270,7 +152,9 @@ public class DBInfo {
         Timestamp createdAtTimestamp = rs.getTimestamp("created_at");
         LocalDateTime createdAtLocalDateTime = createdAtTimestamp.toLocalDateTime();
         MyDateTime createdAt = new MyDateTime(createdAtLocalDateTime);
-        Notification notification = new Notification(id, senderId, receiverId, message, createdAt);
+        int type = rs.getInt("type");
+        Notification notification = new Notification(id, senderId, receiverId, message, createdAt,
+            type);
         notifications.add(notification);
       }
 
@@ -281,11 +165,13 @@ public class DBInfo {
     return notifications;
   }
 
+  /**
+   * .
+   */
   public static void deleteNotificationsByUserId(int userId) {
     String sql = "DELETE FROM notifications WHERE sender_id = ? OR receiver_id = ?";
 
-    try (Connection conn = DBInfo.conn();
-         PreparedStatement stmt = conn.prepareStatement(sql)) {
+    try (Connection conn = DBInfo.conn(); PreparedStatement stmt = conn.prepareStatement(sql)) {
       stmt.setInt(1, userId);
       stmt.setInt(2, userId);
       int rowsAffected = stmt.executeUpdate();
@@ -297,14 +183,17 @@ public class DBInfo {
     }
   }
 
-  public static void sendNotification(int senderId, int receiverId, String message) {
-    String sql = "INSERT INTO notifications (sender_id, receiver_id, message) VALUES (?, ?, ?)";
-    try (Connection conn = DBInfo.conn();
-         PreparedStatement stmt = conn.prepareStatement(sql)) {
+  /**
+   * .
+   */
+  public static void sendNotification(int senderId, int receiverId, String message, int type) {
+    String sql = "INSERT INTO notifications (sender_id, receiver_id, message,type) VALUES (?, ?, ?,?)";
+    try (Connection conn = DBInfo.conn(); PreparedStatement stmt = conn.prepareStatement(sql)) {
 
       stmt.setInt(1, senderId);
       stmt.setInt(2, receiverId);
       stmt.setString(3, message);
+      stmt.setInt(4, type);
       int rowsAffected = stmt.executeUpdate();
       if (rowsAffected > 0) {
         System.out.println("Notification sent successfully.");
@@ -316,29 +205,6 @@ public class DBInfo {
       e.printStackTrace();
     }
   }
-
-  public static Vector<String> getValue(String name) {
-    Vector<String> v = new Vector<>();
-
-    return v;
-  }
-
-  public static Vector<Vector> outerVector;
-  public static Vector colsName;
-
-  public static void allBooks() throws SQLException {
-
-  }
-
-  public static Vector<Vector> outerVector1;
-  public static Vector colsName1;
-
-
-  public static Vector<Vector> outerVector2;
-  public static Vector colsName2;
-
-
-  public static String value;
 
   /**
    * check xem trong Database co quyen sach can tim ko?.
@@ -367,6 +233,9 @@ public class DBInfo {
     return false;
   }
 
+  /**
+   * create comment pane.
+   */
   public static void addSlip(String itemName, int id) {
     Connection con = null;
     PreparedStatement preparedStatement = null;
@@ -398,7 +267,7 @@ public class DBInfo {
 
         // Send a notification if the availability update was successful
         if (updateRowsAffected > 0) {
-          sendNotification(1000, id, "Đã mượn sách thành công");
+          sendNotification(1000, id, "Successfully borrowed books\n", 0);
         } else {
           System.out.println("Error: The book is no longer available.");
         }
@@ -472,6 +341,9 @@ public class DBInfo {
     }
   }
 
+  /**
+   * create comment pane.
+   */
   public static void addBorrowRequest(String itemName, int id) {
     Connection con = null;
     PreparedStatement checkStmt = null;
@@ -481,14 +353,15 @@ public class DBInfo {
       con = DBInfo.conn();
 
       // Kiểm tra xem yêu cầu đã tồn tại chưa
-      String checkSql = "SELECT COUNT(*) FROM borrow_request WHERE user_id = ? AND book_name = ?";
+      String checkSql = "SELECT COUNT(*) FROM borrow_request WHERE user_id = ? AND book_name = ? AND accepted = 0";
       checkStmt = con.prepareStatement(checkSql);
       checkStmt.setInt(1, id);
       checkStmt.setString(2, itemName);
 
       ResultSet rs = checkStmt.executeQuery();
       if (rs.next() && rs.getInt(1) > 0) {
-        System.out.println("Yêu cầu mượn sách đã tồn tại cho user_id = " + id + " và sách '" + itemName + "'.");
+        System.out.println(
+            "Yêu cầu mượn sách đã tồn tại cho user_id = " + id + " và sách '" + itemName + "'.");
         return;
       }
       String insertSql = "INSERT INTO borrow_request (user_id, book_name, borrow_date, return_date) VALUES (?, ?, ?, ?)";
@@ -502,23 +375,32 @@ public class DBInfo {
       insertStmt.setTimestamp(4, Timestamp.valueOf(dateTimeAfter10Days));
 
       int rowsAffected = insertStmt.executeUpdate();
-      System.out.println("Yêu cầu mượn sách đã được thêm thành công! Rows affected: " + rowsAffected);
+      System.out.println(
+          "Yêu cầu mượn sách đã được thêm thành công! Rows affected: " + rowsAffected);
 
     } catch (SQLException e) {
       System.out.println("Lỗi khi thêm yêu cầu mượn sách.");
       e.printStackTrace();
     } finally {
       try {
-        if (checkStmt != null) checkStmt.close();
-        if (insertStmt != null) insertStmt.close();
-        if (con != null) con.close();
+        if (checkStmt != null) {
+          checkStmt.close();
+        }
+        if (insertStmt != null) {
+          insertStmt.close();
+        }
+        if (con != null) {
+          con.close();
+        }
       } catch (SQLException e) {
         e.printStackTrace();
       }
     }
   }
 
-
+  /**
+   * create comment pane.
+   */
   public static void acceptBorrowRequest(int userId, String bookName) {
     String sql = "UPDATE borrow_request SET accepted = 1 WHERE user_id = ? AND book_name = ?";
     try (Connection conn = DBInfo.conn(); PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -528,16 +410,25 @@ public class DBInfo {
       int rowsUpdated = stmt.executeUpdate();
 
       if (rowsUpdated > 0) {
-        System.out.println("Yêu cầu mượn sách của user_id = " + userId + " cho sách '" + bookName + "' đã được chấp nhận.");
-        addSlip(bookName,userId);
-        sendNotification(1000,userId,"Yêu cầu mượn sách của bạn đối với cuốn \"" + bookName +"\" đã được phê duyệt");   ;
+        System.out.println("Yêu cầu mượn sách của user_id = " + userId + " cho sách '" + bookName
+            + "' đã được chấp nhận.");
+        addSlip(bookName, userId);
+        sendNotification(1000, userId,
+            "Admin has approved your request to borrow the book: " + bookName, 0);
+        ;
       } else {
-        System.out.println("Không tìm thấy yêu cầu mượn sách cho user_id = " + userId + " và sách '" + bookName + "'.");
+        System.out.println(
+            "Không tìm thấy yêu cầu mượn sách cho user_id = " + userId + " và sách '" + bookName
+                + "'.");
       }
     } catch (SQLException e) {
       System.err.println("Lỗi khi cập nhật yêu cầu mượn sách: " + e.getMessage());
     }
   }
+
+  /**
+   * create comment pane.
+   */
   public static void denyBorrowRequest(int userId, String bookName) {
     String sql = "UPDATE borrow_request SET accepted = 1 WHERE user_id = ? AND book_name = ?";
     try (Connection conn = DBInfo.conn(); PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -547,16 +438,22 @@ public class DBInfo {
       int rowsUpdated = stmt.executeUpdate();
 
       if (rowsUpdated > 0) {
-        sendNotification(1000,userId,"Yêu cầu mượn sách của bạn đối với cuốn \"" + bookName +"\" đã bị từ chối");   ;
+        sendNotification(1000, userId,
+            "Admin has denied your request to borrow the book: " + bookName, 1);
+        ;
 
-        System.out.println("Yêu cầu mượn sách của user_id = " + userId + " cho sách '" + bookName + "' đã bị từ chối.");
+        System.out.println("Yêu cầu mượn sách của user_id = " + userId + " cho sách '" + bookName
+            + "' đã bị từ chối.");
       } else {
-        System.out.println("Không tìm thấy yêu cầu mượn sách cho user_id = " + userId + " và sách '" + bookName + "'.");
+        System.out.println(
+            "Không tìm thấy yêu cầu mượn sách cho user_id = " + userId + " và sách '" + bookName
+                + "'.");
       }
     } catch (SQLException e) {
       System.err.println("Lỗi khi cập nhật yêu cầu mượn sách: " + e.getMessage());
     }
   }
+
   /**
    * tra sach
    */
@@ -599,7 +496,7 @@ public class DBInfo {
 
           if (rowsUpdated > 0) {
             System.out.println("Thay đổi trạng thái thành công, dòng bị ảnh hưởng: " + rowsUpdated);
-            sendNotification(1000, id, "Trả sách thành công");
+            sendNotification(1000, id, "Return the book successfully", 0);
           } else {
             System.out.println("Thay đổi trạng thái không thành công.");
           }
@@ -623,10 +520,12 @@ public class DBInfo {
     }
   }
 
-
-  public static void editBook(Book a, String newTitle, String newAuthor, String newPublisher,
-                              String newThumbnail, String newDescription, String newPageNum, String newLanguage) {
-    String oldTitle = a.getTitle();
+  /**
+   * create comment pane.
+   */
+  public static void editBook(Book book, String newTitle, String newAuthor, String newPublisher,
+      String newThumbnail, String newDescription, String newPageNum, String newLanguage) {
+    String oldTitle = book.getTitle();
 
     // Create a StringBuilder to dynamically build the SQL query
     StringBuilder sql = new StringBuilder("UPDATE book SET ");
@@ -718,7 +617,9 @@ public class DBInfo {
     }
   }
 
-
+  /**
+   * .
+   */
   public static void addPublisher(String name) {
     try {
       Connection con = DBInfo.conn();
@@ -735,6 +636,9 @@ public class DBInfo {
     }
   }
 
+  /**
+   * .
+   */
   public static void deletePublisher(String a) {
     try {
       Connection con = DBInfo.conn();
@@ -751,6 +655,9 @@ public class DBInfo {
     }
   }
 
+  /**
+   * .
+   */
   public static void deleteAuthor(String a) {
     try {
       Connection con = DBInfo.conn();
@@ -767,6 +674,9 @@ public class DBInfo {
     }
   }
 
+  /**
+   * .
+   */
   public static void addAuthor(String a) {
     try {
       Connection con = DBInfo.conn();
@@ -783,6 +693,9 @@ public class DBInfo {
     }
   }
 
+  /**
+   * .
+   */
   public static void addCategory(String categoryName) {
     String checkSql = "SELECT cnt FROM category WHERE name = ?";
     String updateCntSql = "UPDATE category SET cnt = cnt + 1 WHERE name = ?";
@@ -821,14 +734,17 @@ public class DBInfo {
     }
   }
 
+  /**
+   * .
+   */
   public static void deleteOneNotification(Notification notification) {
     int senderId = notification.getSenderId();
     int receiverId = notification.getReceiverId();
     String message = notification.getMessage();
     String sql = "DELETE FROM notifications WHERE sender_id = ? AND receiver_id = ? AND message = ? LIMIT 1";
 
-    try (Connection connection = DBInfo.conn();
-         PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+    try (Connection connection = DBInfo.conn(); PreparedStatement preparedStatement = connection.prepareStatement(
+        sql)) {
 
       preparedStatement.setInt(1, senderId);
       preparedStatement.setInt(2, receiverId);
@@ -843,30 +759,9 @@ public class DBInfo {
     }
   }
 
-  public static ArrayList<Pair<String, Integer>> getCategoryData() {
-    ArrayList<Pair<String, Integer>> categoryList = new ArrayList<>();
-    String sql = "SELECT name, cnt FROM category";
-
-    try (Connection con = DBInfo.conn();
-         PreparedStatement stmt = con.prepareStatement(sql);
-         ResultSet rs = stmt.executeQuery()) {
-
-      while (rs.next()) {
-        String name = rs.getString("name");
-        int cnt = rs.getInt("cnt");
-
-        Pair<String, Integer> category = new Pair<>(name, cnt);
-        categoryList.add(category);
-      }
-
-    } catch (SQLException e) {
-      System.out.println("Error fetching category data");
-      e.printStackTrace();
-    }
-
-    return categoryList;
-  }
-
+  /**
+   * .
+   */
   public static void deleteCategory(String categoryName) {
     String checkSql = "SELECT cnt FROM category WHERE name = ?";
     String updateCntSql = "UPDATE category SET cnt = cnt - 1 WHERE name = ?";
@@ -915,8 +810,13 @@ public class DBInfo {
     }
   }
 
-
-  public static void addBook(Book A) {
+  /**
+   * Adds a book to the database. If a book with the same title already exists, its availability
+   * count will be incremented and the record updated. Otherwise, a new book record is inserted.
+   *
+   * @param book the book to be added, encapsulated in a {@link Book} object.
+   */
+  public static void addBook(Book book) {
     try {
       // Connect to the database
       Connection con = DBInfo.conn();
@@ -924,36 +824,34 @@ public class DBInfo {
       // Check if the book with the same title already exists
       String checkSql = "SELECT avail FROM book WHERE title = ?";
       PreparedStatement checkStatement = con.prepareStatement(checkSql);
-      checkStatement.setString(1, A.getTitle());
+      checkStatement.setString(1, book.getTitle());
       ResultSet resultSet = checkStatement.executeQuery();
 
       if (resultSet.next()) {
-        // If the book exists, increment the avail count
+        // If the book exists, increment the availability count
         int currentAvail = resultSet.getInt("avail");
         System.out.println(
-                "A book with the same title already exists. Updating the existing book...");
+            "A book with the same title already exists. Updating the existing book...");
 
         String updateSql =
-                "UPDATE book SET authors = ?, publisher = ?, publishedDate = ?, thumbnail = ?, ISBN = ?, "
-                        +
-                        "description = ?, numPage = ?, category = ?, price = ?, language = ?, buyLink = ?, avail = ?, rating = ? "
-                        +
-                        "WHERE title = ?";
+            "UPDATE book SET authors = ?, publisher = ?, publishedDate = ?, thumbnail = ?, ISBN = ?, "
+                + "description = ?, numPage = ?, category = ?, price = ?, language = ?, buyLink = ?, avail = ?, rating = ? "
+                + "WHERE title = ?";
         PreparedStatement updateStatement = con.prepareStatement(updateSql);
-        updateStatement.setString(1, A.getAuthors());
-        updateStatement.setString(2, A.getPublisher());
-        updateStatement.setString(3, A.getPublishedDate());
-        updateStatement.setString(4, A.getThumbnail());
-        updateStatement.setString(5, A.getISBN());
-        updateStatement.setString(6, A.getDescription());
-        updateStatement.setString(7, A.getNumPage());
-        updateStatement.setString(8, A.getCategory());
-        updateStatement.setString(9, A.getPrice());
-        updateStatement.setString(10, A.getLanguage());
-        updateStatement.setString(11, A.getBuyLink());
+        updateStatement.setString(1, book.getAuthors());
+        updateStatement.setString(2, book.getPublisher());
+        updateStatement.setString(3, book.getPublishedDate());
+        updateStatement.setString(4, book.getThumbnail());
+        updateStatement.setString(5, book.getISBN());
+        updateStatement.setString(6, book.getDescription());
+        updateStatement.setString(7, book.getNumPage());
+        updateStatement.setString(8, book.getCategory());
+        updateStatement.setString(9, book.getPrice());
+        updateStatement.setString(10, book.getLanguage());
+        updateStatement.setString(11, book.getBuyLink());
         updateStatement.setInt(12, currentAvail + 1); // Increment avail by 1
-        updateStatement.setInt(13, A.getRating());
-        updateStatement.setString(14, A.getTitle());
+        updateStatement.setInt(13, book.getRating());
+        updateStatement.setString(14, book.getTitle());
 
         int rowsUpdated = updateStatement.executeUpdate();
         System.out.println("Book updated successfully! Rows updated: " + rowsUpdated);
@@ -961,77 +859,132 @@ public class DBInfo {
       } else {
         // If the book doesn't exist, insert a new record
         String sql =
-                "INSERT INTO book (title, authors, publisher, publishedDate, thumbnail, ISBN, description, numPage, category, price, language, buyLink, avail, rating) "
-                        +
-                        "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            "INSERT INTO book (title, authors, publisher, publishedDate, thumbnail, ISBN, description, numPage, category, price, language, buyLink, avail, rating) "
+                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         PreparedStatement preparedStatement = con.prepareStatement(sql);
-        preparedStatement.setString(1, A.getTitle());
-        preparedStatement.setString(2, A.getAuthors());
-        preparedStatement.setString(3, A.getPublisher());
-        preparedStatement.setString(4, A.getPublishedDate());
-        preparedStatement.setString(5, A.getThumbnail());
-        preparedStatement.setString(6, A.getISBN());
-        preparedStatement.setString(7, A.getDescription());
-        preparedStatement.setString(8, A.getNumPage());
-        preparedStatement.setString(9, A.getCategory());
-        preparedStatement.setString(10, A.getPrice());
-        preparedStatement.setString(11, A.getLanguage());
-        preparedStatement.setString(12, A.getBuyLink());
-        preparedStatement.setInt(13, 1); // Set avail to 1 for new book
-        preparedStatement.setInt(14, A.getRating());
-
+        preparedStatement.setString(1, book.getTitle());
+        preparedStatement.setString(2, book.getAuthors());
+        preparedStatement.setString(3, book.getPublisher());
+        preparedStatement.setString(4, book.getPublishedDate());
+        preparedStatement.setString(5, book.getThumbnail());
+        preparedStatement.setString(6, book.getISBN());
+        preparedStatement.setString(7, book.getDescription());
+        preparedStatement.setString(8, book.getNumPage());
+        preparedStatement.setString(9, book.getCategory());
+        preparedStatement.setString(10, book.getPrice());
+        preparedStatement.setString(11, book.getLanguage());
+        preparedStatement.setString(12, book.getBuyLink());
+        preparedStatement.setInt(13, 1); // Initial availability count
+        preparedStatement.setInt(14, book.getRating());
         int rowsAffected = preparedStatement.executeUpdate();
         System.out.println("Book added successfully! Rows affected: " + rowsAffected);
         preparedStatement.close();
       }
-
-      // Close the check statement and result set
       checkStatement.close();
       resultSet.close();
-
-      // Additional operations
-      addCategory(A.getCategory());
-      addPublisher(A.getPublisher());
-      addAuthor(A.getAuthors());
-
-      // Close the connection
+      addCategory(book.getCategory());
+      addPublisher(book.getPublisher());
+      addAuthor(book.getAuthors());
       con.close();
-    } catch (SQLException EE) {
+    } catch (SQLException e) {
       System.out.println("Error adding or updating book");
-      EE.printStackTrace();
+      e.printStackTrace();
     }
   }
 
+  public static boolean isBorrowed(String title) {
+    String query = "SELECT COUNT(*) FROM borrow_slip WHERE book_name = ?";
+    try (Connection connection = DBInfo.conn(); PreparedStatement preparedStatement = connection.prepareStatement(
+        query)) {
+      preparedStatement.setString(1, title);
+      try (ResultSet resultSet = preparedStatement.executeQuery()) {
+        if (resultSet.next()) {
+          int count = resultSet.getInt(1);
+          return count > 0;
+        }
+      }
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+    return false;
+  }
+
+  public static ArrayList<Integer> getUserIdListRequestToBorrow(String book_title) {
+    ArrayList<Integer> userIdList = new ArrayList<>();
+    String query =
+        "SELECT br.user_id " + "FROM borrow_request br WHERE br.book_name = ? AND br.accepted = 0";
+
+    try (Connection conn = DBInfo.conn(); PreparedStatement stmt = conn.prepareStatement(query)) {
+      stmt.setString(1, book_title);
+      ResultSet rs = stmt.executeQuery();
+      while (rs.next()) {
+        userIdList.add(rs.getInt("user_id"));
+      }
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
+
+    return userIdList;
+  }
 
   /**
-   * xóa sách.
+   * Xóa sách khỏi hệ thống. Nếu sách không tồn tại hoặc đang được mượn, việc xóa sẽ không thực
+   * hiện. Gửi thông báo tới các người dùng đã yêu cầu mượn sách bị xóa.
    *
-   * @param A tên sách
+   * @param book đối tượng sách cần xóa, được đại diện bởi {@link Book}.
    */
-  public static void deleteBook(Book A) {
+  public static void deleteBook(Book book) {
     try {
       Connection con = DBInfo.conn();
-      if (!inDb(A.getTitle())) {
-        System.out.println("Sách đang được cho mượn hoặc không có trên hệ thống");
+
+      // Kiểm tra nếu sách không tồn tại trong hệ thống
+      if (!inDb(book.getTitle())) {
+        System.out.println("Sách không có trên hệ thống");
         con.close();
         return;
       }
-      String sql = "DELETE FROM book WHERE title = ? LIMIT 1";
+
+      // Kiểm tra nếu sách đang được mượn
+      if (isBorrowed(book.getTitle())) {
+        System.out.println("Sách đang được cho mượn");
+        con.close();
+        return;
+      }
+
+      // Lấy danh sách ID người dùng đã yêu cầu mượn sách này
+      ArrayList<Integer> userIdList = getUserIdListRequestToBorrow(book.getTitle());
+      System.out.println(userIdList.size() + " người dùng đã yêu cầu mượn sách này");
+
+      // Gửi thông báo đến các người dùng
+      for (Integer id : userIdList) {
+        sendNotification(1000, id, " The book \"" + book.getTitle()
+                + "\" that you requested to borrow was removed from the system due to an error detected. Thank you for your understanding!!",
+            1);
+      }
+
+      // Thực hiện xóa sách trong cơ sở dữ liệu
+      String sql = "DELETE FROM book WHERE title = ?";
       PreparedStatement preparedStatement = con.prepareStatement(sql);
-      preparedStatement.setString(1, A.getTitle());
+      preparedStatement.setString(1, book.getTitle());
       int rowsAffected = preparedStatement.executeUpdate();
-      System.out.println("Book deleted successfully! Rows affected: " + rowsAffected);
-      deleteCategory(A.getCategory());
-      deletePublisher(A.getPublisher());
-      deleteAuthor(A.getAuthors());
+      System.out.println("Đã xóa sách thành công! Số hàng bị ảnh hưởng: " + rowsAffected);
+
+      // Xóa các thông tin liên quan đến sách: thể loại, nhà xuất bản, tác giả
+      deleteCategory(book.getCategory());
+      deletePublisher(book.getPublisher());
+      deleteAuthor(book.getAuthors());
+
       preparedStatement.close();
       con.close();
-    } catch (SQLException EE) {
-      System.out.println("Error deleting book");
-      EE.printStackTrace();
+    } catch (SQLException e) {
+      System.out.println("Lỗi khi xóa sách");
+      e.printStackTrace();
     }
   }
 
+  /**
+   * .
+   */
   public static int getUserCount() {
     int count = 0;
     String query = "SELECT MAX(id) FROM registration WHERE usertype = 'user' ";
@@ -1049,24 +1002,9 @@ public class DBInfo {
     return count;
   }
 
-  public static int countUser() {
-    int count = 0;
-    String query = "SELECT COUNT(*) FROM registration WHERE usertype = 'user'";
-
-    try (Connection connection = DBInfo.conn();
-         PreparedStatement preparedStatement = connection.prepareStatement(query);
-         ResultSet resultSet = preparedStatement.executeQuery()) {
-
-      if (resultSet.next()) {
-        count = resultSet.getInt(1);
-      }
-    } catch (SQLException e) {
-      e.printStackTrace();
-    }
-
-    return count;
-  }
-
+  /**
+   * .
+   */
   public static int getBookCount() {
     int count = 0;
     String query = "SELECT COUNT(*) FROM book";
@@ -1084,6 +1022,9 @@ public class DBInfo {
     return count;
   }
 
+  /**
+   * .
+   */
   public static boolean isUsernameExists(String username) {
     boolean exists = false;
     String query = "SELECT 1 FROM registration WHERE username = ? LIMIT 1";
@@ -1108,17 +1049,18 @@ public class DBInfo {
    * @param usertype admin hay ngdung binh thuong
    */
   public static void Register(int id, String name, String username, String password,
-                              String usertype, String MSV) {
+      String usertype, String MSV) {
     try {
       Connection con = DBInfo.conn();
       String sql = "INSERT INTO registration(id,name, username, password, usertype, MSV) VALUE (?,?,?,?,?,?)";
       PreparedStatement preparedStatement = con.prepareStatement(sql);
       int x = getUserCount() + 1;
       System.out.println(x);
+      String hashedPassword = PasswordUtils.hashPassword(password);
       preparedStatement.setInt(1, x);
       preparedStatement.setString(2, name);
       preparedStatement.setString(3, username);
-      preparedStatement.setString(4, password);
+      preparedStatement.setString(4, hashedPassword);
       preparedStatement.setString(5, usertype);
       preparedStatement.setString(6, MSV);
       int rowsAffected = preparedStatement.executeUpdate();
@@ -1133,61 +1075,47 @@ public class DBInfo {
   /**
    * kiem tra mat khau
    *
-   * @param username us
-   * @param password pas
+   * @param username      us
+   * @param plainPassword pas
    * @return true/false
    */
-  public static boolean checkPass(String username, String password) {
-    String sql = "SELECT usertype FROM registration WHERE username = ? AND password = ? AND is_banned = 0";
-
+  public static boolean checkPass(String username, String plainPassword) {
+    String sql = "SELECT password, usertype FROM registration WHERE username = ?";
     try {
       Connection con = DBInfo.conn();
       if (con == null) {
-        System.out.println("KO kết nối đc với db");
+        System.out.println("Không kết nối được với cơ sở dữ liệu!");
         return false;
       }
       PreparedStatement preparedStatement = con.prepareStatement(sql);
       preparedStatement.setString(1, username);
-      preparedStatement.setString(2, password);
       ResultSet resultSet = preparedStatement.executeQuery();
       if (resultSet.next()) {
+        String hashedPassword = resultSet.getString("password");
         String userType = resultSet.getString("usertype");
-        System.out.println("Đúng! Loại người dùng: " + userType);
-        return true;
-      } else {
-        System.out.println("Tên đăng nhập hoặc mật khẩu không đúng!");
 
+        if (PasswordUtils.verifyPassword(plainPassword, hashedPassword)) {
+          System.out.println("Đăng nhập thành công! Loại người dùng: " + userType);
+          return true;
+        } else {
+          System.out.println("Mật khẩu không chính xác!");
+        }
+      } else {
+        System.out.println("Không tìm thấy người dùng hoặc tài khoản bị khóa!");
       }
       preparedStatement.close();
       con.close();
-      return false;
-    } catch (SQLException A) {
-      A.printStackTrace();
-      return false;
+    } catch (SQLException e) {
+      e.printStackTrace();
     }
-  }
 
-  /**
-   * hamf dang nhap.
-   *
-   * @param Username U
-   * @param Password P
-   */
-  public static void login(String Username, String Password) {
-    if (checkPass(Username, Password)) {
-      curPass = Password;
-      curUsername = Username;
-      curId = findUserId(Username, Password);
-      userType = findUserType(Username, Password);
-      curName = findName(curId);
-    }
+    return false;
   }
 
   public static String findName(int id) {
     String name = null;
     String query = "SELECT name FROM registration WHERE id = ?";
-    try (Connection conn = DBInfo.conn();
-         PreparedStatement stmt = conn.prepareStatement(query)) {
+    try (Connection conn = DBInfo.conn(); PreparedStatement stmt = conn.prepareStatement(query)) {
       stmt.setInt(1, id);
       ResultSet rs = stmt.executeQuery();
       if (rs.next()) {
@@ -1199,60 +1127,11 @@ public class DBInfo {
     return name;
   }
 
-  public static String findUserType(String username, String password) {
-    try {
-      Connection con = DBInfo.conn();
-      String sql = "SELECT usertype FROM registration WHERE username = ? AND password = ?";
-      PreparedStatement preparedStatement = con.prepareStatement(sql);
-      preparedStatement.setString(1, username);
-      preparedStatement.setString(2, password);
-      ResultSet resultSet = preparedStatement.executeQuery();
-      if (resultSet.next()) {
-        String type = resultSet.getString("usertype");
-        System.out.println("type của người dùng là: " + type);
-        return type;
-      } else {
-        System.out.println("Không tìm thấy người dùng với username và password đã cho.");
-
-      }
-      preparedStatement.close();
-      con.close();
-      return "KO TIM THAY";
-    } catch (SQLException e) {
-      e.printStackTrace();
-      System.out.println("Loi ham tim type biet user va pass");
-      return "KO TIM THAY";
-    }
-  }
-
-  public static int findUserId(String username, String password) {
-    try {
-      Connection con = DBInfo.conn();
-      String sql = "SELECT id FROM registration WHERE username = ? AND password = ?";
-      PreparedStatement preparedStatement = con.prepareStatement(sql);
-      preparedStatement.setString(1, username);
-      preparedStatement.setString(2, password);
-      ResultSet resultSet = preparedStatement.executeQuery();
-      if (resultSet.next()) {
-        int id = resultSet.getInt("id");
-        System.out.println("ID của người dùng là: " + id);
-        return id;
-      } else {
-        System.out.println("Không tìm thấy người dùng với username và password đã cho.");
-
-      }
-      preparedStatement.close();
-      con.close();
-      return -1;
-    } catch (SQLException e) {
-      e.printStackTrace();
-      System.out.println("Loi ham tim id biet user va pass");
-      return -1;
-    }
-  }
-
+  /**
+   * .
+   */
   public static void updateUser(int id, String newName, String newUsername, String newPassword,
-                                String newAvatarLink) {
+      String newAvatarLink) {
     Connection con = DBInfo.conn();
     if (con == null) {
       System.out.println("Không thể kết nối đến cơ sở dữ liệu.");
@@ -1300,7 +1179,8 @@ public class DBInfo {
         preparedStatement.setString(paramIndex++, newUsername);
       }
       if (newPassword != null) {
-        preparedStatement.setString(paramIndex++, newPassword);
+        String password = PasswordUtils.hashPassword(newPassword);
+        preparedStatement.setString(paramIndex++, password);
       }
       if (newAvatarLink != null) {
         preparedStatement.setString(paramIndex++, newAvatarLink);
@@ -1330,20 +1210,22 @@ public class DBInfo {
     }
   }
 
+  /**
+   * .
+   */
   public static Pair<Integer, Integer> getOverdueAndUpcoming(int id) {
 
     int upcoming = 0;
     int overdue = 0;
 
-    String sqlUpcoming = "SELECT book_name, return_date FROM borrow_slip " +
-            "WHERE return_date BETWEEN NOW() AND DATE_ADD(NOW(), INTERVAL 11 DAY) " +
-            "AND user_id = ? ORDER BY return_date";
+    String sqlUpcoming = "SELECT book_name, return_date FROM borrow_slip "
+        + "WHERE return_date BETWEEN NOW() AND DATE_ADD(NOW(), INTERVAL 11 DAY) "
+        + "AND user_id = ? ORDER BY return_date";
 
     String sqlOverdue = "SELECT book_name, return_date FROM borrow_slip WHERE return_date < NOW() AND user_id = ?";
 
-    try (Connection conn = DBInfo.conn();
-         PreparedStatement preparedStatement = conn.prepareStatement(sqlUpcoming);
-         PreparedStatement statement2 = conn.prepareStatement(sqlOverdue)) {
+    try (Connection conn = DBInfo.conn(); PreparedStatement preparedStatement = conn.prepareStatement(
+        sqlUpcoming); PreparedStatement statement2 = conn.prepareStatement(sqlOverdue)) {
 
       preparedStatement.setInt(1, id);
       try (ResultSet resultSet = preparedStatement.executeQuery()) {
@@ -1366,14 +1248,17 @@ public class DBInfo {
     return new Pair<Integer, Integer>(upcoming, overdue);
   }
 
+  /**
+   * .
+   */
   public static int countBorrowed() {
     int upcoming = 0;
 
-    String sqlUpcoming = "SELECT book_name, return_date FROM borrow_slip " +
-            "WHERE return_date BETWEEN NOW() AND DATE_ADD(NOW(), INTERVAL 11 DAY)";
+    String sqlUpcoming = "SELECT book_name, return_date FROM borrow_slip "
+        + "WHERE return_date BETWEEN NOW() AND DATE_ADD(NOW(), INTERVAL 11 DAY)";
 
-    try (Connection conn = DBInfo.conn();
-         PreparedStatement preparedStatement = conn.prepareStatement(sqlUpcoming)) {
+    try (Connection conn = DBInfo.conn(); PreparedStatement preparedStatement = conn.prepareStatement(
+        sqlUpcoming)) {
 
       ResultSet resultSet = preparedStatement.executeQuery();
 
@@ -1389,13 +1274,16 @@ public class DBInfo {
     return upcoming;
   }
 
+  /**
+   * .
+   */
   public static int countOverdue() {
     int ret = 0;
 
     String sql = "SELECT book_name, return_date FROM borrow_slip WHERE return_date < NOW()";
 
-    try (Connection conn = DBInfo.conn();
-         PreparedStatement preparedStatement = conn.prepareStatement(sql)) {
+    try (Connection conn = DBInfo.conn(); PreparedStatement preparedStatement = conn.prepareStatement(
+        sql)) {
 
       ResultSet resultSet = preparedStatement.executeQuery();
 
@@ -1421,9 +1309,8 @@ public class DBInfo {
    * @param newPassword pass moi
    */
   public static void updateUser(int id, String newName, String newUsername, String newPassword,
-                                String newAvatarLink,
-                                String newMSV, String newUniversity, String newPhone,
-                                String newCoverPhotoLink, Integer newReputation) {
+      String newAvatarLink, String newMSV, String newUniversity, String newPhone,
+      String newCoverPhotoLink, Integer newReputation) {
 
     Connection con = DBInfo.conn();
     if (con == null) {
@@ -1510,7 +1397,8 @@ public class DBInfo {
         preparedStatement.setString(paramIndex++, newUsername);
       }
       if (newPassword != null) {
-        preparedStatement.setString(paramIndex++, newPassword);
+        String password = PasswordUtils.hashPassword(newPassword);
+        preparedStatement.setString(paramIndex++, password);
       }
       if (newAvatarLink != null) {
         preparedStatement.setString(paramIndex++, newAvatarLink);
@@ -1557,36 +1445,8 @@ public class DBInfo {
   }
 
   /**
-   * chinh sua email ng dung.
-   *
-   * @param id       id
-   * @param newEmail E
+   * .
    */
-  public static void updateEmail(int id, String newEmail) {
-    Connection con = DBInfo.conn();
-    try {
-
-      String sql = "UPDATE registration SET username = ? WHERE id = ?";
-      PreparedStatement preparedStatement = con.prepareStatement(sql);
-
-      preparedStatement.setString(1, newEmail);
-      preparedStatement.setInt(2, id);
-      int rowsAffected = 0;
-      System.out.println(rowsAffected);
-      rowsAffected = preparedStatement.executeUpdate();
-
-      if (rowsAffected > 0) {
-        System.out.println("Cập nhật thành công!");
-      } else {
-        System.out.println("Không tìm thấy người dùng với id: " + id);
-      }
-      preparedStatement.close();
-      con.close();
-    } catch (SQLException EE) {
-      EE.printStackTrace();
-      System.out.println("Loi sua email");
-    }
-  }
 
   public static void DeleteUser(String name) {
     Connection con = DBInfo.conn();
@@ -1613,6 +1473,9 @@ public class DBInfo {
     }
   }
 
+  /**
+   * .
+   */
   public static void rateBook(String itemName, int score) {
     try {
       Connection con = DBInfo.conn();
@@ -1670,15 +1533,9 @@ public class DBInfo {
       PreparedStatement ps = con.prepareStatement(query);
       ResultSet res = ps.executeQuery();
       while (res.next()) {
-        User user = new User(
-                res.getInt("id"),
-                res.getString("name"),
-                res.getString("username"),
-                res.getString("password"),
-                res.getString("usertype"),
-                res.getBoolean("is_banned"),
-                res.getString("avatar_link")
-        );
+        User user = new User(res.getInt("id"), res.getString("name"), res.getString("username"),
+            res.getString("password"), res.getString("usertype"), res.getBoolean("is_banned"),
+            res.getString("avatar_link"));
         ret.add(user);
       }
     } catch (SQLException e) {
@@ -1687,6 +1544,9 @@ public class DBInfo {
     return ret;
   }
 
+  /**
+   * .
+   */
   public static Book getBook(String name) {
     Connection con = null;
     PreparedStatement preparedStatement = null;
@@ -1746,12 +1606,14 @@ public class DBInfo {
     return null;
   }
 
+  /**
+   * .
+   */
   public static ArrayList<Pair<Book, MyDateTime>> getBorrowedBookList(int id) {
     ArrayList<Pair<Book, MyDateTime>> ret = new ArrayList<>();
     String query = "SELECT * FROM borrow_slip WHERE user_id = ?";
 
-    try (Connection con = DBInfo.conn();
-         PreparedStatement ps = con.prepareStatement(query)) {
+    try (Connection con = DBInfo.conn(); PreparedStatement ps = con.prepareStatement(query)) {
 
       ps.setInt(1, id);
       try (ResultSet res = ps.executeQuery()) {
@@ -1845,9 +1707,8 @@ public class DBInfo {
         String buyLink = resultSet.getString("buyLink");
         int avail = resultSet.getInt("avail");
         int rating = resultSet.getInt("rating");
-        Book book = new Book(title, ISBN, Author, Publisher, publishedDate,
-                description, thumbnail, numPage, Category, price,
-                language, buyLink, avail, rating);
+        Book book = new Book(title, ISBN, Author, Publisher, publishedDate, description, thumbnail,
+            numPage, Category, price, language, buyLink, avail, rating);
         bookList.add(book);
       }
     } catch (SQLException e) {
@@ -1870,7 +1731,9 @@ public class DBInfo {
     return bookList;
   }
 
-
+  /**
+   * .
+   */
   public static String getString(String author, String category, String publisher) {
     int prev = 0;
     String sql = "SELECT title, ISBN, authors, publisher, publishedDate, description,thumbnail, numPage, category, price, language, buyLink,avail,rating FROM book";
@@ -1899,16 +1762,25 @@ public class DBInfo {
     return sql;
   }
 
-  public static void addComment(String book_title, String content) {
+  /**
+   * .
+   */
+  public static void addComment(Comment comment) {
     try {
       Connection conn = DBInfo.conn();
-      String sql = "INSERT INTO comment (book_title, username, time, content) VALUES (?, ?, ?,?)";
+      String bookTitle = comment.getBookTitle();
+      String username = comment.getUsername();
+      MyDateTime time = comment.getTime();
+      String content = comment.getContent();
+      int rate = comment.getRate();
+      String sql = "INSERT INTO comment (book_title, username, time, content,rate) VALUES (?, ?, ?, ?,?)";
       PreparedStatement stmt = conn.prepareStatement(sql);
-      stmt.setString(1, book_title);
-      stmt.setString(2, curUsername);
-      java.sql.Date currentDate = java.sql.Date.valueOf(LocalDate.now());
-      stmt.setDate(3, currentDate);
+      stmt.setString(1, bookTitle);
+      stmt.setString(2, username);
+      stmt.setTimestamp(3, Timestamp.valueOf(time.toLocalDateTime()));
       stmt.setString(4, content);
+      stmt.setInt(5, rate);
+      rateBook(bookTitle, rate);
       int rowsInserted = stmt.executeUpdate();
       if (rowsInserted > 0) {
         System.out.println("Thêm bình luận thành công!");
@@ -1917,45 +1789,25 @@ public class DBInfo {
       e.printStackTrace();
     }
   }
-  public static void deleteComment(String book_title, String content) {
-    try {
-      Connection conn = DBInfo.conn();
-      String sql = "DELETE FROM comment (book_title, username, time, content) VALUES (?, ?, ?,?)";
-      PreparedStatement stmt = conn.prepareStatement(sql);
-      stmt.setString(1, book_title);
-      stmt.setString(2, curUsername);
-      java.sql.Date currentDate = java.sql.Date.valueOf(LocalDate.now());
-      stmt.setDate(3, currentDate);
-      stmt.setString(4, content);
-      int rowsInserted = stmt.executeUpdate();
-      if (rowsInserted > 0) {
-        System.out.println("Xóa bình luận thành công!");
-      }
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
-  }
 
-  public static ArrayList<CustomData> getCommentList(String book_title) {
-    ArrayList<CustomData> ret = new ArrayList<>();
+
+  public static ArrayList<Comment> getCommentList(Book book) {
+    ArrayList<Comment> ret = new ArrayList<>();
     try {
+      String bookTitle = book.getTitle();
       Connection conn = DBInfo.conn();
-      // Sử dụng câu SQL với PreparedStatement
-      String sql = "SELECT * from comment WHERE book_title = ?";
+      String sql = "SELECT * FROM comment WHERE book_title = ?";
       PreparedStatement statement = conn.prepareStatement(sql);
-
-      // Sử dụng phương thức setString để thiết lập giá trị cho tham số
-      statement.setString(1, book_title);
-
-      // Thực hiện câu lệnh truy vấn
+      statement.setString(1, bookTitle);
       ResultSet resultSet = statement.executeQuery();
       while (resultSet.next()) {
-        ret.add(new CustomData(
-                resultSet.getString("username"),
-                resultSet.getDate("time").toString(),
-                resultSet.getString("content"),
-                "dummy"
-        ));
+        String username = resultSet.getString("username");
+        LocalDateTime time = resultSet.getTimestamp("time").toLocalDateTime();
+        String content = resultSet.getString("content");
+        int rate = resultSet.getInt("rate");
+        Comment comment = new Comment(bookTitle, username, new MyDateTime(time), content, rate);
+
+        ret.add(comment);
       }
     } catch (Exception e) {
       e.printStackTrace();
@@ -1963,6 +1815,9 @@ public class DBInfo {
     return ret;
   }
 
+  /**
+   * .
+   */
   public static void ban(User X) {
     String username = X.getUsername();
     try {
@@ -1983,6 +1838,9 @@ public class DBInfo {
     }
   }
 
+  /**
+   * .
+   */
   public static void unBan(User X) {
     String username = X.getUsername();
     try {
@@ -2003,6 +1861,9 @@ public class DBInfo {
     }
   }
 
+  /**
+   * .
+   */
   public static User getUser(String username) {
     User user = null;
     Connection conn = null;
@@ -2049,6 +1910,9 @@ public class DBInfo {
     return user;
   }
 
+  /**
+   * .
+   */
   public static boolean checkUnique(String X) {
     Connection conn = null;
     PreparedStatement stmt = null;
@@ -2086,6 +1950,9 @@ public class DBInfo {
     return isUnique;
   }
 
+  /**
+   * .
+   */
   public static ArrayList<Book> getBookListByNumView() {
     ArrayList<Book> bookList = new ArrayList<>();
     Connection con = null;
@@ -2113,9 +1980,8 @@ public class DBInfo {
         int avail = resultSet.getInt("avail");
         int rating = resultSet.getInt("rating");
         int numView = resultSet.getInt("numView");
-        Book book = new Book(title, ISBN, Author, Publisher, publishedDate,
-                description, thumbnail, numPage, Category, price,
-                language, buyLink, avail, rating);
+        Book book = new Book(title, ISBN, Author, Publisher, publishedDate, description, thumbnail,
+            numPage, Category, price, language, buyLink, avail, rating);
         book.setNumView(numView);
         bookList.add(book);
       }
@@ -2139,6 +2005,9 @@ public class DBInfo {
     return bookList;
   }
 
+  /**
+   * .
+   */
   public static void updView(Book book) {
     Connection con = null;
     PreparedStatement preparedStatement = null;
@@ -2174,6 +2043,9 @@ public class DBInfo {
     }
   }
 
+  /**
+   * .
+   */
   public static String getAuthor(String bookTitle) {
     Connection con = null;
     PreparedStatement preparedStatement = null;
@@ -2218,23 +2090,29 @@ public class DBInfo {
     return authorName;
   }
 
+  public static boolean validUsername(String username) {
+    if (username == null || username.isEmpty()) {
+      return false;
+    }
+    String emailRegex = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$";
+    return username.matches(emailRegex);
+  }
+
+  /**
+   * .
+   */
+  public static boolean validPassword(String password) {
+    return password.length() >= 8;
+  }
+
   public static void main(String[] args) throws Exception {
+    //  Register(1,"nguyenvana","nguyenvana@gmail.com","password123","user","1");
+    // Register(1,"tranthib","tranthib@gmail.com","password234","user","1");
+    // Register(1,"abc","23020158@vnu.edu.vn","password345","user","1");
+    // Register(1,"bcd","23020161@vnu.edu.vn","password111","user","1");
+    //Register(1,"admin","levanc","password789","admin","1");
 
-    User X = getUser("tranthib");
-
-    User Y = getUser("levanc");
-
-    ArrayList<BookIssue> tmp = BookIssueDB.getReturnedList();
-    for(BookIssue i:tmp){
-      i.displayIssueInfo();
-    }
-    for(BookIssue i:tmp){
-      BookIssueDB.deleteReturned(i);
-    }
-    System.out.println("______________________-");
-    tmp = BookIssueDB.getReturnedList();
-    for(BookIssue i:tmp){
-      i.displayIssueInfo();
-    }
+    //PasswordRecoveryService.sendToken("23020158@vnu.edu.vn");
+    System.out.println(PasswordRecoveryService.checkToken("23020158@vnu.edu.vn", "1441"));
   }
 }

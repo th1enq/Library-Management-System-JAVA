@@ -80,7 +80,7 @@
                   </ImageView>
                   <Pane fx:id="popUpPane" layoutX="866.0" layoutY="80.0" prefHeight="123.0" prefWidth="408.0" style="-fx-background-radius: 20px; -fx-border-radius: 20px; -fx-background-color: #fff; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 10, 0, 0, 0);" visible="false">
                      <children>
-                        <Label fx:id="labelNoti" layoutX="124.0" layoutY="18.0" text="Thông báo từ hệ thống">
+                        <Label fx:id="labelNoti" layoutX="124.0" layoutY="18.0" text=" hệ thống">
                            <font>
                               <Font name="System Bold" size="18.0" />
                            </font>
