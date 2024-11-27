@@ -79,9 +79,10 @@ public class SettingController extends BaseController implements Initializable {
   private ArrayList<Parent> profileSettingMode = new ArrayList<>();
   private ArrayList<Parent> changePasswordMode = new ArrayList<>();
 
-  /**
-   * update.
-   */
+
+  private ToggleSwitch toogleTimeFormat = new ToggleSwitch();
+  private ToggleSwitch toogleEmailNontifications = new ToggleSwitch();
+
   private void update() {
     // Update visibility of UI and profile settings based on currentMode
     for (Parent element : profileSettingMode) {
@@ -132,13 +133,14 @@ public class SettingController extends BaseController implements Initializable {
           "-fx-text-fill: #70727a; -fx-background-color: transparent; -fx-cursor: hand;");
     }
 
+    toogleTimeFormat.switchedOn.set(MainGUI.timeFormat24h);
+    toogleEmailNontifications.switchedOn.set(MainGUI.showNotifications);
+
     // Play the transition
     translateTransition.play();
   }
 
-  /**
-   * mo setting.
-   */
+
   @FXML
   public void accountSetting(ActionEvent actionEvent) {
     if (currentMode == 0) {
@@ -148,9 +150,6 @@ public class SettingController extends BaseController implements Initializable {
     update();
   }
 
-  /**
-   * mo UI setting.
-   */
   @FXML
   public void uiSetting(ActionEvent actionEvent) {
     if (currentMode == 1) {
@@ -160,9 +159,6 @@ public class SettingController extends BaseController implements Initializable {
     update();
   }
 
-  /**
-   * doi mat khau.
-   */
   @FXML
   public void changePassword(ActionEvent actionEvent) {
     if (currentMode == 2) {
@@ -327,54 +323,30 @@ public class SettingController extends BaseController implements Initializable {
 
     universityChoose.getItems().addAll("UET", "UED", "UL", "ULIS");
 
-    ToggleSwitch toogleDarkMode = new ToggleSwitch();
-    toogleDarkMode.setTranslateX(300);
-    toogleDarkMode.setTranslateY(48);
-    toogleDarkMode.switchedOn.addListener((observable, oldValue, newValue) -> {
-      textDarkMode.setText(newValue ? "On" : "Off");
-      UISetting.getInstance().setDarkMode(!UISetting.getInstance().getDarkMode());
-    });
-    toogleDarkMode.switchedOn.set(UISetting.getInstance().getDarkMode());
-    paneContainer.getChildren().add(toogleDarkMode);
-
-    ToggleSwitch toogleTimeFormat = new ToggleSwitch();
     toogleTimeFormat.setTranslateX(300);
-    toogleTimeFormat.setTranslateY(132);
-    toogleTimeFormat.switchedOn.addListener((observable, oldValue, newValue) -> {
-      textTimeFormat.setText(newValue ? "12-hour" : "24-hour");
-      UISetting.getInstance().setTime24formatMode(!UISetting.getInstance().getTime24formatMode());
-    });
-    toogleTimeFormat.switchedOn.set(UISetting.getInstance().getTime24formatMode());
+    toogleTimeFormat.setTranslateY(48);
+    toogleTimeFormat.switchedOn.set(MainGUI.timeFormat24h);
     paneContainer.getChildren().add(toogleTimeFormat);
 
-    ToggleSwitch toogleLanguage = new ToggleSwitch();
-    toogleLanguage.setTranslateX(300);
-    toogleLanguage.setTranslateY(216);
-    toogleLanguage.switchedOn.addListener((observable, oldValue, newValue) -> {
-      textLanguage.setText(newValue ? "Vietnamese" : "English");
-      UISetting.getInstance().setVietnameseMode(!UISetting.getInstance().getVietNameseMode());
-    });
-    toogleLanguage.switchedOn.set(UISetting.getInstance().getVietNameseMode());
-    paneContainer.getChildren().add(toogleLanguage);
-
-    ToggleSwitch toogleEmailNontifications = new ToggleSwitch();
     toogleEmailNontifications.setTranslateX(300);
-    toogleEmailNontifications.setTranslateY(300);
+    toogleEmailNontifications.setTranslateY(132);
+    toogleTimeFormat.switchedOn.addListener((observable, oldValue, newValue) -> {
+      textTimeFormat.setText(newValue ? "24-hour" : "12-hour");
+      MainGUI.timeFormat24h = newValue; // Lưu trạng thái mới
+    });
     toogleEmailNontifications.switchedOn.addListener((observable, oldValue, newValue) -> {
       textEmailNontifications.setText(newValue ? "Enabled" : "Disabled");
+      MainGUI.showNotifications = newValue; // Lưu trạng thái mới
     });
+
+    toogleEmailNontifications.switchedOn.set(MainGUI.showNotifications);
     paneContainer.getChildren().add(toogleEmailNontifications);
 
     uiSettingMode.add(textTimeFormat);
     uiSettingMode.add(textEmailNontifications);
-    uiSettingMode.add(textDarkMode);
-    uiSettingMode.add(textLanguage);
-    uiSettingMode.add(languageLabel);
+
     uiSettingMode.add(timeLabel);
     uiSettingMode.add(emailLabel);
-    uiSettingMode.add(labelDarkMode);
-    uiSettingMode.add(toogleDarkMode);
-    uiSettingMode.add(toogleLanguage);
     uiSettingMode.add(toogleEmailNontifications);
     uiSettingMode.add(toogleTimeFormat);
 

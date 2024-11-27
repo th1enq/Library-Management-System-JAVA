@@ -90,9 +90,17 @@ public class DashBoardController extends BaseController {
    * update current time
    */
   public void updateCurrentTime() {
-    SimpleDateFormat formatter = new SimpleDateFormat("MMM d, yyyy | EEEE, hh:mm:ss a",
-        Locale.getDefault());
-    String currentTimeText = formatter.format(new Date());
-    currentTime.setText(currentTimeText);
+    if (!MainGUI.timeFormat24h) {
+      SimpleDateFormat formatter = new SimpleDateFormat("MMM d, yyyy | EEEE, hh:mm:ss a",
+          Locale.getDefault());
+      String currentTimeText = formatter.format(new Date());
+      currentTime.setText(currentTimeText);
+    } else {
+      SimpleDateFormat formatter = new SimpleDateFormat("MMM d, yyyy | EEEE, HH:mm:ss",
+          Locale.getDefault());
+      String currentTimeText = formatter.format(new Date());
+      currentTime.setText(currentTimeText);
+    }
+
   }
 }
