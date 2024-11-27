@@ -13,17 +13,17 @@ import javafx.scene.layout.VBox;
 import java.util.ArrayList;
 
 public class NotificationController extends BaseController {
+
     @FXML
     public ScrollPane scrollPane;
     @FXML
     public Pane nonNotiPane;
 
     public void displayNotifications() {
-        if(MainGUI.currentUser.getNotifications().isEmpty()) {
+        if (MainGUI.currentUser.getNotifications().isEmpty()) {
             nonNotiPane.setVisible(true);
             scrollPane.setContent(nonNotiPane);
-        }
-        else {
+        } else {
             nonNotiPane.setVisible(false);
             VBox vbox = new VBox();
             vbox.setSpacing(20);
@@ -43,7 +43,8 @@ public class NotificationController extends BaseController {
     // Tạo một Pane cho mỗi thông báo
     private Pane createNotificationPane(Notification notification) {
         Pane pane = new Pane();
-        pane.setStyle("-fx-border-color: #666565; -fx-border-radius: 10px; -fx-background-radius: 10px;");
+        pane.setStyle(
+                "-fx-border-color: #666565; -fx-border-radius: 10px; -fx-background-radius: 10px;");
         pane.setPrefHeight(157);
         pane.setPrefWidth(1134);
 
@@ -97,7 +98,7 @@ public class NotificationController extends BaseController {
     @FXML
     public void clearAllNoti(ActionEvent actionEvent) {
         MainGUI.currentUser.deleteNotifications();
-        sendNotification(1000, 1000, "Đã xóa toàn bộ thông báo !!!");
+        sendNotification(1000, 1000, "Deleted all notifications !!!",0);
         displayNotifications();
     }
 }

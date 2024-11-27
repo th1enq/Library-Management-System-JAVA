@@ -422,8 +422,7 @@ public class SettingController extends BaseController implements Initializable {
   public void updateProfile(ActionEvent actionEvent) {
     if(currentMode == 0) {
       MainGUI.currentUser.update(nameTextField.getText(), emailTextField.getText(), null, avatar.getImage().getUrl(), idTextField.getText(), String.valueOf(universityChoose.getValue()), phoneTextField.getText(), coverImage.getImage().getUrl(), null);
-      sendNotification(1000, MainGUI.currentUser.getId(), "Cập nhật thông tin thành công !!!");
-    }
+      sendNotification(1000, MainGUI.currentUser.getId(), "Successfully update information!!!",0);    }
     else if(currentMode == 2) {
       if(!PasswordUtils.verifyPassword(oldPassword.getText(),MainGUI.currentUser.getPassword())) {
         System.out.println("Mat khau cu khong chinh xac" + " " + MainGUI.currentUser.getPassword() + " " + PasswordUtils.hashPassword(oldPassword.getText()) + " " + oldPassword.getText());
@@ -441,7 +440,7 @@ public class SettingController extends BaseController implements Initializable {
           System.out.println("Mat khau nhap khong khop");
           return;
         }
-        sendNotification(1000, MainGUI.currentUser.getId(), "Đổi mật khẩu thành công !!!");
+        sendNotification(1000, MainGUI.currentUser.getId(), "Password change successfully !!!",0);
         MainGUI.currentUser.update(null, null, newPassword.getText(), null);
       }
     }

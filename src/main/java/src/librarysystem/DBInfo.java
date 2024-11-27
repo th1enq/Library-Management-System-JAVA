@@ -41,7 +41,7 @@ public class DBInfo {
   }
 
   /**
-   *.
+   * .
    */
   public static void NotificationFromSystem() {
 
@@ -68,9 +68,10 @@ public class DBInfo {
             long daysBetween = hoursBetween / 24;
             hoursBetween %= 24;
             minutesBetween %= 60;
-            String mess = "Còn " + daysBetween + " ngày " + hoursBetween + " giờ " + minutesBetween
-                    + " phút nữa là đến hạn trả cuốn: " + bookName;
-            sendNotification(1000, id, mess);
+            String mess = "There are " + daysBetween + " day(s) " + hoursBetween + " hour(s) and "
+                    + minutesBetween
+                    + " minutes left until the deadline to return the book: " + bookName;
+            sendNotification(1000, id, mess,1);
           }
         }
 
@@ -86,9 +87,10 @@ public class DBInfo {
             hoursOverdue %= 24;
             minutesOverdue %= 60;
             String mess =
-                    "Đã quá hạn " + daysOverdue + " ngày " + hoursOverdue + " giờ " + minutesOverdue
-                            + " phút để trả cuốn: " + bookName;
-            sendNotification(1000, id, mess);
+                    "The book: " + bookName + " is overdue for " +
+                            daysOverdue + " day(s) " + hoursOverdue + " hour(s) and " + minutesOverdue
+                            + " minutes";
+            sendNotification(1000, id, mess,1);
 
           }
         }
@@ -155,7 +157,8 @@ public class DBInfo {
         Timestamp createdAtTimestamp = rs.getTimestamp("created_at");
         LocalDateTime createdAtLocalDateTime = createdAtTimestamp.toLocalDateTime();
         MyDateTime createdAt = new MyDateTime(createdAtLocalDateTime);
-        Notification notification = new Notification(id, senderId, receiverId, message, createdAt);
+        int type =rs.getInt("type");
+        Notification notification = new Notification(id, senderId, receiverId, message, createdAt,type);
         notifications.add(notification);
       }
 
@@ -188,14 +191,15 @@ public class DBInfo {
   /**
    * .
    */
-  public static void sendNotification(int senderId, int receiverId, String message) {
-    String sql = "INSERT INTO notifications (sender_id, receiver_id, message) VALUES (?, ?, ?)";
+  public static void sendNotification(int senderId, int receiverId, String message, int type) {
+    String sql = "INSERT INTO notifications (sender_id, receiver_id, message,type) VALUES (?, ?, ?,?)";
     try (Connection conn = DBInfo.conn();
          PreparedStatement stmt = conn.prepareStatement(sql)) {
 
       stmt.setInt(1, senderId);
       stmt.setInt(2, receiverId);
       stmt.setString(3, message);
+      stmt.setInt(4,type);
       int rowsAffected = stmt.executeUpdate();
       if (rowsAffected > 0) {
         System.out.println("Notification sent successfully.");
@@ -269,7 +273,7 @@ public class DBInfo {
 
         // Send a notification if the availability update was successful
         if (updateRowsAffected > 0) {
-          sendNotification(1000, id, "Đã mượn sách thành công");
+          sendNotification(1000, id, "Successfully borrowed books\n",0);
         } else {
           System.out.println("Error: The book is no longer available.");
         }
@@ -416,7 +420,7 @@ public class DBInfo {
                 + "' đã được chấp nhận.");
         addSlip(bookName, userId);
         sendNotification(1000, userId,
-                "Yêu cầu mượn sách của bạn đối với cuốn \"" + bookName + "\" đã được phê duyệt");
+                "Admin has approved your request to borrow the book: " + bookName,0);
         ;
       } else {
         System.out.println(
@@ -441,7 +445,7 @@ public class DBInfo {
 
       if (rowsUpdated > 0) {
         sendNotification(1000, userId,
-                "Yêu cầu mượn sách của bạn đối với cuốn \"" + bookName + "\" đã bị từ chối");
+                "Admin has denied your request to borrow the book: " + bookName,1);
         ;
 
         System.out.println("Yêu cầu mượn sách của user_id = " + userId + " cho sách '" + bookName
@@ -498,7 +502,7 @@ public class DBInfo {
 
           if (rowsUpdated > 0) {
             System.out.println("Thay đổi trạng thái thành công, dòng bị ảnh hưởng: " + rowsUpdated);
-            sendNotification(1000, id, "Trả sách thành công");
+            sendNotification(1000, id, "Return the book successfully",0);
           } else {
             System.out.println("Thay đổi trạng thái không thành công.");
           }
@@ -963,8 +967,7 @@ public class DBInfo {
         sendNotification(
                 1000,
                 id,
-                "Cuốn sách \"" + book.getTitle()
-                        + "\" mà bạn yêu cầu mượn đã không còn trên hệ thống. Mong bạn thông cảm!!!"
+                " The book \""+book.getTitle() + "\" that you requested to borrow was removed from the system due to an error detected. Thank you for your understanding!!",1
         );
       }
 

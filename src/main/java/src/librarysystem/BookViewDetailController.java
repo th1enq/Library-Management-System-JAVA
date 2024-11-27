@@ -186,7 +186,7 @@ public class BookViewDetailController extends BaseController {
                 ;
                 MainGUI.currentUser.muonSach(currentBook);
                 sendNotification(1000, MainGUI.currentUser.getId(),
-                        "Yêu cầu mượn sách đã được gửi. Vui lòng chờ xác nhận từ admin");
+                        "The request to borrow the book has been submitted. Please wait for confirmation from admin",0);
                 containerPane.setEffect(null);
                 borrowPane.setVisible(false);
                 tempPane.setVisible(false);
@@ -201,7 +201,7 @@ public class BookViewDetailController extends BaseController {
 
         submitDelete.setOnAction(event -> {
             DBInfo.deleteBook(currentBook);
-            sendNotification(1000, MainGUI.currentUser.getId(), "Xóa sách thành công !!!");
+            sendNotification(1000, MainGUI.currentUser.getId(), "Delete book successfully!!!",0);
             containerPane.setEffect(null);
             deletePane.setVisible(false);
             tempPane.setVisible(false);
@@ -368,8 +368,7 @@ public class BookViewDetailController extends BaseController {
     public void rentBook(ActionEvent actionEvent) {
         if (!DBInfo.inDb(currentBook.getTitle())) {
             sendNotification(1000, MainGUI.currentUser.getId(),
-                    "Sách đã được người dùng mượn hết!!! Vui lòng quay lại sau!!!");
-            return;
+                    "Books have been borrowed by users!! Please come back later!!",1);            return;
         }
         GaussianBlur blurEffect = new GaussianBlur(10);
         containerPane.setEffect(blurEffect); // Làm mờ phần nội dung chính
@@ -381,12 +380,11 @@ public class BookViewDetailController extends BaseController {
     public void editBook(ActionEvent actionEvent) {
         if (apiMode) {
             sendNotification(1000, MainGUI.currentUser.getId(),
-                    "Bạn không thể chỉnh sửa sách từ thư viện online !!!");
+                    "You can't edit books from online library\n !!!",1);
             return;
         }
         if (MainGUI.currentUser.getUserType().equals("user")) {
-            sendNotification(1000, MainGUI.currentUser.getId(), "Chức năng chỉ dành cho admin!!!!");
-            return;
+            sendNotification(1000, MainGUI.currentUser.getId(), "Functionality for admins only\n!!!!",1);            return;
         }
         editMode = true;
         update();
@@ -396,15 +394,15 @@ public class BookViewDetailController extends BaseController {
     public void removeBook(ActionEvent actionEvent) {
         if (apiMode == true) {
             sendNotification(1000, MainGUI.currentUser.getId(),
-                    "Không thể xóa sách từ thư viện online !!!");
+                    "Cannot delete books from online library !!!",1);
             return;
         }
         if (MainGUI.currentUser.getUserType().equals("user")) {
-            sendNotification(1000, MainGUI.currentUser.getId(), "Chức năng chỉ dành cho admin!!!!");
+            sendNotification(1000, MainGUI.currentUser.getId(), "Functionality for admins only !!!!",1);
             return;
         }
         if (DBInfo.isBorrowed(currentBook.getTitle())) {
-            sendNotification(1000, MainGUI.currentUser.getId(), "Không thể xóa sách đang được nguời dùng mượn");
+            sendNotification(1000, MainGUI.currentUser.getId(), "Cannot delete books that are being borrowed by users",1);
             return;
         }
         GaussianBlur blurEffect = new GaussianBlur(10);
@@ -425,8 +423,7 @@ public class BookViewDetailController extends BaseController {
                 detailPushlisher.getText(), currentBook.getThumbnail(), detailDescription.getText(),
                 detailPaperback.getText(), detailLanguage.getText());
 
-        sendNotification(1000, MainGUI.currentUser.getId(), "Chỉnh sửa sách thành công !!!");
-
+        sendNotification(1000, MainGUI.currentUser.getId(), "Successful Book Editing !!!",0);
         editMode = false;
         update();
     }
@@ -434,10 +431,10 @@ public class BookViewDetailController extends BaseController {
     @FXML
     public void addBook(ActionEvent actionEvent) {
         if (MainGUI.currentUser.getUserType().equals("user")) {
-            sendNotification(1000, MainGUI.currentUser.getId(), "Chức năng chỉ dành cho admin!!!!");
+            sendNotification(1000, MainGUI.currentUser.getId(), "Functionality for admins only!!!!",0);
             return;
         }
-        sendNotification(1000, MainGUI.currentUser.getId(), "Thêm thành công vào thư viện !!!");
+        sendNotification(1000, MainGUI.currentUser.getId(), "Successfully add a book to the library!!!",0);
         DBInfo.addBook(currentBook);
     }
 }

@@ -719,8 +719,10 @@ public class BookIssueController extends BaseController {
                     throw new RuntimeException(e);
                 }
                 updateForUser();
-                sendNotification(1000, MainGUI.currentUser.getId(), " " + currentBook.getTitle() + " thành công !");
-                sendNotification(MainGUI.currentUser.getId(), 999, "User " + MainGUI.currentUser.getId() + " trả sách " + currentBook.getTitle());
+                sendNotification(1000, MainGUI.currentUser.getId(),
+                        " " + currentBook.getTitle() + " successfull !",0);
+                sendNotification(MainGUI.currentUser.getId(), 999,
+                        "User " + MainGUI.currentUser.getId() + " return book " + currentBook.getTitle(),0);
             });
 
             pane.getChildren().add(returnButton);
@@ -876,9 +878,7 @@ public class BookIssueController extends BaseController {
                     writer.newLine(); // thêm dòng mới sau mỗi hàng dữ liệu
                 }
 
-                System.out.println("File CSV đã được xuất thành công!");
-                sendNotification(1000, 1000, "Xuất file CSV thành công");
-            } catch (IOException e) {
+                sendNotification(1000, 1000, "CSV file exported successfully",0);            } catch (IOException e) {
                 e.printStackTrace();
                 System.out.println("Lỗi khi xuất file CSV!");
             }

@@ -30,38 +30,30 @@ import java.util.Optional;
 import java.util.Set;
 
 public class UserController extends BaseController {
+    @FXML
     public Button viewAllButton;
     public Button viewAdminButton;
     public Button viewUserButton;
     public VBox contentVBox;
-    @FXML
     public TextField searchUserButton;
-    @FXML
     public Label totalCustomers;
-    @FXML
     public Label totalAdmins;
-    @FXML
     public Label totalUsers;
-    @FXML
     public Pane containerPane;
-    @FXML
     public Pane tempPane;
-    @FXML
     public ComboBox roleChoice;
-    @FXML
     public TextField userNameAdd;
-    @FXML
     public CheckBox markAll;
-    @FXML
     public Pane removeConfirm;
-    @FXML
     public Button cancelDelete;
-    @FXML
     public Button submitDelete;
-
-    private ArrayList<User> userList = Filter.getInstance().getUserList("ALL");
+    public Button submitBan;
+    public Button cancelBan;
+    public Pane banConfirm;
     @FXML
     private ScrollPane userScrollPane;
+
+    private ArrayList<User> userList = Filter.getInstance().getUserList("ALL");
 
     // 0: View all user
     // 1: view admin
@@ -121,10 +113,13 @@ public class UserController extends BaseController {
         overdueBooksLabel.setLayoutX(621);
         overdueBooksLabel.setLayoutY(22);
 
-        Label lastVisitedLabel = new Label(user.getUsername());
-        lastVisitedLabel.setFont(new Font(14));
-        lastVisitedLabel.setLayoutX(783);
-        lastVisitedLabel.setLayoutY(22);
+        Label statusLabel = new Label(user.isBanned() ? "Banned" : "Actice");
+        statusLabel.setLayoutX(783);
+        statusLabel.setLayoutY(22);
+        statusLabel.setPrefSize(72, 36);
+        statusLabel.setAlignment(Pos.CENTER);
+        statusLabel.setStyle("-fx-background-color: " + (!user.isBanned() ? "#00ff1e" : "#ff1e1e") + "; -fx-background-radius: 20px;");
+        statusLabel.setFont(new Font("System Bold", 13));
 
         // REMOVE Button (FontAwesome "REMOVE")
         Button removeButton = new Button("\uf00d");
@@ -151,13 +146,11 @@ public class UserController extends BaseController {
             if(!selectedUser.contains(user)) {
                 selectedUser.add(user);
             }
-            for (User x : selectedUser) {
-                x.setBanned(true);
-            }
+            banSelectedUser();
         });
 
         // Add all elements to the pane
-        pane.getChildren().addAll(checkBox, nameLabel, roleLabel, borrowedBooksLabel, overdueBooksLabel, lastVisitedLabel, removeButton, warningButton);
+        pane.getChildren().addAll(checkBox, nameLabel, roleLabel, borrowedBooksLabel, overdueBooksLabel, statusLabel, removeButton, warningButton);
 
         return pane;
     }
@@ -169,6 +162,12 @@ public class UserController extends BaseController {
         removeConfirm.setVisible(true);
     }
 
+    private void banSelectedUser() {
+        GaussianBlur blurEffect = new GaussianBlur(10);
+        containerPane.setEffect(blurEffect); // Làm mờ phần nội dung chính
+        banConfirm.setVisible(true);
+    }
+
     private void update() {
         viewAllButton.setStyle("-fx-background-color: transparent; -fx-background-radius: 5px; -fx-cursor: hand;");
         viewAdminButton.setStyle("-fx-background-color: transparent; -fx-background-radius: 5px; -fx-cursor: hand;");
@@ -176,12 +175,15 @@ public class UserController extends BaseController {
         switch (filterMode) {
             case 0:
                 viewAllButton.setStyle("-fx-background-color: #fff; -fx-background-radius: 5px; -fx-cursor: hand;");
+                userList = Filter.getInstance().getUserList("ALL");
                 break;
             case 1:
                 viewAdminButton.setStyle("-fx-background-color: #fff; -fx-background-radius: 5px; -fx-cursor: hand;");
+                userList = Filter.getInstance().getUserList("admin");
                 break;
             case 2:
                 viewUserButton.setStyle("-fx-background-color: #fff; -fx-background-radius: 5px; -fx-cursor: hand;");
+                userList = Filter.getInstance().getUserList("user");
                 break;
         }
 
@@ -228,12 +230,29 @@ public class UserController extends BaseController {
         submitDelete.setOnAction(event -> {
             for (User x : selectedUser) {
                 DBInfo.DeleteUser(x.getUsername());
-                userList.remove(x);
             }
-            sendNotification(1000, 1000, "Xóa thành công");
+            sendNotification(1000, 999, "Delete successfully !!!", 0);
             update();
             removeConfirm.setVisible(false);
             containerPane.setEffect(null);
+            selectedUser.clear();
+        });
+
+        cancelBan.setOnAction(event -> {
+            banConfirm.setVisible(false);
+            containerPane.setEffect(null);
+        });
+
+        submitBan.setOnAction(event -> {
+            for (User x : selectedUser) {
+                DBInfo.ban(x);
+
+            }
+            sendNotification(1000, 999, "Global ban successfully !!!", 0);
+            update();
+            banConfirm.setVisible(false);
+            containerPane.setEffect(null);
+            selectedUser.clear();
         });
     }
 
@@ -334,7 +353,7 @@ public class UserController extends BaseController {
                 workbook.write(fileOut);
                 workbook.close();
                 System.out.println("File Excel đã được xuất thành công!");
-                sendNotification(1000, 1000, "Xuất file Excel thành viên thành công");
+                sendNotification(1000, 1000, "CSV file exported successfully", 1);
             } catch (IOException e) {
                 e.printStackTrace();
                 System.out.println("Lỗi khi xuất file Excel!");
@@ -411,6 +430,6 @@ public class UserController extends BaseController {
         containerPane.setEffect(null);
         userNameAdd.clear();
 
-        sendNotification(1000, 1000, "Tạo thành công tài khoản !!!");
+        sendNotification(1000, 1000, "Account registration successfully !!!", 1);
     }
 }
