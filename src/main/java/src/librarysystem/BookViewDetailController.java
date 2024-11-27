@@ -378,6 +378,10 @@ public class BookViewDetailController extends BaseController {
 
     @FXML
     public void editBook(ActionEvent actionEvent) {
+        if(MainGUI.currentUser.getUserType().equals("user")) {
+            sendNotification(1000, MainGUI.currentUser.getId(), "Functionality for admins only!!!!",1);
+            return;
+        }
         if (apiMode) {
             sendNotification(1000, MainGUI.currentUser.getId(),
                     "You can't edit books from online library\n !!!",1);
@@ -392,6 +396,10 @@ public class BookViewDetailController extends BaseController {
 
     @FXML
     public void removeBook(ActionEvent actionEvent) {
+        if(MainGUI.currentUser.getUserType().equals("user")) {
+            sendNotification(1000, MainGUI.currentUser.getId(), "Functionality for admins only!!!!",1);
+            return;
+        }
         if (apiMode == true) {
             sendNotification(1000, MainGUI.currentUser.getId(),
                     "Cannot delete books from online library !!!",1);
@@ -412,6 +420,10 @@ public class BookViewDetailController extends BaseController {
     }
 
     public void saveEditBook(ActionEvent actionEvent) {
+        if(MainGUI.currentUser.getUserType().equals("user")) {
+            sendNotification(1000, MainGUI.currentUser.getId(), "Functionality for admins only!!!!",1);
+            return;
+        }
         detailTitle.setText(editTitle.getText());
         detailAuthor.setText(editAuthor.getText());
         detailDescription.setText(editDescription.getText());
@@ -431,7 +443,7 @@ public class BookViewDetailController extends BaseController {
     @FXML
     public void addBook(ActionEvent actionEvent) {
         if (MainGUI.currentUser.getUserType().equals("user")) {
-            sendNotification(1000, MainGUI.currentUser.getId(), "Functionality for admins only!!!!",0);
+            sendNotification(1000, MainGUI.currentUser.getId(), "Functionality for admins only!!!!",1);
             return;
         }
         sendNotification(1000, MainGUI.currentUser.getId(), "Successfully add a book to the library!!!",0);

@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextArea?>
@@ -45,52 +44,51 @@
                                 <Font name="System Bold" size="16.0" />
                             </font>
                         </Label>
-                        <Button fx:id="saveAddButton" layoutX="700.0" layoutY="38.0" mnemonicParsing="false" onAction="#saveBook" prefHeight="39.0" prefWidth="129.0" styleClass="green-btn" stylesheets="@stylesheet.css" text="Save">
+                        <Button layoutX="700.0" layoutY="38.0" mnemonicParsing="false" onAction="#saveBook" prefHeight="39.0" prefWidth="129.0" styleClass="green-btn" stylesheets="@stylesheet.css" text="Save">
                             <font>
                                 <Font name="System Bold" size="15.0" />
                             </font>
                         </Button>
-                  <TextField layoutX="714.0" layoutY="197.0" prefHeight="31.0" prefWidth="173.0" styleClass="input-text" stylesheets="@stylesheet.css" />
-                  <TextField layoutX="714.0" layoutY="272.0" prefHeight="31.0" prefWidth="173.0" styleClass="input-text" stylesheets="@stylesheet.css" />
-                  <TextField layoutX="714.0" layoutY="350.0" prefHeight="31.0" prefWidth="173.0" styleClass="input-text" stylesheets="@stylesheet.css" />
-                  <TextArea layoutX="63.0" layoutY="217.0" prefHeight="186.0" prefWidth="285.0" styleClass="text-area-input" stylesheets="@stylesheet.css" />
+                  <TextField fx:id="pushlisher" layoutX="714.0" layoutY="197.0" prefHeight="31.0" prefWidth="173.0" styleClass="input-text" stylesheets="@stylesheet.css" />
+                  <TextField fx:id="language" layoutX="714.0" layoutY="272.0" prefHeight="31.0" prefWidth="173.0" styleClass="input-text" stylesheets="@stylesheet.css" />
+                  <TextField fx:id="paperback" layoutX="714.0" layoutY="350.0" prefHeight="31.0" prefWidth="173.0" styleClass="input-text" stylesheets="@stylesheet.css" />
+                  <TextArea fx:id="description" layoutX="63.0" layoutY="217.0" prefHeight="186.0" prefWidth="285.0" styleClass="text-area-input" stylesheets="@stylesheet.css" />
                   <Label layoutX="494.0" layoutY="167.0" text="Price">
                      <font>
                         <Font name="System Bold" size="16.0" />
                      </font>
                   </Label>
-                  <TextField layoutX="495.0" layoutY="197.0" prefHeight="31.0" prefWidth="173.0" styleClass="input-text" stylesheets="@stylesheet.css" />
+                  <TextField fx:id="price" layoutX="495.0" layoutY="197.0" prefHeight="31.0" prefWidth="173.0" styleClass="input-text" stylesheets="@stylesheet.css" />
                   <Label layoutX="495.0" layoutY="242.0" text="Category">
                      <font>
                         <Font name="System Bold" size="16.0" />
                      </font>
                   </Label>
-                  <TextField layoutX="496.0" layoutY="272.0" prefHeight="31.0" prefWidth="173.0" styleClass="input-text" stylesheets="@stylesheet.css" />
+                  <TextField fx:id="category" layoutX="496.0" layoutY="272.0" prefHeight="31.0" prefWidth="173.0" styleClass="input-text" stylesheets="@stylesheet.css" />
                   <Label layoutX="496.0" layoutY="320.0" text="Rating">
                      <font>
                         <Font name="System Bold" size="16.0" />
                      </font>
                   </Label>
-                  <TextField layoutX="497.0" layoutY="350.0" prefHeight="31.0" prefWidth="173.0" styleClass="input-text" stylesheets="@stylesheet.css" />
+                  <TextField fx:id="rating" layoutX="497.0" layoutY="350.0" prefHeight="31.0" prefWidth="173.0" styleClass="input-text" stylesheets="@stylesheet.css" />
                     </children>
                 </Pane>
                 <AnchorPane layoutX="218.0" layoutY="101.0" prefHeight="313.0" prefWidth="192.0" styleClass="frame-shadow" stylesheets="@stylesheet.css">
                     <children>
-                        <ImageView fx:id="imageView" fitHeight="294.0" fitWidth="263.0" layoutY="7.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fx:id="imageView" fitHeight="294.0" fitWidth="263.0" layoutY="7.0" pickOnBounds="true">
                      <image>
                         <Image url="@../../images/unnamed.jpg" />
                      </image>
                   </ImageView>
                     </children>
                 </AnchorPane>
-            <TextField layoutX="545.0" layoutY="119.0" prefHeight="31.0" prefWidth="173.0" promptText="Title" styleClass="input-text" stylesheets="@stylesheet.css" />
-            <TextField layoutX="545.0" layoutY="174.0" prefHeight="31.0" prefWidth="173.0" promptText="Author" styleClass="input-text" stylesheets="@stylesheet.css" />
+            <TextField fx:id="title" layoutX="545.0" layoutY="119.0" prefHeight="31.0" prefWidth="173.0" promptText="Title" styleClass="input-text" stylesheets="@stylesheet.css" />
+            <TextField fx:id="author" layoutX="545.0" layoutY="174.0" prefHeight="31.0" prefWidth="173.0" promptText="Author" styleClass="input-text" stylesheets="@stylesheet.css" />
             <Label layoutX="473.0" layoutY="36.0" prefHeight="36.0" prefWidth="300.0" text="Add your new books !!!">
                <font>
                   <Font name="System Bold" size="25.0" />
                </font>
             </Label>
-            <FontAwesomeIcon layoutX="70.0" layoutY="172.0" />
             </children>
         </Pane>
     </children>

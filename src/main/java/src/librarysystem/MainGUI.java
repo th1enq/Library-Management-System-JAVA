@@ -234,6 +234,22 @@ public class MainGUI implements Initializable {
         }
     }
 
+    public void returnAddBook() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("AddBook.fxml"));
+            fxml = loader.load();
+
+            AddBookController addBookController = loader.getController();
+
+            addBookController.setMainGUIController(this);
+            mainVbox.getChildren().clear();
+            mainVbox.getChildren().setAll(fxml);
+
+        } catch (IOException ex) {
+            Logger.getLogger(LoginController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
     private void update() {
         language = UISetting.getInstance().getVietNameseMode();
         reset();
@@ -316,7 +332,7 @@ public class MainGUI implements Initializable {
     }
 
     @FXML
-    private void bookView() {
+    public void bookView() {
         currentStage = 1;
         currentStage = 1;
         try {
@@ -339,6 +355,10 @@ public class MainGUI implements Initializable {
 
     @FXML
     private void userView() {
+        if(MainGUI.currentUser.getUserType().equals("user")) {
+            sendNotification(1000, MainGUI.currentUser.getId(), "Functionality for admins only!!!!",1);
+            return;
+        }
         currentStage = 2;
         Loading("UserView.fxml");
     }
@@ -380,6 +400,13 @@ public class MainGUI implements Initializable {
 
         if (currentUser.getId() != receiverId) {
             return;
+        }
+
+        if(type == 0) {
+            imageNoti.setImage(new Image(getClass().getResource("/images/success.png").toExternalForm()));
+        }
+        else {
+            imageNoti.setImage(new Image(getClass().getResource("/images/fail.png").toExternalForm()));
         }
 
         // Make the popUpPane visible and set initial opacity to 0
@@ -432,7 +459,7 @@ public class MainGUI implements Initializable {
         fadeOut.play();
 
         // Update the notification content
-        labelNoti.setText("Thông báo từ " + newNotification.getReceiver());
+        labelNoti.setText("Notice from " + newNotification.getReceiver());
         contentNoti.setText(content);
 
         updateNotifications();
