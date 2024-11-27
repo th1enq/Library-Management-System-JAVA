@@ -1089,7 +1089,7 @@ public class DBInfo {
    * @return true/false
    */
   public static boolean checkPass(String username, String plainPassword) {
-    String sql = "SELECT password, usertype FROM registration WHERE username = ? AND is_banned = 0";
+    String sql = "SELECT password, usertype FROM registration WHERE username = ?";
     try {
       Connection con = DBInfo.conn();
       if (con == null) {

@@ -101,13 +101,13 @@ public class UserController extends BaseController {
         roleLabel.setPrefSize(58, 41);
         roleLabel.setStyle("-fx-background-color: #d6e4ee; -fx-background-radius: 10px;");
 
-        Label borrowedBooksLabel = new Label(String.valueOf(user.getId()));
+        Label borrowedBooksLabel = new Label(String.valueOf(user.getUpcoming()));
         borrowedBooksLabel.setFont(new Font("System Bold", 16));
         borrowedBooksLabel.setTextFill(Paint.valueOf("#4eee4b"));
         borrowedBooksLabel.setLayoutX(450);
         borrowedBooksLabel.setLayoutY(22);
 
-        Label overdueBooksLabel = new Label(String.valueOf(user.getId()));
+        Label overdueBooksLabel = new Label(String.valueOf(user.getOverdue()));
         overdueBooksLabel.setFont(new Font("System Bold", 16));
         overdueBooksLabel.setTextFill(Paint.valueOf("#f63434"));
         overdueBooksLabel.setLayoutX(621);

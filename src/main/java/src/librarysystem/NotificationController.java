@@ -56,7 +56,7 @@ public class NotificationController extends BaseController {
         icon.setSize("2em");
 
         // Thêm tiêu đề
-        Label titleLabel = new Label("Thông báo từ " + notification.getReceiver());
+        Label titleLabel = new Label("Notification from " + notification.getReceiver());
         titleLabel.setLayoutX(82);
         titleLabel.setLayoutY(23);
         titleLabel.setStyle("-fx-font-size: 20px; -fx-font-weight: bold;");

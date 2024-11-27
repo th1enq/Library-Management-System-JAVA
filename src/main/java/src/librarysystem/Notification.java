@@ -76,7 +76,7 @@ class Notification {
     if (senderId == 999) {
       return "admin";
     }
-    return "Hệ thống";
+    return "System";
   }
 
   public int getType() {
