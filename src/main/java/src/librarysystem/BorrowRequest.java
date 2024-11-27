@@ -40,7 +40,7 @@ public class BorrowRequest extends BookIssue {
    * @param accepted Trạng thái chấp nhận yêu cầu mượn sách (1: chấp nhận, 0: không chấp nhận).
    */
   public BorrowRequest(int id, int userId, String username, String bookTitle, String bookAuthor,
-      MyDateTime issueDate, MyDateTime returnDate, int accepted) {
+                       MyDateTime issueDate, MyDateTime returnDate, int accepted) {
     super(userId, username, bookTitle, bookAuthor, issueDate, returnDate, STATUS_PENDING);
     this.id = id;
     this.accepted = accepted;
@@ -91,15 +91,15 @@ public class BorrowRequest extends BookIssue {
   @Override
   public String toString() {
     return "BorrowRequest{" +
-        "id=" + id +
-        ", userId=" + getUserId() +
-        ", username='" + getUsername() + '\'' +
-        ", bookTitle='" + getBookTitle() + '\'' +
-        ", bookAuthor='" + getBookAuthor() + '\'' +
-        ", issueDate=" + getIssueDate() +
-        ", returnDate=" + (getReturnDate() != null ? getReturnDate() : "Chưa thiết lập") +
-        ", status='" + getStatus() + '\'' +
-        ", accepted=" + accepted +
-        '}';
+            "id=" + id +
+            ", userId=" + getUserId() +
+            ", username='" + getUsername() + '\'' +
+            ", bookTitle='" + getBookTitle() + '\'' +
+            ", bookAuthor='" + getBookAuthor() + '\'' +
+            ", issueDate=" + getIssueDate() +
+            ", returnDate=" + (getReturnDate() != null ? getReturnDate() : "Chưa thiết lập") +
+            ", status='" + getStatus() + '\'' +
+            ", accepted=" + accepted +
+            '}';
   }
 }

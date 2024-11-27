@@ -18,20 +18,20 @@
    <children>
       <Pane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="736.0" prefWidth="1180.0">
          <children>
-            <Label layoutX="483.0" layoutY="14.0" text="Thư viện Sinh viên">
+            <Label layoutX="469.0" layoutY="14.0" text="VNU Library System">
                <font>
                   <Font name="System Bold" size="31.0" />
                </font>
             </Label>
-            <Label layoutX="413.0" layoutY="73.0" text="Khám phá  kho tàng tri thức thông qua hàng ngàn cuốn sách" textFill="#484848">
+            <Label layoutX="387.0" layoutY="74.0" text="Explore the treasure trove of knowledge through thousands of books." textFill="#868686">
                <font>
-                  <Font size="15.0" />
+                  <Font name="System Bold Italic" size="15.0" />
                </font>
             </Label>
             <StackPane layoutX="311.0" layoutY="124.0" prefHeight="38.0" prefWidth="613.0">
                <children>
-                  <TextField fx:id="bookQuery" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="38.0" prefWidth="616.0" promptText="Tìm kiếm" style="-fx-background-color: #fff; -fx-background-radius: 50px; -fx-padding: 0 0 0 30px; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0, 0, 4); -fx-overflow: hidden; -fx-spacing: 10px;" stylesheets="@stylesheet.css" />
-                  <Button mnemonicParsing="false" onAction="#searchBook" prefHeight="30.0" prefWidth="123.0" style="-fx-background-radius: 50px; -fx-padding: 5 20; -fx-background-color: #000; -fx-cursor: hand;" styleClass="search-btn" stylesheets="@stylesheet.css" text="  Tìm kiếm" textFill="WHITE" StackPane.alignment="CENTER_RIGHT">
+                  <TextField fx:id="bookQuery" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="38.0" prefWidth="616.0" promptText="Type to search book" style="-fx-background-color: #fff; -fx-background-radius: 50px; -fx-padding: 0 0 0 30px; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0, 0, 4); -fx-overflow: hidden; -fx-spacing: 10px;" stylesheets="@stylesheet.css" />
+                  <Button mnemonicParsing="false" onAction="#searchBook" prefHeight="30.0" prefWidth="123.0" style="-fx-background-radius: 50px; -fx-padding: 5 20; -fx-background-color: #000; -fx-cursor: hand;" styleClass="search-btn" stylesheets="@stylesheet.css" text="Search" textFill="WHITE" StackPane.alignment="CENTER_RIGHT">
                      <graphic>
                         <FontAwesomeIcon fill="#f8f8f8" glyphName="SEARCH" />
                      </graphic>
@@ -69,7 +69,7 @@
                   <FlowPane fx:id="flowPane" alignment="TOP_LEFT" hgap="20" maxWidth="1.7976931348623157E308" vgap="20" />
                </content>
             </ScrollPane>
-            <ComboBox fx:id="filterModeButton" layoutX="972.0" layoutY="128.0" prefHeight="30.0" prefWidth="99.0" style="-fx-background-radius: 50px;" />
+            <ComboBox fx:id="filterModeButton" layoutX="972.0" layoutY="128.0" prefHeight="30.0" prefWidth="99.0" style="-fx-background-radius: 50px; -fx-background-color: transparent; -fx-border-color: #000; -fx-border-radius: 50;" />
          </children>
          <VBox.margin>
             <Insets />

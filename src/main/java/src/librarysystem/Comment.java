@@ -134,10 +134,10 @@ public class Comment {
   @Override
   public String toString() {
     return "Comment{" +
-        " bookTitle='" + bookTitle + '\'' +
-        ", username='" + username + '\'' +
-        ", time=" + time +
-        ", content='" + content + '\'' + ", rate= " + rate + '\'' +
-        '}';
+            " bookTitle='" + bookTitle + '\'' +
+            ", username='" + username + '\'' +
+            ", time=" + time +
+            ", content='" + content + '\'' + ", rate= " + rate + '\'' +
+            '}';
   }
 }
