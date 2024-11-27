@@ -379,7 +379,7 @@ public class BookViewDetailController extends BaseController {
     @FXML
     public void editBook(ActionEvent actionEvent) {
         if(MainGUI.currentUser.getUserType().equals("user")) {
-            sendNotification(1000, MainGUI.currentUser.getId(), "Functionality for admins only!!!!",0);
+            sendNotification(1000, MainGUI.currentUser.getId(), "Functionality for admins only!!!!",1);
             return;
         }
         if (apiMode) {
@@ -397,7 +397,7 @@ public class BookViewDetailController extends BaseController {
     @FXML
     public void removeBook(ActionEvent actionEvent) {
         if(MainGUI.currentUser.getUserType().equals("user")) {
-            sendNotification(1000, MainGUI.currentUser.getId(), "Functionality for admins only!!!!",0);
+            sendNotification(1000, MainGUI.currentUser.getId(), "Functionality for admins only!!!!",1);
             return;
         }
         if (apiMode == true) {
@@ -421,7 +421,7 @@ public class BookViewDetailController extends BaseController {
 
     public void saveEditBook(ActionEvent actionEvent) {
         if(MainGUI.currentUser.getUserType().equals("user")) {
-            sendNotification(1000, MainGUI.currentUser.getId(), "Functionality for admins only!!!!",0);
+            sendNotification(1000, MainGUI.currentUser.getId(), "Functionality for admins only!!!!",1);
             return;
         }
         detailTitle.setText(editTitle.getText());
@@ -443,7 +443,7 @@ public class BookViewDetailController extends BaseController {
     @FXML
     public void addBook(ActionEvent actionEvent) {
         if (MainGUI.currentUser.getUserType().equals("user")) {
-            sendNotification(1000, MainGUI.currentUser.getId(), "Functionality for admins only!!!!",0);
+            sendNotification(1000, MainGUI.currentUser.getId(), "Functionality for admins only!!!!",1);
             return;
         }
         sendNotification(1000, MainGUI.currentUser.getId(), "Successfully add a book to the library!!!",0);

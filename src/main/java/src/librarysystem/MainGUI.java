@@ -340,7 +340,7 @@ public class MainGUI implements Initializable {
     @FXML
     private void userView() {
         if(MainGUI.currentUser.getUserType().equals("user")) {
-            sendNotification(1000, MainGUI.currentUser.getId(), "Functionality for admins only!!!!",0);
+            sendNotification(1000, MainGUI.currentUser.getId(), "Functionality for admins only!!!!",1);
             return;
         }
         currentStage = 2;
@@ -384,6 +384,13 @@ public class MainGUI implements Initializable {
 
         if (currentUser.getId() != receiverId) {
             return;
+        }
+
+        if(type == 0) {
+            imageNoti.setImage(new Image(getClass().getResource("/images/success.png").toExternalForm()));
+        }
+        else {
+            imageNoti.setImage(new Image(getClass().getResource("/images/fail.png").toExternalForm()));
         }
 
         // Make the popUpPane visible and set initial opacity to 0
