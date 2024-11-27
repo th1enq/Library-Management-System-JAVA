@@ -42,11 +42,13 @@ public class EmailSendCodeController extends BaseController {
             emailCode.append(thirdNum.getText());
             emailCode.append(fourthNum.getText());
             if(PasswordRecoveryService.checkToken(userEmail.getText(), emailCode.toString())) {
-                System.out.println("Juan !!!");
                 returnPasswordReset(userEmail.getText());
             }
             else {
-                System.out.println("Deo juan !!!");
+                firstNum.setStyle("-fx-focus-color: transparent; -fx-faint-focus-color: transparent; -fx-border-color: red; -fx-background-radius: 10; -fx-border-radius: 10; -fx-border-width: 2;");
+                secondNum.setStyle("-fx-focus-color: transparent; -fx-faint-focus-color: transparent; -fx-border-color: red; -fx-background-radius: 10; -fx-border-radius: 10; -fx-border-width: 2;");
+                thirdNum.setStyle("-fx-focus-color: transparent; -fx-faint-focus-color: transparent; -fx-border-color: red; -fx-background-radius: 10; -fx-border-radius: 10; -fx-border-width: 2;");
+                fourthNum.setStyle("-fx-focus-color: transparent; -fx-faint-focus-color: transparent; -fx-border-color: red; -fx-background-radius: 10; -fx-border-radius: 10; -fx-border-width: 2;");
             }
         });
 

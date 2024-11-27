@@ -24,7 +24,7 @@
         </Label>
       <StackPane alignment="CENTER" layoutX="25.0" layoutY="194.0" prefHeight="45.0" prefWidth="200.0" styleClass="tf-box">
          <children>
-            <TextField fx:id="userName" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" promptText="Họ và Tên" styleClass="tf-box" stylesheets="@stylesheet.css" HBox.hgrow="ALWAYS">
+            <TextField fx:id="userName" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" promptText="Full Name" styleClass="tf-box" stylesheets="@stylesheet.css" HBox.hgrow="ALWAYS">
                <font>
                   <Font size="15.0" />
                </font>
@@ -47,7 +47,7 @@
       </StackPane>
       <StackPane alignment="CENTER" layoutX="10.0" layoutY="151.0" prefHeight="45.0" prefWidth="200.0" styleClass="tf-box">
          <children>
-            <TextField fx:id="userStudentID" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" promptText="Mã sinh viên" styleClass="tf-box" stylesheets="@stylesheet.css" HBox.hgrow="ALWAYS">
+            <TextField fx:id="userStudentID" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" promptText="Student ID" styleClass="tf-box" stylesheets="@stylesheet.css" HBox.hgrow="ALWAYS">
                <font>
                   <Font size="15.0" />
                </font>

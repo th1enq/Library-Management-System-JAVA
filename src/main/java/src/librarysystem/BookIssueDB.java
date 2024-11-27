@@ -6,8 +6,17 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+/**
+ * The {@code BookIssueDB} class provides methods for interacting with the database to retrieve and
+ * manage book issue records such as pending, delayed, returned, and borrowed books.
+ */
 public class BookIssueDB {
 
+    /**
+     * Retrieves the list of pending book issues.
+     *
+     * @return a list of {@link BookIssue} objects representing pending book issues.
+     */
     public static ArrayList<BookIssue> getPendingList() {
         ArrayList<BookIssue> ret = new ArrayList<>();
         Connection con = null;
@@ -65,6 +74,12 @@ public class BookIssueDB {
         return ret;
     }
 
+    /**
+     * Retrieves the list of delayed book issues, i.e., those whose return date is before the current
+     * date.
+     *
+     * @return a list of {@link BookIssue} objects representing delayed book issues.
+     */
     public static ArrayList<BookIssue> getDelayList() {
         ArrayList<BookIssue> ret = new ArrayList<>();
         Connection con = null;
@@ -122,6 +137,11 @@ public class BookIssueDB {
         return ret;
     }
 
+    /**
+     * Retrieves the list of returned book issues.
+     *
+     * @return a list of {@link BookIssue} objects representing returned book issues.
+     */
     public static ArrayList<BookIssue> getReturnedList() {
         ArrayList<BookIssue> ret = new ArrayList<>();
         Connection con = null;
@@ -178,6 +198,12 @@ public class BookIssueDB {
         return ret;
     }
 
+    /**
+     * Retrieves the list of late book issues, i.e., those that have been borrowed for more than 10
+     * days.
+     *
+     * @return a list of {@link BookIssue} objects representing late book issues.
+     */
     public static ArrayList<BookIssue> getLateList() {
         ArrayList<BookIssue> ret = new ArrayList<>();
         Connection con = null;
@@ -241,7 +267,11 @@ public class BookIssueDB {
         return ret;
     }
 
-
+    /**
+     * Retrieves the list of borrowed books that have not yet been returned.
+     *
+     * @return a list of {@link BookIssue} objects representing currently borrowed books.
+     */
     public static ArrayList<BookIssue> getBorrowedList() {
         ArrayList<BookIssue> ret = new ArrayList<>();
         Connection con = null;
@@ -298,6 +328,12 @@ public class BookIssueDB {
         return ret;
     }
 
+    /**
+     * Retrieves the combined list of all book issues (pending, delayed, returned, late, and
+     * borrowed).
+     *
+     * @return a list of {@link BookIssue} objects representing all book issues.
+     */
     public static ArrayList<BookIssue> getTotalList() {
         ArrayList<BookIssue> ret = new ArrayList<>();
         ArrayList<BookIssue> ret1 = getPendingList();
@@ -313,6 +349,12 @@ public class BookIssueDB {
         return ret;
     }
 
+    /**
+     * Retrieves the list of borrowed books for a specific user by their user ID.
+     *
+     * @param userId the user ID whose borrowed books are to be retrieved.
+     * @return a list of {@link BookIssue} objects representing borrowed books for the specified user.
+     */
     public static ArrayList<BookIssue> getBorrowedListByUserId(int userId) {
         ArrayList<BookIssue> ret = new ArrayList<>();
         Connection con = null;
@@ -370,6 +412,13 @@ public class BookIssueDB {
         return ret;
     }
 
+    /**
+     * Retrieves the list of pending book issues for a specific user by their user ID.
+     *
+     * @param userId the user ID whose pending book issues are to be retrieved.
+     * @return a list of {@link BookIssue} objects representing pending book issues for the specified
+     * user.
+     */
     public static ArrayList<BookIssue> getPendingListByUserId(int userId) {
         ArrayList<BookIssue> ret = new ArrayList<>();
         Connection con = null;
@@ -427,6 +476,13 @@ public class BookIssueDB {
         return ret;
     }
 
+    /**
+     * Retrieves the list of returned book issues for a specific user by their user ID.
+     *
+     * @param userId the user ID whose returned book issues are to be retrieved.
+     * @return a list of {@link BookIssue} objects representing returned book issues for the specified
+     * user.
+     */
     public static ArrayList<BookIssue> getReturnedListByUserId(int userId) {
         ArrayList<BookIssue> ret = new ArrayList<>();
         Connection con = null;
@@ -435,7 +491,9 @@ public class BookIssueDB {
 
         try {
             con = DBInfo.conn();
-            String sql = "SELECT user_id, book_name, borrow_date, return_date FROM borrow_history WHERE user_id = " +userId;
+            String sql =
+                    "SELECT user_id, book_name, borrow_date, return_date FROM borrow_history WHERE user_id = "
+                            + userId;
             pstmt = con.prepareStatement(sql);
             rs = pstmt.executeQuery();
 
@@ -482,6 +540,13 @@ public class BookIssueDB {
         return ret;
     }
 
+    /**
+     * Retrieves the list of delayed book issues for a specific user by their user ID.
+     *
+     * @param userId the user ID whose delayed book issues are to be retrieved.
+     * @return a list of {@link BookIssue} objects representing delayed book issues for the specified
+     * user.
+     */
     public static ArrayList<BookIssue> getDelayListByUserId(int userId) {
         ArrayList<BookIssue> ret = new ArrayList<>();
         Connection con = null;
@@ -490,7 +555,9 @@ public class BookIssueDB {
 
         try {
             con = DBInfo.conn();
-            String sql = "SELECT user_id, book_name, borrow_date, return_date FROM borrow_slip  WHERE return_date < NOW() AND user_id = "+ userId;
+            String sql =
+                    "SELECT user_id, book_name, borrow_date, return_date FROM borrow_slip  WHERE return_date < NOW() AND user_id = "
+                            + userId;
             pstmt = con.prepareStatement(sql);
             rs = pstmt.executeQuery();
 
@@ -537,6 +604,14 @@ public class BookIssueDB {
 
         return ret;
     }
+
+    /**
+     * Retrieves the combined list of all book issues for a specific user by their user ID.
+     *
+     * @param userId the user ID whose total book issues are to be retrieved.
+     * @return a list of {@link BookIssue} objects representing all book issues for the specified
+     * user.
+     */
     public static ArrayList<BookIssue> getTotalListByUserId(int userId) {
         ArrayList<BookIssue> ret = new ArrayList<>();
         ArrayList<BookIssue> ret1 = getPendingListByUserId(userId);
@@ -552,6 +627,13 @@ public class BookIssueDB {
         return ret;
     }
 
+    /**
+     * Retrieves the list of late book issues for a specific user by their user ID.
+     *
+     * @param userId the user ID whose late book issues are to be retrieved.
+     * @return a list of {@link BookIssue} objects representing late book issues for the specified
+     * user.
+     */
     public static ArrayList<BookIssue> getLateListByUserId(int userId) {
         ArrayList<BookIssue> ret = new ArrayList<>();
         Connection con = null;
@@ -561,7 +643,9 @@ public class BookIssueDB {
         try {
             con = DBInfo.conn();
 
-            String sql = "SELECT user_id, book_name, borrow_date, return_date FROM borrow_history WHERE DATEDIFF(return_date, borrow_date) > 10 AND user_id = " + userId;
+            String sql =
+                    "SELECT user_id, book_name, borrow_date, return_date FROM borrow_history WHERE DATEDIFF(return_date, borrow_date) > 10 AND user_id = "
+                            + userId;
             pstmt = con.prepareStatement(sql);
             rs = pstmt.executeQuery();
 
@@ -614,8 +698,11 @@ public class BookIssueDB {
         return ret;
     }
 
-
-
+    /**
+     * Deletes a returned book issue from the database.
+     *
+     * @param book the {@link BookIssue} object representing the book issue to be deleted.
+     */
     public static void deleteReturned(BookIssue book) {
         String sql = "DELETE FROM borrow_history WHERE user_id = ? AND book_name = ?";
 

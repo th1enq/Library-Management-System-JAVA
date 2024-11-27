@@ -1,6 +1,7 @@
 package src.librarysystem;
 
 import javafx.event.ActionEvent;
+import javafx.scene.layout.VBox;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -25,10 +26,11 @@ public class BaseController {
         loginController.openEmailSendCode(email);
     }
 
-
     protected void returnPasswordReset(String email) {
         loginController.openPasswordReset(email);
     }
+
+    protected VBox getVbox() { return loginController.getMainVbox(); }
 
     public void setMainGUIController(MainGUI mainGUIController) {
         this.mainGUIController = mainGUIController;

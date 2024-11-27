@@ -4,6 +4,7 @@ import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
 
 public class PasswordResetController extends BaseController {
     public Button resetPassword;
@@ -30,6 +31,22 @@ public class PasswordResetController extends BaseController {
         backtoLogin.setOnAction(event -> {
             returnSignIn();
         });
+
+        newPassword.requestFocus();
+        newPassword.setOnKeyPressed(event -> {
+            if (event.getCode() == KeyCode.TAB) {
+                confirmPassword.requestFocus();
+                event.consume();
+            }
+        });
+
+        confirmPassword.setOnKeyPressed(event -> {
+            if (event.getCode() == KeyCode.TAB) {
+                newPassword.requestFocus();
+                event.consume();
+            }
+        });
+
 
         newPasswordSeeing.setOnAction(event -> {
             if(newPassword.isVisible()) {

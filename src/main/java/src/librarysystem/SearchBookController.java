@@ -220,7 +220,6 @@ public class SearchBookController extends BaseController {
                 }
             }
 
-
             bookPane.getChildren().add(imageView);
 
             // Tạo Label cho tiêu đề
@@ -239,6 +238,24 @@ public class SearchBookController extends BaseController {
             authorLabel.setStyle("-fx-text-fill: #606060; -fx-font-size: 10px;");
             bookPane.getChildren().add(authorLabel);
 
+            if(!apiMode) {
+                if (book.getAvail() > 0) {
+                    Label remain = new Label("Remain: " + book.getAvail());
+                    remain.setLayoutX(320); // Căn lề phải hơn
+                    remain.setLayoutY(22);
+                    remain.setPrefSize(100, 17);
+                    remain.setStyle("-fx-font-weight: bold; -fx-font-size: 12px; -fx-text-fill: #32CD32;");
+                    bookPane.getChildren().add(remain);
+                } else {
+                    Label remain = new Label("Remain: " + book.getAvail());
+                    remain.setLayoutX(320); // Căn lề phải hơn
+                    remain.setLayoutY(22);
+                    remain.setPrefSize(100, 17);
+                    remain.setStyle("-fx-font-weight: bold; -fx-font-size: 12px; -fx-text-fill: #FF0000;");
+                    bookPane.getChildren().add(remain);
+                }
+            }
+
             // Tạo nhãn danh mục
             Label categoryLabel = new Label(book.getCategory() != null ? book.getCategory() : "Không phân loại");
             categoryLabel.setLayoutX(160); // Căn lề phải hơn
@@ -246,16 +263,26 @@ public class SearchBookController extends BaseController {
             categoryLabel.setStyle("-fx-background-color: rgba(0, 128, 255, 0.1); -fx-text-fill: #0078D4; -fx-padding: 2 5; -fx-font-size: 10px;");
             bookPane.getChildren().add(categoryLabel);
 
-            // Thêm đánh giá bằng font awesome icon
-            Label ratingLabel = new Label("\uf005 \uf005 \uf005 \uf005 \uf005"); // Unicode của icon STAR_ALT
+            int bookRate = apiMode ? 5 : book.getRating();
+            String ratingIcons = "";
+            for (int i = 0; i < 5; i++) {
+                if (i < bookRate) {
+                    ratingIcons += "\uf005";
+                } else {
+                    ratingIcons += "\uf006";
+                }
+            }
+
+            Label ratingLabel = new Label(ratingIcons);
             ratingLabel.setLayoutX(160); // Căn lề phải hơn
             ratingLabel.setLayoutY(85);
             ratingLabel.setStyle("-fx-font-family: 'FontAwesome'; -fx-text-fill: #FFD700; -fx-font-size: 12px;");
             bookPane.getChildren().add(ratingLabel);
 
+
             // Tạo Button
-            Button detailButton = new Button("Xem chi tiết");
-            detailButton.setLayoutX(189);
+            Button detailButton = new Button("View Detail");
+            detailButton.setLayoutX(230);
             detailButton.setLayoutY(153);
             detailButton.setStyle("-fx-cursor: hand; -fx-background-color: transparent; -fx-border-color: #0078D4; -fx-border-radius: 5px; -fx-text-fill: #0078D4;");
             detailButton.setOnAction(event -> {

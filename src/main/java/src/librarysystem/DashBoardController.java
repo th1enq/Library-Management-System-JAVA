@@ -1,16 +1,14 @@
 package src.librarysystem;
+
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import java.awt.*;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
-
 import javafx.scene.chart.*;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.util.Duration;
 import javafx.scene.control.Tooltip;
@@ -18,47 +16,33 @@ import javafx.scene.control.Tooltip;
 public class DashBoardController extends BaseController {
     @FXML
     public Label currentTime;
-    @FXML
     public PieChart pieChart;
-    @FXML
     public LineChart lineChart;
-    @FXML
     public CategoryAxis dateX;
-    @FXML
     public NumberAxis numberPersonY;
-    @FXML
     public Label nameUser;
-    @FXML
     public Label totalBooks;
-    @FXML
     public Label totalUsers;
-    @FXML
     public Label borrowedBooks;
-    @FXML
     public Label overdueBooks;
-    @FXML
-    private Button seeAllBook;
 
-    @FXML
-    private Button addBookButton;
-
-    public Button getSeeAllBook() {
-        return seeAllBook;
-    }
-
-    public Button getAddBookButton() {
-        return addBookButton;
-    }
-
+    /**
+     * Get percentage of the chart
+     * @param data chart
+     * @return String percentage
+     */
     private String getPercentage(PieChart.Data data) {
         double total = pieChart.getData().stream().mapToDouble(PieChart.Data::getPieValue).sum();
         double percentage = (data.getPieValue() / total) * 100;
         return String.format("%.2f", percentage); // Format to 2 decimal places
     }
 
+    /**
+     * init the fxml
+     */
     public void initialize() {
-        updateCurrentTime(); // Initial time set
-        startClock(); // Start the clock
+        updateCurrentTime();
+        startClock();
         nameUser.setText(MainGUI.currentUser.getName());
         totalBooks.setText(String.valueOf(DBInfo.getBookList("ALL", "ALL", "ALL").size()));
         totalUsers.setText(String.valueOf(Filter.getInstance().getUserList("ALL").size()));
@@ -75,7 +59,6 @@ public class DashBoardController extends BaseController {
                 tooltip.setText(getPercentage(data) + "%");
                 Tooltip.install(data.getNode(), tooltip);
 
-                // Update tooltip text on hover
                 data.getNode().setOnMouseEntered(event -> {
                     tooltip.setText(getPercentage(data) + "%");
                 });
@@ -83,26 +66,27 @@ public class DashBoardController extends BaseController {
         }
         ObservableList<XYChart.Data<String, Number>> weekData = ChartController.getLoginData();
 
-        // Create a series and add data
         XYChart.Series<String, Number> series = new XYChart.Series<>();
         series.setName("Weekly Visitors");
         series.setData(weekData);
-
-        // Set the categories for X-axis (days of the week)
         dateX.setCategories(FXCollections.observableArrayList("Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"));
-
-        // Add series to the line chart
         lineChart.getData().add(series);
     }
 
+    /**
+     * start the clock
+     */
     private void startClock() {
         Timeline clock = new Timeline(new KeyFrame(Duration.seconds(1), event -> updateCurrentTime()));
         clock.setCycleCount(Timeline.INDEFINITE);
         clock.play();
     }
 
+    /**
+     * update current time
+     */
     public void updateCurrentTime() {
-        SimpleDateFormat formatter = new SimpleDateFormat("MMM d, yyyy | EEEE, hh:mm a", Locale.getDefault());
+        SimpleDateFormat formatter = new SimpleDateFormat("MMM d, yyyy | EEEE, hh:mm:ss a", Locale.getDefault());
         String currentTimeText = formatter.format(new Date());
         currentTime.setText(currentTimeText);
     }

@@ -132,7 +132,7 @@ public class BookServices {
         try {
             String API_KEY = "AIzaSyCI2U6tHVrTcuYbsFilyfbUy4hwkYftIYw";
             String formattedQuery = "inauthor:" + query.replace(" ", "+");
-            String apiUrl = "https://www.googleapis.com/books/v1/volumes?q=" + formattedQuery + "&maxResults=50&key=" + API_KEY;
+            String apiUrl = "https://www.googleapis.com/books/v1/volumes?q=" + formattedQuery + "&key=" + API_KEY;
 
             URL url = new URL(apiUrl);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();

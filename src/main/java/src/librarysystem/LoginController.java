@@ -32,6 +32,10 @@ public class LoginController implements Initializable {
         openSignIn(new ActionEvent());
     }
 
+    public VBox getMainVbox() {
+        return vbox;
+    }
+
     @FXML
     public void openSignIn(ActionEvent event) {
         TranslateTransition t = new TranslateTransition(Duration.seconds(1), vbox);

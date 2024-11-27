@@ -92,12 +92,12 @@ public class SignInController extends BaseController implements Initializable {
 
     public void login() {
         if (userEmail.getText().isEmpty()) {
-            showAlert("Bạn chưa nhập email !!!");
+            showAlert("Please enter your email !!!");
             return;
         }
 
         if(userPassword.getText().isEmpty()) {
-            showAlert("Bạn chưa nhập mật khẩu !!!");
+            showAlert("Please enter your password !!!");
             return;
         }
 
@@ -110,7 +110,7 @@ public class SignInController extends BaseController implements Initializable {
             ChartController.updateLoginCount(dayOfWeek);
             returnHome();
         } else {
-            showAlert("Tài khoản hoặc mật khẩu không chính xác !!!");
+            showAlert("Account or password is incorrect !!!");
         }
     }
 

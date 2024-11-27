@@ -21,6 +21,7 @@ import java.util.Collections;
 import java.util.Comparator;
 
 public class BookViewDetailController extends BaseController {
+
     @FXML
     public ImageView qrImage;
     @FXML
@@ -134,11 +135,14 @@ public class BookViewDetailController extends BaseController {
     public void initialize(Book book) {
         if (book != null) {
             currentBook = book;
+            DBInfo.updView(currentBook);
             // Set text details with null checks
             detailTitle.setText(book.getTitle() != null ? book.getTitle() : "Unknown Title");
-            detailDescription.setText(book.getDescription() != null ? book.getDescription() : "No description available.");
+            detailDescription.setText(
+                    book.getDescription() != null ? book.getDescription() : "No description available.");
             detailAuthor.setText(book.getAuthors() != null ? book.getAuthors() : "Unknown Author");
-            detailPushlisher.setText(book.getPublisher() != null ? book.getPublisher() : "Unknown Publisher");
+            detailPushlisher.setText(
+                    book.getPublisher() != null ? book.getPublisher() : "Unknown Publisher");
             detailLanguage.setText(book.getLanguage() != null ? book.getLanguage() : "Unknown Language");
             detailPaperback.setText(book.getNumPage() != null ? book.getNumPage() : "N/A");
 
@@ -151,11 +155,13 @@ public class BookViewDetailController extends BaseController {
                     detailImage.setImage(new Image(imagePath, true));
                 } catch (Exception e) {
                     // If the image fails to load, set the default image
-                    detailImage.setImage(new Image(getClass().getResource("/images/unnamed.jpg").toExternalForm()));
+                    detailImage.setImage(
+                            new Image(getClass().getResource("/images/unnamed.jpg").toExternalForm()));
                 }
             } else {
                 // Use the default image if no thumbnail is provided
-                detailImage.setImage(new Image(getClass().getResource("/images/unnamed.jpg").toExternalForm()));
+                detailImage.setImage(
+                        new Image(getClass().getResource("/images/unnamed.jpg").toExternalForm()));
             }
 
             qrImage.setImage(BookServices.getInstance().generateQRCode(book.getBuyLink()));
@@ -176,9 +182,11 @@ public class BookViewDetailController extends BaseController {
 
         submitBorrow.setOnAction(event -> {
             boolean confirm = confirmBorrowed.isSelected();
-            if(confirm) {;
+            if (confirm) {
+                ;
                 MainGUI.currentUser.muonSach(currentBook);
-                sendNotification(1000, MainGUI.currentUser.getId(), "Yêu cầu mượn sách đã được gửi. Vui lòng chờ xác nhận từ admin");
+                sendNotification(1000, MainGUI.currentUser.getId(),
+                        "Yêu cầu mượn sách đã được gửi. Vui lòng chờ xác nhận từ admin");
                 containerPane.setEffect(null);
                 borrowPane.setVisible(false);
                 tempPane.setVisible(false);
@@ -248,11 +256,12 @@ public class BookViewDetailController extends BaseController {
         });
 
         commentContent.setTextFormatter(textFormatter);
-        currentWord.textProperty().bind(Bindings.format("%d/144", commentContent.textProperty().length()));
+        currentWord.textProperty()
+                .bind(Bindings.format("%d/144", commentContent.textProperty().length()));
 
         submitComment.setOnAction(event -> {
             String commentText = commentContent.getText();
-            if(commentText != null && !commentText.isEmpty()) {
+            if (commentText != null && !commentText.isEmpty()) {
                 MainGUI.currentUser.addComment(currentBook, commentText, currentRate);
                 commentContent.clear();
                 createComment();
@@ -266,7 +275,7 @@ public class BookViewDetailController extends BaseController {
         vbox.setSpacing(10);
         commentList = DBInfo.getCommentList(currentBook);
         commentList.sort(Comparator.comparing(Comment::getTime).reversed());
-        for(Comment comment : commentList) {
+        for (Comment comment : commentList) {
             Pane currentComment = createCommentPane(comment);
             vbox.getChildren().add(currentComment);
         }
@@ -320,10 +329,9 @@ public class BookViewDetailController extends BaseController {
             FontAwesomeIcon star = new FontAwesomeIcon();
             star.setSize("1.2em");
             star.setFill(Color.GOLD);
-            if(i < bookRating) {
+            if (i < bookRating) {
                 star.setGlyphName("STAR");
-            }
-            else {
+            } else {
                 star.setGlyphName("STAR_ALT");
             }
             stars.getChildren().add(star);
@@ -358,6 +366,11 @@ public class BookViewDetailController extends BaseController {
 
     @FXML
     public void rentBook(ActionEvent actionEvent) {
+        if (!DBInfo.inDb(currentBook.getTitle())) {
+            sendNotification(1000, MainGUI.currentUser.getId(),
+                    "Sách đã được người dùng mượn hết!!! Vui lòng quay lại sau!!!");
+            return;
+        }
         GaussianBlur blurEffect = new GaussianBlur(10);
         containerPane.setEffect(blurEffect); // Làm mờ phần nội dung chính
         tempPane.setVisible(true);
@@ -366,8 +379,13 @@ public class BookViewDetailController extends BaseController {
 
     @FXML
     public void editBook(ActionEvent actionEvent) {
-        if(apiMode) {
-            sendNotification(1000, MainGUI.currentUser.getId(), "Bạn không thể chỉnh sửa sách từ thư viện online !!!");
+        if (apiMode) {
+            sendNotification(1000, MainGUI.currentUser.getId(),
+                    "Bạn không thể chỉnh sửa sách từ thư viện online !!!");
+            return;
+        }
+        if (MainGUI.currentUser.getUserType().equals("user")) {
+            sendNotification(1000, MainGUI.currentUser.getId(), "Chức năng chỉ dành cho admin!!!!");
             return;
         }
         editMode = true;
@@ -376,8 +394,17 @@ public class BookViewDetailController extends BaseController {
 
     @FXML
     public void removeBook(ActionEvent actionEvent) {
-        if(apiMode == true) {
-            sendNotification(1000, MainGUI.currentUser.getId(), "Không thể xóa sách từ thư viện online !!!");
+        if (apiMode == true) {
+            sendNotification(1000, MainGUI.currentUser.getId(),
+                    "Không thể xóa sách từ thư viện online !!!");
+            return;
+        }
+        if (MainGUI.currentUser.getUserType().equals("user")) {
+            sendNotification(1000, MainGUI.currentUser.getId(), "Chức năng chỉ dành cho admin!!!!");
+            return;
+        }
+        if (DBInfo.isBorrowed(currentBook.getTitle())) {
+            sendNotification(1000, MainGUI.currentUser.getId(), "Không thể xóa sách đang được nguời dùng mượn");
             return;
         }
         GaussianBlur blurEffect = new GaussianBlur(10);
@@ -394,7 +421,9 @@ public class BookViewDetailController extends BaseController {
         detailLanguage.setText(editLanguage.getText());
         detailPaperback.setText(editPaperback.getText());
 
-        DBInfo.editBook(currentBook, detailTitle.getText(), detailAuthor.getText(), detailPushlisher.getText(), currentBook.getThumbnail(), detailDescription.getText(), detailPaperback.getText(), detailLanguage.getText());
+        DBInfo.editBook(currentBook, detailTitle.getText(), detailAuthor.getText(),
+                detailPushlisher.getText(), currentBook.getThumbnail(), detailDescription.getText(),
+                detailPaperback.getText(), detailLanguage.getText());
 
         sendNotification(1000, MainGUI.currentUser.getId(), "Chỉnh sửa sách thành công !!!");
 
@@ -404,6 +433,10 @@ public class BookViewDetailController extends BaseController {
 
     @FXML
     public void addBook(ActionEvent actionEvent) {
+        if (MainGUI.currentUser.getUserType().equals("user")) {
+            sendNotification(1000, MainGUI.currentUser.getId(), "Chức năng chỉ dành cho admin!!!!");
+            return;
+        }
         sendNotification(1000, MainGUI.currentUser.getId(), "Thêm thành công vào thư viện !!!");
         DBInfo.addBook(currentBook);
     }
