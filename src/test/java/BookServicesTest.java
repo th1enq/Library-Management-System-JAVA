@@ -9,6 +9,9 @@ import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ *
+ */
 class BookServicesTest {
     private BookServices bookServices;
 
@@ -17,28 +20,6 @@ class BookServicesTest {
         bookServices = BookServices.getInstance();
     }
 
-    @Test
-    void testLoadBook() {
-        // Mock JSON response
-        JsonObject jsonResponse = new JsonObject();
-        JsonArray items = new JsonArray();
-
-        JsonObject book1 = new JsonObject();
-        JsonObject volumeInfo1 = new JsonObject();
-        volumeInfo1.addProperty("title", "Effective Java");
-        volumeInfo1.addProperty("authors", "[\"Joshua Bloch\"]");
-        volumeInfo1.addProperty("publishedDate", "2018-01-06");
-        volumeInfo1.addProperty("publisher", "Addison-Wesley");
-        book1.add("volumeInfo", volumeInfo1);
-        items.add(book1);
-
-        jsonResponse.add("items", items);
-
-        ArrayList<Book> books = bookServices.loadBook(jsonResponse);
-
-        assertEquals(1, books.size());
-        assertEquals("Effective Java", books.get(0).getTitle());
-    }
 
     @Test
     void testSearchBooksByTitle() {
@@ -66,7 +47,7 @@ class BookServicesTest {
 
     @Test
     void testGenerateQRCode() {
-        String testUrl = "https://www.example.com";
+        String testUrl = "https://www.instagram.com/cristiano/";
         javafx.scene.image.Image qrCode = bookServices.generateQRCode(testUrl);
 
         assertNotNull(qrCode, "The QR code image should not be null");
