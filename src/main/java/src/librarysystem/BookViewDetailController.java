@@ -11,11 +11,14 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.scene.text.Font;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 public class BookViewDetailController extends BaseController {
     @FXML
@@ -67,7 +70,9 @@ public class BookViewDetailController extends BaseController {
     public Button cancelComment;
     public Pane commentPane;
     @FXML
-    public FlowPane flowPane;
+    public Pane flowPane;
+    @FXML
+    public ScrollPane commentPaneUser;
     @FXML
     private Label detailTitle;
     @FXML
@@ -98,6 +103,7 @@ public class BookViewDetailController extends BaseController {
 
     private int currentRate = 5;
     private Button[] stars = new Button[5];
+    private ArrayList<Comment> commentList;
 
     void update() {
         editTitle.setText(detailTitle.getText());
@@ -249,34 +255,39 @@ public class BookViewDetailController extends BaseController {
             if(commentText != null && !commentText.isEmpty()) {
                 MainGUI.currentUser.addComment(currentBook, commentText, currentRate);
                 commentContent.clear();
+                createComment();
             }
         });
+        createComment();
+    }
 
-        flowPane.getChildren().clear();
-        ArrayList<Comment> commentList = DBInfo.getCommentList(currentBook);
-        int layoutY = 0;
+    private void createComment() {
+        VBox vbox = new VBox();
+        vbox.setSpacing(10);
+        commentList = DBInfo.getCommentList(currentBook);
+        commentList.sort(Comparator.comparing(Comment::getTime).reversed());
         for(Comment comment : commentList) {
             Pane currentComment = createCommentPane(comment);
-            currentComment.setLayoutY(layoutY);
-            layoutY += 142; // Spacing between panes
-            flowPane.getChildren().add(currentComment);
+            vbox.getChildren().add(currentComment);
         }
+        commentPaneUser.setContent(vbox);
     }
 
     private Pane createCommentPane(Comment comment) {
         // Layout chung cho mỗi comment
         Pane pane = new Pane();
-        pane.setPrefSize(460, 124);  // Cài đặt kích thước của Pane
+        pane.setPrefSize(430, 124);  // Cài đặt kích thước của Pane
         pane.setLayoutX(7);
         pane.setLayoutY(14);
 
         // Tạo Label cho tên người dùng
         Label usernameLabel = new Label(comment.getUsername());
-        usernameLabel.setFont(Font.font("System", 14));
+        usernameLabel.setFont(new Font("System Bold", 14));
         usernameLabel.setLayoutY(0);
 
         // Tạo TextArea cho nội dung bình luận
-        TextArea commentTextArea = new TextArea(comment.getContent());
+        Label commentTextArea = new Label(comment.getContent());
+        commentTextArea.setFont(new Font(14));
         commentTextArea.setLayoutY(33);
         commentTextArea.setPrefHeight(73);
         commentTextArea.setPrefWidth(460);
@@ -298,16 +309,23 @@ public class BookViewDetailController extends BaseController {
         line.setLayoutX(91);
         line.setLayoutY(120);
 
+        int bookRating = comment.getRate();
+
         // Tạo các ngôi sao
         HBox stars = new HBox(5);  // Dùng HBox để sắp xếp các ngôi sao theo chiều ngang
-        stars.setLayoutX(158);
-        stars.setLayoutY(16);
+        stars.setLayoutX(175);
+        stars.setLayoutY(2);
 
         for (int i = 0; i < 5; i++) {
             FontAwesomeIcon star = new FontAwesomeIcon();
-            star.setGlyphName("STAR");
             star.setSize("1.2em");
             star.setFill(Color.GOLD);
+            if(i < bookRating) {
+                star.setGlyphName("STAR");
+            }
+            else {
+                star.setGlyphName("STAR_ALT");
+            }
             stars.getChildren().add(star);
         }
 

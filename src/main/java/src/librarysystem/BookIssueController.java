@@ -719,7 +719,7 @@ public class BookIssueController extends BaseController {
                     throw new RuntimeException(e);
                 }
                 updateForUser();
-                sendNotification(1000, MainGUI.currentUser.getId(), "Trả sách " + currentBook.getTitle() + " thành công !");
+                sendNotification(1000, MainGUI.currentUser.getId(), " " + currentBook.getTitle() + " thành công !");
                 sendNotification(MainGUI.currentUser.getId(), 999, "User " + MainGUI.currentUser.getId() + " trả sách " + currentBook.getTitle());
             });
 
