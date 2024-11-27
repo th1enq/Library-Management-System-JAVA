@@ -79,6 +79,9 @@ public class MainGUI implements Initializable {
   @FXML
   Button bookViewButton;
 
+  static boolean timeFormat24h = false;
+  static boolean showNotifications = true;
+
   @FXML
   private void minimze() {
     Stage stage = (Stage) minimizeButton.getScene().getWindow();
@@ -254,7 +257,6 @@ public class MainGUI implements Initializable {
   }
 
   private void update() {
-    language = UISetting.getInstance().getVietNameseMode();
     reset();
     System.out.println(currentStage);
     switch (currentStage) {
@@ -400,6 +402,8 @@ public class MainGUI implements Initializable {
   public void sendNotification(int senderId, int receiverId, String content, int type) {
     Notification newNotification = new Notification(senderId, receiverId, content, type);
     DBInfo.sendNotification(senderId, receiverId, content, type);
+
+    if(showNotifications == false) return;
 
     if (currentUser.getId() != receiverId) {
       return;

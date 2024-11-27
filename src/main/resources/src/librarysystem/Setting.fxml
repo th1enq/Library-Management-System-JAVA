@@ -172,42 +172,22 @@
                                     <Font name="System Bold" size="13.0" />
                                  </font>
                               </TextField>
-                              <Label fx:id="labelDarkMode" layoutX="49.0" layoutY="48.0" text="Dark Mode" visible="false">
+                              <Label fx:id="timeLabel" layoutX="49.0" layoutY="48.0" text="Time Format" visible="false">
                                  <font>
                                     <Font name="System Bold" size="15.0" />
                                  </font>
                               </Label>
-                              <Label fx:id="emailLabel" layoutX="49.0" layoutY="300.0" text="Send Nontifications to Email" visible="false">
+                              <Label fx:id="emailLabel" layoutX="49.0" layoutY="132.0" text="Show Notifications" visible="false">
                                  <font>
                                     <Font name="System Bold" size="15.0" />
                                  </font>
                               </Label>
-                              <Label fx:id="timeLabel" layoutX="49.0" layoutY="132.0" text="Time Format" visible="false">
-                                 <font>
-                                    <Font name="System Bold" size="15.0" />
-                                 </font>
-                              </Label>
-                              <Label fx:id="textTimeFormat" layoutX="380.0" layoutY="132.0" text="24-hour" textFill="#565151" visible="false">
+                              <Label fx:id="textEmailNontifications" layoutX="380.0" layoutY="132.0" text="Enable" textFill="#565151" visible="false">
                                  <font>
                                     <Font name="System Bold" size="12.0" />
                                  </font>
                               </Label>
-                              <Label fx:id="textEmailNontifications" layoutX="380.0" layoutY="300.0" text="Off" textFill="#565151" visible="false">
-                                 <font>
-                                    <Font name="System Bold" size="12.0" />
-                                 </font>
-                              </Label>
-                              <Label fx:id="textDarkMode" layoutX="380.0" layoutY="48.0" text="Off" textFill="#565151" visible="false">
-                                 <font>
-                                    <Font name="System Bold" size="12.0" />
-                                 </font>
-                              </Label>
-                              <Label fx:id="languageLabel" layoutX="49.0" layoutY="216.0" text="Language" visible="false">
-                                 <font>
-                                    <Font name="System Bold" size="15.0" />
-                                 </font>
-                              </Label>
-                              <Label fx:id="textLanguage" layoutX="380.0" layoutY="216.0" text="English" textFill="#565151" visible="false">
+                              <Label fx:id="textTimeFormat" layoutX="380.0" layoutY="48.0" text="12-hour" textFill="#565151" visible="false">
                                  <font>
                                     <Font name="System Bold" size="12.0" />
                                  </font>

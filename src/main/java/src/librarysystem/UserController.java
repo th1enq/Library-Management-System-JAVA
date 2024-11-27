@@ -51,6 +51,9 @@ public class UserController extends BaseController {
   public Button submitBan;
   public Button cancelBan;
   public Pane banConfirm;
+  public Pane unbanConfirm;
+  public Button cancelUnban;
+  public Button submitUnban;
   @FXML
   private ScrollPane userScrollPane;
 
@@ -127,7 +130,7 @@ public class UserController extends BaseController {
     Button removeButton = new Button("\uf00d");
     removeButton.setStyle(
         "-fx-background-color: transparent; -fx-font-family: 'FontAwesome'; -fx-font-size: 20px; -fx-cursor: hand;");
-    removeButton.setLayoutX(960);
+    removeButton.setLayoutX(920);
     removeButton.setLayoutY(18);
 
     // Action for REMOVE Button
@@ -142,8 +145,8 @@ public class UserController extends BaseController {
     Button warningButton = new Button("\uf071");
     warningButton.setStyle(
         "-fx-background-color: transparent; -fx-font-family: 'FontAwesome'; -fx-font-size: 20px; -fx-cursor: hand;");
-    warningButton.setLayoutX(1000);
-    warningButton.setLayoutY(17);
+    warningButton.setLayoutX(960);
+    warningButton.setLayoutY(18);
 
     // Action for WARNING Button
     warningButton.setOnAction(event -> {
@@ -153,10 +156,22 @@ public class UserController extends BaseController {
       banSelectedUser();
     });
 
+    Button unBan = new Button("\uf09c");
+    unBan.setStyle(
+        "-fx-background-color: transparent; -fx-font-family: 'FontAwesome'; -fx-font-size: 20px; -fx-cursor: hand;");
+    unBan.setLayoutX(1000);
+    unBan.setLayoutY(18);
+    unBan.setOnAction(event -> {
+      if (!selectedUser.contains(user)) {
+        selectedUser.add(user);
+      }
+      unbanSelectedUser();
+    });
+
     // Add all elements to the pane
     pane.getChildren()
         .addAll(checkBox, nameLabel, roleLabel, borrowedBooksLabel, overdueBooksLabel, statusLabel,
-            removeButton, warningButton);
+            removeButton, warningButton, unBan);
 
     return pane;
   }
@@ -172,6 +187,12 @@ public class UserController extends BaseController {
     GaussianBlur blurEffect = new GaussianBlur(10);
     containerPane.setEffect(blurEffect); // Làm mờ phần nội dung chính
     banConfirm.setVisible(true);
+  }
+
+  private void unbanSelectedUser() {
+    GaussianBlur blurEffect = new GaussianBlur(10);
+    containerPane.setEffect(blurEffect); // Làm mờ phần nội dung chính
+    unbanConfirm.setVisible(true);
   }
 
   private void update() {
@@ -265,6 +286,23 @@ public class UserController extends BaseController {
       banConfirm.setVisible(false);
       containerPane.setEffect(null);
       selectedUser.clear();
+    });
+
+    submitUnban.setOnAction(event -> {
+      for (User x : selectedUser) {
+        DBInfo.unBan(x);
+
+      }
+      sendNotification(1000, 999, "Global ban successfully !!!", 0);
+      update();
+      unbanConfirm.setVisible(false);
+      containerPane.setEffect(null);
+      selectedUser.clear();
+    });
+
+    cancelUnban.setOnAction(event -> {
+      unbanConfirm.setVisible(false);
+      containerPane.setEffect(null);
     });
   }
 
