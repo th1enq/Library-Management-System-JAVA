@@ -32,93 +32,88 @@ import javax.swing.*;
 
 public class SignUpController implements Initializable {
 
-    public javafx.scene.control.TextField userEmail;
+  public javafx.scene.control.TextField userEmail;
 
-    @FXML
-    public Button passwordSeeing;
-    @FXML
-    public javafx.scene.control.TextField passwordVisible;
-    @FXML
-    public FontAwesomeIcon passwordSeeIcon;
-    @FXML
-    public Label signUpErrorText;
+  @FXML
+  public Button passwordSeeing;
+  @FXML
+  public javafx.scene.control.TextField passwordVisible;
+  @FXML
+  public FontAwesomeIcon passwordSeeIcon;
+  @FXML
+  public Label signUpErrorText;
 
-    @FXML
-    public HBox errorAlert;
-    @FXML
-    public TextField userStudentID;
-    @FXML
-    public TextField userName;
-    public Button signUpButotn;
+  @FXML
+  public HBox errorAlert;
+  @FXML
+  public TextField userStudentID;
+  @FXML
+  public TextField userName;
+  public Button signUpButotn;
 
-    @FXML
-    private PasswordField userPassword;
+  @FXML
+  private PasswordField userPassword;
 
-    private boolean isPasswordVisible = false;
+  private boolean isPasswordVisible = false;
 
-    private void returnHome() {
+  private void returnHome() {
 
+  }
+
+  private void showAlert(String content) {
+    errorAlert.setVisible(true);
+    signUpErrorText.setText(content);
+  }
+
+  public void login() {
+
+  }
+
+  @Override
+  public void initialize(URL url, ResourceBundle resourceBundle) {
+    passwordVisible.setManaged(false);
+    passwordVisible.setVisible(false);
+    passwordVisible.textProperty().bindBidirectional(userPassword.textProperty());
+  }
+
+  public void togglePasswordVisibility(ActionEvent actionEvent) {
+    if (isPasswordVisible) {
+      passwordSeeIcon.setGlyphName("EYE_SLASH");
+      // Show PasswordField, hide TextField
+      passwordVisible.setVisible(false);
+      passwordVisible.setManaged(false);
+      userPassword.setVisible(true);
+      userPassword.setManaged(true);
+      isPasswordVisible = false;
+    } else {
+      // Show TextField, hide PasswordField
+      passwordSeeIcon.setGlyphName("EYE");
+      passwordVisible.setVisible(true);
+      passwordVisible.setManaged(true);
+      userPassword.setVisible(false);
+      userPassword.setManaged(false);
+      isPasswordVisible = true;
     }
+  }
 
-    private void showAlert(String content) {
-        errorAlert.setVisible(true);
-        signUpErrorText.setText(content);
+  @FXML
+  public void createNewAccount(ActionEvent actionEvent) {
+    if (userName.getText().isEmpty()) {
+      showAlert("Bạn chưa nhập họ và tên !!!");
+    } else if (userStudentID.getText().isEmpty()) {
+      showAlert("Bạn chưa nhập mã sinh viên !!!");
+    } else if (userEmail.getText().isEmpty()) {
+      showAlert("Bạn chưa nhập email !!!");
+    } else if (!DBInfo.validPassword(userPassword.getText())) {
+      showAlert("Mật khẩu cần có ít nhất 8 kí tự !!!");
+    } else if (!DBInfo.checkUnique(userEmail.getText())) {
+      showAlert("Tài khoản đã tồn tại !!!");
+    } else if (!DBInfo.validPassword(userEmail.getText())) {
+      showAlert("Username cần có dạng email !!!");
+    } else {
+      showAlert("Đăng kí thành công !!!");
+      DBInfo.Register(0, userName.getText(), userEmail.getText(), userPassword.getText(), "user",
+          userStudentID.getText());
     }
-
-    public void login() {
-            
-    }
-
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-        passwordVisible.setManaged(false);
-        passwordVisible.setVisible(false);
-        passwordVisible.textProperty().bindBidirectional(userPassword.textProperty());
-    }
-
-    public void togglePasswordVisibility(ActionEvent actionEvent) {
-        if (isPasswordVisible) {
-            passwordSeeIcon.setGlyphName("EYE_SLASH");
-            // Show PasswordField, hide TextField
-            passwordVisible.setVisible(false);
-            passwordVisible.setManaged(false);
-            userPassword.setVisible(true);
-            userPassword.setManaged(true);
-            isPasswordVisible = false;
-        } else {
-            // Show TextField, hide PasswordField
-            passwordSeeIcon.setGlyphName("EYE");
-            passwordVisible.setVisible(true);
-            passwordVisible.setManaged(true);
-            userPassword.setVisible(false);
-            userPassword.setManaged(false);
-            isPasswordVisible = true;
-        }
-    }
-
-    @FXML
-    public void createNewAccount(ActionEvent actionEvent) {
-        if(userName.getText().isEmpty()) {
-            showAlert("Bạn chưa nhập họ và tên !!!");
-        }
-        else if(userStudentID.getText().isEmpty()) {
-            showAlert("Bạn chưa nhập mã sinh viên !!!");
-        }
-        else if(userEmail.getText().isEmpty()) {
-            showAlert("Bạn chưa nhập email !!!");
-        }
-        else if(!DBInfo.validPassword(userPassword.getText())) {
-            showAlert("Mật khẩu cần có ít nhất 8 kí tự !!!");
-        }
-        else if(!DBInfo.checkUnique(userEmail.getText())) {
-            showAlert("Tài khoản đã tồn tại !!!");
-        }
-        else if(!DBInfo.validPassword(userEmail.getText())){
-            showAlert("Username cần có dạng email !!!");
-        }
-        else {
-            showAlert("Đăng kí thành công !!!");
-            DBInfo.Register(0, userName.getText(), userEmail.getText(), userPassword.getText(), "user", userStudentID.getText());
-        }
-    }
+  }
 }

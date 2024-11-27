@@ -1,7 +1,6 @@
 package src.librarysystem;
 
 
-
 class Notification {
 
   private int id;
@@ -66,19 +65,20 @@ class Notification {
     this.createdAt = createdAt;
   }
 
-  public String getReceiver(){
-    if(senderId < 999)  {
+  public String getReceiver() {
+    if (senderId < 999) {
       return "user";
     }
-    if(senderId == 999){
+    if (senderId == 999) {
       return "admin";
     }
     return "Hệ thống";
   }
+
   @Override
   public String toString() {
     return "Notification{" +
-        " từ "  + getReceiver() +
+        " từ " + getReceiver() +
         ", senderId=" + senderId +
         ", receiverId=" + receiverId +
         ", message='" + message + '\'' +

@@ -1,4 +1,5 @@
 package src.librarysystem;
+
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.collections.FXCollections;
@@ -16,94 +17,98 @@ import javafx.util.Duration;
 import javafx.scene.control.Tooltip;
 
 public class DashBoardController extends BaseController {
-    @FXML
-    public Label currentTime;
-    @FXML
-    public PieChart pieChart;
-    @FXML
-    public LineChart lineChart;
-    @FXML
-    public CategoryAxis dateX;
-    @FXML
-    public NumberAxis numberPersonY;
-    @FXML
-    public Label nameUser;
-    @FXML
-    public Label totalBooks;
-    @FXML
-    public Label totalUsers;
-    @FXML
-    public Label borrowedBooks;
-    @FXML
-    public Label overdueBooks;
-    @FXML
-    private Button seeAllBook;
 
-    @FXML
-    private Button addBookButton;
+  @FXML
+  public Label currentTime;
+  @FXML
+  public PieChart pieChart;
+  @FXML
+  public LineChart lineChart;
+  @FXML
+  public CategoryAxis dateX;
+  @FXML
+  public NumberAxis numberPersonY;
+  @FXML
+  public Label nameUser;
+  @FXML
+  public Label totalBooks;
+  @FXML
+  public Label totalUsers;
+  @FXML
+  public Label borrowedBooks;
+  @FXML
+  public Label overdueBooks;
+  @FXML
+  private Button seeAllBook;
 
-    public Button getSeeAllBook() {
-        return seeAllBook;
+  @FXML
+  private Button addBookButton;
+
+  public Button getSeeAllBook() {
+    return seeAllBook;
+  }
+
+  public Button getAddBookButton() {
+    return addBookButton;
+  }
+
+  private String getPercentage(PieChart.Data data) {
+    double total = pieChart.getData().stream().mapToDouble(PieChart.Data::getPieValue).sum();
+    double percentage = (data.getPieValue() / total) * 100;
+    return String.format("%.2f", percentage); // Format to 2 decimal places
+  }
+
+  public void initialize() {
+    updateCurrentTime(); // Initial time set
+    startClock(); // Start the clock
+    nameUser.setText(MainGUI.currentUser.getName());
+    totalBooks.setText(String.valueOf(DBInfo.getBookList("ALL", "ALL", "ALL").size()));
+    totalUsers.setText(String.valueOf(Filter.getInstance().getUserList("ALL").size()));
+    borrowedBooks.setText(String.valueOf(DBInfo.countBorrowed()));
+    overdueBooks.setText(String.valueOf(DBInfo.countOverdue()));
+
+    ObservableList<PieChart.Data> pieChartData = ChartController.getPieChartData();
+    if (pieChartData.isEmpty()) {
+      System.out.println("No data found for PieChart.");
+    } else {
+      pieChart.setData(pieChartData);
+      for (PieChart.Data data : pieChart.getData()) {
+        Tooltip tooltip = new Tooltip();
+        tooltip.setText(getPercentage(data) + "%");
+        Tooltip.install(data.getNode(), tooltip);
+
+        // Update tooltip text on hover
+        data.getNode().setOnMouseEntered(event -> {
+          tooltip.setText(getPercentage(data) + "%");
+        });
+      }
     }
+    ObservableList<XYChart.Data<String, Number>> weekData = ChartController.getLoginData();
 
-    public Button getAddBookButton() {
-        return addBookButton;
-    }
+    // Create a series and add data
+    XYChart.Series<String, Number> series = new XYChart.Series<>();
+    series.setName("Weekly Visitors");
+    series.setData(weekData);
 
-    private String getPercentage(PieChart.Data data) {
-        double total = pieChart.getData().stream().mapToDouble(PieChart.Data::getPieValue).sum();
-        double percentage = (data.getPieValue() / total) * 100;
-        return String.format("%.2f", percentage); // Format to 2 decimal places
-    }
+    // Set the categories for X-axis (days of the week)
+    dateX.setCategories(
+        FXCollections.observableArrayList("Monday", "Tuesday", "Wednesday", "Thursday", "Friday",
+            "Saturday", "Sunday"));
 
-    public void initialize() {
-        updateCurrentTime(); // Initial time set
-        startClock(); // Start the clock
-        nameUser.setText(MainGUI.currentUser.getName());
-        totalBooks.setText(String.valueOf(DBInfo.getBookList("ALL", "ALL", "ALL").size()));
-        totalUsers.setText(String.valueOf(Filter.getInstance().getUserList("ALL").size()));
-        borrowedBooks.setText(String.valueOf(DBInfo.countBorrowed()));
-        overdueBooks.setText(String.valueOf(DBInfo.countOverdue()));
+    // Add series to the line chart
+    lineChart.getData().add(series);
+  }
 
-        ObservableList<PieChart.Data> pieChartData = ChartController.getPieChartData();
-        if (pieChartData.isEmpty()) {
-            System.out.println("No data found for PieChart.");
-        } else {
-            pieChart.setData(pieChartData);
-            for (PieChart.Data data : pieChart.getData()) {
-                Tooltip tooltip = new Tooltip();
-                tooltip.setText(getPercentage(data) + "%");
-                Tooltip.install(data.getNode(), tooltip);
+  private void startClock() {
+    Timeline clock = new Timeline(new KeyFrame(Duration.seconds(1), event -> updateCurrentTime()));
+    clock.setCycleCount(Timeline.INDEFINITE);
+    clock.play();
+  }
 
-                // Update tooltip text on hover
-                data.getNode().setOnMouseEntered(event -> {
-                    tooltip.setText(getPercentage(data) + "%");
-                });
-            }
-        }
-        ObservableList<XYChart.Data<String, Number>> weekData = ChartController.getLoginData();
-
-        // Create a series and add data
-        XYChart.Series<String, Number> series = new XYChart.Series<>();
-        series.setName("Weekly Visitors");
-        series.setData(weekData);
-
-        // Set the categories for X-axis (days of the week)
-        dateX.setCategories(FXCollections.observableArrayList("Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"));
-
-        // Add series to the line chart
-        lineChart.getData().add(series);
-    }
-
-    private void startClock() {
-        Timeline clock = new Timeline(new KeyFrame(Duration.seconds(1), event -> updateCurrentTime()));
-        clock.setCycleCount(Timeline.INDEFINITE);
-        clock.play();
-    }
-
-    public void updateCurrentTime() {
-        SimpleDateFormat formatter = new SimpleDateFormat("MMM d, yyyy | EEEE, hh:mm a", Locale.getDefault());
-        String currentTimeText = formatter.format(new Date());
-        currentTime.setText(currentTimeText);
-    }
+  public void updateCurrentTime() {
+    SimpleDateFormat formatter = new SimpleDateFormat("MMM d, yyyy | EEEE, hh:mm a",
+        Locale.getDefault());
+    String currentTimeText = formatter.format(new Date());
+    currentTime.setText(currentTimeText);
+  }
 }

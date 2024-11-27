@@ -35,133 +35,132 @@ import javax.swing.*;
 
 public class SignInController extends BaseController implements Initializable {
 
-    public javafx.scene.control.TextField userEmail;
+  public javafx.scene.control.TextField userEmail;
 
-    @FXML
-    public Button passwordSeeing;
-    @FXML
-    public javafx.scene.control.TextField passwordVisible;
-    @FXML
-    public FontAwesomeIcon passwordSeeIcon;
-    @FXML
-    public Label signInErrorText;
+  @FXML
+  public Button passwordSeeing;
+  @FXML
+  public javafx.scene.control.TextField passwordVisible;
+  @FXML
+  public FontAwesomeIcon passwordSeeIcon;
+  @FXML
+  public Label signInErrorText;
 
-    @FXML
-    public HBox errorAlert;
+  @FXML
+  public HBox errorAlert;
 
-    @FXML
-    private PasswordField userPassword;
+  @FXML
+  private PasswordField userPassword;
 
-    @FXML
-    private Button forgetPasswordButton;
+  @FXML
+  private Button forgetPasswordButton;
 
-    private boolean isPasswordVisible = false;
+  private boolean isPasswordVisible = false;
 
-    private User currentUser = new User();
+  private User currentUser = new User();
 
-    private void returnHome() {
-        MainGUI.setCurrentUser(currentUser);
-        try {
-            // Load MainGUI.fxml
-            Parent mainRoot = FXMLLoader.load(getClass().getResource("MainGUI.fxml"));
-            Scene mainScene = new Scene(mainRoot);
+  private void returnHome() {
+    MainGUI.setCurrentUser(currentUser);
+    try {
+      // Load MainGUI.fxml
+      Parent mainRoot = FXMLLoader.load(getClass().getResource("MainGUI.fxml"));
+      Scene mainScene = new Scene(mainRoot);
 
-            // Get the current stage from any control in this scene
-            Stage currentStage = (Stage) userEmail.getScene().getWindow();
+      // Get the current stage from any control in this scene
+      Stage currentStage = (Stage) userEmail.getScene().getWindow();
 
+      // Set the new scene on the current stage
+      currentStage.setScene(mainScene);
 
-            // Set the new scene on the current stage
-            currentStage.setScene(mainScene);
+      // Alternatively, you can set the position manually if you want more control
+      double x = (Screen.getPrimary().getVisualBounds().getWidth() - currentStage.getWidth()) / 2;
+      double y = (Screen.getPrimary().getVisualBounds().getHeight() - currentStage.getHeight()) / 2;
+      currentStage.setX(x);
+      currentStage.setY(y);
 
-            // Alternatively, you can set the position manually if you want more control
-            double x = (Screen.getPrimary().getVisualBounds().getWidth() - currentStage.getWidth()) / 2;
-            double y = (Screen.getPrimary().getVisualBounds().getHeight() - currentStage.getHeight()) / 2;
-            currentStage.setX(x);
-            currentStage.setY(y);
-
-            currentStage.show();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+      currentStage.show();
+    } catch (IOException e) {
+      e.printStackTrace();
     }
+  }
 
-    private void showAlert(String content) {
-        errorAlert.setVisible(true);
-        signInErrorText.setText(content);
+  private void showAlert(String content) {
+    errorAlert.setVisible(true);
+    signInErrorText.setText(content);
+  }
+
+  public void login() {
+    if (userEmail.getText().isEmpty()) {
+      showAlert("Bạn chưa nhập email !!!");
+      return;
     }
-
-    public void login() {
-        if (userEmail.getText().isEmpty()) {
-            showAlert("Bạn chưa nhập email !!!");
-            return;
-        }
-        // Authenticate the user
-        if (DBInfo.checkPass(userEmail.getText(), userPassword.getText())) {
-            currentUser = DBInfo.getUser(userEmail.getText());
-            String today = LocalDate.now().toString();
-            String dayOfWeek = LocalDate.now().getDayOfWeek().toString();
-            System.out.println(today + " " + dayOfWeek);
-            ChartController.updateLoginCount(dayOfWeek);
-            returnHome();
-        } else {
-            showAlert("Tài khoản hoặc mật khẩu không chính xác !!!");
-        }
+    // Authenticate the user
+    if (DBInfo.checkPass(userEmail.getText(), userPassword.getText())) {
+      currentUser = DBInfo.getUser(userEmail.getText());
+      String today = LocalDate.now().toString();
+      String dayOfWeek = LocalDate.now().getDayOfWeek().toString();
+      System.out.println(today + " " + dayOfWeek);
+      ChartController.updateLoginCount(dayOfWeek);
+      returnHome();
+    } else {
+      showAlert("Tài khoản hoặc mật khẩu không chính xác !!!");
     }
+  }
 
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
+  @Override
+  public void initialize(URL url, ResourceBundle resourceBundle) {
+    userEmail.requestFocus();
+
+    passwordVisible.setManaged(false);
+    passwordVisible.setVisible(false);
+
+    // Bind the text of both fields
+    passwordVisible.textProperty().bindBidirectional(userPassword.textProperty());
+
+    errorAlert.setVisible(false);
+
+    userEmail.setOnKeyPressed(event -> {
+      if (event.getCode() == KeyCode.TAB) {
+        userPassword.requestFocus();
+        event.consume(); // Prevent default tab behavior
+      }
+      if (event.getCode() == KeyCode.ENTER) {
+        login();
+      }
+    });
+
+    userPassword.setOnKeyPressed(event -> {
+      if (event.getCode() == KeyCode.TAB) {
         userEmail.requestFocus();
+        event.consume(); // Prevent default tab behavior
+      }
+      if (event.getCode() == KeyCode.ENTER) {
+        login();
+      }
+    });
 
-        passwordVisible.setManaged(false);
-        passwordVisible.setVisible(false);
+    forgetPasswordButton.setOnAction(event -> {
+      returnForgotPassword();
+    });
+  }
 
-        // Bind the text of both fields
-        passwordVisible.textProperty().bindBidirectional(userPassword.textProperty());
-
-        errorAlert.setVisible(false);
-
-        userEmail.setOnKeyPressed(event -> {
-            if (event.getCode() == KeyCode.TAB) {
-                userPassword.requestFocus();
-                event.consume(); // Prevent default tab behavior
-            }
-            if (event.getCode() == KeyCode.ENTER) {
-                login();
-            }
-        });
-
-        userPassword.setOnKeyPressed(event -> {
-            if (event.getCode() == KeyCode.TAB) {
-                userEmail.requestFocus();
-                event.consume(); // Prevent default tab behavior
-            }
-            if (event.getCode() == KeyCode.ENTER) {
-                login();
-            }
-        });
-
-        forgetPasswordButton.setOnAction(event -> {
-            returnForgotPassword();
-        });
+  public void togglePasswordVisibility(ActionEvent actionEvent) {
+    if (isPasswordVisible) {
+      passwordSeeIcon.setGlyphName("EYE_SLASH");
+      // Show PasswordField, hide TextField
+      passwordVisible.setVisible(false);
+      passwordVisible.setManaged(false);
+      userPassword.setVisible(true);
+      userPassword.setManaged(true);
+      isPasswordVisible = false;
+    } else {
+      // Show TextField, hide PasswordField
+      passwordSeeIcon.setGlyphName("EYE");
+      passwordVisible.setVisible(true);
+      passwordVisible.setManaged(true);
+      userPassword.setVisible(false);
+      userPassword.setManaged(false);
+      isPasswordVisible = true;
     }
-
-    public void togglePasswordVisibility(ActionEvent actionEvent) {
-        if (isPasswordVisible) {
-            passwordSeeIcon.setGlyphName("EYE_SLASH");
-            // Show PasswordField, hide TextField
-            passwordVisible.setVisible(false);
-            passwordVisible.setManaged(false);
-            userPassword.setVisible(true);
-            userPassword.setManaged(true);
-            isPasswordVisible = false;
-        } else {
-            // Show TextField, hide PasswordField
-            passwordSeeIcon.setGlyphName("EYE");
-            passwordVisible.setVisible(true);
-            passwordVisible.setManaged(true);
-            userPassword.setVisible(false);
-            userPassword.setManaged(false);
-            isPasswordVisible = true;
-        }
-    }
+  }
 }

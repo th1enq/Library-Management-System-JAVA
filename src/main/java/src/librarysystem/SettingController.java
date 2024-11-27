@@ -1,4 +1,5 @@
 package src.librarysystem;
+
 import java.io.File;
 import java.net.URL;
 import java.util.ArrayList;
@@ -146,26 +147,36 @@ public class SettingController extends BaseController implements Initializable {
     newPasswordVisiable.setVisible(false);
 
     // Set position for lineMode based on currentMode
-    TranslateTransition translateTransition = new TranslateTransition(Duration.seconds(0.25), lineMode);
+    TranslateTransition translateTransition = new TranslateTransition(Duration.seconds(0.25),
+        lineMode);
 
     if (currentMode == 0) {
       translateTransition.setToX(0);
       // Set text color, transparent background, and hand cursor for mode 0
-      accountSettingLabel.setStyle("-fx-text-fill: #70727a; -fx-background-color: transparent; -fx-cursor: hand;");
-      uiSettingLabel.setStyle("-fx-text-fill: #bfc5cd; -fx-background-color: transparent; -fx-cursor: hand;");
-      changePasswordLabel.setStyle("-fx-text-fill: #bfc5cd; -fx-background-color: transparent; -fx-cursor: hand;");
+      accountSettingLabel.setStyle(
+          "-fx-text-fill: #70727a; -fx-background-color: transparent; -fx-cursor: hand;");
+      uiSettingLabel.setStyle(
+          "-fx-text-fill: #bfc5cd; -fx-background-color: transparent; -fx-cursor: hand;");
+      changePasswordLabel.setStyle(
+          "-fx-text-fill: #bfc5cd; -fx-background-color: transparent; -fx-cursor: hand;");
     } else if (currentMode == 1) {
       translateTransition.setToX(200);
       // Set text color, transparent background, and hand cursor for mode 1
-      accountSettingLabel.setStyle("-fx-text-fill: #bfc5cd; -fx-background-color: transparent; -fx-cursor: hand;");
-      uiSettingLabel.setStyle("-fx-text-fill: #70727a; -fx-background-color: transparent; -fx-cursor: hand;");
-      changePasswordLabel.setStyle("-fx-text-fill: #bfc5cd; -fx-background-color: transparent; -fx-cursor: hand;");
+      accountSettingLabel.setStyle(
+          "-fx-text-fill: #bfc5cd; -fx-background-color: transparent; -fx-cursor: hand;");
+      uiSettingLabel.setStyle(
+          "-fx-text-fill: #70727a; -fx-background-color: transparent; -fx-cursor: hand;");
+      changePasswordLabel.setStyle(
+          "-fx-text-fill: #bfc5cd; -fx-background-color: transparent; -fx-cursor: hand;");
     } else {
       translateTransition.setToX(400);
       // Set text color, transparent background, and hand cursor for mode 2
-      accountSettingLabel.setStyle("-fx-text-fill: #bfc5cd; -fx-background-color: transparent; -fx-cursor: hand;");
-      uiSettingLabel.setStyle("-fx-text-fill: #bfc5cd; -fx-background-color: transparent; -fx-cursor: hand;");
-      changePasswordLabel.setStyle("-fx-text-fill: #70727a; -fx-background-color: transparent; -fx-cursor: hand;");
+      accountSettingLabel.setStyle(
+          "-fx-text-fill: #bfc5cd; -fx-background-color: transparent; -fx-cursor: hand;");
+      uiSettingLabel.setStyle(
+          "-fx-text-fill: #bfc5cd; -fx-background-color: transparent; -fx-cursor: hand;");
+      changePasswordLabel.setStyle(
+          "-fx-text-fill: #70727a; -fx-background-color: transparent; -fx-cursor: hand;");
     }
 
     // Play the transition
@@ -173,31 +184,36 @@ public class SettingController extends BaseController implements Initializable {
   }
 
 
-
   @FXML
   public void accountSetting(ActionEvent actionEvent) {
-    if(currentMode == 0) return;
+    if (currentMode == 0) {
+      return;
+    }
     currentMode = 0;
     update();
   }
 
   @FXML
   public void uiSetting(ActionEvent actionEvent) {
-    if(currentMode == 1) return;
+    if (currentMode == 1) {
+      return;
+    }
     currentMode = 1;
     update();
   }
 
   @FXML
   public void changePassword(ActionEvent actionEvent) {
-    if(currentMode == 2) return;
+    if (currentMode == 2) {
+      return;
+    }
     currentMode = 2;
     update();
   }
 
-  private boolean isOldPasswordVisible= false;
-  private boolean isNewPasswordVisible= false;
-  private boolean isConfirmPasswordVisible= false;
+  private boolean isOldPasswordVisible = false;
+  private boolean isNewPasswordVisible = false;
+  private boolean isConfirmPasswordVisible = false;
 
 
   @FXML
@@ -231,13 +247,16 @@ public class SettingController extends BaseController implements Initializable {
   }
 
   private static class ToggleSwitch extends Parent {
+
     private BooleanProperty switchedOn = new SimpleBooleanProperty(false);
 
-    private TranslateTransition translateAnimation = new TranslateTransition(Duration.seconds(0.25));
+    private TranslateTransition translateAnimation = new TranslateTransition(
+        Duration.seconds(0.25));
 
     private FillTransition fillAnimation = new FillTransition(Duration.seconds(0.25));
 
-    private ParallelTransition animation = new ParallelTransition(translateAnimation, fillAnimation);
+    private ParallelTransition animation = new ParallelTransition(translateAnimation,
+        fillAnimation);
 
     public BooleanProperty switchedOnProperty() {
       return switchedOn;
@@ -301,10 +320,10 @@ public class SettingController extends BaseController implements Initializable {
     double radius1 = 20;
     double radius2 = height * 0;
     clip = new Path(new MoveTo(0, radius1), new ArcTo(radius1, radius1, 0, radius1, 0, false, true),
-            new HLineTo(width),
-            new VLineTo(height - radius2),
-            new ArcTo(radius2, radius2, 0, width - radius2, height, false, true),
-            new HLineTo(0));
+        new HLineTo(width),
+        new VLineTo(height - radius2),
+        new ArcTo(radius2, radius2, 0, width - radius2, height, false, true),
+        new HLineTo(0));
 
     clip.setFill(Color.ALICEBLUE);
     coverImage.setClip(clip);
@@ -363,7 +382,6 @@ public class SettingController extends BaseController implements Initializable {
     });
     paneContainer.getChildren().add(toogleEmailNontifications);
 
-
     uiSettingMode.add(textTimeFormat);
     uiSettingMode.add(textEmailNontifications);
     uiSettingMode.add(textDarkMode);
@@ -410,7 +428,9 @@ public class SettingController extends BaseController implements Initializable {
   public void editAvatar(ActionEvent actionEvent) {
     // Tạo đối tượng FileChooser để chọn tệp ảnh
     FileChooser fileChooser = new FileChooser();
-    fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg", "*.jpeg", "*.bmp", "*.gif"));
+    fileChooser.getExtensionFilters().add(
+        new FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg", "*.jpeg", "*.bmp",
+            "*.gif"));
 
     // Mở hộp thoại để người dùng chọn tệp ảnh
     File selectedFile = fileChooser.showOpenDialog(null);
@@ -430,7 +450,9 @@ public class SettingController extends BaseController implements Initializable {
   public void editCoverImage(ActionEvent actionEvent) {
     // Tạo đối tượng FileChooser để chọn tệp ảnh
     FileChooser fileChooser = new FileChooser();
-    fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg", "*.jpeg", "*.bmp", "*.gif"));
+    fileChooser.getExtensionFilters().add(
+        new FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg", "*.jpeg", "*.bmp",
+            "*.gif"));
 
     // Mở hộp thoại để người dùng chọn tệp ảnh
     File selectedFile = fileChooser.showOpenDialog(null);
@@ -447,24 +469,27 @@ public class SettingController extends BaseController implements Initializable {
 
   @FXML
   public void updateProfile(ActionEvent actionEvent) {
-    if(currentMode == 0) {
-      MainGUI.currentUser.update(nameTextField.getText(), emailTextField.getText(), null, avatar.getImage().getUrl(), idTextField.getText(), String.valueOf(universityChoose.getValue()), phoneTextField.getText(), coverImage.getImage().getUrl(), null);
+    if (currentMode == 0) {
+      MainGUI.currentUser.update(nameTextField.getText(), emailTextField.getText(), null,
+          avatar.getImage().getUrl(), idTextField.getText(),
+          String.valueOf(universityChoose.getValue()), phoneTextField.getText(),
+          coverImage.getImage().getUrl(), null);
       sendNotification(1000, MainGUI.currentUser.getId(), "Cập nhật thông tin thành công !!!");
-    }
-    else if(currentMode == 2) {
-      if(!PasswordUtils.verifyPassword(oldPassword.getText(),MainGUI.currentUser.getPassword())) {
-        System.out.println("Mat khau cu khong chinh xac" + " " + MainGUI.currentUser.getPassword() + " " + PasswordUtils.hashPassword(oldPassword.getText()) + " " + oldPassword.getText());
-      }
-      else {
-        if(newPassword.getText().isEmpty() || newPassword == null) {
+    } else if (currentMode == 2) {
+      if (!PasswordUtils.verifyPassword(oldPassword.getText(), MainGUI.currentUser.getPassword())) {
+        System.out.println(
+            "Mat khau cu khong chinh xac" + " " + MainGUI.currentUser.getPassword() + " "
+                + PasswordUtils.hashPassword(oldPassword.getText()) + " " + oldPassword.getText());
+      } else {
+        if (newPassword.getText().isEmpty() || newPassword == null) {
           System.out.println("Hay nhap mat khau moi");
           return;
         }
-        if(confirmNewPassword.getText().isEmpty() || confirmNewPassword == null) {
+        if (confirmNewPassword.getText().isEmpty() || confirmNewPassword == null) {
           System.out.println("Hay xac nhan lai mat khau");
           return;
         }
-        if(!newPassword.getText().equals(confirmNewPassword.getText())) {
+        if (!newPassword.getText().equals(confirmNewPassword.getText())) {
           System.out.println("Mat khau nhap khong khop");
           return;
         }

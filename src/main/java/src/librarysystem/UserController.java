@@ -416,11 +416,10 @@ public class UserController extends BaseController {
 
   @FXML
   public void submitAdd(ActionEvent actionEvent) {
-    if(MainGUI.currentUser.getUserType().equals("user")){
+    if (MainGUI.currentUser.getUserType().equals("user")) {
       sendNotification(1000, MainGUI.currentUser.getId(), "Chức năng chỉ dành cho admin!!!!");
 
-    }
-    else {
+    } else {
       String username = userNameAdd.getText();
       if (username == null || username.isEmpty()) {
         sendNotification(1000, 999, "Vui lòng nhập username!!!");
@@ -443,7 +442,6 @@ public class UserController extends BaseController {
       update();
       sendNotification(1000, 999, "Tạo thành công tài khoản !!!");
     }
-
 
     tempPane.setVisible(false);
     containerPane.setEffect(null);
