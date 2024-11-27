@@ -74,10 +74,10 @@ public class SignInController extends BaseController implements Initializable {
             currentStage.setScene(mainScene);
 
             // Alternatively, you can set the position manually if you want more control
-             double x = (Screen.getPrimary().getVisualBounds().getWidth() - currentStage.getWidth()) / 2;
-             double y = (Screen.getPrimary().getVisualBounds().getHeight() - currentStage.getHeight()) / 2;
-             currentStage.setX(x);
-             currentStage.setY(y);
+            double x = (Screen.getPrimary().getVisualBounds().getWidth() - currentStage.getWidth()) / 2;
+            double y = (Screen.getPrimary().getVisualBounds().getHeight() - currentStage.getHeight()) / 2;
+            currentStage.setX(x);
+            currentStage.setY(y);
 
             currentStage.show();
         } catch (IOException e) {
@@ -95,12 +95,6 @@ public class SignInController extends BaseController implements Initializable {
             showAlert("Bạn chưa nhập email !!!");
             return;
         }
-
-        if(userPassword.getText().isEmpty()) {
-            showAlert("Bạn chưa nhập mật khẩu !!!");
-            return;
-        }
-
         // Authenticate the user
         if (DBInfo.checkPass(userEmail.getText(), userPassword.getText())) {
             currentUser = DBInfo.getUser(userEmail.getText());

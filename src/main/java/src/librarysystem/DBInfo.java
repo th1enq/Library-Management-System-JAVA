@@ -219,13 +219,12 @@ public class DBInfo {
 
   public static ArrayList<Notification> getNotificationsByUserId(int userId) {
     ArrayList<Notification> notifications = new ArrayList<>();
-    String sql = "SELECT * FROM notifications WHERE sender_id = ? OR receiver_id = ?";
+    String sql = "SELECT * FROM notifications WHERE receiver_id = ?";
 
     try (Connection conn = DBInfo.conn();
         PreparedStatement stmt = conn.prepareStatement(sql)) {
 
       stmt.setInt(1, userId);
-      stmt.setInt(2, userId);
 
       ResultSet rs = stmt.executeQuery();
 
@@ -2227,3 +2226,4 @@ public class DBInfo {
     System.out.println(PasswordRecoveryService.checkToken("23020158@vnu.edu.vn", "1441"));
   }
 }
+

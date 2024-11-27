@@ -107,11 +107,14 @@ public class SignUpController implements Initializable {
         else if(userEmail.getText().isEmpty()) {
             showAlert("Bạn chưa nhập email !!!");
         }
-        else if(userPassword.getText().isEmpty()) {
-            showAlert("Bạn chưa nhập mật khẩu !!!");
+        else if(!DBInfo.validPassword(userPassword.getText())) {
+            showAlert("Mật khẩu cần có ít nhất 8 kí tự !!!");
         }
         else if(!DBInfo.checkUnique(userEmail.getText())) {
             showAlert("Tài khoản đã tồn tại !!!");
+        }
+        else if(!DBInfo.validPassword(userEmail.getText())){
+            showAlert("Username cần có dạng email !!!");
         }
         else {
             showAlert("Đăng kí thành công !!!");

@@ -358,6 +358,10 @@ public class BookViewDetailController extends BaseController {
 
     @FXML
     public void rentBook(ActionEvent actionEvent) {
+        if(!DBInfo.inDb(currentBook.getTitle())){
+            sendNotification(1000,MainGUI.currentUser.getId(), "Sách đã được người dùng mượn hết!!! Vui lòng quay lại sau!!!");
+            return;
+        }
         GaussianBlur blurEffect = new GaussianBlur(10);
         containerPane.setEffect(blurEffect); // Làm mờ phần nội dung chính
         tempPane.setVisible(true);
