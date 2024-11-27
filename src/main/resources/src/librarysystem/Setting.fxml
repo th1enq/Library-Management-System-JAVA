@@ -73,7 +73,7 @@
                               <Font name="System Bold" size="14.0" />
                            </font>
                         </Label>
-                        <Label layoutX="250.0" layoutY="26.0" prefHeight="17.0" prefWidth="41.0" text="20" textFill="#24e81e">
+                        <Label fx:id="numBorrowedBooks" layoutX="250.0" layoutY="26.0" prefHeight="17.0" prefWidth="41.0" text="20" textFill="#24e81e">
                            <font>
                               <Font name="System Bold" size="14.0" />
                            </font>
@@ -87,7 +87,7 @@
                               <Font name="System Bold" size="14.0" />
                            </font>
                         </Label>
-                        <Label layoutX="250.0" layoutY="26.0" prefHeight="17.0" prefWidth="41.0" text="5" textFill="RED">
+                        <Label fx:id="numOverdueBooks" layoutX="250.0" layoutY="26.0" prefHeight="17.0" prefWidth="41.0" text="5" textFill="RED">
                            <font>
                               <Font name="System Bold" size="14.0" />
                            </font>
@@ -151,7 +151,7 @@
                                     <Font name="System Bold" size="13.0" />
                                  </font>
                               </Label>
-                              <TextField fx:id="userTextField" layoutX="382.0" layoutY="62.0" prefHeight="52.0" prefWidth="257.0" style="-fx-border-color: #E8EAEC; -fx-border-radius: 5px; -fx-background-radius: 5px; -fx-text-fill: #767B90; -fx-padding: 0 0 0 15;" text="Student">
+                              <TextField fx:id="userTextField" editable="false" layoutX="382.0" layoutY="62.0" prefHeight="52.0" prefWidth="257.0" style="-fx-border-color: #E8EAEC; -fx-border-radius: 5px; -fx-background-radius: 5px; -fx-text-fill: #767B90; -fx-padding: 0 0 0 15;" text="Student">
                                  <opaqueInsets>
                                     <Insets />
                                  </opaqueInsets>

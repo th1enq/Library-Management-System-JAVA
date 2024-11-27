@@ -1,10 +1,9 @@
 package src.librarysystem;
+
 import java.io.File;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
-
-import com.sun.tools.javac.Main;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import javafx.animation.FillTransition;
 import javafx.animation.ParallelTransition;
@@ -15,109 +14,63 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
-import javafx.scene.SnapshotParameters;
 import javafx.scene.control.*;
-import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.image.WritableImage;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.*;
 import javafx.stage.FileChooser;
 import javafx.util.Duration;
 
 public class SettingController extends BaseController implements Initializable {
-
   @FXML
   public ImageView coverImage;
-  @FXML
   public ImageView avatar;
-  @FXML
   public Line lineMode;
-  @FXML
   public ChoiceBox universityChoose;
-  @FXML
   public ToggleButton darkModeToogleButton;
-  @FXML
   public Pane paneContainer;
-  @FXML
   public Label textTimeFormat;
-  @FXML
   public Label textEmailNontifications;
-  @FXML
   public Label textDarkMode;
-  @FXML
   public Label textLanguage;
-  @FXML
   public Label languageLabel;
-  @FXML
   public Label timeLabel;
-  @FXML
   public Label emailLabel;
-  @FXML
   public Label labelDarkMode;
-  @FXML
   public Label nameLabel;
-  @FXML
   public TextField nameTextField;
-  @FXML
   public Label userEmailLabel;
-  @FXML
   public TextField emailTextField;
-  @FXML
   public Label idLabel;
-  @FXML
   public TextField idTextField;
-  @FXML
   public Label universityLabel;
-  @FXML
   public Label userLabel;
-  @FXML
   public TextField userTextField;
-  @FXML
   public Label phoneLabel;
-  @FXML
   public TextField phoneTextField;
-  @FXML
   public Button accountSettingLabel;
-  @FXML
   public Button uiSettingLabel;
-  @FXML
   public Button changePasswordLabel;
-  @FXML
   public PasswordField newPassword;
-  @FXML
   public PasswordField confirmNewPassword;
-  @FXML
   public PasswordField oldPassword;
-  @FXML
   public Label confirmNewPasswordLabel;
-  @FXML
   public Label newPasswordLabel;
-  @FXML
   public Label oldPasswordLabel;
-  @FXML
   public Button confirmPasswordSee;
-  @FXML
   public TextField confirmNewPasswordVisiable;
-  @FXML
   public Button newPasswordSee;
-  @FXML
   public TextField newPasswordVisiable;
-  @FXML
   public Button oldPasswordSee;
-  @FXML
   public TextField oldPasswordVisiable;
-  @FXML
   public FontAwesomeIcon confirmNewPasswordIcon;
-  @FXML
   public FontAwesomeIcon newPasswordIcon;
-  @FXML
   public FontAwesomeIcon oldPasswordIcon;
-  @FXML
   public Label bioName;
+  public Label numBorrowedBooks;
+  public Label numOverdueBooks;
 
   private int currentMode = 0;
 
@@ -285,6 +238,8 @@ public class SettingController extends BaseController implements Initializable {
     userTextField.setText(MainGUI.currentUser.getUserType());
     phoneTextField.setText(MainGUI.currentUser.getPhone());
     universityChoose.setValue(String.valueOf(MainGUI.currentUser.getUniversity()));
+    numBorrowedBooks.setText(String.valueOf(MainGUI.currentUser.getUpcoming()));
+    numOverdueBooks.setText(String.valueOf(MainGUI.currentUser.getOverdue()));
 
     oldPasswordVisiable.textProperty().bindBidirectional(oldPassword.textProperty());
     newPasswordVisiable.textProperty().bindBidirectional(newPassword.textProperty());
@@ -304,9 +259,32 @@ public class SettingController extends BaseController implements Initializable {
     clip.setFill(Color.ALICEBLUE);
     coverImage.setClip(clip);
 
+    try {
+      // Lấy đường dẫn từ user (ví dụ từ currentUser.getAvatarLink())
+      Image userImage = new Image(MainGUI.currentUser.getCoverPhotoLink());
+      coverImage.setImage(userImage); // Nếu tải được ảnh
+    } catch (Exception e) {
+      // Nếu không tải được ảnh, sử dụng ảnh mặc định "user.jpg"
+      // Đảm bảo ảnh "user.jpg" nằm trong thư mục resources/images
+      Image defaultImage = new Image(getClass().getResource("/images/bg_img.jpg").toExternalForm());
+      coverImage.setImage(defaultImage);
+    }
+
     double radius = 75; // Bán kính hình tròn (150 / 2)
     Circle clipAvatar = new Circle(75, 75, radius); // Tâm (75, 75) với bán kính 75
     avatar.setClip(clipAvatar);
+
+    try {
+      // Lấy đường dẫn từ user (ví dụ từ currentUser.getAvatarLink())
+      Image userImage = new Image(MainGUI.currentUser.getAvatarLink());
+      avatar.setImage(userImage); // Nếu tải được ảnh
+    } catch (Exception e) {
+      // Nếu không tải được ảnh, sử dụng ảnh mặc định "user.jpg"
+      // Đảm bảo ảnh "user.jpg" nằm trong thư mục resources/images
+      Image defaultImage = new Image(getClass().getResource("/images/user.jpg").toExternalForm());
+      avatar.setImage(defaultImage);
+    }
+
 
     // Set the stroke width (độ dày đường)
     lineMode.setStrokeWidth(2);

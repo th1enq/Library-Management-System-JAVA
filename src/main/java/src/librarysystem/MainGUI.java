@@ -5,6 +5,7 @@ import javafx.animation.*;
 import javafx.application.Platform;
 import javafx.scene.Cursor;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
@@ -168,6 +169,17 @@ public class MainGUI implements Initializable {
         profileImage.setOnMouseClicked(event -> {
             returnSetting(new ActionEvent());
         });
+
+        try {
+            // Lấy đường dẫn từ user (ví dụ từ currentUser.getAvatarLink())
+            Image userImage = new Image(MainGUI.currentUser.getAvatarLink());
+            profileImage.setImage(userImage); // Nếu tải được ảnh
+        } catch (Exception e) {
+            // Nếu không tải được ảnh, sử dụng ảnh mặc định "user.jpg"
+            // Đảm bảo ảnh "user.jpg" nằm trong thư mục resources/images
+            Image defaultImage = new Image(getClass().getResource("/images/user.jpg").toExternalForm());
+            profileImage.setImage(defaultImage);
+        }
     }
 
     void updateNotifications() {
