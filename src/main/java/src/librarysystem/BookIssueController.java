@@ -538,24 +538,24 @@ public class BookIssueController extends BaseController {
   }
 
   private void resetSortOrderExcept(String field) {
-      if (!field.equals("ID")) {
-          isIDAscending = true;
-      }
-      if (!field.equals("UserName")) {
-          isUserNameAscending = true;
-      }
-      if (!field.equals("Title")) {
-          isTitleAscending = true;
-      }
-      if (!field.equals("Author")) {
-          isAuthorAscending = true;
-      }
-      if (!field.equals("IssueDate")) {
-          isIssueDateAscending = true;
-      }
-      if (!field.equals("ReturnDate")) {
-          isReturnDateAscending = true;
-      }
+    if (!field.equals("ID")) {
+      isIDAscending = true;
+    }
+    if (!field.equals("UserName")) {
+      isUserNameAscending = true;
+    }
+    if (!field.equals("Title")) {
+      isTitleAscending = true;
+    }
+    if (!field.equals("Author")) {
+      isAuthorAscending = true;
+    }
+    if (!field.equals("IssueDate")) {
+      isIssueDateAscending = true;
+    }
+    if (!field.equals("ReturnDate")) {
+      isReturnDateAscending = true;
+    }
   }
 
   private void updateForUser() {
@@ -644,9 +644,9 @@ public class BookIssueController extends BaseController {
     containerPaneUser.getChildren().clear();
     containerPane.getChildren().clear();
 
-      if (pageIndex < 0 || pageIndex >= paginatedBookIssueList.size()) {
-          return;
-      }
+    if (pageIndex < 0 || pageIndex >= paginatedBookIssueList.size()) {
+      return;
+    }
 
     ArrayList<BookIssue> currentBooks = paginatedBookIssueList.get(pageIndex);
     double layoutY = 0;

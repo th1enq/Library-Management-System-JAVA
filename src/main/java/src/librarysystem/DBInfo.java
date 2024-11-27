@@ -1979,7 +1979,7 @@ public class DBInfo {
     ResultSet resultSet = null;
     try {
       con = DBInfo.conn();
-      final String sql = "SELECT * FROM book ORDER BY numView DESC";
+      final String sql = "SELECT * FROM book ORDER BY numView DESC LIMIT 3";
       //  System.out.println(sql);
       preparedStatement = con.prepareStatement(sql);
       resultSet = preparedStatement.executeQuery();
