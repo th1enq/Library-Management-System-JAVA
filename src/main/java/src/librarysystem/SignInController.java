@@ -103,12 +103,17 @@ public class SignInController extends BaseController implements Initializable {
 
         // Authenticate the user
         if (DBInfo.checkPass(userEmail.getText(), userPassword.getText())) {
-            currentUser = DBInfo.getUser(userEmail.getText());
-            String today = LocalDate.now().toString();
-            String dayOfWeek = LocalDate.now().getDayOfWeek().toString();
-            System.out.println(today + " " + dayOfWeek);
-            ChartController.updateLoginCount(dayOfWeek);
-            returnHome();
+            if(DBInfo.getUser(userEmail.getText()).isBanned()) {
+                showAlert("Your account has been banned !!!");
+            }
+            else {
+                currentUser = DBInfo.getUser(userEmail.getText());
+                String today = LocalDate.now().toString();
+                String dayOfWeek = LocalDate.now().getDayOfWeek().toString();
+                System.out.println(today + " " + dayOfWeek);
+                ChartController.updateLoginCount(dayOfWeek);
+                returnHome();
+            }
         } else {
             showAlert("Account or password is incorrect !!!");
         }

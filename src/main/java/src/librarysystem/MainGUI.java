@@ -339,6 +339,10 @@ public class MainGUI implements Initializable {
 
     @FXML
     private void userView() {
+        if(MainGUI.currentUser.getUserType().equals("user")) {
+            sendNotification(1000, MainGUI.currentUser.getId(), "Functionality for admins only!!!!",0);
+            return;
+        }
         currentStage = 2;
         Loading("UserView.fxml");
     }
@@ -432,7 +436,7 @@ public class MainGUI implements Initializable {
         fadeOut.play();
 
         // Update the notification content
-        labelNoti.setText("Thông báo từ " + newNotification.getReceiver());
+        labelNoti.setText("Notice from " + newNotification.getReceiver());
         contentNoti.setText(content);
 
         updateNotifications();

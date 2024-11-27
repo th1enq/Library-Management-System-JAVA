@@ -361,7 +361,7 @@ public class BookIssueController extends BaseController {
         authorLabel.setFont(new Font("System Bold Italic", 12)); // Bold font using "System Bold"
 
         // Create Button for details
-        Button detailsButton = new Button("Xem chi tiết");
+        Button detailsButton = new Button("View Detail");
         detailsButton.setLayoutX(266.0);
         detailsButton.setLayoutY(209.0);
         detailsButton.setPrefHeight(36.0);
