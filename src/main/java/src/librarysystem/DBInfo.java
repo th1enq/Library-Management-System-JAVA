@@ -17,12 +17,6 @@ import java.time.temporal.ChronoUnit;
 
 public class DBInfo {
 
-  public static String curUsername = "";
-  public static String curPass = "";
-  public static int curId = 0;
-  public static String userType;
-  public static String curName = "";
-
   static {
     try {
       Class.forName("com.mysql.cj.jdbc.Driver");
