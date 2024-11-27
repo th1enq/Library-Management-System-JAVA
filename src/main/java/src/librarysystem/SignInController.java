@@ -59,6 +59,9 @@ public class SignInController extends BaseController implements Initializable {
 
   private User currentUser = new User();
 
+  /**
+   * hien man hinh chinh.
+   */
   private void returnHome() {
     MainGUI.setCurrentUser(currentUser);
     try {
@@ -84,11 +87,17 @@ public class SignInController extends BaseController implements Initializable {
     }
   }
 
+  /**
+   * hien canh bao.
+   */
   private void showAlert(String content) {
     errorAlert.setVisible(true);
     signInErrorText.setText(content);
   }
 
+  /**
+   * dang nhap.
+   */
   public void login() {
     if (userEmail.getText().isEmpty()) {
       showAlert("Please enter your email !!!");
@@ -117,6 +126,9 @@ public class SignInController extends BaseController implements Initializable {
     }
   }
 
+  /**
+   * khoi toa.
+   */
   @Override
   public void initialize(URL url, ResourceBundle resourceBundle) {
     userEmail.requestFocus();
@@ -154,6 +166,9 @@ public class SignInController extends BaseController implements Initializable {
     });
   }
 
+  /**
+   * hien mat khau.
+   */
   public void togglePasswordVisibility(ActionEvent actionEvent) {
     if (isPasswordVisible) {
       passwordSeeIcon.setGlyphName("EYE_SLASH");

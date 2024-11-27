@@ -32,7 +32,9 @@ public class SignUpController implements Initializable {
     errorAlert.setVisible(true);
     signUpErrorText.setText(content);
   }
-
+  /**
+   * khoi tao.
+   */
   @Override
   public void initialize(URL url, ResourceBundle resourceBundle) {
     passwordVisible.setManaged(false);
@@ -66,6 +68,9 @@ public class SignUpController implements Initializable {
     });
   }
 
+  /**
+   * hien mat khau.
+   */
   public void togglePasswordVisibility(ActionEvent actionEvent) {
     if (isPasswordVisible) {
       passwordSeeIcon.setGlyphName("EYE_SLASH");
@@ -84,6 +89,9 @@ public class SignUpController implements Initializable {
     }
   }
 
+  /**
+   * dang ki.
+   */
   @FXML
   public void createNewAccount(ActionEvent actionEvent) {
     if (userName.getText().isEmpty()) {

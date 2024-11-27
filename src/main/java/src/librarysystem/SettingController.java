@@ -83,6 +83,9 @@ public class SettingController extends BaseController implements Initializable {
   private ToggleSwitch toogleTimeFormat = new ToggleSwitch();
   private ToggleSwitch toogleEmailNontifications = new ToggleSwitch();
 
+  /**
+   * update.
+   */
   private void update() {
     // Update visibility of UI and profile settings based on currentMode
     for (Parent element : profileSettingMode) {
@@ -140,7 +143,9 @@ public class SettingController extends BaseController implements Initializable {
     translateTransition.play();
   }
 
-
+  /**
+   * mo account setting.
+   */
   @FXML
   public void accountSetting(ActionEvent actionEvent) {
     if (currentMode == 0) {
@@ -149,7 +154,9 @@ public class SettingController extends BaseController implements Initializable {
     currentMode = 0;
     update();
   }
-
+  /**
+   * mo Ui setting.
+   */
   @FXML
   public void uiSetting(ActionEvent actionEvent) {
     if (currentMode == 1) {
@@ -158,7 +165,9 @@ public class SettingController extends BaseController implements Initializable {
     currentMode = 1;
     update();
   }
-
+  /**
+   * doi mat khau.
+   */
   @FXML
   public void changePassword(ActionEvent actionEvent) {
     if (currentMode == 2) {
@@ -173,6 +182,9 @@ public class SettingController extends BaseController implements Initializable {
   private boolean isConfirmPasswordVisible = false;
 
 
+  /**
+   * hien mat khau cu.
+   */
   @FXML
   public void seeOldPasswod(ActionEvent actionEvent) {
     oldPasswordIcon.setGlyphName(isOldPasswordVisible ? "EYE_SLASH" : "EYE");
@@ -183,6 +195,9 @@ public class SettingController extends BaseController implements Initializable {
     isOldPasswordVisible = !isOldPasswordVisible;
   }
 
+  /**
+   * hien mat khau.
+   */
   @FXML
   public void seeNewPassword(ActionEvent actionEvent) {
     newPasswordIcon.setGlyphName(isNewPasswordVisible ? "EYE_SLASH" : "EYE");
@@ -192,7 +207,9 @@ public class SettingController extends BaseController implements Initializable {
     newPassword.setManaged(isNewPasswordVisible);
     isNewPasswordVisible = !isNewPasswordVisible;
   }
-
+  /**
+   * hien mat khau.
+   */
   @FXML
   public void seeConfirnPassword(ActionEvent actionEvent) {
     confirmNewPasswordIcon.setGlyphName(isConfirmPasswordVisible ? "EYE_SLASH" : "EYE");
@@ -254,6 +271,9 @@ public class SettingController extends BaseController implements Initializable {
     }
   }
 
+  /**
+   * khoi tao.
+   */
   @Override
   public void initialize(URL url, ResourceBundle resourceBundle) {
     System.out.println(MainGUI.currentUser.toString());

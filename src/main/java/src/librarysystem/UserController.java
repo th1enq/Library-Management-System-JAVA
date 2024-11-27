@@ -66,6 +66,9 @@ public class UserController extends BaseController {
 
   private ArrayList<User> selectedUser = new ArrayList<>();
 
+  /**
+   * khoi tao pane.
+   */
   private Pane createUserPane(User user, int index) {
     Pane pane = new Pane();
     pane.setPrefSize(1075, 71);
@@ -176,13 +179,17 @@ public class UserController extends BaseController {
     return pane;
   }
 
-
+  /**
+   * xoa ng dung.
+   */
   private void removeSelectedUser() {
     GaussianBlur blurEffect = new GaussianBlur(10);
     containerPane.setEffect(blurEffect); // Làm mờ phần nội dung chính
     removeConfirm.setVisible(true);
   }
-
+  /**
+   * ban ng dung.
+   */
   private void banSelectedUser() {
     GaussianBlur blurEffect = new GaussianBlur(10);
     containerPane.setEffect(blurEffect); // Làm mờ phần nội dung chính
@@ -194,7 +201,9 @@ public class UserController extends BaseController {
     containerPane.setEffect(blurEffect); // Làm mờ phần nội dung chính
     unbanConfirm.setVisible(true);
   }
-
+  /**
+   * update.
+   */
   private void update() {
     viewAllButton.setStyle(
         "-fx-background-color: transparent; -fx-background-radius: 5px; -fx-cursor: hand;");
@@ -232,7 +241,9 @@ public class UserController extends BaseController {
   }
 
   private ArrayList<CheckBox> markUserList = new ArrayList<>();
-
+  /**
+   * khoi tao.
+   */
   public void initialize() {
     int totalCustomer = Filter.getInstance().getUserList("ALL").size();
     int totalAdmin = Filter.getInstance().getUserList("admin").size();
@@ -305,7 +316,9 @@ public class UserController extends BaseController {
       containerPane.setEffect(null);
     });
   }
-
+  /**
+   * hien ng dung.
+   */
   private void displayUser() {
     VBox vbox = new VBox();
     vbox.setSpacing(0);
@@ -350,7 +363,9 @@ public class UserController extends BaseController {
     containerPane.setEffect(blurEffect); // Làm mờ phần nội dung chính
     tempPane.setVisible(true);
   }
-
+  /**
+   * xuat file excel.
+   */
   @FXML
   public void exportCSV(ActionEvent actionEvent) {
     // Lấy Stage từ ActionEvent
@@ -420,6 +435,9 @@ public class UserController extends BaseController {
     }
   }
 
+  /**
+   * tim user.
+   */
   @FXML
   public void searchUser(ActionEvent actionEvent) {
     searchUserButton.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
@@ -454,14 +472,18 @@ public class UserController extends BaseController {
     });
     displayUser();
   }
-
+  /**
+   * huy them ng moi.
+   */
   @FXML
   public void cancelAdd(ActionEvent actionEvent) {
     tempPane.setVisible(false);
     containerPane.setEffect(null);
     userNameAdd.clear();
   }
-
+  /**
+   * them ng dung.
+   */
   @FXML
   public void submitAdd(ActionEvent actionEvent) {
     String username = userNameAdd.getText();
