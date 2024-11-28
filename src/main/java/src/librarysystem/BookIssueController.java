@@ -775,8 +775,6 @@ public class BookIssueController extends BaseController {
           throw new RuntimeException(e);
         }
         updateForUser();
-        sendNotification(1000, MainGUI.currentUser.getId(),
-            " " + currentBook.getTitle() + " successfull !", 0);
         sendNotification(MainGUI.currentUser.getId(), 999,
             "User " + MainGUI.currentUser.getId() + " return book " + currentBook.getTitle(), 0);
       });
