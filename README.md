@@ -106,7 +106,7 @@
 
 ## Kế hoạch phát triển
 - **Phiên bản 1.0:** Hoàn thiện các tính năng cơ bản và giao diện người dùng (Done)
-- **Phiên bản 2.0:** Tăng cường hiệu suất và thêm các tính năng nâng cao như darkmode, ... (Comming soon)
+- **Phiên bản 2.0:** Tăng cường hiệu suất, bảo mật và thêm các tính năng nâng cao hơn, ... (Comming soon)
 
 
 
