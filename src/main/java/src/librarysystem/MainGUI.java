@@ -255,6 +255,10 @@ public class MainGUI implements Initializable {
    * them sach.
    */
   public void returnAddBook() {
+    if(MainGUI.currentUser.getUserType().equals("user")) {
+      sendNotification(1000, MainGUI.currentUser.getId(), "Functionality for admins only!!!!", 1);
+      return;
+    }
     try {
       FXMLLoader loader = new FXMLLoader(getClass().getResource("AddBook.fxml"));
       fxml = loader.load();
