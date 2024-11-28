@@ -96,7 +96,13 @@
     <br>
     <img src="https://github.com/user-attachments/assets/52682f64-2a62-4a36-b046-5500dd7da9f2" alt="UI Reset Password" width="1000">
   </details>
-  
+
+## Sử dụng các nguyên tắc lập trình OOP,  Design Pattern
+- Các quan hệ giữa các lớp, đối tượng được thể hiện ở classDiagram.png
+- Sử dụng các design pattern như Singleton, ...
+- Tích hợp đa luồng để cải thiện hiệu suất của chương trình
+- ...
+
 ## Thành viên
 | **Họ và tên**        | **Mã sinh viên** |
 |-----------------------|------------------|
