@@ -99,7 +99,8 @@
 
 ## Sử dụng các nguyên tắc lập trình OOP,  Design Pattern
 - Các quan hệ giữa các lớp, đối tượng được thể hiện ở classDiagram.png
-- Sử dụng các design pattern như Singleton, ...
+  ![image](https://github.com/user-attachments/assets/e4d50ad5-52bb-49f2-8c91-f40d8dfc325f)
+- Sử dụng các design pattern như Singleton, Abstract Factory, ...
 - Tích hợp đa luồng để cải thiện hiệu suất của chương trình
 - ...
 
